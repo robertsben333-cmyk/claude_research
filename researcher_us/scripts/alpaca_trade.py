@@ -77,6 +77,25 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
 
 PAPER = "https://paper-api.alpaca.markets"
+LIVE = "https://api.alpaca.markets"
+# Which Alpaca account this invocation trades: `paper` (ALPACA_API_KEY_ID / _SECRET_KEY /
+# ALPACA_BASE_URL, the account stage E-P has traded since 2026-10-19) or `live`
+# (ALPACA_LIVE_API_KEY_ID / ALPACA_LIVE_API_SECRET_KEY / ALPACA_LIVE_BASE_URL, added
+# 2026-11-12 on the operator's instruction). Set once by --account in main(). The two
+# keep separate order and plan files in a run directory (alpaca-orders.json and
+# alpaca-orders-live.json), so one account's record never answers for the other.
+ACCOUNT = "paper"
+# A file at this path stops every live BUY (open); sells still go. Commit it to main to
+# stop live entries without touching config or a Routine.
+LIVE_KILL = REPO / "config" / "LIVE_KILL"
+
+
+def acct_suffix():
+    return "-live" if ACCOUNT == "live" else ""
+
+
+def plan_path(run):
+    return Path(run) / f"alpaca-plan{acct_suffix()}.json"
 DATA = "https://data.alpaca.markets"   # market data lives on its own host
 CLIENT_PREFIX = "edge"          # every client_order_id this repo ever creates
 MOC_CUTOFF_MIN = 10             # minutes before the close that MOC stops being accepted
@@ -134,10 +153,16 @@ def book_for(run, book="auto"):
 class Alpaca:
     """Thin REST client. Reads credentials from the environment, never from a file."""
 
-    def __init__(self, base=None, key=None, secret=None):
-        self.base = (base or os.environ.get("ALPACA_BASE_URL") or PAPER).rstrip("/")
-        self.key = key or os.environ.get("ALPACA_API_KEY_ID") or ""
-        self.secret = secret or os.environ.get("ALPACA_API_SECRET_KEY") or ""
+    def __init__(self, base=None, key=None, secret=None, account="paper"):
+        self.which = account      # "paper" | "live"; not `account`, which is a method
+        if account == "live":
+            self.base = (base or os.environ.get("ALPACA_LIVE_BASE_URL") or LIVE).rstrip("/")
+            self.key = key or os.environ.get("ALPACA_LIVE_API_KEY_ID") or ""
+            self.secret = secret or os.environ.get("ALPACA_LIVE_API_SECRET_KEY") or ""
+        else:
+            self.base = (base or os.environ.get("ALPACA_BASE_URL") or PAPER).rstrip("/")
+            self.key = key or os.environ.get("ALPACA_API_KEY_ID") or ""
+            self.secret = secret or os.environ.get("ALPACA_API_SECRET_KEY") or ""
 
     @property
     def usable(self):
@@ -850,7 +875,7 @@ def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
 # ---------------------------------------------------------------- order state
 
 def orders_path(run):
-    return Path(run) / "alpaca-orders.json"
+    return Path(run) / f"alpaca-orders{acct_suffix()}.json"
 
 
 def load_orders(run):
@@ -897,7 +922,15 @@ def guard(api, ex, submit, live_ok):
         return "dry run: --submit not given"
     if not ex.get("enabled"):
         return "execution.enabled is false in config/pipeline.yaml"
-    if not api.usable:
+    if getattr(api, "which", "paper") == "live":
+        if not (ex.get("live") or {}).get("enabled"):
+            return "execution.live.enabled is false in config/pipeline.yaml"
+        if not api.usable:
+            return ("no ALPACA_LIVE_API_KEY_ID / ALPACA_LIVE_API_SECRET_KEY in the "
+                    "environment")
+        if api.is_paper:
+            return f"--account live but the endpoint {api.base} is a paper endpoint"
+    elif not api.usable:
         return "no ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY in the environment"
     if not api.is_paper and not live_ok:
         return (f"endpoint {api.base} is not a paper endpoint; pass "
@@ -1485,7 +1518,7 @@ def send(api, body, cid, submit, reason_blocked):
 
 def cmd_plan(a, api, ex):
     plan = build_plan(a.run, api, ex, a.equity, a.book, a.top, a.min_pct)
-    out = Path(a.out) if a.out else Path(a.run) / "alpaca-plan.json"
+    out = Path(a.out) if a.out else plan_path(a.run)
     out.write_text(json.dumps(plan, indent=1) + "\n", encoding="utf-8")
     print_plan(plan)
     print(f"\nwrote {out}")
@@ -1582,6 +1615,8 @@ def print_plan(plan):
 
 def cmd_open(a, api, ex):
     blocked = guard(api, ex, a.submit, a.live_account_i_understand)
+    if not blocked and ACCOUNT == "live" and LIVE_KILL.exists():
+        blocked = f"kill switch: {LIVE_KILL.relative_to(REPO)} exists, no live buys"
 
     # Never stack a new book on an unsold one. With `flatten_before_entry` on, the
     # flatten below makes this impossible; with the per-session exit it is off, and
@@ -1627,8 +1662,7 @@ def cmd_open(a, api, ex):
             print(f"  ! {', '.join(sorted(same))} was sold and is bought back today, "
                   f"which is a day trade. Under $25k of equity FINRA allows three in "
                   f"five business days before the account is restricted.")
-    Path(a.run, "alpaca-plan.json").write_text(json.dumps(plan, indent=1) + "\n",
-                                               encoding="utf-8")
+    plan_path(a.run).write_text(json.dumps(plan, indent=1) + "\n", encoding="utf-8")
     print_plan(plan)
     use_moc = ex["orders"].get("entry", "market") == "market_on_close"
     open_ok, open_note = (entry_window(api, use_moc) if (a.submit and not blocked)
@@ -2043,7 +2077,7 @@ def cmd_assets(a, api, ex):
     scores, baselines = load_run(run)
     # {ticker: (shortable, reason)} as the plan recorded it, for names it examined.
     planned, plan_utc = {}, None
-    ppath = run / "alpaca-plan.json"
+    ppath = plan_path(run)
     if not getattr(a, "live", False) and ppath.exists():
         try:
             pj = json.loads(ppath.read_text(encoding="utf-8"))
@@ -2205,6 +2239,15 @@ def cmd_mode(a, api, ex):
         python3 researcher_us/scripts/alpaca_trade.py mode --require-exit-tif opg || exit 0
     """
     enabled = bool(ex.get("enabled"))
+    if ACCOUNT == "live":
+        # The live account trades only when BOTH switches are on; a guard on it must
+        # fail when either is off, and must say whether the keys reached this session
+        # (never the keys themselves).
+        enabled = enabled and bool((ex.get("live") or {}).get("enabled"))
+        print(f"account                live ({api.base})")
+        print(f"live credentials       {'present' if api.usable else 'MISSING'}")
+        print(f"execution.live.enabled {str(bool((ex.get('live') or {}).get('enabled'))).lower()}")
+        print(f"live kill switch       {'ON (' + str(LIVE_KILL.relative_to(REPO)) + ')' if LIVE_KILL.exists() else 'off'}")
     mode = exit_mode(ex)
     orders = ex["orders"]
     print(f"execution.enabled      {str(enabled).lower()}")
@@ -2290,6 +2333,10 @@ def main():
                        help="actually place orders; without it everything is a dry run")
         p.add_argument("--live-account-i-understand", action="store_true",
                        help="permit a non-paper endpoint")
+        p.add_argument("--account", choices=("paper", "live"), default="paper",
+                       help="which Alpaca account: paper (ALPACA_*) or live "
+                            "(ALPACA_LIVE_*, needs execution.live.enabled and "
+                            "--live-account-i-understand)")
 
     def book(p):
         p.add_argument("--book", choices=("auto", "stage-e", "panel"), default="auto",
@@ -2373,13 +2420,16 @@ def main():
                         "(opg, cls, day) and execution is enabled. Survives a mode "
                         "being renamed; use it in the second exit Routine's guard")
     p.add_argument("--base", help=argparse.SUPPRESS)
+    p.add_argument("--account", choices=("paper", "live"), default="paper")
 
     a = ap.parse_args()
+    global ACCOUNT
+    ACCOUNT = a.account
     if getattr(a, "scan", None) == []:
         a.scan = ["research/*/*/*/edge"]
     cfg = config()
     ex = execution_config(cfg)
-    api = Alpaca(base=a.base)
+    api = Alpaca(base=a.base, account=a.account)
     {"plan": cmd_plan, "open": cmd_open, "close": cmd_close,
      "flatten": cmd_flatten, "status": cmd_status, "mode": cmd_mode,
      "assets": cmd_assets, "verify": cmd_verify}[a.cmd](a, api, ex)

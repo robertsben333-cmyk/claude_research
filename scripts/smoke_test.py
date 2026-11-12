@@ -429,6 +429,52 @@ def main():
           else (cfg["execution"]["benchmark"].get("min_conviction") is not None),
           f"key={_bk} floor={ex['benchmark']['min_conviction']}")
 
+    # -- the live account (added 2026-11-12, operator's instruction): --account live
+    # reads only the ALPACA_LIVE_* keys, keeps its own order and plan files, refuses a
+    # paper endpoint and refuses without its own switch. No network: guard() returns
+    # before api.account() on every case tested here.
+    _env = {k: os.environ.pop(k) for k in list(os.environ)
+            if k.startswith("ALPACA_")}
+    try:
+        os.environ.update({"ALPACA_API_KEY_ID": "paperkey", "ALPACA_API_SECRET_KEY": "p"})
+        _live = at.Alpaca(account="live")
+        check("live account: paper keys are never read for live",
+              not _live.usable and _live.base == at.LIVE and not _live.is_paper)
+        check("live account: refused without its keys",
+              "ALPACA_LIVE_API_KEY_ID" in (at.guard(_live, {"enabled": True,
+                                                             "live": {"enabled": True}},
+                                                    True, True) or ""))
+        os.environ.update({"ALPACA_LIVE_API_KEY_ID": "lk", "ALPACA_LIVE_API_SECRET_KEY": "ls"})
+        _live = at.Alpaca(account="live")
+        check("live account: refused when execution.live.enabled is off",
+              "execution.live.enabled" in (at.guard(_live, {"enabled": True,
+                                                             "live": {"enabled": False}},
+                                                    True, True) or ""))
+        check("live account: refused without --live-account-i-understand",
+              "live-account-i-understand" in (at.guard(_live, {"enabled": True,
+                                                                "live": {"enabled": True}},
+                                                       True, False) or ""))
+        _lp = at.Alpaca(account="live", base=at.PAPER)
+        check("live account: a paper endpoint is refused under --account live",
+              "paper endpoint" in (at.guard(_lp, {"enabled": True,
+                                                   "live": {"enabled": True}},
+                                            True, True) or ""))
+        check("live account: the config switch is an explicit bool",
+              isinstance((ex.get("live") or {}).get("enabled"), bool))
+        _prev = at.ACCOUNT
+        at.ACCOUNT = "live"
+        _lo, _lpl = at.orders_path("x").name, at.plan_path("x").name
+        at.ACCOUNT = "paper"
+        _po, _ppl = at.orders_path("x").name, at.plan_path("x").name
+        at.ACCOUNT = _prev
+        check("live account: its own order and plan files, paper's unchanged",
+              (_lo, _lpl, _po, _ppl) == ("alpaca-orders-live.json", "alpaca-plan-live.json",
+                                         "alpaca-orders.json", "alpaca-plan.json"))
+    finally:
+        for k in [k for k in os.environ if k.startswith("ALPACA_")]:
+            del os.environ[k]
+        os.environ.update(_env)
+
     # -- stage E-P's top-up (added 2026-11-11, operator's instruction): with exactly
     # one strong name the rest of the budget goes to the 70-79 names, at most 25% each;
     # with two strong names the book is unchanged and the candidates are rejected.
@@ -2275,8 +2321,11 @@ def main():
     check("no credentials, no client", missing)
 
     ex = it.eu_config()
-    check("execution_eu is committed switched off, on paper",
-          ex["enabled"] is False and ex["environment"] == "paper")
+    # Asserted "committed switched off, on paper" until the operator turned EU live on
+    # 2026-11-12; the guard checks below now force the values they test instead.
+    check("execution_eu switch is an explicit bool and the environment paper or live",
+          isinstance(ex["enabled"], bool) and ex["environment"] in ("paper", "live"))
+    ex = dict(ex, enabled=False, environment="paper")
     check("execution_eu markets include Norway as the string 'no', not YAML false",
           "no" in ex["selection"]["markets"] and False not in ex["selection"]["markets"])
     def _bl(t, sub, spot, ccy="EUR", dv=5e6):

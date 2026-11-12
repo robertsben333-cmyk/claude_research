@@ -962,6 +962,21 @@ execution:
   # command line. Credentials are read from $ALPACA_API_KEY_ID and
   # $ALPACA_API_SECRET_KEY and are never written into this repo.
   assumed_equity_usd: 100000     # sizing basis for dry runs with no account attached
+  # THE LIVE ACCOUNT (2026-11-12, operator's instruction: "zet nu het account live, en
+  # zet de koop/verkoop van de live account voor die van de paperaccount"). Stage E-P
+  # places the SAME panel book on a live Alpaca account as on the paper account,
+  # live first, through `alpaca_trade.py --account live`: keys ALPACA_LIVE_API_KEY_ID /
+  # ALPACA_LIVE_API_SECRET_KEY (endpoint ALPACA_LIVE_BASE_URL, default
+  # https://api.alpaca.markets), held only in the environments of the E-P and E-PX
+  # Routines, never in "full env". Every rule (selection, weights, 50% cap, top-up,
+  # turnover floor, borrow) is the paper book's, sized on the live account's own
+  # equity, recorded in alpaca-orders-live.json / alpaca-plan-live.json. A live order
+  # needs this switch, `execution.enabled`, --submit and --live-account-i-understand.
+  # config/LIVE_KILL on main stops every live buy; sells still go.
+  # NOT EVIDENCE-BACKED: the panel book's edge is not significant gross (us-panel v3,
+  # >= 80, p 0.11 per day) and a ~0.55% round-trip spread comes off it.
+  live:
+    enabled: true
 
   benchmark:
     # ONE rule, and it is the only cut in researcher_us/EDGE_ANALYSIS.md that survived a
