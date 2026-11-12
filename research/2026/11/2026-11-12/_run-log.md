@@ -48,3 +48,7 @@
 - Logged at 2026-11-12 15:02 UTC
 - 19 ranked, DIA phantom (H1 out 2026-11-10). No name above the 2.8 floor; top MRL +1.40, bottom TRE -1.30. Panel (4 of 4 members, no fallback) selects none under 3-of-4; highest panel_pct MARR and TRE short at 72. Italy 35% of the day.
 - Published to main (EARNINGS_DATA_BRANCH=main): origin/main head d1ae494c9 'stage EU: IBKR handoff for 2026-11-13' confirmed at 15:02 UTC.
+
+## Edge hunt (panel) — 2026-11-12 amc + 2026-11-13 bmo — STARTED
+- Logged at 2026-11-12 18:09 UTC
+- Stage E-P fire; session began 18:08 UTC (13:08 ET). Universe 148 names (124 amc 11-12, 24 bmo 11-13). edge_universe.py ran directly (needed pip install requests). Baselines sealing by code (14 parallel priced_in processes); one edge-sweep in parallel. Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten live then paper, four-judge panel, step 6b buy live then paper.
