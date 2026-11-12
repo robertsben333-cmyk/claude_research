@@ -31,3 +31,7 @@
 ## Stage EU — hunts in progress
 - Logged at 2026-11-12 14:40 UTC
 - 14:40 UTC: running AEIN AFG ASMDEE_B BAVA BC8 COG DIA ELN (8 concurrent). Queued: ERG ETH FAA G IP IRLAB_A LAND MARR MRL NA9 TIP TRE.
+
+## Stage EU — hunts in progress
+- Logged at 2026-11-12 14:48 UTC
+- 14:48 UTC: banked 13: AEIN DIA BAVA ASMDEE_B AFG BC8 COG ELN ERG FAA ETH LAND IRLAB_A. DIA phantom (H1 out 2026-11-10; 13 Nov is an investor presentation). AEIN pre-released Q3 by ad-hoc 12 Nov 13:17 CET. Hunters put COG, ELN, ETH after the 11-13 close (amc); ERG in-session. IRLAB_A fell ~72% on 12 Nov inside-info release (restructuring). Running: G IP MARR MRL NA9 TIP TRE.
