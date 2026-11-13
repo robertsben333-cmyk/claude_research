@@ -650,3 +650,15 @@ instead, with the proxy kept beside them so the two never silently merge.
 - It does not drop a losing day, a microcap or an outlier. Every exclusion in the
   ledger is a duplicate event (one issuer reporting once, hunted twice) and is
   flagged as such in `names.csv`.
+
+## Two US stages, one at a time (2026-11-13)
+
+`ledger.json` carries stage E in `names` (unchanged: the scorebord and the analyses read
+it) and stage E-P in `names_panel`. The page shows one stage, fixed at load
+(`?stage=E-P`, the default, or `?stage=E`; the selector under "Meer filters" reloads).
+On E-P a row's `impact_sum` is the panel's signed percentile (side x `panel_pct`, 0-100),
+`conviction` is `panel_pct`, the floor is 80, the searcher's own sum is
+`searcher_impact_sum`, and `mv_strategy` is the operator's window (in 13:30 ET, amc out
+at the next open, bmo out at 13:00 ET), read from `data/scorebord-frozen.json` first so
+both pages show one number. `stats_by_stage` and `floor_by_stage` hold each stage's
+summary. Handel, Kosten, Capaciteit, Weging, Lessons and V2 exist on stage E only.

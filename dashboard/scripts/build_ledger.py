@@ -318,6 +318,7 @@ def load_names(runs, cache):
                 tape = (json.loads(bf.read_text()).get("tape") or {})
                 r["spot"] = tape.get("spot")
                 r["realised_vol_20d"] = tape.get("realised_vol_20d_annualised_pct")
+            r["stage"] = stage_of(r["run"])
             r["conviction"] = abs(r["impact_sum"])
             r["above_floor"] = None
             for h in EX.HORIZONS:
@@ -326,7 +327,8 @@ def load_names(runs, cache):
                                  else rd(mv if r["impact_sum"] > 0 else -mv, 3))
             attach_strategy_exit(r)
             # Which hunter prompt version and which model made this number.
-            r.update(PROV.for_row(ROOT / r["run"], "US"))
+            r.update(PROV.for_row(ROOT / r["run"],
+                                  "US-P" if r["stage"] == "E-P" else "US"))
             # |impact_sum| against the reference names of the SAME model, for the
             # dashboard's top-X% filter: point-in-time and against the whole reference.
             r["impact_pctile"], r["impact_pctile_all"] = PCT.of(
@@ -339,12 +341,98 @@ def load_names(runs, cache):
     # other, rather than dropping a hard-coded date.
     seen = {}
     for r in sorted(rows, key=lambda r: (r["ticker"], r["event_date"], r["run_date"])):
-        k = (r["ticker"], r["event_date"])
+        k = (r["stage"], r["ticker"], r["event_date"])
         if k in seen:
             seen[k]["duplicate_event"] = True
         r["duplicate_event"] = False
         seen[k] = r
     return rows, problems
+
+
+# ---------------------------------------------------------------- stage E-P
+# Stage E's Routine stopped on 2026-10-14 and stage E-P is the US stage that runs and
+# trades since. Its run directory has stage E's shape (edge-scores.json, baselines,
+# hunts), so the same pricing reads it; what differs is the KEY. The searcher's own
+# sizes rank nothing by design: the panel's signed mean percentile does. So an E-P row
+# carries `impact_sum` = side x panel_pct (0-100), the searcher's sum beside it as
+# `searcher_impact_sum`, and a floor of 80 (`execution.panel`: panel_pct >= 80, all
+# four judges). The two stages are never one sample: the dashboard shows one at a time.
+PANEL_FLOOR = 80.0
+FROZEN_PATH = DATA / "scorebord-frozen.json"
+
+
+def stage_of(run):
+    return "E-P" if str(run).rstrip("/").endswith("edge-panel") else "E"
+
+
+def attach_panel(names):
+    """Turn the E-P rows onto the panel's key and the operator's window.
+
+    Window (operator, 2026-10-13): in at 13:30 ET on the run day, amc out at the next
+    open, bmo out at 13:00 ET on the report day. The scorebord froze those moves in
+    scorebord-frozen.json the first time each exit was behind us, so that file is read
+    first and both pages show one number; a name it does not hold yet is priced the
+    same way from this build's own bars. Rows the panel did not score (unfinished
+    research, not rankable) are dropped, and said so."""
+    try:
+        frozen = json.loads(FROZEN_PATH.read_text())
+    except Exception:
+        frozen = {}
+    panels, out, dropped = {}, [], 0
+    for r in names:
+        if r.get("stage") != "E-P":
+            out.append(r)
+            continue
+        run = r["run"]
+        if run not in panels:
+            try:
+                d = json.loads((ROOT / run / "edge-scores-panel.json").read_text())
+            except Exception:
+                d = {}
+            panels[run] = {x["ticker"]: x for x in d.get("ranking") or []}
+        p = panels[run].get(r["ticker"])
+        if not p or p.get("panel_pct_signed") is None:
+            dropped += 1
+            continue
+        r["searcher_impact_sum"] = r["impact_sum"]
+        r["impact_sum"] = p["panel_pct_signed"]
+        r["conviction"] = p.get("panel_pct")
+        r["panel_pct"] = p.get("panel_pct")
+        r["panel_pct_sd"] = p.get("panel_pct_sd")
+        r["panel_side"] = p.get("side")
+        r["panel_n_members"] = p.get("n_members")
+        r["panel_selected"] = bool(p.get("selected"))
+        r["panel_members_pct"] = {k: v.get("pct_signed")
+                                  for k, v in (p.get("members") or {}).items()}
+        r["rank"] = p.get("rank")
+        # The percentile filter reads these; panel_pct already is one.
+        r["impact_pctile"] = r["impact_pctile_all"] = p.get("panel_pct")
+        # Scored on the searcher's draft, which is not this row's key any more.
+        r["impact_sum_pre_lessons"] = r["lessons_delta"] = None
+        long = r["impact_sum"] > 0
+        for h in EX.HORIZONS:
+            mv = r.get(f"mv_{h}")
+            r[f"ret_{h}"] = None if mv is None else rd(mv if long else -mv, 3)
+        fz = frozen.get(f"{r['run_date']}|{r['ticker']}")
+        entry = exit_px = None
+        if fz and fz.get("move") is not None:
+            mv, entry, exit_px = fz["move"], fz.get("entry"), fz.get("exit")
+        else:
+            mv = None
+            entry = (r.get("enpx") or {}).get("1330")
+            if entry and not r.get("pending"):
+                if r.get("session") == "amc":
+                    exit_px = (r.get("px") or {}).get("open")
+                elif r.get("hr_21") is not None and r.get("entry_close"):
+                    exit_px = r["entry_close"] * (1 + r["hr_21"] / 100)
+                if exit_px:
+                    mv = (exit_px / entry - 1) * 100
+        r["mv_strategy"] = None if mv is None else rd(mv, 3)
+        r["ret_strategy"] = None if mv is None else rd(mv if long else -mv, 3)
+        r["strategy_entry_px"] = entry
+        r.setdefault("px", {})["strategy"] = None if exit_px is None else round(exit_px, 4)
+        out.append(r)
+    return out, dropped
 
 
 # Half-hour marks through the regular US session, as (hour, minute) ET. 14:00 is
@@ -874,7 +962,11 @@ def ranking_stats(rows):
     return out
 
 
-def bucket_stats(rows, floor):
+PANEL_BUCKETS = [(0, 20), (20, 40), (40, 60), (60, 70), (70, 80), (80, 90), (90, 999)]
+
+
+def bucket_stats(rows, floor, ABS_BUCKETS=None):
+    ABS_BUCKETS = ABS_BUCKETS or globals()["ABS_BUCKETS"]
     live = [r for r in rows if not r["duplicate_event"] and r.get("ret_close") is not None]
     out = {"by_abs_impact": [], "by_signed_impact": [], "by_adv": [],
            "by_session": {}, "scatter": []}
@@ -1084,7 +1176,8 @@ def write_csv(path, rows, cols):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--runs", nargs="*", default=["research/*/*/*/edge"])
+    ap.add_argument("--runs", nargs="*",
+                    default=["research/*/*/*/edge", "research/*/*/*/edge-panel"])
     ap.add_argument("--cache", default=str(ROOT / ".cache" / "bars"),
                     help="Yahoo chart cache; delete it to re-price everything")
     ap.add_argument("--offline", action="store_true",
@@ -1120,6 +1213,10 @@ def main():
     # in a frozen summary.
     n_entry = attach_entry_side(names, a.cache)
     n_search = attach_search_volume(names, ROOT / "researcher_us" / "analysis" / "edge-search-volume.json")
+    names, n_drop = attach_panel(names)
+    n_ep = sum(1 for r in names if r["stage"] == "E-P")
+    print(f"stage E-P: {n_ep} names on the panel's key, {n_drop} without a panel "
+          f"score dropped")
     print(f"entry grid: {n_entry} names with a 20:00 CET price   "
           f"search: {n_search} measured")
     if not n_search:
@@ -1180,13 +1277,33 @@ def main():
     # a weighting that looks like it works because half of it never fires.
     sys.path.insert(0, str(ROOT / "dashboard" / "scripts"))
     import weighting as WGT                                   # noqa: E402
-    n_w = WGT.attach(names, floor)
-    WGT.attach_w2(names, floor)
+    # The weighting is a claim about stage E's key and floor; it is not applied to
+    # the panel's percentile scale.
+    e_names = [r for r in names if r["stage"] == "E"]
+    ep_names = [r for r in names if r["stage"] == "E-P"]
+    n_w = WGT.attach(e_names, floor)
+    WGT.attach_w2(e_names, floor)
     fired = sum(1 for r in names if any((r.get("w_tilts") or {}).values()))
     print(f"weighting {WGT.SPEC['version']} (frozen {WGT.SPEC['frozen']}): "
           f"{n_w} scored, {fired} with at least one tilt")
     attach_theoretical(all_eps, names)
     costs = costs_for(runs, names)
+
+    def stats_for(rows, fl, with_trades):
+        return {
+            "ranking": ranking_stats(rows),
+            "buckets": bucket_stats(rows, fl, None if with_trades else PANEL_BUCKETS),
+            "lessons": lessons_stats(rows),
+            "timing": timing_stats(rows, fl),
+            "trading": trading_stats(all_eps if with_trades else [], rows,
+                                     account if with_trades else None),
+            "execution": execution_gap_stats(all_eps if with_trades else [])}
+    stats_e = stats_for(e_names, floor, True)
+    try:
+        stats_ep = stats_for(ep_names, PANEL_FLOOR, False)
+    except Exception as e:                                   # noqa: BLE001
+        stats_ep = None
+        problems.append(f"stage E-P summary failed: {type(e).__name__}: {e}")
 
     doc = {
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -1194,16 +1311,17 @@ def main():
         "conviction_floor": floor,
         "runs": runs,
         "broker_error": broker_err,
-        "names": names,
+        # `names` stays stage E alone: the scorebord and a dozen analyses read it
+        # as that, keyed on run date and ticker. Stage E-P's rows sit beside it.
+        "names": e_names,
+        "names_panel": ep_names,
         "trades": all_eps,
         "account": account,
-        "stats": {
-            "ranking": ranking_stats(names),
-            "buckets": bucket_stats(names, floor),
-            "lessons": lessons_stats(names),
-            "timing": timing_stats(names, floor),
-            "trading": trading_stats(all_eps, names, account),
-            "execution": execution_gap_stats(all_eps)},
+        # `stats` is stage E's, as it always was; the dashboard swaps in the block
+        # of the stage it is showing.
+        "stats": stats_e,
+        "stats_by_stage": {"E": stats_e, "E-P": stats_ep},
+        "floor_by_stage": {"E": floor, "E-P": PANEL_FLOOR},
         "costs": costs,
         "hour_grid": EX.HOUR_GRID,
         "horizons": EX.HORIZONS,
@@ -1217,12 +1335,25 @@ def main():
         "calendar": calendar_block(),
         # Every version the US hunter has had, for the Versies tab.
         "versions": (PROV.load_registry().get("stages") or {}).get("US", []),
+        "versions_by_stage": {"E": (PROV.load_registry().get("stages") or {}).get("US", []),
+                              "E-P": (PROV.load_registry().get("stages") or {}).get("US-P", [])},
         "problems": problems}
 
     Path(a.out).write_text(json.dumps(doc, indent=1, default=str) + "\n", encoding="utf-8")
-    write_csv(DATA / "names.csv", names,
-              ["run_date", "ticker", "session", "event_date", "entry_date",
-               "reaction_date", "rank", "impact_sum", "conviction",
+    write_csv(DATA / "names.csv", e_names,
+              ["stage", "run_date", "ticker", "session", "event_date", "entry_date",
+               "reaction_date", "rank", "impact_sum", "conviction", "panel_pct",
+               "searcher_impact_sum", "mv_strategy", "ret_strategy",
+               "impact_sum_pre_lessons", "lessons_delta", "n_findings", "neg_runup",
+               "dollar_vol", "plan_dollar_volume_usd", "sector", "industry",
+               "shortable", "easy_to_borrow", "tradable_flag", "market_cap_usd",
+               "churn_pct", "retail_tilt", "pending", "duplicate_event", "traded",
+               "entry_close", "mv_open", "mv_close", "ret_open", "ret_close",
+               "trade_ret_pct", "trade_pnl_usd"])
+    write_csv(DATA / "names_panel.csv", ep_names,
+              ["stage", "run_date", "ticker", "session", "event_date", "entry_date",
+               "reaction_date", "rank", "impact_sum", "conviction", "panel_pct",
+               "searcher_impact_sum", "mv_strategy", "ret_strategy",
                "impact_sum_pre_lessons", "lessons_delta", "n_findings", "neg_runup",
                "dollar_vol", "plan_dollar_volume_usd", "sector", "industry",
                "shortable", "easy_to_borrow", "tradable_flag", "market_cap_usd",
