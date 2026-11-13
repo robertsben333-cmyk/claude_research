@@ -67,3 +67,7 @@
 ## Holistic research — wave 1
 - Logged at 2026-11-13 19:18 UTC
 - 19:21 UTC: 8 holistic-researcher launched (VERI POET VENU LNZA, both arms; agent definition found)
+
+## Holistic research — learning step
+- Logged at 2026-11-13 19:38 UTC
+- 24/24 hunts ok, 1 recommendation (NIU short 65), published 19:37 UTC. Resolve: 16 new name-arms, 24 pending. Gate closed: 12/30 names, 1/3 days on hp.v2; drift alarm off (20 pairs, Brier diff -0.013, t -1.79). Reflector not launched. Tomorrow's playbook: hp.v2.

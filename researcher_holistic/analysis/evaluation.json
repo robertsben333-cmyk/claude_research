@@ -1,7 +1,7 @@
 {
- "generated_utc": "2026-11-12T19:30:04+00:00",
+ "generated_utc": "2026-11-13T19:38:11+00:00",
  "window": "entry run-day close; amc exit next open; bmo exit 13:00 ET report day",
- "resolved_rows": 63,
+ "resolved_rows": 79,
  "by_version": {
   "hp.v1": {
    "names": 47,
@@ -51,17 +51,59 @@
      "hit_p": 1.0
     }
    }
+  },
+  "hp.v2": {
+   "names": 12,
+   "run_days": 1,
+   "brier": 0.2302,
+   "brier_skill_vs_coin": 0.079,
+   "direction": {
+    "n": 11,
+    "hits": 8,
+    "p": 0.2265625
+   },
+   "recommended": {
+    "n": 0,
+    "hits": 0,
+    "hit_p": null
+   },
+   "fixed_cut_65": {
+    "n": 0,
+    "hits": 0
+   },
+   "leaning": {
+    ">=5": {
+     "n": 5,
+     "mean": 11.11,
+     "sd": 11.46,
+     "t": 2.17,
+     "p": 0.096,
+     "hits": 4,
+     "hit_p": 0.375
+    },
+    ">=7": {
+     "n": 1,
+     "mean": 13.964,
+     "hits": 1,
+     "hit_p": 1.0
+    },
+    ">=10": {
+     "n": 0,
+     "hits": 0,
+     "hit_p": null
+    }
+   }
   }
  },
  "control": {
-  "names": 16,
-  "run_days": 4,
-  "brier": 0.2509,
-  "brier_skill_vs_coin": -0.004,
+  "names": 20,
+  "run_days": 5,
+  "brier": 0.2462,
+  "brier_skill_vs_coin": 0.015,
   "direction": {
-   "n": 13,
-   "hits": 5,
-   "p": 0.5810546875
+   "n": 17,
+   "hits": 8,
+   "p": 1.0
   },
   "recommended": {
    "n": 0,
@@ -74,13 +116,13 @@
   },
   "leaning": {
    ">=5": {
-    "n": 6,
-    "mean": 8.978,
-    "sd": 23.481,
-    "t": 0.94,
-    "p": 0.392,
-    "hits": 4,
-    "hit_p": 0.688
+    "n": 9,
+    "mean": 9.415,
+    "sd": 19.98,
+    "t": 1.41,
+    "p": 0.195,
+    "hits": 6,
+    "hit_p": 0.508
    },
    ">=7": {
     "n": 2,
@@ -106,24 +148,43 @@
    "t": -1.53,
    "p": 0.148,
    "meaning": "evolving Brier minus control Brier on the same names; below 0 means the evolving playbook was better"
+  },
+  "hp.v2": {
+   "n": 4,
+   "mean": -0.016,
+   "sd": 0.038,
+   "t": -0.83,
+   "p": 0.468,
+   "meaning": "evolving Brier minus control Brier on the same names; below 0 means the evolving playbook was better"
   }
  },
  "paired_vs_control_lineage": {
-  "n": 16,
-  "mean": -0.012,
+  "n": 20,
+  "mean": -0.013,
   "sd": 0.031,
-  "t": -1.53,
-  "p": 0.148,
+  "t": -1.79,
+  "p": 0.089,
   "meaning": "evolving Brier minus control Brier on the same names; below 0 means the evolving playbook was better"
  },
+ "paired_vs_control_by_design": {
+  "random_share_0.34": {
+   "n": 20,
+   "mean": -0.013,
+   "sd": 0.031,
+   "t": -1.79,
+   "p": 0.089,
+   "meaning": "evolving Brier minus control Brier on the same names; below 0 means the evolving playbook was better"
+  }
+ },
+ "design_note": "random_share_0.34: before 2026-11-13 the control ran on a date-seeded random third of the names; all_names: from 2026-11-13 it runs on every name. Both are paired on the same names; read them apart before pooling.",
  "lineage_note": "The lineage row pools every evolving version on purpose: it tests the PROCESS (does self-revision beat a frozen approach on the same names), not any one version. Judge a version only on its own row.",
  "stage_ep_same_names": {
-  "n": 7,
-  "mean": 4.832,
-  "sd": 13.01,
-  "t": 0.98,
-  "p": 0.364,
-  "hits": 5,
+  "n": 10,
+  "mean": 6.919,
+  "sd": 12.74,
+  "t": 1.72,
+  "p": 0.12,
+  "hits": 8,
   "note": "stage E-P's selected calls (panel_pct >= 80) on the names stage H also researched, priced on stage H's window"
  },
  "rolling_last_5_days": {
@@ -131,17 +192,18 @@
    "2026-11-06",
    "2026-11-09",
    "2026-11-10",
-   "2026-11-11"
+   "2026-11-11",
+   "2026-11-12"
   ],
   "evolving": {
-   "names": 47,
-   "run_days": 4,
-   "brier": 0.2502,
-   "brier_skill_vs_coin": -0.001,
+   "names": 59,
+   "run_days": 5,
+   "brier": 0.2462,
+   "brier_skill_vs_coin": 0.015,
    "direction": {
-    "n": 43,
-    "hits": 21,
-    "p": 1.0
+    "n": 54,
+    "hits": 29,
+    "p": 0.6834892282353375
    },
    "recommended": {
     "n": 0,
@@ -154,22 +216,22 @@
    },
    "leaning": {
     ">=5": {
-     "n": 24,
-     "mean": 2.372,
-     "sd": 16.028,
-     "t": 0.72,
-     "p": 0.476,
-     "hits": 13,
-     "hit_p": 0.839
+     "n": 29,
+     "mean": 3.878,
+     "sd": 15.527,
+     "t": 1.35,
+     "p": 0.189,
+     "hits": 17,
+     "hit_p": 0.458
     },
     ">=7": {
-     "n": 9,
-     "mean": 6.688,
-     "sd": 10.469,
-     "t": 1.92,
-     "p": 0.092,
-     "hits": 7,
-     "hit_p": 0.18
+     "n": 10,
+     "mean": 7.415,
+     "sd": 10.135,
+     "t": 2.31,
+     "p": 0.046,
+     "hits": 8,
+     "hit_p": 0.109
     },
     ">=10": {
      "n": 3,
@@ -183,14 +245,14 @@
    }
   },
   "control": {
-   "names": 16,
-   "run_days": 4,
-   "brier": 0.2509,
-   "brier_skill_vs_coin": -0.004,
+   "names": 20,
+   "run_days": 5,
+   "brier": 0.2462,
+   "brier_skill_vs_coin": 0.015,
    "direction": {
-    "n": 13,
-    "hits": 5,
-    "p": 0.5810546875
+    "n": 17,
+    "hits": 8,
+    "p": 1.0
    },
    "recommended": {
     "n": 0,
@@ -203,13 +265,13 @@
    },
    "leaning": {
     ">=5": {
-     "n": 6,
-     "mean": 8.978,
-     "sd": 23.481,
-     "t": 0.94,
-     "p": 0.392,
-     "hits": 4,
-     "hit_p": 0.688
+     "n": 9,
+     "mean": 9.415,
+     "sd": 19.98,
+     "t": 1.41,
+     "p": 0.195,
+     "hits": 6,
+     "hit_p": 0.508
     },
     ">=7": {
      "n": 2,
@@ -230,18 +292,18 @@
  },
  "gate": {
   "current_version": "hp.v2",
-  "resolved_names_on_current": 0,
-  "run_days_on_current": 0,
+  "resolved_names_on_current": 12,
+  "run_days_on_current": 1,
   "min_resolved_names": 30,
   "min_run_days": 3,
   "open": false,
   "drift_alarm": false,
   "drift": {
-   "n": 16,
-   "mean": -0.012,
+   "n": 20,
+   "mean": -0.013,
    "sd": 0.031,
-   "t": -1.53,
-   "p": 0.148,
+   "t": -1.79,
+   "p": 0.089,
    "meaning": "evolving Brier minus control Brier on the same names; below 0 means the evolving playbook was better"
   },
   "rule": "revise only with >= 30 resolved names over >= 3 run days on the current version; at most 3 ops, each citing >= 3 resolved names; on a drift alarm only revert_to"
