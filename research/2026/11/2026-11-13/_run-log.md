@@ -17,3 +17,8 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-11-13 15:33 UTC
 - Fired 15:31 UTC (16:31 Amsterdam, about an hour before the European close; scheduled 14:35, fired ~56 min late). Sealing for event date 2026-11-16 (Mon), RUN research/2026/11/2026-11-16/europe. Plan: universe (cap 20), seal, provenance, one hunter per name, edge_score, four-model panel, note, IBKR handoff. Local main was a stale shallow checkout diverged from a force-updated origin; resetting it was refused in auto mode, so the run works on local branch eu-run-2026-11-13 at origin/main e4162afea and publishes HEAD:main.
+
+## Stage EU — universe and seal
+- Logged at 2026-11-13 15:36 UTC
+- Event date 2026-11-16 (Mon). 19 scheduled, 9 eligible above $100k, all 9 hunted (at or under cap 20): uk 6, pl 2, es 1. Largest market uk at 67%. 9 baselines sealed ~15:40 UTC (intraday spots, not closes). session_unresolved: CBF LGEN MEGP SLR SRE. BYG sealed amc. Provenance stamped. IBKR mode: execution_eu.environment live; no IBKR env in this session (expected), handoff file only.
+- Wave 1 (5): APN BYG LGEN MEGP N91. Wave 2 (4): SRE CBF GPW SLR.
