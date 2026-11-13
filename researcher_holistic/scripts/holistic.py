@@ -204,7 +204,8 @@ def cmd_pick(run, source=None, force=False, max_names=None):
     rows = rows[:cap]
     rd = run_date_of(run)
     rng = random.Random(f"stage-H-control-{rd}")
-    k = int(round(c["control_share"] * len(rows)))
+    share = float(c["control_share"])
+    k = len(rows) if share >= 1 else int(round(share * len(rows)))
     ctl = set(rng.sample(sorted(r["ticker"] for r in rows), k)) if rows else set()
     out.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(P["current"], out / "playbook-a.md")
@@ -219,7 +220,8 @@ def cmd_pick(run, source=None, force=False, max_names=None):
           "source": str(src.relative_to(P["root"])),
           "playbook_version": version_of(P["current"]),
           "control_version": "control:" + version_of(P["control"]),
-          "control_seed": f"stage-H-control-{rd}", "arm_files": {"evolving": "playbook-a.md, hunts/, work/a/",
+          "control_seed": f"stage-H-control-{rd}", "control_share": share,
+          "control_design": control_design(share), "arm_files": {"evolving": "playbook-a.md, hunts/, work/a/",
                                                                   "control": "playbook-b.md, hunts-b/, work/b/"}, "cap": cap, "shed": shed,
           "research_deadline_utc": et_deadline_utc(rd, c["research_deadline_et"]).isoformat(),
           "names": rows}
@@ -229,6 +231,16 @@ def cmd_pick(run, source=None, force=False, max_names=None):
     for r in rows:
         print(f"  {r['ticker']:6} {r['session']} {r['event_date']}  prio {r['hunt_priority']}  {'+'.join(r['arms'])}")
     return pk
+
+
+# Until 2026-11-13 the control ran on a date-seeded random 34% of the names; from then on
+# (operator's instruction, to reach a usable paired sample sooner) it runs on every name.
+# Runs before the change carry no control_design field and are this legacy value.
+LEGACY_CONTROL_DESIGN = "random_share_0.34"
+
+
+def control_design(share):
+    return "all_names" if share >= 1 else f"random_share_{share:g}"
 
 
 def hunt_path(run, ticker, arm):
@@ -310,6 +322,7 @@ def cmd_collect(run):
             row = {"ticker": r["ticker"], "arm": arm, "session": r["session"],
                    "event_date": r["event_date"], "status": st, "problems": probs,
                    "playbook_version": pk["playbook_version"] if arm == "evolving" else pk["control_version"],
+                   "control_design": pk.get("control_design", LEGACY_CONTROL_DESIGN),
                    "hunt": str(hp.relative_to(P["root"]))}
             if st == "ok":
                 row.update(p_up=float(h["p_up"]), expected_move_pct=h.get("expected_move_pct"),
@@ -322,6 +335,7 @@ def cmd_collect(run):
                   key=lambda x: -x["confidence_pct"])
     doc = {"run_date": pk["run_date"], "generated_utc": now_utc().isoformat(timespec="seconds"),
            "playbook_version": pk["playbook_version"], "control_version": pk["control_version"],
+           "control_design": pk.get("control_design", LEGACY_CONTROL_DESIGN),
            "window": "entry run-day close; amc out at next open, bmo out 13:00 ET report day",
            "recommended": [{k: x.get(k) for k in ("ticker", "session", "event_date", "action",
                                                    "confidence_pct", "p_up", "expected_move_pct",
@@ -331,8 +345,10 @@ def cmd_collect(run):
     lines = [f"# Stage H, {pk['run_date']}: holistic researcher, playbook {pk['playbook_version']}", "",
              "Stage H is an experiment: one Opus 5.5 researcher per name searches and judges in one "
              "loop and follows a playbook the stage revises from its own resolved days. A frozen copy "
-             "of the first playbook runs on a random third of the names as the control. No orders. "
-             "One day is an anecdote.", "",
+             + ("of the first playbook researches every name as the control. No orders. "
+                if pk.get("control_design") == "all_names" else
+                "of the first playbook runs on a random third of the names as the control. No orders. ")
+             + "One day is an anecdote.", "",
              "Window: entry at today's close; amc out at the next open, bmo out at 13:00 ET on the report day.", "",
              "## Recommendations (evolving playbook)", ""]
     if recs:
@@ -484,7 +500,9 @@ def cmd_resolve(offline=False, prices=None, today=None):
             mv = (ex / entry - 1) * 100
             sgn = 1 if x["action"] == "long" else -1 if x["action"] == "short" else 0
             oc["rows"][key] = {"run_date": rd, "ticker": x["ticker"], "arm": x["arm"],
-                               "playbook_version": x["playbook_version"], "session": x["session"],
+                               "playbook_version": x["playbook_version"],
+                               "control_design": x.get("control_design") or rec.get("control_design")
+                               or LEGACY_CONTROL_DESIGN, "session": x["session"],
                                "event_date": x["event_date"], "p_up": x["p_up"], "action": x["action"],
                                "confidence_pct": x["confidence_pct"],
                                "expected_move_pct": x.get("expected_move_pct"),
@@ -626,6 +644,9 @@ def cmd_evaluate(write=True, quiet=False):
 
     paired_by_version = {v: paired([p for p in pairs if p[0]["playbook_version"] == v]) for v in versions}
     lineage = paired(pairs)
+    designs = sorted({p[0].get("control_design") or LEGACY_CONTROL_DESIGN for p in pairs})
+    paired_by_design = {dz: paired([p for p in pairs if (p[0].get("control_design") or LEGACY_CONTROL_DESIGN) == dz])
+                        for dz in designs}
     epsel = [r for r in evo if (r.get("ep") or {}).get("selected")]
     ep_rets = [(1 if r["ep"]["panel_pct_signed"] > 0 else -1) * r["move_pct"] for r in epsel]
     ep_block = dict(mean_t(ep_rets), hits=sum(1 for v in ep_rets if v > 0),
@@ -652,6 +673,10 @@ def cmd_evaluate(write=True, quiet=False):
     ev = {"generated_utc": now_utc().isoformat(timespec="seconds"), "window": oc.get("window"),
           "resolved_rows": len(rows), "by_version": by_version, "control": score(ctl, cut),
           "paired_vs_control_by_version": paired_by_version, "paired_vs_control_lineage": lineage,
+          "paired_vs_control_by_design": paired_by_design,
+          "design_note": ("random_share_0.34: before 2026-11-13 the control ran on a date-seeded random third "
+                          "of the names; all_names: from 2026-11-13 it runs on every name. Both are paired on "
+                          "the same names; read them apart before pooling."),
           "lineage_note": ("The lineage row pools every evolving version on purpose: it tests the PROCESS "
                            "(does self-revision beat a frozen approach on the same names), not any one version. "
                            "Judge a version only on its own row."),
@@ -693,7 +718,10 @@ def eval_md(ev):
     lg = ev["paired_vs_control_lineage"]
     ep = ev["stage_ep_same_names"]
     g = ev["gate"]
-    L += ["", f"- **control (frozen hp.v1)**: {_fmt(ev['control'])}", "",
+    L += ["", f"- **control (frozen hp.v1)**: {_fmt(ev['control'])}", ""]
+    for dz, d in (ev.get("paired_vs_control_by_design") or {}).items():
+        L.append(f"- pairs with control design **{dz}**: {d.get('n', 0)}, Brier diff {d.get('mean')} (t {d.get('t')})")
+    L += ["",
           "## The process: every evolving version against the frozen control, same names", "",
           f"{lg.get('n', 0)} pairs, mean Brier difference {lg.get('mean')} (t {lg.get('t')}, p {lg.get('p')}). "
           + ev["lineage_note"], "",
@@ -907,7 +935,9 @@ def selftest():
             cmd_collect(run)
         res.append(("pick takes the sweep's confirmed names by priority and assigns a seeded control",
                     len(pk["names"]) == 8 and pk["names"][0]["ticker"] == "AAA"
-                    and sum("control" in r["arms"] for r in pk["names"]) == round(0.34 * 8), ""))
+                    and sum("control" in r["arms"] for r in pk["names"]) == (8 if cfg()["control_share"] >= 1
+                                                                            else round(cfg()["control_share"] * 8))
+                    and pk["control_design"] == control_design(float(cfg()["control_share"])), ""))
         pk2 = cmd_pick(run, max_names=8, force=True)
         res.append(("the control draw is reproducible from the date",
                     [r["arms"] for r in pk2["names"]] == [r["arms"] for r in pk["names"]], ""))
