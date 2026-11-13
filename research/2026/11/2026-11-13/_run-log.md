@@ -26,3 +26,12 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-13 15:46 UTC
 - 9 of 9 hunted; 8 ranked, SLR not ranked (hunter: no CNMV date notice, 9M likely at the 19 Nov CMD). No name above the 2.8 floor; top N91 +0.60, bottom APN -1.30. Hunters put CBF (17:16/17:57 history) and BYG (issuer RNS 'at the close') after the 16 Nov close (amc). 8 packs, four judges.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-13 15:50 UTC
+- Handoff written (no broker call): 1 name at panel_pct >= 70 with four judges — SELL MEGP (81.4, uk). Offline plan sized on a 10,000 EUR placeholder equity at the sealed spot; the executor sizes on the real account. Written ~15:50 UTC, later than usual because the Routine fired ~56 min late.
+
+## Stage EU — ranking
+- Logged at 2026-11-13 15:50 UTC
+- 8 ranked, SLR not ranked (no CNMV date notice; 9M likely at the 19 Nov CMD). No name above the 2.8 floor; top N91 +0.60, bottom APN -1.30. Panel (4 of 4 members, no fallback) selects MEGP short (3 of 4, panel_pct 81). UK 67% of the day. CBF and BYG amc per hunters/issuer.
+- Published to main via EARNINGS_DATA_BRANCH=main from local branch eu-run-2026-11-13 (local main stale and diverged; reset refused in auto mode).
