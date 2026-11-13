@@ -1,6 +1,6 @@
 ---
 name: earnings-holistic-research
-description: Stage H. The self-revising holistic US earnings researcher. After stage E-P has run, one holistic-researcher per name (up to 12, from E-P's sweep) searches and judges in one loop under a versioned playbook and returns one view, with a long or short recommendation only where it is confident the market has not priced the reaction. A frozen copy of the first playbook runs on a random third of the names as the control. After the research it resolves past days, evaluates every playbook version, and lets holistic-reflector revise the playbook under fixed gates. Writes to edge-holistic/ and places no orders. Use when asked to run stage H, the holistic researcher, or the self-evolving researcher.
+description: Stage H. The self-revising holistic US earnings researcher. After stage E-P has run, one holistic-researcher per name (up to 12, from E-P's sweep) searches and judges in one loop under a versioned playbook and returns one view, with a long or short recommendation only where it is confident the market has not priced the reaction. A frozen copy of the first playbook runs on every name as the control. After the research it resolves past days, evaluates every playbook version, and lets holistic-reflector revise the playbook under fixed gates. Writes to edge-holistic/ and places no orders. Use when asked to run stage H, the holistic researcher, or the self-evolving researcher.
 ---
 
 # Stage H: the self-revising holistic researcher
@@ -20,8 +20,9 @@ the playbook moves: **the evaluation** (window, metrics, in `holistic.py`), **th
 (minimum evidence before any change, at most three small edits, no tickers in the
 playbook, `config/pipeline.yaml` `edge_holistic.gates`), and **a frozen control**
 (`playbook/control.md` = hp.v1, sha256 pinned in config, checked by the smoke test) that
-researches a random third of the names beside the evolving playbook, so every version
-has a paired comparison on the same names. See `researcher_holistic/README.md`.
+researches every name beside the evolving playbook (since 2026-11-13; a random third
+before, recorded per run as `control_design`), so every version has a paired comparison
+on the same names. See `researcher_holistic/README.md`.
 
 Read `CLAUDE.md` first. This skill borrows stage E's universe and sweep conventions but is
 not an overlay: follow the steps below.
@@ -69,7 +70,8 @@ python3 researcher_holistic/scripts/holistic.py pick --run <RUN>
 
 It takes the sweep-confirmed names by `hunt_priority` (cap `edge_holistic.max_names`,
 12), freezes the current playbook as `playbook-a.md` and the control as `playbook-b.md`
-into the run, draws the control names with a date seed, and writes `pick.json`. It
+into the run, puts every name on the control too (`control_share: 1.0` since 2026-11-13;
+a date-seeded share below 1), records `control_design`, and writes `pick.json`. It
 refuses if the control playbook's hash has moved. Never re-draw or swap a name.
 
 If it exits 3 (no E-P sweep on main), stage E-P did not publish one today. Then run stage
