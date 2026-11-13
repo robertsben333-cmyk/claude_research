@@ -22,3 +22,7 @@
 - Logged at 2026-11-13 15:36 UTC
 - Event date 2026-11-16 (Mon). 19 scheduled, 9 eligible above $100k, all 9 hunted (at or under cap 20): uk 6, pl 2, es 1. Largest market uk at 67%. 9 baselines sealed ~15:40 UTC (intraday spots, not closes). session_unresolved: CBF LGEN MEGP SLR SRE. BYG sealed amc. Provenance stamped. IBKR mode: execution_eu.environment live; no IBKR env in this session (expected), handoff file only.
 - Wave 1 (5): APN BYG LGEN MEGP N91. Wave 2 (4): SRE CBF GPW SLR.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-13 15:46 UTC
+- 9 of 9 hunted; 8 ranked, SLR not ranked (hunter: no CNMV date notice, 9M likely at the 19 Nov CMD). No name above the 2.8 floor; top N91 +0.60, bottom APN -1.30. Hunters put CBF (17:16/17:57 history) and BYG (issuer RNS 'at the close') after the 16 Nov close (amc). 8 packs, four judges.
