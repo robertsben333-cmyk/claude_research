@@ -399,9 +399,15 @@ def resolve_contract(api, b, ex):
     raise LookupError(f"no {want_ccy} contract on {exchanges} (tried {', '.join(tried) or 'nothing'})")
 
 
-def tick_increment(api, conid, is_buy):
+def tick_increment(api, conid, is_buy, price=None):
+    """The increment the exchange accepts at `price` (in the units the order is sent in).
+    Over TWS that is the contract's market-rule band for that price, not the contract-wide
+    minTick, which let a 101.376p MEGP limit through to an LSE refusal on 2026-11-13."""
     if hasattr(api, "min_tick"):
-        return api.min_tick(conid)
+        try:
+            return api.min_tick(conid, price)
+        except TypeError:                       # an adapter without the price argument
+            return api.min_tick(conid)
     try:
         r = api.get(f"/iserver/contract/{conid}/info-and-rules", {"isBuy": "true" if is_buy else "false"}) or {}
         inc = (r.get("rules") or {}).get("increment")
@@ -464,6 +470,8 @@ def live_price(api, conid, spot_local_px, ex, yahoo_symbol=None):
 # ------------------------------------------------------------------ orders
 
 def build_order(acct, conid, side, qty, ref_px_local, unit, collar_pct, ex, inc, coid):
+    """`inc` is the tick, or a callable taking the limit (in the units sent) and returning
+    the tick that applies at that price, because exchanges' ladders are banded by price."""
     otype = ex["orders"].get("type", "limit")
     o = {"acctId": acct, "conid": int(conid), "side": side, "quantity": int(qty),
          "tif": "DAY", "cOID": coid}
@@ -471,9 +479,40 @@ def build_order(acct, conid, side, qty, ref_px_local, unit, collar_pct, ex, inc,
         o["orderType"] = "MKT"
     else:
         lim = ref_px_local * (1 + collar_pct / 100.0) if side == "BUY" else ref_px_local * (1 - collar_pct / 100.0)
+        lim = lim / unit
+        tick = inc(lim) if callable(inc) else inc
         o["orderType"] = "LMT"
-        o["price"] = round_to(lim / unit, inc, up=(side == "BUY"))
+        o["price"] = round_to(lim, tick, up=(side == "BUY"))
     return o
+
+
+def coarse_increment(px):
+    """A grid every European price ladder divides: 1% of the price's order of magnitude
+    (101p -> 1p, 25.0 -> 0.1). The retry after a tick refusal goes out on it."""
+    return 10 ** (math.floor(math.log10(px)) - 2) if px and px > 0 else 0.01
+
+
+def is_tick_refusal(err):
+    m = str(err)
+    return "minimum price variation" in m or "Error 110" in m
+
+
+def place_order(api, acct, order):
+    """Place, and if the exchange refuses the limit's tick, re-round it outward (down for a
+    sell, up for a buy) onto `coarse_increment` and send it ONCE more. Returns the broker's
+    result plus `retried_tick` with the first price when the retry was needed."""
+    try:
+        return api.place(acct, order)
+    except Exception as e:
+        if order.get("orderType") != "LMT" or not is_tick_refusal(e):
+            raise
+        first = order["price"]
+        order["price"] = round_to(first, coarse_increment(first), up=(order["side"] == "BUY"))
+        if order["price"] == first:
+            raise
+        order["cOID"] = (order.get("cOID", "") + "-t")[:40]
+        res = api.place(acct, order)
+        return {**res, "retried_tick": {"first_price": first, "error": str(e)}}
 
 
 def wait_fills(api, order_ids, seconds):
@@ -613,13 +652,14 @@ def cmd_flatten(a, ex):
         if not px and ex["orders"].get("type", "limit") != "market":
             skipped.append({"ticker": name, "reason": "no price for a limit exit"})
             continue
-        inc = tick_increment(api, conid, side == "BUY")
+        inc = (lambda lim, _c=conid, _b=(side == "BUY"): tick_increment(api, _c, _b, lim))
         order = build_order(acct, conid, side, abs(qty), float(px or 0), 1.0, collar, ex, inc,
                             cid(a.run, name.split()[0], "exit"))
         try:
-            res = api.place(acct, order)
+            res = place_order(api, acct, order)
             sent.append({"ticker": name, "conid": conid, "side": side, "qty": abs(qty),
-                         "limit": order.get("price"), **{k: res[k] for k in ("order_id", "status", "prompts")}})
+                         "limit": order.get("price"), **{k: res[k] for k in ("order_id", "status", "prompts")},
+                         **({"retried_tick": res["retried_tick"]} if res.get("retried_tick") else {})})
             print(f"  sent {side} {abs(qty)} {name} @ {order.get('price', 'MKT')} -> {res['order_id']}")
         except Exception as e:
             skipped.append({"ticker": name, "reason": str(e)})
@@ -691,15 +731,16 @@ def cmd_open(a, ex):
         if total + r["notional_base"] > float(ex["limits"]["max_gross_base"]) + 1e-6:
             failed.append({**r, "reason": "hard limit: max_gross_base (final check)"})
             continue
-        inc = tick_increment(api, r["conid"], r["side"] == "BUY")
+        inc = (lambda lim, _c=r["conid"], _b=(r["side"] == "BUY"): tick_increment(api, _c, _b, lim))
         order = build_order(acct, r["conid"], r["side"], r["qty"], r["ref_price_local"], r["unit"],
                             collar, ex, inc, cid(a.run, r["ticker"], "entry"))
         try:
-            res = api.place(acct, order)
+            res = place_order(api, acct, order)
             total += r["notional_base"]
             sent.append({"ticker": r["ticker"], "conid": r["conid"], "side": r["side"], "qty": r["qty"],
                          "limit": order.get("price"), "notional_base": r["notional_base"],
-                         "panel_pct": r["panel_pct"], **{k: res[k] for k in ("order_id", "status", "prompts")}})
+                         "panel_pct": r["panel_pct"], **{k: res[k] for k in ("order_id", "status", "prompts")},
+                         **({"retried_tick": res["retried_tick"]} if res.get("retried_tick") else {})})
             print(f"  sent {r['side']} {r['qty']} {r['ticker']} @ {order.get('price', 'MKT')} -> {res['order_id']}")
         except Exception as e:
             failed.append({**r, "reason": str(e)})

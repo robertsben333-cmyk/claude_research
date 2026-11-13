@@ -98,6 +98,20 @@ re-run of `install.sh` with the live username and `U...` account).
 - The bid-ask spread in these names, roughly 0.5% a round trip, is larger than all of
   the above and the same at every broker.
 
+## The limit price must sit on the exchange's tick ladder (fixed 2026-11-13)
+
+The first live order, a MEGP short on 2026-11-13 for the 2026-11-16 print, never reached
+the book: the LSE refused a sell limit at **101.376p** with Error 110 ("the price does not
+conform to the minimum price variation"), and `open` reported `0 sent, 1 failed`. The limit
+was the collared mid rounded to `contractDetails.minTick`, a contract-wide number far finer
+than the LSE's price-banded ladder. Since the fix the TWS adapter reads the contract's
+market rule (`marketRuleIds` -> `reqMarketRule`, the (lowEdge, increment) bands of the
+primary listing, or the coarsest band any listed venue imposes if the primary cannot be
+picked out) at the limit price itself, and rounds outward (down for a sell, up for a buy).
+If an exchange still refuses the tick, `place_order` re-rounds once onto a coarse grid (1%
+of the price's order of magnitude: 101p -> 1p) and records `retried_tick` on the leg. Any
+other refusal is not retried. `smoke_test.py` replays the MEGP case.
+
 ## What is not verified yet
 
 - The whole server path against a real gateway: `ibkr_tws.py` is tested only against a

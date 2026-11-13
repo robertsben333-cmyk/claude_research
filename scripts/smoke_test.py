@@ -2490,6 +2490,51 @@ def main():
     c_ = it.resolve_contract(api, {"ticker": "SAP", "submarket": "de", "tv_symbol": "XETR:SAP"}, ex)
     check("TWS: an Xetra name resolves through its primary exchange", c_["conid"] == 101 and c_["currency"] == "EUR")
     check("TWS: the tick comes from the contract's minTick", it.tick_increment(api, 101, True) == 0.01)
+    # 2026-11-13: MEGP sell at 101.376p refused by the LSE (Error 110). The ladder is the
+    # contract's market rule per price band, not minTick.
+    _ib.details[201] = NS(contract=_C(conId=201, symbol="MEGP", primaryExchange="LSE", exchange="SMART", currency="GBP"),
+                          longName="ME Group International", minTick=0.001,
+                          marketRuleIds="7,77", validExchanges="SMART,LSE")
+    _ib.rules = {7: [NS(lowEdge=0.0, increment=0.001)],
+                 77: [NS(lowEdge=0.0, increment=0.01), NS(lowEdge=10.0, increment=0.05),
+                      NS(lowEdge=50.0, increment=0.2), NS(lowEdge=500.0, increment=0.5)]}
+    _ib.reqMarketRule = lambda rid: _ib.rules.get(rid, [])
+    _rcd = _ib.reqContractDetails
+    _ib.reqContractDetails = lambda c: ([_ib.details[c.conId]] if getattr(c, "conId", 0) in _ib.details and c.conId != 101 else _rcd(c))
+    check("TWS: the tick is the primary exchange's market-rule band at the limit price",
+          it.tick_increment(api, 201, False, 101.376) == 0.2 and it.tick_increment(api, 201, False, 20.0) == 0.05
+          and it.tick_increment(api, 201, False, None) == 0.001)
+    _inc = (lambda lim: it.tick_increment(api, 201, False, lim))
+    _om = it.build_order("DU999", 201, "SELL", 855, 1.024, 0.01, 1.0, ex, _inc, "eu-megp")
+    check("TWS: the MEGP replay sells at 101.2p on the 0.2p band, not 101.376p", abs(_om["price"] - 101.2) < 1e-9)
+    _ob = it.build_order("DU999", 201, "BUY", 10, 1.024, 0.01, 1.0, ex, _inc, "eu-megpb")
+    check("TWS: a buy rounds up onto the band", abs(_ob["price"] - 103.6) < 1e-9)
+    _ib.details[202] = NS(contract=_C(conId=202, symbol="XYZ", primaryExchange="LSE", exchange="SMART", currency="GBP"),
+                          longName="x", minTick=0.001, marketRuleIds="7,77", validExchanges="SMART,AQXE")
+    check("TWS: with no primary rule picked out, the coarsest venue band is used",
+          it.tick_increment(api, 202, False, 101.0) == 0.2)
+    class _RefuseOnce:
+        def __init__(self): self.prices = []
+        def place(self, acct, o):
+            self.prices.append(o["price"])
+            if len(self.prices) == 1:
+                raise ic.IbkrError("Error 110, reqId 15: The price does not conform to the minimum price variation for this contract.")
+            return {"order_id": "9", "status": "Submitted", "prompts": []}
+    _r1 = _RefuseOnce()
+    _rr = it.place_order(_r1, "DU999", {"orderType": "LMT", "side": "SELL", "price": 101.376, "cOID": "eu-r"})
+    check("a tick refusal is retried once, outward on a coarse grid",
+          _r1.prices == [101.376, 101.0] and _rr["retried_tick"]["first_price"] == 101.376)
+    class _RefuseAlways(_RefuseOnce):
+        def place(self, acct, o):
+            self.prices.append(o["price"])
+            raise ic.IbkrError("Error 201: Order rejected - reason: margin")
+    _r2 = _RefuseAlways()
+    try:
+        it.place_order(_r2, "DU999", {"orderType": "LMT", "side": "SELL", "price": 101.376, "cOID": "eu-r"})
+        _raised = False
+    except ic.IbkrError:
+        _raised = True
+    check("any other refusal is not retried", _raised and _r2.prices == [101.376])
     q_ = api.snapshot([101])[101]
     check("TWS: a delayed snapshot gives bid and ask, NaN last falls back to the close",
           q_["bid"] == 199.0 and q_["ask"] == 201.0 and q_["last"] == 198.0)
