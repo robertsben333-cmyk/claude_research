@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="3583df531de94895a5408d7a4c1ee9de-9946e2ffbe5e4bb7-1"/><meta name="baggage" content="sentry-trace_id=3583df531de94895a5408d7a4c1ee9de,sentry-sample_rate=1,sentry-transaction=%2Fadvanced-search,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=a4abbb41700f53cddf2f53265b67ecb4f3a8bfee,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.959247"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "a4abbb41700f53cddf2f53265b67ecb4f3a8bfee",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="SearchType"/>
+	<meta name="keywords" content=" regulatory announcement, regulatory announcements, regulatory guidelines, regulatory procedures, regulatory process, regulatory news, regulatory compliance news, stock exchange regulatory news, london stock exchange regulatory news, regulatory news headlines, stock exchange, stock exchange share prices, stock exchange shares, stock market announcements, stock market exchange, national stock exchange, stock exchanges, stock exchange news, london stock exchange news, LSE news, stock market news, stock exchange europe, international stock exchange" />
+	<meta name="description" content="Comprehensive and timely details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies "/>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Investegate | Advanced Search' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/advanced-search?company=MEGP&amp;headline=trading%20update' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/select2.min.css">
+<link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap-datepicker.min.css">
+
+    <title>Investegate | Advanced Search</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    <style>
+    /* Hiding selected item from select */
+    .select2-results__option--selected {
+        display: none;
+    }
+</style>
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+        
+        
+        
+                    // Configure page-level targeting for company page specific ads
+            googletag.setConfig({ targeting: { "AdvancedSearch": "advanced-search" } });
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                <div class="art-board pl-4">
+    <div class="head-area d-flex align-items-center justify-content-between mt-2">
+        <!--<h1>Advanced Search</h1>-->
+                <SCRIPT language='JavaScript1.1' SRC="https://ad.doubleclick.net/ddm/trackimpj/N6540.145830.INVESTEGATE/B34925176.440884217;dc_trk_aid=634116878;dc_trk_cid=248515871;ord=[timestamp];dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ltd=;dc_tdv=1?" attributionsrc ></SCRIPT>
+                <a href="https://www.investegate.co.uk/email-click-away?ad_type=SponsoredSearch&amp;ad_code=fidelity2026advSearch&amp;ad_link=https%3A%2F%2Fad.doubleclick.net%2Fddm%2Ftrackclk%2FN6540.145830.INVESTEGATE%2FB34925176.440884217%3Bdc_trk_aid%3D634116878%3Bdc_trk_cid%3D248515871%3Bdc_lat%3D%3Bdc_rdid%3D%3Btag_for_child_directed_treatment%3D%3Btfua%3D%3Bgdpr%3D%24%7BGDPR%7D%3Bgdpr_consent%3D%24%7BGDPR_CONSENT_755%7D%3Bltd%3D%3Bdc_tdv%3D1" target="_blank"><img src="https://assets.investegate.co.uk/public/assets/images/fidelity/advanced-search-sponsorship.png" alt="Advanced Search Sponsor" style="max-width: 100%;"></a>
+    </div>
+    <form id="filter-form">
+        <div class="advanced-search mt-4">
+            <div class="row small-gutter">
+                <div class="col-md-9">
+                    <div class="border pt-2 row">
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Article type</label>
+                                <select id="type">
+                                    <option>Announcements</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Search for</label>
+                                <select id="search-for" name="search_for">
+                                    <option value="1">Company name</option>
+                                    <option value="2">EPIC/TIDM</option>
+                                    <option value="3">SEDOL/ISIN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label id="search-for-label">Company name</label>
+                                <input type="text" name="search_word" id="search-word">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="border mb-3 mt-2 pt-2 row">
+                        <div class="col-md-12">
+                            <label>Time span</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="font-italic text-center">Date from (oldest)</label>
+                                <div class="common-form-group">
+                                    <input id="date-from" name="date_from" class="datepicker form-control border text-center" data-date-end-date="0d" placeholder="Select date" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="font-italic text-center">Date to (newest)</label>
+                                <div class="common-form-group">
+                                    <input id="date-to" name="date_to" class="datepicker form-control border text-center" data-date-end-date="0d" placeholder="Select date" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border pt-2 row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Select Categories</label>
+                                <select id="categories" multiple name="categories">
+                                                                        <option value="32">Advance Notice of Results</option>
+                                                                        <option value="16">Director&#039;s Dealings</option>
+                                                                        <option value="4">Dividends</option>
+                                                                        <option value="8">Executive Changes</option>
+                                                                        <option value="0">General</option>
+                                                                        <option value="1">Mergers, Acquisitions and Disposals</option>
+                                                                        <option value="2">Results and Trading Reports</option>
+                                                                    </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Select Sector</label>
+                                <select id="sectors" multiple name="sectors">
+                                                                        <option value="19">Automobiles &amp; Parts</option>
+                                                                        <option value="2">Banks</option>
+                                                                        <option value="5">Basic Resources</option>
+                                                                        <option value="15">Chemicals</option>
+                                                                        <option value="17">Construction &amp; Materials</option>
+                                                                        <option value="16">Financial Services</option>
+                                                                        <option value="4">Food &amp; Beverage</option>
+                                                                        <option value="3">Health Care</option>
+                                                                        <option value="8">Industrial Goods &amp; Services</option>
+                                                                        <option value="9">Insurance</option>
+                                                                        <option value="20">Investment Instruments</option>
+                                                                        <option value="12">Media</option>
+                                                                        <option value="6">Oil &amp; Gas</option>
+                                                                        <option value="7">Personal &amp; Household Goods</option>
+                                                                        <option value="18">Real Estate</option>
+                                                                        <option value="11">Retail</option>
+                                                                        <option value="14">Technology</option>
+                                                                        <option value="1">Telecommunications</option>
+                                                                        <option value="13">Travel &amp; Leisure</option>
+                                                                        <option value="10">Utilities</option>
+                                                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border pt-2 row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Headline contains keyword</label>
+                                <input type="text" name="key_word" id="key-word" placeholder="Enter keyword">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Select Source(s)</label>
+                                <select id="sources" multiple name="sources">
+                                                                        <option value="BZW">BusinessWire (BZW)</option>
+                                                                        <option value="EQS">EQS (EQS)</option>
+                                                                        <option value="FNW">FinanceWire (FNW)</option>
+                                                                        <option value="GNW">GlobeNewswire (GNW)</option>
+                                                                        <option value="IAS">Investegate Announcement Service (IAS)</option>
+                                                                        <option value="MFN">Modular Finance (MFN)</option>
+                                                                        <option value="PRN">PRNewswire (PRN)</option>
+                                                                        <option value="RNS">Regulatory News Service (RNS)</option>
+                                                                        <option value="TRO">Thomson Reuters ONE (TRO)</option>
+                                                                        <option value="UKN">UKNewswire (UKN)</option>
+                                                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border pt-2 row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exclude-navs" name="exclude_navs" checked><label class="form-check-label" for="remove-navs">Exclude NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2 row">
+                        <div class="col-md-3">
+                            <div class="form-group common-button-group mt-4 mb-0 text-center">
+                                <a id="reset" href="javascript:void(0);" class="bg-secondary border-0 btn button-primary">Reset</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group common-button-group mt-4 mb-0 text-center">
+                                <a id="search" href="javascript:void(0);" class="btn button-primary">Search</a>
+                                <!--<input id="search" type="submit" class="btn button-primary" value="Search"/>-->
+                            </div>
+                        </div>
+                    </div>
+                    <input type="number" hidden name="page" id="page-number" placeholder="">
+                </div>
+            </div>
+        </div>
+    </form>
+    <div id="advanced-table-div" style="display: none;">
+        <table class="table-investegate">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Company</th>
+                    <th>Source</th>
+                    <th>Announcement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4" class="text-center"><img src="https://assets.investegate.co.uk/public/assets/images/loading-1.gif"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+            </div>
+            <div class="col-md-4">
+                                <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>5 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/helios-underwriting--huw/director-pdmr-dealing-and-total-voting-rights/9875327">Helios Underwriting</a>
+            </li>
+                        <li>
+                <span>9 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/breedon-group--bree/director-pdmr-shareholding/9875319">Breedon Group</a>
+            </li>
+                        <li>
+                <span>37 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/hgcapital-trust--hgt/director-pdmr-shareholding/9875236">HGCapital Trust</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/london-stock-exchange-group--lseg/director-pdmr-dealing/9875165">London Stock Exchange Group</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/tatton-asset-management--tam/exercise-of-options-and-pdmr-dealing/9875109">Tatton Asset Management</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/select2.min.js"></script>
+<script src="https://assets.investegate.co.uk/public/assets/js/bootstrap-datepicker.min.js"></script>
+    <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>    
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+    <script>
+    $(document).ready(function() {
+        $("#sectors").select2({
+            allowClear: true,
+            width: "100%",
+            placeholder: "-- All Sectors --",
+        });
+
+        $("#categories").select2({
+            allowClear: true,
+            width: "100%",
+            placeholder: "-- All Categories --",
+        });
+
+        $("#sources").select2({
+            allowClear: true,
+            width: "100%",
+            placeholder: "-- All Sources --",
+        });
+
+        $("#date-from").datepicker({
+            clearBtn: true,
+            autoclose: true,
+            todayHighlight: true,
+            format: 'd MM yyyy',
+        }).on('changeDate', function(e) {
+            $("#date-to").datepicker('setStartDate', e.date);
+        });
+
+        $("#date-to").datepicker({
+            clearBtn: true,
+            autoclose: true,
+            todayHighlight: true,
+            format: 'd MM yyyy',
+        }).on('changeDate', function(e) {
+            $("#date-from").datepicker('setEndDate', e.date);
+        });
+
+        $("#search-for").change(function() {
+            $("#search-for-label").text($(this).find('option:selected').text() + ' starts with');
+        });
+
+        // Want to load in the URL params here into the fields and load the table if there are any
+        var queryString = window.location.search;
+        if(queryString && queryString !== ''){
+            var urlParams = new URLSearchParams(queryString);
+            urlParams.get('search_for') && $('#search-for').val(urlParams.get('search_for'));
+            urlParams.get('search_word') && $('#search-word').val(urlParams.get('search_word'));
+            urlParams.get('date_from') && $("#date-from").datepicker('setDate', urlParams.get('date_from'));
+            urlParams.get('date_to') && $("#date-to").datepicker('setDate', urlParams.get('date_to'));
+            urlParams.get('categories') && $('#categories').val(urlParams.get('categories').split(',')).trigger('change.select2');
+            urlParams.get('exclude_navs') && $('#exclude-navs').prop('checked', (urlParams.get('exclude_navs') == 'true' ? true : false));
+            urlParams.get('sources') && $('#sources').val(urlParams.get('sources').split(',')).trigger('change.select2');
+            urlParams.get('sectors') && $('#sectors').val(urlParams.get('sectors').split(',')).trigger('change.select2');
+            urlParams.get('key_word') && $('#key-word').val(urlParams.get('key_word'));
+            urlParams.get('page') && $('#page-number').val(urlParams.get('page'));
+
+            // draw results
+            // TODO: Need a spinner animation here so the user knows something is happening
+
+            $("#advanced-table-div").show();
+            drawTable();
+        }
+    });
+
+    $("#search").click(function() {        
+        const vals = {
+            search_for: $("#search-for").val(),
+            search_word: $("#search-word").val(),
+            date_from: $("#date-from").val(),
+            date_to: $("#date-to").val(),
+            categories: $("#categories").val(),
+            exclude_navs: $("#exclude-navs").prop('checked'),
+            sources: $("#sources").val(),
+            sectors: $("#sectors").val(),
+            key_word: $("#key-word").val(),
+        };
+
+        const keys = Object.keys(vals);
+
+        keys.forEach((value, key) => {
+            if((vals[value] == '' || vals[value] == []) && vals[value] !== false){
+                delete vals[value];
+            }
+        });
+
+        const params = new URLSearchParams(vals);
+        window.location='https://www.investegate.co.uk/advanced-search?'+ params.toString();
+    });
+
+    $("#reset").click(function() {
+        document.getElementById("filter-form").reset();
+        $('#categories').val(null).trigger('change');
+        $('#sectors').val(null).trigger('change');
+        $('#sources').val(null).trigger('change');
+        //drawTable();
+    });
+</script>
+<script>
+    let tab = $("ul#myTab button.active").attr('id');
+
+    if (typeof tab === 'undefined') {
+        tab = 'all-tab';
+        $("#" + tab).addClass("active")
+    }
+    
+    function drawTable() {
+        $.ajax({
+            url: "/advanced-search/draw", 
+            success: function(result){
+                $("#advanced-table-div").html(result);
+            },
+            method: "GET",
+            data: {
+                search_for: $("#search-for").val(),
+                search_word: $("#search-word").val(),
+                date_from: $("#date-from").val(),
+                date_to: $("#date-to").val(),
+                categories: $("#categories").val(),
+                exclude_navs: $("#exclude-navs").prop('checked'),
+                sources: $("#sources").val(),
+                sectors: $("#sectors").val(),
+                key_word: $("#key-word").val(),
+                page: $("#page-number").val()
+            },
+        });
+    }
+</script>
+</body>
+
+</html>
