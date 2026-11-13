@@ -40,3 +40,24 @@ Window: entry at today's close; amc out at the next open, bmo out at 13:00 ET on
 | XTNT | control | ok | 40.0 | none | 60.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the recommendations were published)
+
+| ticker | H evolving p_up | H evolving action | H control p_up | H control action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- | --- | --- |
+| VERI | 40 | none | 44 | none | -44 | False |
+| POET | 47 | none | 47 | none | -11 | False |
+| VENU | 44 | none | 44 | none | -38 | False |
+| LNZA | 43 | none | 45 | none | -85 | True |
+| XPEV | 43 | none | 44 | none | -46 | False |
+| BLDP | 45 | none | 42 | none | -76 | False |
+| GAME | 42 | none | 54 | none | -73 | False |
+| IQ | 46 | none | 45 | none | +14 | False |
+| NIU | 35 | short | 38 | none | -98 | True |
+| QVCG | 54 | none | 50 | none | +6 | False |
+| BIDU | 52 | none | 52 | none | +23 | False |
+| XTNT | 40 | none | 40 | none | -96 | True |
+
+Sign disagreements (H evolving vs E-P):
+
+- IQ: H evolving p_up 46 (down) against E-P +14 (up).
