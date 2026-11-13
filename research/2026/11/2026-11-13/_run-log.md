@@ -39,3 +39,7 @@
 ## Edge hunt (panel) — 2026-11-13 window — STARTED
 - Logged at 2026-11-13 18:16 UTC
 - Fired 18:07 UTC = 13:07 New York (EST). Universe --window: 39 names (amc 11-13: ROLR, BBGI; bmo 11-16: 37). 39 baselines sealed into edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers by hunt_priority (amc first, max 8 per turn), step 3s flatten live then paper, edge_score, grounded V2, four blind judges, panel_score, note, step 6b buy live then paper.
+
+## Edge hunt (panel) — sweep and waves
+- Logged at 2026-11-13 18:27 UTC
+- Sweep (stopped at its 50-turn limit, resumed once to write sweep.json): 39 names, 27 company-confirmed for 11-16 bmo, 12 unconfirmed (incl. both amc rows ROLR, BBGI: no company date or 8-K found), 0 phantoms proven. Hunted 20 by budget.edge_degrade_order (unconfirmed shed first, then lowest hunt_priority): VERI POET VENU LNZA XPEV BLDP GAME IQ NIU QVCG BIDU XTNT ARMK TSN POWW BXDC CREX HTHT CYPH BEKE. Shed confirmed on priority: CYCU USDE DTST TRNR EDBL XXII PERI. Shed unconfirmed: TOYO XTND NKLR SMID ROLR BBGI ELWT CMCT VIDA CSAI EHLD PDCC. All hunted names bmo 11-16, so no amc deadline. Wave 1 (8): VERI POET VENU LNZA XPEV BLDP GAME IQ.
