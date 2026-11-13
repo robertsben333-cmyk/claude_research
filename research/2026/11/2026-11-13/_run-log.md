@@ -43,3 +43,11 @@
 ## Edge hunt (panel) — sweep and waves
 - Logged at 2026-11-13 18:27 UTC
 - Sweep (stopped at its 50-turn limit, resumed once to write sweep.json): 39 names, 27 company-confirmed for 11-16 bmo, 12 unconfirmed (incl. both amc rows ROLR, BBGI: no company date or 8-K found), 0 phantoms proven. Hunted 20 by budget.edge_degrade_order (unconfirmed shed first, then lowest hunt_priority): VERI POET VENU LNZA XPEV BLDP GAME IQ NIU QVCG BIDU XTNT ARMK TSN POWW BXDC CREX HTHT CYPH BEKE. Shed confirmed on priority: CYCU USDE DTST TRNR EDBL XXII PERI. Shed unconfirmed: TOYO XTND NKLR SMID ROLR BBGI ELWT CMCT VIDA CSAI EHLD PDCC. All hunted names bmo 11-16, so no amc deadline. Wave 1 (8): VERI POET VENU LNZA XPEV BLDP GAME IQ.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-13 18:47 UTC
+- All 20 searchers returned by 18:47 UTC (13:47 ET); hunt_status check --apply: 0 unfinished of 20, no retries. LIVE: mode shows live credentials present, execution.live.enabled true, kill switch off; flatten --account live --submit: 0 positions held, nothing sold. PAPER: flatten --submit: 0 positions held, nothing sold (the amc legs of 11-12 had been closed before this morning's E-PX fire per its log). No amc leg still held.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-13 18:47 UTC
+- 20 packs, four judges (opus5, opus55, sonnet55, fable51), one file, no split. edge_score: 20 ranked, 19 not ranked (no hunt); floor-clearers NIU -5.0, XTNT -4.5. edge_grounded_score written.
