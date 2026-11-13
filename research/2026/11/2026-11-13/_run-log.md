@@ -35,3 +35,7 @@
 - Logged at 2026-11-13 15:50 UTC
 - 8 ranked, SLR not ranked (no CNMV date notice; 9M likely at the 19 Nov CMD). No name above the 2.8 floor; top N91 +0.60, bottom APN -1.30. Panel (4 of 4 members, no fallback) selects MEGP short (3 of 4, panel_pct 81). UK 67% of the day. CBF and BYG amc per hunters/issuer.
 - Published to main via EARNINGS_DATA_BRANCH=main from local branch eu-run-2026-11-13 (local main stale and diverged; reset refused in auto mode).
+
+## Edge hunt (panel) — 2026-11-13 window — STARTED
+- Logged at 2026-11-13 18:16 UTC
+- Fired 18:07 UTC = 13:07 New York (EST). Universe --window: 39 names (amc 11-13: ROLR, BBGI; bmo 11-16: 37). 39 baselines sealed into edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers by hunt_priority (amc first, max 8 per turn), step 3s flatten live then paper, edge_score, grounded V2, four blind judges, panel_score, note, step 6b buy live then paper.
