@@ -21,9 +21,12 @@ routine"). Research only: **no orders**. Writes `research/<date>/edge-holistic/`
    sealed baselines. Using E-P's sweep means every name also has an E-P panel score to
    compare against, and stage H does not spend a sweep of its own.
 2. **Research.** One `holistic-researcher` (Opus 5.5) per name, following
-   `playbook/current.md` (frozen into the run as `playbook-a.md`). On a date-seeded random
-   third of the names a second researcher follows the frozen control (`playbook-b.md` =
-   hp.v1). Researchers do not know their arm.
+   `playbook/current.md` (frozen into the run as `playbook-a.md`). On every name a second
+   researcher follows the frozen control (`playbook-b.md` = hp.v1); until 2026-11-13 that
+   was a date-seeded random third of the names. Each run records `control_design`
+   (`random_share_0.34` or `all_names`), carried into every outcome row, and `evaluate`
+   reports the paired comparison per design as well as pooled. Researchers do not know
+   their arm.
 3. **Collect** before 15:45 ET: `recommendations.json` and `note.md`, published before
    the 16:00 close.
 4. **Learn**, on every fire: `holistic.py resolve` prices every closed window,

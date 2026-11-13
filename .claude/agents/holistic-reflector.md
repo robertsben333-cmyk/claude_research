@@ -28,7 +28,7 @@ adaptation, AND to keep it from turning into chasing noise. Both matter.
   the names you reason about, especially `view`, `unpriced`, `self_critique`,
   `questions_pursued` and `approach_notes`.
 - `current.md` (the playbook), `control.md` (the frozen first version, which runs beside
-  it on a random third of the names) and `changes.jsonl` (every past revision, its
+  it on every name since 2026-11-13, on a random third before) and `changes.jsonl` (every past revision, its
   reason, its predicted effect and its revert condition).
 
 You may use WebSearch and WebFetch to find out what a resolved stock actually traded on

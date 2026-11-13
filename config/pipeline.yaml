@@ -394,15 +394,17 @@ edge_holistic:
   # returns one view (p_up, an optional long/short recommendation), with no per-finding
   # point sizes. Its approach is a versioned playbook the stage revises itself from its
   # own resolved days (holistic-reflector proposes, holistic.py revise applies under the
-  # gates below). A frozen copy of the first playbook runs beside it on a random third
-  # of the names as the control. Research only, no orders.
+  # gates below). A frozen copy of the first playbook runs beside it as the control, on
+  # EVERY name since 2026-11-13 (operator's instruction, so the paired sample for judging
+  # the learning grows three times as fast; a random third before, recorded per run as
+  # control_design random_share_0.34 against all_names). Research only, no orders.
   output_dir: edge-holistic
   agent: holistic-researcher
   reflector: holistic-reflector
   names_from: edge-panel          # stage E-P's sweep and sealed baselines, same day
-  max_names: 12                   # evolving arm; sweep-confirmed, by hunt_priority (12 + ~4 control = 16 researchers, two waves of 8 before 15:35 ET)
+  max_names: 12                   # evolving arm; sweep-confirmed, by hunt_priority (12 + 12 control = 24 researchers, three waves of 8 before 15:35 ET; one takes about 10 minutes)
   fire_et: "14:15"                # cron CRON_TZ=America/New_York 15 14 * * 1-5: after stage E-P (fires 13:06, panel done about 13:50-14:05 ET)
-  control_share: 0.34             # date-seeded random share of the names that ALSO get the control
+  control_share: 1.0              # share of the names that ALSO get the control: 1.0 = every name since 2026-11-13 (0.34 before, date-seeded)
   max_in_flight: 8
   max_launch_per_turn: 8
   research_deadline_et: "15:35"
