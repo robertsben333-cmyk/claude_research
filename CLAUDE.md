@@ -306,6 +306,14 @@ statistic under it rather than filtering a view. Its own README is the authority
 the controls and the three levels (names / trades / account), which are not the same
 thing and must not be mixed.
 
+**The US tabs read stage E-P since 2026-11-13.** Stage E stopped publishing on
+2026-10-14, so the US "Verdieping" tabs had frozen there while CI kept building.
+`build_ledger.py` now also prices every `edge-panel` run into `names_panel` (key =
+side x `panel_pct`, floor 80, the operator's window from `scorebord-frozen.json`);
+`names` stays stage E alone because the scorebord and the analyses read it as that. The
+page shows one stage at a time (`?stage=E-P` default, `?stage=E`), never both in one
+sample. See `dashboard/README.md`, "Two US stages".
+
 **And it rebuilds itself in CI since 2026-09-19, because the button could not work on a
 fetched page.** `.github/workflows/dashboard.yml` — the first workflow in this repo —
 runs the same `./dashboard/update.sh`, commits `dashboard/` back to `main` and publishes

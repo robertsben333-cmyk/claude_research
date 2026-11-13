@@ -358,6 +358,35 @@ details.fmore[open] > summary { margin-bottom:8px; }
 <script id="scorebord" type="application/json">__SCOREBORD__</script>
 <script>
 const D = JSON.parse(document.getElementById('ledger').textContent);
+/* --------------------------------------------------------------- US stage
+   Two US stages share this page and never one sample. Stage E (the hunter, key
+   impact_sum, floor 2.8) stopped running on 2026-10-14. Stage E-P (searcher + blind
+   four-model panel) is what runs and trades since; its rows carry the panel's key in
+   the same field: impact_sum = side x panel_pct (0-100), floor 80, and the strategy
+   exit on the operator's window (in 13:30 ET, amc out at the next open, bmo out at
+   13:00 ET). The stage is fixed at load, so every index and filter below is built
+   from one stage's names; switching reloads the page. */
+const STAGE = (() => {
+  let s = null;
+  try { s = new URLSearchParams(location.search).get('stage')
+            || localStorage.getItem('us_stage'); } catch (e) {}
+  if (!D.stats_by_stage || !D.stats_by_stage['E-P'] || !(D.names_panel || []).length) return 'E';
+  return s === 'E' ? 'E' : 'E-P';
+})();
+const IS_EP = STAGE === 'E-P';
+const KEYNAME = IS_EP ? 'panel_pct' : 'impact_sum';
+if (IS_EP) D.names = D.names_panel || [];
+D.runs_all = D.runs;
+D.runs = D.runs.filter(r => /edge-panel\/?$/.test(r) === IS_EP);
+if (D.stats_by_stage) D.stats = D.stats_by_stage[STAGE] || D.stats;
+if (D.floor_by_stage) D.conviction_floor = D.floor_by_stage[STAGE] ?? D.conviction_floor;
+if (D.versions_by_stage) D.versions = D.versions_by_stage[STAGE] || D.versions;
+if (IS_EP) { D.trades_E = D.trades; D.trades = []; }
+function setStage(s) {
+  try { localStorage.setItem('us_stage', s); } catch (e) {}
+  const u = new URL(location.href); u.searchParams.set('stage', s);
+  location.href = u.toString();
+}
 /* ------------------------------------------------------------- formatting */
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const n1 = x => x === null || x === undefined ? '–' : (+x).toFixed(1);
@@ -395,6 +424,7 @@ const cetOfHour = h => {                       // h = hours after the 16:00 ET e
 const HZ_CET = {strategy:'amc 15:30 / bmo 20:00',
                 ext_early:'22:30 / 14:00', pre_open:'15:25', open:'15:30', m15:'15:45',
                 m30:'16:00', m60:'16:30', midday:'18:00', close:'22:00'};
+if (IS_EP) HZ_CET.strategy = 'amc opening / bmo 19:00, instap 19:30';
 /* The exit the strategy aims at is not one moment: amc goes into the opening print
    and bmo four and a half hours later. `strategy` resolves per session in the ledger
    and is carried as a horizon so every tab reads it the same way as the rest. It is
@@ -536,7 +566,7 @@ function passThr(r) {
 }
 const thrLabel = () => F.thrMode === 'pct'
   ? `top ${F.thrPct}% per model (${F.pctRef === 'pit' ? 'referentie tot die dag' : 'volledige referentie'})`
-  : `|impact_sum| ≥ ${F.thr}`;
+  : `${IS_EP ? 'panel_pct' : '|impact_sum|'} ≥ ${F.thr}`;
 
 /* One argument only: it is passed straight to Array.filter, which hands it the index
    as a second argument. Versies is the one tab that ignores the version filter;
@@ -1060,7 +1090,8 @@ function tabScore() {
     {k:'ρ conviction', v:n3(conv), s:'rang van |impact| tegen teken-raak'},
     {k:'teken raak', v:`${hits}/${nz}`, s: nz ? n1(100*hits/nz)+'% van de namen' : ''}]);
 
-  const BK = [[0,1],[1,2],[2,3],[3,5],[5,8],[8,1e9]];
+  const BK = IS_EP ? [[0,20],[20,40],[40,60],[60,70],[70,80],[80,90],[90,1e9]]
+                   : [[0,1],[1,2],[2,3],[3,5],[5,8],[8,1e9]];
   const buckets = BK.map(([lo,hi]) => {
     const g = rows.filter(r => Math.abs(r.impact_sum) >= lo && Math.abs(r.impact_sum) < hi);
     return {label: `${lo}–${hi>1e8?'∞':hi}`, lo, ...book(g.map(retOf))};
@@ -1114,7 +1145,8 @@ function tabScore() {
   return html;
 }
 
-const THR_GRID = [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,6,7,8,10];
+const THR_GRID = IS_EP ? [0,10,20,30,40,50,60,70,75,80,85,90,95]
+                       : [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,6,7,8,10];
 /* One sweep of the threshold, on a given subset. The filters other than the
    threshold still apply, so this answers "given what I am willing to trade, where
    does the cut belong" rather than a question about a different universe. */
@@ -1751,7 +1783,7 @@ function renderControls() {
         <label class="sw"><input type="checkbox" id="f-thron" ${F.thrOn?'checked':''}>
           <b>drempel</b></label>
         <select id="f-thrmode">
-          <option value="abs" ${F.thrMode==='abs'?'selected':''}>|impact_sum| ≥</option>
+          <option value="abs" ${F.thrMode==='abs'?'selected':''}>${IS_EP ? 'panel_pct' : '|impact_sum|'} ≥</option>
           <option value="pct" ${F.thrMode==='pct'?'selected':''}>top % per model</option></select>
         ${F.thrMode === 'pct' ? `
         <span class="seg" id="seg-pct">${[25,20,15,10].map(x =>
@@ -1779,6 +1811,12 @@ function renderControls() {
         <input type="number" id="f-grosspct" step="5" min="10" max="200" value="${F.grossPct}">
         <label>%</label>
       </div>
+      <div class="ctl" title="Welke US-stage deze pagina toont. E-P: searcher + blind panel van vier modellen, sleutel panel_pct met teken, floor 80; draait en handelt sinds 2026-10-19. E: de hunter, sleutel impact_sum, floor 2.8; gestopt na 2026-10-14. Nooit één steekproef: wisselen herlaadt de pagina.">
+        <label>stage</label>
+        <select id="f-stage" onchange="setStage(this.value)">
+          <option value="E-P" ${IS_EP?'selected':''}>E-P · panel (live)</option>
+          <option value="E" ${IS_EP?'':'selected'}>E · hunter (t/m 14 okt)</option>
+        </select></div>
       <div class="ctl" title="amc rapporteert na de slotbel, bmo vóór de opening. De twee gedragen zich meetbaar anders.">
         <label>sessie</label>
         <select id="f-session">${['all','amc','bmo'].map(x =>
@@ -1922,7 +1960,9 @@ function filterLine() {
   const withRet = kept.filter(r => retOf(r) !== null && retOf(r) !== undefined);
   const pend = kept.filter(r => r.pending).length;
   const nDays = new Set(withRet.map(r=>r.run_date)).size;
-  const bits = [F.lens === 'trading' ? 'lens handel' : 'lens onderzoek'];
+  const bits = [IS_EP ? 'stage E-P · waar impact_sum staat: panel_pct met teken (0-100), floor 80'
+                      : 'stage E · hunter, t/m 2026-10-14',
+                F.lens === 'trading' ? 'lens handel' : 'lens onderzoek'];
   bits.push(F.thrOn ? thrLabel() : 'geen drempel');
   if (F.tradeOn) bits.push(`long ≥ ${usdM(F.minLong)}/dag, short ≥ ${usdM(F.minShort)}/dag` +
     (F.reqShort ? ', alleen leenbaar' : ''));
@@ -1933,7 +1973,8 @@ function filterLine() {
   if (F.model !== 'all') bits.push('model ' + F.model);
   if (F.noSept) bits.push('zonder sept. Opus 5.5');
   bits.push(F.horizon === 'strategy'
-    ? 'uitstap strategie (amc 15:30, bmo 20:00 CET)'
+    ? (IS_EP ? 'instap 13:30 ET, uitstap amc opening, bmo 13:00 ET'
+             : 'uitstap strategie (amc 15:30, bmo 20:00 CET)')
     : `uitstap ${F.horizon} (${HZ_CET[F.horizon]} CET)`);
   bits.push(`${F.from} t/m ${F.to}`);
   document.getElementById('filterline').innerHTML =
@@ -4428,7 +4469,13 @@ const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
               ['Lessons',tabLessons], ['V2',tabV2], ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
               ['Versies',tabVersies],
               ['Agenda',tabAgenda], ['Data',tabData], ['Index',tabIndex]];
-US_TABS.splice(0, US_TABS.length, ...byGroup(US_TABS));
+/* Stage E-P: Weging (w1/w2 are frozen claims about impact_sum and its floor),
+   Lessons (scored on the searcher's draft, not the panel's key) and V2 (stage E's
+   grounded score) describe stage E only. Handel is the other dashboard's job: the
+   panel's fills live in the E-P Alpaca artifact, not in this ledger. */
+const EP_HIDDEN = ['Weging', 'Lessons', 'V2', 'Handel', 'Kosten', 'Capaciteit'];
+US_TABS.splice(0, US_TABS.length,
+  ...byGroup(US_TABS.filter(t => !IS_EP || !EP_HIDDEN.includes(t[0]))));
 const MARKETS = [['US','Verenigde Staten'], ['EU','Europa'], ['JP','Japan'],
                  ['AU','Australië'], ['CA','Canada']];
 let MKT = 'US';
@@ -4602,8 +4649,9 @@ document.getElementById('stamp').textContent =
   `Gebouwd ${stamp(D.generated_utc)}` +
   ((D.build || {}).where === 'github-actions'
      ? ` door GitHub Actions (${(D.build.sha || '?')})` : '') +
-  ` · ${D.runs.length} VS-runs, ${ALL.length} namen, ${D.trades.filter(t=>t.closed).length} afgeronde posities` +
-  ` · conviction-floor ${D.conviction_floor}`;
+  ` · stage ${STAGE}: ${D.runs.length} VS-runs, ${ALL.length} namen` +
+  (IS_EP ? ` · sleutel panel_pct met teken, floor ${D.conviction_floor}`
+         : `, ${D.trades.filter(t=>t.closed).length} afgeronde posities · conviction-floor ${D.conviction_floor}`);
 document.getElementById('theme').onclick = () => {
   const now = document.documentElement.getAttribute('data-theme');
   const dark = now ? now === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;

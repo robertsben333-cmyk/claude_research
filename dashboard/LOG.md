@@ -400,3 +400,22 @@ Read: the ranking still does not beat the free control, and nothing here is esta
 ## 2026-10-09 — fix: 2026-10-05 run was hidden as "sept. Opus 5.5"
 
 The 2026-10-05 US run (events 2026-10-06: APOG, RPM, LW) has no provenance.json. `september_opus55()` read the missing `hunter_core` blob as "September prompt", so the run was hidden by the default `zonder sept. Opus 5.5` switch and left out of the per-model percentile reference. A run with no stamp is now judged by date (core on main from 2026-10-01). The three names show again and their percentiles are against the corrected reference.
+
+## 2026-11-13 — the US tabs read stage E-P
+
+The US tabs had not moved since 2026-10-14: the ledger read `research/*/edge` only and
+stage E's Routine is stopped. CI itself was building four times a day. The ledger now
+also prices every `edge-panel` run (`names_panel`, 405 names from 2026-10-14, 400
+resolved; the 44 names of 10-05 to 10-13 carry no panel percentile and are left out) and
+the page opens on stage E-P, with a stage selector that reloads onto stage E. On E-P the
+key in every table is the panel's signed percentile (side x panel_pct, floor 80) and the
+strategy exit is the operator's window from the scorebord's frozen moves. Handel,
+Kosten, Capaciteit, Weging, Lessons and V2 are stage E's and are hidden on E-P. The
+broker is still not read in CI (no Alpaca secrets), so the account block is 2026-09-24's.
+
+Per version, never pooled: us-panel.v2 rho -0.14 (p 0.10, n 186, 11 days), book >= 80
+-0.64% a name (n 39); us-panel.v3 rho +0.08 (p 0.27, n 214, 11 days), book >= 80 +2.84%
+(n 34, t 1.34), >= 60 +3.45% (n 79, t 2.42). Free control -0.06 and 0.00.
+
+Read: the panel does not rank the day in either version; v3's higher scores earn and
+v2's did not, on 11 days each. The cuts are in `research/analyses/us-edge-where/`.
