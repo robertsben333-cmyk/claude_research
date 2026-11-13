@@ -63,3 +63,7 @@
 ## Holistic research — 2026-11-13 — STARTED
 - Logged at 2026-11-13 19:17 UTC
 - Stage H fired 19:17 UTC (14:17 ET); picking from E-P sweep, playbook hp.v2 + control hp.v1 on every name
+
+## Holistic research — wave 1
+- Logged at 2026-11-13 19:18 UTC
+- 19:21 UTC: 8 holistic-researcher launched (VERI POET VENU LNZA, both arms; agent definition found)
