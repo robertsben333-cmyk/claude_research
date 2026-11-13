@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="680e95567ea54e00b29fd50df166aa9e-8c0315e3eff44179-1"/><meta name="baggage" content="sentry-trace_id=680e95567ea54e00b29fd50df166aa9e,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=a4abbb41700f53cddf2f53265b67ecb4f3a8bfee,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.811157"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "a4abbb41700f53cddf2f53265b67ecb4f3a8bfee",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from Final Results" />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "Final Results | Company Announcement | Investegate",
+            "description":"Investegate announcements from Final Results",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-06-03 06:01:15",
+            "dateModified": "2026-06-03 06:02:14",
+            "url": "https://www.investegate.co.uk/announcement/rns/ninety-one--n91/final-results/9598377"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Final Results | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/ninety-one--n91/final-results/9598377' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>Final Results | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">Final Results</h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Ninety One plc has reported its results for the year ended 31 March 2026, showing a 12% increase in adjusted earnings per share to 17.4 pence and a significant 31% rise in assets under management to £171.8 billion, boosted by a £18.3 billion take-on from the Sanlam transaction and a return to positive net flows of £2.8 billion. The company also proposed a full-year dividend of 13.4 pence per share, up 10% from the previous year, with profit before tax increasing by 2% to £207.5 million and adjusted operating profit up 12% to £211.3 million.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<style type="text/css">
+/*<![CDATA[*/
+/**/
+/**/
+/**/
+sup{font-size:80%}h1{margin-top:12.0pt;margin-right:0cm;margin-bottom:12.0pt;margin-left:0cm;text-autospace:none;font-size:14.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#134848;font-weight:normal;}h2{margin-top:12.0pt;margin-right:0cm;margin-bottom:12.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Medium","sans-serif";color:#424242;font-weight:normal;}h3{margin-top:12.0pt;margin-right:0cm;margin-bottom:12.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt","sans-serif";color:#424242;font-weight:normal;}h4{margin-top:2.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Display","sans-serif";color:#0E3535;font-weight:normal;font-style:italic;}h6{margin-top:2.0pt;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;line-height:110%;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Display","sans-serif";color:#092323;font-weight:normal;}p{margin-right:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Calibri","sans-serif";}ol{margin-bottom:0cm;}ul{margin-bottom:0cm;}link{ color: #CF6F13 }visited{ color: #954F72 }
+
+.adh{size:595.5pt 842.0pt;margin:2.0cm 35.45pt 2.0cm 35.45pt;}div.adh{}p.akq{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin:0cm;margin-bottom:.0001pt}span.ako{font-family:"Ninety One Visuelt Medium","sans-serif";color:windowtext}span.akn{color:windowtext}span.akm{font-family:"Ninety One Visuelt Medium","sans-serif"; color:windowtext}p.akr{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-bottom:0cm;margin-bottom:.0001pt;text-align: justify}p.a,li.a,div.a{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;}span.akj{font-size:14.0pt;color:#134848}p.aks{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-top:6.0pt}
+span.aki{font-size: 10.0pt;font-family:"Ninety One Visuelt Medium","sans-serif";color:#004E3F}p.akt{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:70.05pt;text-indent:-18.0pt;text-autospace:none;font-size:10.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:18.0pt}span.akg{font-family:"Arial","sans-serif";color:windowtext}p.aku{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:70.05pt;text-indent:-18.0pt;text-autospace:none;font-size:10.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:11.35pt;text-align:justify;text-indent: -11.35pt}p.akv{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:36.0pt;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-top:0cm;margin-right:0cm;margin-bottom: 0cm;margin-left:14.2pt;margin-bottom:.0001pt;text-align:justify}span.akd{font-size:10.0pt}table.akw{margin-left:-1.4pt;border-collapse:collapse;border:none}tr.ajt{height:28.15pt}td.ajz{width:188.6pt;border-top:solid white 1.0pt; border-left:none;border-bottom:solid #A0A0A0 1.0pt;border-right:none; padding:0cm 1.4pt 0cm 1.4pt;height:28.15pt}p.akx{margin-top:0cm;margin-right:0cm;margin-bottom:3.0pt;margin-left:36.0pt;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:0cm}
+span.akb{font-size:10.0pt;font-family:"Ninety One Visuelt Medium","sans-serif"; color:#004E3F}td.ajx{width:60.95pt;border-top:solid white 1.0pt; border-left:none;border-bottom:solid #A0A0A0 1.0pt;border-right:none; padding:0cm 1.4pt 0cm 1.4pt;height:28.15pt}p.aky{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:13.0pt;text-align:right}td.ajv{width:63.5pt;border-top:solid white 1.0pt; border-left:none;border-bottom:solid #A0A0A0 1.0pt;border-right:none; padding:0cm 1.4pt 0cm 1.4pt;height:28.15pt}p.akz{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;text-align:right}td.aju{width:49.7pt;border-top:solid white 1.0pt; border-left:none;border-bottom:solid #A0A0A0 1.0pt;border-right:none; padding:0cm 1.4pt 0cm 1.4pt;height:28.15pt}td.ajr{width:188.6pt;border:none;padding:0cm 1.4pt 0cm 1.4pt}span.ajs{font-size:10.0pt;font-family:"Ninety One Visuelt Medium","sans-serif"; color:windowtext}td.ajp{width:60.95pt;border:none;padding:0cm 1.4pt 0cm 1.4pt}span.ajq{font-size:10.0pt;font-family:"Arial","sans-serif";color:windowtext}
+td.ajo{width:63.5pt;border:none;padding:0cm 1.4pt 0cm 1.4pt}td.ajn{width:49.7pt;border:none;padding:0cm 1.4pt 0cm 1.4pt}p.ala{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-right:-6.15pt}td.ajl{width:188.6pt;border:none;border-bottom:solid #A0A0A0 1.0pt; padding:0cm 1.4pt 0cm 1.4pt}td.ajk{width:60.95pt;border:none;border-bottom:solid #A0A0A0 1.0pt; padding:0cm 1.4pt 0cm 1.4pt}td.ajj{width:63.5pt;border:none;border-bottom:solid #A0A0A0 1.0pt; padding:0cm 1.4pt 0cm 1.4pt}td.aji{width:49.7pt;border:none;border-bottom:solid #A0A0A0 1.0pt; padding:0cm 1.4pt 0cm 1.4pt}p.alb{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-right:28.45pt;text-align:justify}span.ajg{font-size:8.0pt;color:windowtext}p.alc{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;text-align:justify}
+p.ald{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-bottom:0cm;margin-bottom:.0001pt}span.ajc{font-size:10.0pt;color:windowtext}span.ajb{font-size: 10.0pt;color:windowtext;text-decoration:none}p.ej,li.ej,div.ej{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:70.05pt;text-indent:-18.0pt;text-autospace:none;font-size:10.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;}span.aja{font-family:"Arial","sans-serif"; color:windowtext}h2.aiy{margin-bottom:9.0pt}span.aiz{font-size:10.0pt; color:#004E3F}span.aix{font-size: 10.0pt;color:windowtext}p.ale{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:-3.0cm}p.alf{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-bottom:6.0pt}
+span.aiu{font-size:10.0pt; color:windowtext}span.alg{color:#CF6F13;font-size:10.0pt; color:windowtext}span.alh{color:#CF6F13;color:windowtext}span.ali{color:#CF6F13;text-decoration:underline;color:windowtext}span.ait{font-size:12.0pt;color:windowtext}span.ais{font-size:10.0pt;color:#004E3F}br.air{page-break-before:always}table.alj{width:524.6pt;margin-left:-5.4pt;border-collapse:collapse}td.aiq{width:216.7pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.aip{width:95.55pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}
+td.aio{width:95.6pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.ain{width:73.55pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.aim{width:216.7pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ail{width:95.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.aik{width:95.6pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.aij{width:73.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.aii{width:216.7pt;padding:0cm 5.4pt 0cm 5.4pt}td.aih{width:95.55pt;padding:0cm 5.4pt 0cm 5.4pt}td.aig{width:95.6pt;padding:0cm 5.4pt 0cm 5.4pt}td.aif{width:73.55pt;padding:0cm 5.4pt 0cm 5.4pt}
+p.alk{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-top:6.0pt;text-align:justify}td.aic{width:216.0pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.aib{width:95.5pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.aia{width:74.35pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.ahz{width:216.0pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ahy{width:95.5pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ahx{width:74.35pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ahw{width:216.0pt;padding:0cm 5.4pt 0cm 5.4pt}td.ahv{width:95.5pt;padding:0cm 5.4pt 0cm 5.4pt}td.ahu{width:74.35pt;padding:0cm 5.4pt 0cm 5.4pt}
+span.aht{font-size:8.0pt;color:windowtext;background:white}span.ahs{font-size:10.0pt;color:windowtext;background:white}span.ahr{font-size:10.0pt;line-height:107%;font-family:"Ninety One Visuelt Light","sans-serif"; background:white}p.all{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt; margin-left:0cm;line-height:107%;text-autospace:ideograph-numeric ideograph-other}span.ahq{font-size:10.0pt;line-height:107%;color:windowtext; background:white}h2.ahn{margin-bottom:6.0pt}span.aho{font-size:10.0pt; color:#134848}table.alm{width:524.25pt;margin-left:-5.4pt;border-collapse:collapse}tr.ahh{height:25.05pt}td.ahl{width:166.3pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:25.05pt}
+span.ahm{font-size:10.0pt;font-family:"Ninety One Visuelt Medium","sans-serif"; color:#134848}td.ahj{width:162.75pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:25.05pt}p.aln{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-right:5.15pt;text-align:right}td.ahi{width:162.8pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt;height:25.05pt}td.ahg{width:166.3pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ahf{width:162.75pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ahe{width:162.8pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ahd{width:166.3pt;padding:0cm 5.4pt 0cm 5.4pt}td.ahc{width:162.75pt;padding:0cm 5.4pt 0cm 5.4pt}td.ahb{width:162.8pt;padding:0cm 5.4pt 0cm 5.4pt}
+td.aha{width:166.3pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.agz{width:162.75pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.agy{width:162.8pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}tr.agu{height:3.2pt}td.agx{width:166.3pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt;height:3.2pt}td.agw{width:162.75pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:3.2pt}td.agv{width:162.8pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt;height:3.2pt}td.ags{width:136.65pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt}td.agr{width:181.95pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt}td.agq{width:173.25pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt}
+td.agp{width:136.65pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ago{width:181.95pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.agn{width:173.25pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.agm{width:136.65pt;padding:0cm 5.4pt 0cm 5.4pt}td.agl{width:181.95pt;padding:0cm 5.4pt 0cm 5.4pt}td.agk{width:173.25pt;padding:0cm 5.4pt 0cm 5.4pt}td.agj{width:181.95pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}h2.agi{margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt;margin-left: 0cm}span.agh{font-size:10.0pt;font-family:"Ninety One Visuelt Display","sans-serif"; color:#004E3F}p.alo{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-top:6.0pt;margin-right:0cm;margin-bottom:6.0pt; margin-left:0cm;text-align:justify}
+table.alp{border-collapse:collapse;border:none}td.agf{width:92.9pt;border:none;padding:0cm 0cm 0cm 0cm}td.age{width:86.15pt;border:none;padding:0cm 0cm 0cm 0cm}p.bb,li.bb,div.bb{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-align:center;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Medium","sans-serif";color:#134848;}td.agd{width:86.6pt;border:none;padding:0cm 0cm 0cm 0cm}p.aw,li.aw,div.aw{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-align:center;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;}span.agc{font-size:10.0pt;font-family:"Arial","sans-serif"; color:windowtext}td.agb{width:92.9pt;border:none;border-bottom:solid #424242 1.0pt; padding:0cm 0cm 0cm 0cm}td.aga{width:86.15pt;border:none;border-bottom:solid #424242 1.0pt; padding:0cm 0cm 0cm 0cm}td.afz{width:86.6pt;border:none;border-bottom:solid #424242 1.0pt; padding:0cm 0cm 0cm 0cm}
+span.afx{font-size:14.0pt;line-height:107%;color:windowtext}h2.afw{margin-top:10.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left: 0cm}p.alq{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:36.0pt;text-align:justify; text-indent:-18.0pt}p.alr{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-top:3.0pt;margin-right:0cm;margin-bottom:6.0pt; margin-left:35.7pt;text-align:justify;text-indent:-17.85pt}span.aft{font-size:10.0pt; color:#424242}span.afr{font-size:10.0pt;font-family:"Ninety One Visuelt Light","sans-serif"; color:#424242;letter-spacing:-.3pt}br.afs{page-break-before: always}span.afq{font-size:10.0pt;letter-spacing: -.3pt}span.afp{font-size:10.0pt;letter-spacing:-.3pt}table.als{width:536.95pt;margin-left:-2.85pt;border-collapse:collapse}
+tr.afl{height:14.4pt}td.afo{width:58.34%;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt;height:14.4pt}td.afn{width:20.82%;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt;height:14.4pt}td.afm{width:20.84%;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt;height:14.4pt}tr.afg{height:13.8pt}td.afk{width:58.34%;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt;height:13.8pt}td.afi{width:20.82%;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt;height:13.8pt}span.afj{font-size:10.0pt;font-family:"Arial","sans-serif"}td.afh{width:20.84%;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt;height:13.8pt}td.aff{width:58.34%;border:none;padding:0cm 2.85pt 0cm 2.85pt; height:13.8pt}
+td.afe{width:20.82%;border:none;padding:0cm 2.85pt 0cm 2.85pt; height:13.8pt}td.afd{width:20.84%;border:none;padding:0cm 2.85pt 0cm 2.85pt; height:13.8pt}td.afc{width:58.34%;padding:0cm 2.85pt 0cm 2.85pt; height:13.8pt}td.afb{width:20.82%;padding:0cm 2.85pt 0cm 2.85pt; height:13.8pt}td.afa{width:20.84%;padding:0cm 2.85pt 0cm 2.85pt; height:13.8pt}span.aez{font-size: 10.0pt}span.aey{font-size:10.0pt;font-family:"Ninety One Visuelt Medium","sans-serif"}span.aew{font-size:8.0pt}table.alt{margin-left:-2.85pt;border-collapse:collapse}td.aev{width:263.8pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt}
+td.aet{width:150.05pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt}span.aeu{font-size:10.0pt;font-family:"Ninety One Visuelt Medium","sans-serif"; color:#004E3F;letter-spacing:-.2pt}td.aes{width:107.7pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 2.85pt 0cm 2.85pt}td.aer{width:263.8pt;border:none;padding:0cm 2.85pt 0cm 2.85pt}td.aeq{width:150.05pt;border:none;padding:0cm 2.85pt 0cm 2.85pt}td.aen{width:107.7pt;border:none;padding:0cm 2.85pt 0cm 2.85pt}p.alu{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-bottom:0cm;margin-bottom:.0001pt; text-align:right}span.aep{font-size:10.0pt;font-family:"Ninety One Visuelt Display Ligh","sans-serif"}td.aem{width:263.8pt;padding:0cm 2.85pt 0cm 2.85pt}td.ael{width:150.05pt;padding:0cm 2.85pt 0cm 2.85pt}
+td.aek{width:107.7pt;padding:0cm 2.85pt 0cm 2.85pt}td.aej{width:263.8pt;border:none; padding:0cm 2.85pt 0cm 2.85pt}td.aei{width:150.05pt;border:none; padding:0cm 2.85pt 0cm 2.85pt}td.aeh{width:107.7pt;border:none; padding:0cm 2.85pt 0cm 2.85pt}span.aef{font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif"; color:#424242}p.alv{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:14.2pt;text-indent:-14.2pt}p.alw{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:36.0pt}span.aec{font-size:8.0pt;line-height:107%;color:windowtext}span.aeb{font-size:14.0pt;line-height:107%;font-family:"Ninety One Visuelt Light","sans-serif"; color:#134848}span.aea{font-size:14.0pt;line-height:107%;color:#134848}
+p.alx{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-top:12.0pt;margin-right:0cm;margin-bottom: 12.0pt;margin-left:0cm;}table.aly{margin-left:-5.4pt;border-collapse:collapse}td.adw{width:300.8pt;padding:0cm 5.4pt 0cm 5.4pt}p.alz{margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;text-indent:-5.25pt}span.adx{font-family:"Ninety One Visuelt Medium","sans-serif"}td.adu{width:201.7pt;padding:0cm 5.4pt 0cm 5.4pt}span.adv{font-family:"Ninety One Visuelt Display","sans-serif";color:#004E3F}tr.adr{height:19.15pt}td.adt{width:300.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:19.15pt}td.ads{width:201.7pt;padding:0cm 5.4pt 0cm 5.4pt; height:19.15pt}
+tr.adn{height:4.0pt}td.adq{width:300.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}td.ado{width:201.7pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}span.adp{font-family:"Ninety One Visuelt Display","sans-serif"}p.ama{margin-top:3.0pt;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:21.3pt;text-align:justify; text-indent:-18.0pt}span.adl{font-family:Symbol}p.amb{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:21.3pt;text-align:justify; text-indent:-18.0pt}p.amc{margin-top:0cm;margin-right:0cm;margin-bottom:3.0pt;margin-left:36.0pt;text-autospace:none;font-size:9.0pt;font-family:"Ninety One Visuelt Light","sans-serif";color:#424242;margin-left:21.3pt;text-align:justify; text-indent:-18.0pt}span.adj{font-size:6.0pt;color:#222222}span.adi{color:#222222}
+ .fr-view-element{font-family: sans-serif;font-size: 12pt;line-height: 140%;padding: 20px;box-sizing: border-box;overflow-x: auto;min-height: 60px;text-align: left;margin-bottom: 10px;width: 837px;} .fr-view-element img{padding: 0 1px;} .fr-view-element .adh{margin: 63.8pt 1.6cm 62.35pt 1.6cm;} .fr-view-element p{font-size: 10pt;}
+/**/
+/**/
+/**/
+/*]]>*/
+</style>
+<title></title>
+</head>
+<body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6154804_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Ninety One PLC</div>  <div>03 June 2026</div>  <div>&#160;</div></div>
+<div class="fr-view-element displayHScroll">
+<div class="adh">
+<p class="akq"><span class="ako">Ninety One plc&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="akn">&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;</span></span><span class="akm">Ninety One Limited</span></p>
+<p class="akq"><span class="akn">Incorporated in England and Wales&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; Incorporated in the Republic of South Africa &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;</span> <span class="akn">Registration number 12245293&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; Registration number 2019/526481/06 &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;</span></p>
+<p class="akq"><span class="akn">Date of registration: 4 October 2019&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;Date of registration: 18 October 2019 &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;</span><span class="akn">LSE share code: N91 &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;JSE share code: NY1 &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;</span><span class="akn">JSE share code: N91 &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; ISIN: ZAE000282356</span></p>
+<p class="akq"><span class="akn">ISIN: GB00BJHPLV88</span></p>
+<p class="akq"><span class="akn">LEI: 549300G0TJCT3K15ZG14&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span></p>
+<p class="akr"><span class="akn">&#160;</span></p>
+<p class="a"><span class="akn">3 June 2026</span></p>
+<p class="a"><span class="akj">Results for the year ended 31 March 2026</span></p>
+<p class="aks"><span class="aki">&#160;</span></p>
+<p class="aks"><span class="aki">Highlights</span></p>
+<p class="akt"><span class="akg">&#8210;&#160;&#160;&#160;</span> <span class="akn">Adjusted earnings per share up by 12%.</span></p>
+<p class="akt"><span class="akg">&#8210;&#160;&#160;&#160;</span> <span class="akn">Assets under management up by 31% to &#163;171.8 billion.</span></p>
+<p class="akt"><span class="akg">&#8210;&#160;&#160;&#160;</span> <span class="akn">Return to positive annual net flows of &#163;2.8 billion.</span></p>
+<p class="akt"><span class="akg">&#8210;&#160;&#160;&#160;</span> <span class="akn">Completion of Sanlam transaction with AUM take-on of &#163;18.3 billion.&#160;</span></p>
+<p class="aku"><span class="akg">&#8210;&#160;</span> <span class="akn">&#160;&#160; Proposed full-year dividend of 13.4 pence per share.</span></p>
+<p class="akv"><span class="akd">&#160;</span></p>
+<table class="akw" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="ajt">
+<td style="width: 251;" valign="bottom" class="ajz">
+<p class="akx"><span class="akb">Key financials<sup>(1)</sup></span></p>
+</td>
+<td style="width: 81;" valign="bottom" class="ajx">
+<p class="aky" style="text-align:right;"><span class="akb">2026</span></p>
+</td>
+<td style="width: 85;" valign="bottom" class="ajv">
+<p class="akz" style="text-align:right;"><span class="akb">2025</span></p>
+</td>
+<td style="width: 66;" valign="bottom" class="aju">
+<p class="akz" style="text-align:right;"><span class="akb">Change<br />
+%</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">AUM (&#163;'bn)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">171.8</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">130.8</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq">31</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">Sanlam take on (&#163;'bn)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">18.3</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">Net flows (&#163;'bn)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">2.8</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">(4.9)</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">Average AUM (&#163;'bn)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">151.8</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">129.0</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq">18</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">Profit before tax (&#163;'m)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">207.5</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">204.3</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq">2</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="ala"><span class="ajs">Adjusted operating profit (&#163;'m)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">211.3</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">187.9</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq">12</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">Adjusted operating profit margin (%)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">32.0</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">31.2</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">Basic earnings per share (p)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">17.5</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">17.2</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;2</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajr">
+<p class="a"><span class="ajs">Adjusted earnings per share (p)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajp">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">17.4</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajo">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">15.5</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="ajn">
+<p class="akz" style="text-align:right;"><span class="ajq">12</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 251;" valign="top" class="ajl">
+<p class="a"><span class="ajs">Dividend per share (p)</span></p>
+</td>
+<td style="width: 81;" valign="top" class="ajk">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">13.4</span></span></p>
+</td>
+<td style="width: 85;" valign="top" class="ajj">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">12.2</span></span></p>
+</td>
+<td style="width: 66;" valign="top" class="aji">
+<p class="akz" style="text-align:right;"><span class="ajq">10</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="alb"><span class="ajg">Note: (1) Please refer to explanations and definitions, including alternative performance measures, on pages 12 to 13 and 160 to 161 of the Integrated Annual Report.</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">Hendrik du Toit, Founder and Chief Executive Officer, commented: &#160;</span></p>
+<p class="ald"><span style="font-style: italic;"><span class="akd">"Ninety One is a resilient and robust business with positive momentum. The demand recovery for emerging markets is visible and our offering competitive. We are in a stronger position than a year ago. We are investing through the cycle in talent and technology to be future fit. Over the past year we pursued and established several significant partnerships. We are committed to cost and operating discipline and our focus remains on investment performance and client service. Over the past 35 years we have built strong foundations for an exciting future."</span></span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">Availability of the Integrated Annual Report and Notices of Annual General Meetings ("AGMs")</span></p>
+<p class="alc"><span class="ajc">The Ninety One Integrated Annual Report for the year ended 31 March 2026, containing the audited annual financial statements, and the Notices of the AGMs have been published today, 3 June 2026. Copies of the documents listed below can be viewed on the Ninety One website:</span> <span><span class="ajb"><a href="https://ninetyone.com/full-year-results-2026">https://ninetyone.com/full-year-results-202</a></span></span><span class="ajc">6. In accordance with paragraphs 6.4.1R and 6.4.3R of the FCA Listing Rules and of the FCA Disclosure Guidance and Transparency Rules ("DTC"), the documents will be submitted to the National Storage Mechanism where they will be available for inspection at https://data.fca.org.uk/#/nsm/nationalstoragemechanism.</span></p>
+<p class="ej"><span class="aja">&#8210;&#160;&#160;&#160;</span> <span class="akn">Ninety One Integrated Annual Report 2026</span></p>
+<p class="ej"><span class="aja">&#8210;&#160;&#160;&#160;</span> <span class="akn">Ninety One Limited Annual Financial Statements</span></p>
+<p class="ej"><span class="aja">&#8210;&#160;&#160;&#160;</span> <span class="akn">Ninety One plc and Ninety One Limited Notice of the 2026 Annual General Meeting</span></p>
+<p class="ej"><span class="aja">&#8210;&#160;&#160;&#160;</span> <span class="akn">Ninety One Limited Form of Proxy for the 2026 Annual General Meeting</span></p>
+<p class="alc"><span class="ajc">This announcement is made in accordance with DTR 6.3.5R(1A).</span></p>
+<p class="alc"><span class="ajc">&#160;</span></p>
+<p class="alc"><span class="ajc">For further information please contact:</span></p>
+<h2 class="aiy"><span class="aiz">Investor relations</span></h2>
+<p class="a"><span class="ajc">Varuni Dharma&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span> <span><span class="aix"><a href="mailto:varuni.dharma@ninetyone.com">varuni.dharma@ninetyone.com</a></span></span><span class="ajc">&#160;&#160;&#160;&#160;&#160; +44(0) 203 938 2486&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span></p>
+<p class="ale"><span class="akb">Media</span></p>
+<p class="alf"><span class="akb">Media enquiries</span></p>
+<p class="a"><span class="ajc">Jeannie Dumas (for UK &amp; International)</span> <span class="akn">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span> <span><span class="aiu"><a href="mailto:jeannie.dumas@ninetyone.com">jeannie.dumas@ninetyone.com</a></span></span><span class="alg">&#160;&#160;&#160;&#160;&#160;</span> <span class="aiu">+44 (0) 203 938 3084&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span></p>
+<p class="a"><span class="ajc">Kotie Basson (for South Africa) <span class="alh">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span> <span class="ali">kotie.basson@ninetyone.com</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; +27 (0) 82 375 1317</span></p>
+<p class="alc"><span class="ajc">&#160;</span></p>
+<h2 class="aiy"><span class="aiz">Investor presentation</span></h2>
+<p class="alc"><span class="ajc">A presentation to investors and financial analysts will be held by live webcast at 9.00am BST on 3 June 2026. The webcast registration link is</span> <span class="aiu">available https://ninetyone.com/full-year-results.</span></p>
+<p class="alc"><span class="ajc">A copy of the presentation will be made available on the Company's website</span> <span class="ait"><span class="ajb"><a href="https://ninetyone.com/full-year-results-2026">https://ninetyone.com/full-year-results-2026</a></span></span> <span class="ajc">at 9.00am BST</span><span class="ajc">.</span></p>
+<h2><span class="ais">Forward-looking statements</span></h2>
+<p class="alc"><span class="ajc">This announcement does not constitute or form part of any offer, advice, recommendation, invitation or inducement to any person to underwrite, subscribe for or otherwise acquire or dispose of securities in Ninety One plc and its subsidiaries or Ninety One Limited and its subsidiaries (together, "Ninety One"), nor should it be construed as legal, tax, financial, investment or accounting advice.&#160;</span></p>
+<p class="alc"><span class="ajc">This announcement may include statements that are, or may be deemed to be, "forward-looking statements". These forward-looking statements may be identified by the use of forward-looking terminology, including the terms "believes", "estimates", "plans", "projects", "anticipates", "expects", "intends", "may", "will" or "should" or, in each case, their negative or other variations or comparable terminology, or by discussions of strategy, plans, objectives, goals, future events or intentions. Forward-looking statements may and often do differ materially from actual results. Any forward-looking statements contained in the announcement reflect Ninety One's current view with respect to future events and are subject to risks relating to future events and other risks, uncertainties and assumptions relating to the Ninety One's business, results of operations, financial position, liquidity, prospects, growth and strategies. Forward-looking statements speak only as of the date of this announcement.</span></p>
+<p class="alc"><span class="ajc">Except as required by any applicable law or regulation, Ninety One expressly disclaims any obligation or undertaking to release publicly any updates or revisions to any forward-looking statements contained in this announcement or any other forward-looking statements it may make whether as a result of new information, future developments or otherwise.</span></p>
+<h2><span class="ais">About Ninety One</span></h2>
+<p class="alc"><span class="ajc">Ninety One is an active investment manager, investing capital on behalf of its clients to help them achieve their long-term financial objectives. Ninety One is listed on the London and Johannesburg Stock Exchanges.</span><span class="akn"><br class="air" />
+<br class="air" /></span></p>
+<h1><span>OPERATING REVIEW</span></h1>
+<h2><span class="ais">Assets under management ("AUM")</span></h2>
+<p class="alc"><span class="ajc">Closing AUM increased by 31% to &#163;171.8 billion (31 March 2025: &#163;130.8 billion). This increase was due to net inflows of &#163;2.8 billion (2025: net outflows &#163;(4.9) billion) and the Sanlam take-on of &#163;18.3&#160;billion. Furthermore, there was a positive market and foreign exchange impact of &#163;19.9 billion (2025: positive &#163;9.7 billion).</span></p>
+<h2><span class="ajc">AUM by asset class</span></h2>
+<table style="width: 699;" class="alj" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 289;" valign="top" class="aiq">
+<p class="a"><span class="akb">&#163; million</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aip">
+<p class="akz" style="text-align:right;"><span class="akb">31 March 2026</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aio">
+<p class="akz" style="text-align:right;"><span class="akb">31 March 2025</span></p>
+</td>
+<td style="width: 98;" valign="top" class="ain">
+<p class="akz" style="text-align:right;"><span class="akb">Change %</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 289;" valign="top" class="aim">
+<p class="alc"><span class="ajc">Equities</span></p>
+</td>
+<td style="width: 127;" valign="top" class="ail">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;77,427</span></span></p>
+</td>
+<td style="width: 127;" valign="top" class="aik">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;60,108</span></p>
+</td>
+<td style="width: 98;" valign="top" class="aij">
+<p class="akz" style="text-align:right;"><span class="ajq">29</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 289;" valign="top" class="aii">
+<p class="alc"><span class="ajc">Fixed income</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aih">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;43,747</span></span></p>
+</td>
+<td style="width: 127;" valign="top" class="aig">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;31,791</span></p>
+</td>
+<td style="width: 98;" valign="top" class="aif">
+<p class="akz" style="text-align:right;"><span class="ajq">38</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 289;" valign="top" class="aii">
+<p class="alc"><span class="ajc">Multi-asset</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aih">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;26,988</span></span></p>
+</td>
+<td style="width: 127;" valign="top" class="aig">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;20,464</span></p>
+</td>
+<td style="width: 98;" valign="top" class="aif">
+<p class="akz" style="text-align:right;"><span class="ajq">32</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 289;" valign="top" class="aii">
+<p class="alc"><span class="ajc">Alternatives</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aih">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;6,153</span></span></p>
+</td>
+<td style="width: 127;" valign="top" class="aig">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;5,207</span></p>
+</td>
+<td style="width: 98;" valign="top" class="aif">
+<p class="akz" style="text-align:right;"><span class="ajq">18</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 289;" valign="top" class="aiq">
+<p class="alc"><span class="ajc">South African fund platform</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aip">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;17,480</span></span></p>
+</td>
+<td style="width: 127;" valign="top" class="aio">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;13,211</span></p>
+</td>
+<td style="width: 98;" valign="top" class="ain">
+<p class="akz" style="text-align:right;"><span class="ajq">32</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 289;" valign="top" class="aiq">
+<p class="alc"><span class="ajs">Total</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aip">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">171,795</span></span></p>
+</td>
+<td style="width: 127;" valign="top" class="aio">
+<p class="akz" style="text-align:right;"><span class="ajq">130,781</span></p>
+</td>
+<td style="width: 98;" valign="top" class="ain">
+<p class="akz" style="text-align:right;"><span class="ajq">31</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="alk"><span class="ajc">Our AUM remained well diversified across asset classes, with the mix of AUM broadly unchanged from the prior period. All asset classes experienced positive markets.</span></p>
+<h2><span class="ajc">AUM by client group</span></h2>
+<table style="width: 699;" class="alj" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 288;" valign="top" class="aic">
+<p class="a"><span class="akb">&#163; million</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aib">
+<p class="akz" style="text-align:right;"><span class="akb">31 March 2026</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aip">
+<p class="akz" style="text-align:right;"><span class="akb">31 March 2025</span></p>
+</td>
+<td style="width: 99;" valign="top" class="aia">
+<p class="akz" style="text-align:right;"><span class="akb">Change %</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 288;" valign="top" class="ahz">
+<p class="alc"><span class="ajc">United Kingdom</span></p>
+</td>
+<td style="width: 127;" class="ahy">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">23,705</span></span></p>
+</td>
+<td style="width: 127;" class="ail">
+<p class="akz" style="text-align:right;"><span class="ajq">21,132</span></p>
+</td>
+<td style="width: 99;" valign="top" class="ahx">
+<p class="akz" style="text-align:right;"><span class="ajq">12</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 288;" valign="top" class="ahw">
+<p class="alc"><span class="ajc">Africa</span></p>
+</td>
+<td style="width: 127;" class="ahv">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">80,359</span></span></p>
+</td>
+<td style="width: 127;" class="aih">
+<p class="akz" style="text-align:right;"><span class="ajq">55,682</span></p>
+</td>
+<td style="width: 99;" valign="top" class="ahu">
+<p class="akz" style="text-align:right;"><span class="ajq">44</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 288;" valign="top" class="ahw">
+<p class="alc"><span class="ajc">Europe</span></p>
+</td>
+<td style="width: 127;" class="ahv">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">17,883</span></span></p>
+</td>
+<td style="width: 127;" class="aih">
+<p class="akz" style="text-align:right;"><span class="ajq">14,956</span></p>
+</td>
+<td style="width: 99;" valign="top" class="ahu">
+<p class="akz" style="text-align:right;"><span class="ajq">20</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 288;" valign="top" class="ahw">
+<p class="alc"><span class="ajc">Americas</span></p>
+</td>
+<td style="width: 127;" class="ahv">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">18,020</span></span></p>
+</td>
+<td style="width: 127;" class="aih">
+<p class="akz" style="text-align:right;"><span class="ajq">15,396</span></p>
+</td>
+<td style="width: 99;" valign="top" class="ahu">
+<p class="akz" style="text-align:right;"><span class="ajq">17</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 288;" valign="top" class="aic">
+<p class="alc"><span class="ajc">Asia Pacific<sup>(1)</sup></span></p>
+</td>
+<td style="width: 127;" class="aib">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">31,828</span></span></p>
+</td>
+<td style="width: 127;" class="aip">
+<p class="akz" style="text-align:right;"><span class="ajq">23,615</span></p>
+</td>
+<td style="width: 99;" valign="top" class="aia">
+<p class="akz" style="text-align:right;"><span class="ajq">35</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 288;" valign="top" class="aic">
+<p class="alc"><span class="ajs">Total</span></p>
+</td>
+<td style="width: 127;" valign="top" class="aib">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">171,795</span></span></p>
+</td>
+<td style="width: 127;" valign="top" class="aip">
+<p class="akz" style="text-align:right;"><span class="ajq">130,781</span></p>
+</td>
+<td style="width: 99;" valign="top" class="aia">
+<p class="akz" style="text-align:right;"><span class="ajq">31</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="alc"><span class="aht">&#160;Note: (1) Asia Pacific includes Middle East.</span></p>
+<p class="alk"><span class="ahs">AUM remains well diversified by client geography ("client groups") and the split remained broadly in line with the prior period.</span></p>
+<span class="ahr"><br class="air" />
+<br class="air" /></span>
+<p class="all"><span class="ahq">&#160;</span></p>
+<h2 class="ahn"><span class="aho">Net flows</span></h2>
+<p class="alc"><span class="ajc">Ninety One experienced net inflows of &#163;2.8 billion in financial year 2026 (2025: net outflows of &#163;(4.9) billion). In addition, there was the Sanlam take-on of &#163;18.3 billion from the transfers to Ninety One of the Sanlam Investments UK Limited active asset management business and the Sanlam Investment Management's active asset management business in South Africa. The commentary below refers only to the net inflows of &#163;2.8 billion.</span></p>
+<h2 class="ahn"><span class="aiu">Net flows by asset class</span></h2>
+<table style="width: 699;" class="alm" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="ahh">
+<td style="width: 222;" valign="bottom" class="ahl">
+<p class="a"><span class="ahm">&#163; million</span></p>
+</td>
+<td style="width: 217;" valign="bottom" class="ahj">
+<p class="aln" style="text-align:right;"><span class="ahm">31 March 2026</span></p>
+</td>
+<td style="width: 217;" valign="top" class="ahi">
+<p class="aln" style="text-align:right;"><span class="ahm">31 March 2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 222;" valign="top" class="ahg">
+<p class="alc"><span class="ajc">Equities</span></p>
+</td>
+<td style="width: 217;" class="ahf">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 1,244</span></span></p>
+</td>
+<td style="width: 217;" valign="top" class="ahe">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;(2,390)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 222;" valign="top" class="ahd">
+<p class="alc"><span class="ajc">Fixed income</span></p>
+</td>
+<td style="width: 217;" class="ahc">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 1,110</span></span></p>
+</td>
+<td style="width: 217;" valign="top" class="ahb">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;(1,754)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 222;" valign="top" class="ahd">
+<p class="alc"><span class="ajc">Multi-asset</span></p>
+</td>
+<td style="width: 217;" class="ahc">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; (1,079)</span></span></p>
+</td>
+<td style="width: 217;" valign="top" class="ahb">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;(1,716)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 222;" valign="top" class="ahd">
+<p class="alc"><span class="ajc">Alternatives</span></p>
+</td>
+<td style="width: 217;" class="ahc">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 440</span></span></p>
+</td>
+<td style="width: 217;" valign="top" class="ahb">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;637</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 222;" valign="top" class="aha">
+<p class="alc"><span class="ajc">South African fund platform</span></p>
+</td>
+<td style="width: 217;" class="agz">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 1,108</span></span></p>
+</td>
+<td style="width: 217;" valign="top" class="agy">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;359</span></p>
+</td>
+</tr>
+<tr class="agu">
+<td style="width: 222;" valign="top" class="agx">
+<p class="alc"><span class="ajs">Total (excluding Sanlam)</span></p>
+</td>
+<td style="width: 217;" valign="top" class="agw">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">2,823</span></span></p>
+</td>
+<td style="width: 217;" valign="top" class="agv">
+<p class="akz" style="text-align:right;"><span class="ajq">(4,864)</span></p>
+</td>
+</tr>
+<tr class="agu">
+<td style="width: 222;" valign="top" class="agx">
+<p class="alc"><span class="ajs">Total (including Sanlam)</span></p>
+</td>
+<td style="width: 217;" valign="top" class="agw">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">21,059</span></span></p>
+</td>
+<td style="width: 217;" valign="top" class="agv">
+<p class="akz" style="text-align:right;"><span class="ajq">(4,864)</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="alc"><span class="ahs">Equities were the main driver of net inflows, particularly into global strategies in the first half and natural resources in the second half. This was followed by fixed income net inflows, driven primarily by blended strategies throughout the year though somewhat offset by net outflows from emerging market corporate strategies. There were outflows from some South African multi-asset strategies across the year. Alternatives generated net inflows, particularly in developed market credit strategies. The South African fund platform saw net inflows during the year.</span></p>
+<h2 class="ahn"><span class="aiu">Net flows by client group</span></h2>
+<table style="width: 699;" class="alm" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 182;" valign="bottom" class="ags">
+<p class="a"><span class="ahm">&#163; million</span></p>
+</td>
+<td style="width: 243;" valign="bottom" class="agr">
+<p class="aln" style="text-align:right;"><span class="ahm">31 March 2026</span></p>
+</td>
+<td style="width: 231;" valign="bottom" class="agq">
+<p class="aln" style="text-align:right;"><span class="ahm">31 March 2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 182;" valign="top" class="agp">
+<p class="alc"><span class="ajc">United Kingdom</span></p>
+</td>
+<td style="width: 243;" class="ago">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; (1,470)</span></span></p>
+</td>
+<td style="width: 231;" valign="top" class="agn">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;(3,896)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 182;" valign="top" class="agm">
+<p class="alc"><span class="ajc">Africa</span></p>
+</td>
+<td style="width: 243;" class="agl">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; (1,092)</span></span></p>
+</td>
+<td style="width: 231;" valign="top" class="agk">
+<p class="akz" style="text-align:right;"><span class="ajq">(289)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 182;" valign="top" class="agm">
+<p class="alc"><span class="ajc">Europe</span></p>
+</td>
+<td style="width: 243;" class="agl">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 966</span></span></p>
+</td>
+<td style="width: 231;" valign="top" class="agk">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;(716)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 182;" valign="top" class="agm">
+<p class="a"><span class="ajc">Americas</span></p>
+</td>
+<td style="width: 243;" class="agl">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 775</span></span></p>
+</td>
+<td style="width: 231;" valign="top" class="agk">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;(701)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 182;" valign="top" class="ags">
+<p class="a"><span class="ajc">Asia Pacific<sup>(1)</sup></span></p>
+</td>
+<td style="width: 243;" class="agj">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 3,644</span></span></p>
+</td>
+<td style="width: 231;" valign="top" class="agq">
+<p class="akz" style="text-align:right;"><span class="ajq">&#160;738</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 182;" valign="top" class="ags">
+<p class="alc"><span class="ajs">Total (excluding Sanlam)</span></p>
+</td>
+<td style="width: 243;" valign="top" class="agr">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">2,823</span></span></p>
+</td>
+<td style="width: 231;" valign="top" class="agq">
+<p class="akz" style="text-align:right;"><span class="ajq">(4,864)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 182;" valign="top" class="ags">
+<p class="alc"><span class="ajs">Total (including Sanlam)</span></p>
+</td>
+<td style="width: 243;" valign="top" class="agr">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="ajq">21,059</span></span></p>
+</td>
+<td style="width: 231;" valign="top" class="agq">
+<p class="akz" style="text-align:right;"><span class="ajq">(4,864)</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="alc"><span class="aht">Note: (1) Asia Pacific includes Middle East.</span></p>
+<p class="alk"><span class="ahs">Asia Pacific was the largest contributor to net inflows, mainly from global equities in the first half and gold, natural resources and local currency fixed income strategies in the second half. Europe's net inflows were driven by natural resources and emerging market equities as well as hard currency and blended fixed income strategies. The Americas' net inflows were driven by global and Asian equities, as well as natural resources. In spite of strong net inflows into the fund platform and fixed income, South African multi-asset and equities strategies drove net outflows in Africa. The UK outflows reflected some large new client wins during the year being outweighed by clients rebalancing their portfolios, with almost all still remaining clients in the UK.</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<p class="alc"><span class="akb">&#160;</span></p>
+<h2 class="agi"><span class="ais">Investment performance</span></h2>
+<p class="a"><span class="agh">Firm-wide investment performance<sup>(1)</sup></span></p>
+<p class="alo"><span class="aiu">Our short- and medium-term performance closed at 56% and 69% respectively (31 March 2025: 68% and 59% respectively) for one- and three-year outperformance.</span></p>
+<p class="alo"><span class="aiu">Our long-term firm-wide investment performance remained competitive, with the five- and ten-year outperformance closing at 63% and 75% respectively (31 March 2025: 72% and 81% respectively).</span></p>
+<p class="alo"><span class="aiu">&#160;</span></p>
+<table class="alp" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 124;" class="agf">
+<p class="a"><span class="akd"><br /></span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="bb"><span class="akd">1 Year</span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="bb"><span class="akd">3 Year</span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="bb"><span class="akd">5 Year</span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="bb"><span class="akd">10 Year</span></p>
+</td>
+<td style="width: 115;" class="agd">
+<p class="bb"><span class="akd">Since inception</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 124;" class="agf">
+<p class="alc"><span class="ajs">Outperformance</span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="aw"><span class="agc">56%</span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="aw"><span class="agc">69%</span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="aw"><span class="agc">63%</span></p>
+</td>
+<td style="width: 115;" class="age">
+<p class="aw"><span class="agc">75%</span></p>
+</td>
+<td style="width: 115;" class="agd">
+<p class="aw"><span class="agc">76%</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 124;" class="agb">
+<p class="alc"><span class="ajs">Underperformance</span></p>
+</td>
+<td style="width: 115;" class="aga">
+<p class="aw"><span class="agc">44%</span></p>
+</td>
+<td style="width: 115;" class="aga">
+<p class="aw"><span class="agc">31%</span></p>
+</td>
+<td style="width: 115;" class="aga">
+<p class="aw"><span class="agc">37%</span></p>
+</td>
+<td style="width: 115;" class="aga">
+<p class="aw"><span class="agc">25%</span></p>
+</td>
+<td style="width: 115;" class="afz">
+<p class="aw"><span class="agc">24%</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="alc"><span class="ajg">Note: (1) Firm-wide outperformance is calculated as the sum of the total market values for individual portfolios that have positive active returns on a gross basis expressed as a percentage of total AUM. Our percentage of firm outperformance is reported on the basis of current AUM and therefore does not include terminated funds. Total AUM excludes double-counting of pooled products and third-party assets administered on our South African fund platform. Benchmarks used for the above analysis include cash, peer group averages, inflation and market indices as specified in client mandates or fund prospectuses. For all periods shown, market values are as at the period end date.</span></p>
+<p class="a"><span class="ajs">&#160;</span></p>
+<p class="all"><br /></p>
+<h2 class="afw"><span class="ais">Alternative performance measures</span></h2>
+<p class="alc"><span class="akd">Ninety One uses non-IFRS measures which include measures used by management to monitor and assess the financial performance of Ninety One.</span></p>
+<p class="akr"><span class="akd">Items are included in or excluded from adjusted operating revenue and expenses based on management's assessment of whether they contribute to the core operations of the business. In particular:</span></p>
+<p class="alq"><span class="akd">-&#160;&#160;&#160; Share of profit from associates, as well as net gain or loss on investments and other income, are included in adjusted operating revenue as these items are directly attributable to operations;</span></p>
+<p class="alq"><span class="akd">-&#160;&#160;&#160; deferred employee benefit scheme movements are deducted from adjusted operating revenue and adjusted operating expenses as the movements offset and do not impact operating performance;</span></p>
+<p class="alq"><span class="akd">-&#160;&#160;&#160; subletting income is excluded from adjusted operating revenue and deducted from adjusted operating expenses as it is a recovery of costs rather than a core revenue item;</span></p>
+<p class="alq"><span class="akd">-&#160;&#160;&#160; corporate related items and the amortisation of intangible assets (an adjustment arising from the Sanlam transactions, which would apply to similar corporate transactions in the future) are excluded from adjusted operating expenses as they are not operating in nature;</span></p>
+<p class="alq"><span class="akd">-&#160;&#160;&#160; the share scheme net credit/expense is excluded from adjusted operating expenses and employee remuneration so that they reflect the position as though all awards during the year were fully expensed in the same year; and</span></p>
+<p class="alr"><span class="akd">-&#160;&#160;&#160; interest expense on lease liabilities is excluded from adjusted net interest income and included in adjusted operating expenses to reflect the operating nature of this expense.</span></p>
+<p class="alc"><span class="akd">Adjusted EPS for the comparative year is calculated on the after tax adjusted operating profit divided by the number of shares in issue at the end of the year, as management's assessment is that this is a reliable measure of Ninety One's operating performance.</span></p>
+<p class="alc"><span class="akd">Due to the significant number of shares issued in relation to the Sanlam transaction, adjusted EPS for the current year has been amended by weighting the shares issued to Sanlam. This should be a one-off calculation adjustment for the Sanlam transaction.</span></p>
+<p class="alc"><span class="akd">These non-IFRS measures are considered additional disclosures and in no case are intended to replace the financial information prepared in accordance with the basis of preparation detailed in the consolidated financial statements. Moreover, the manner in which Ninety One defines and calculates these measures may differ from the way in which these or similar measures are calculated by other entities. Accordingly, they may not be comparable to measures used by other entities in Ninety One's industry.</span></p>
+<p class="alc"><span class="akd">The non-IFRS measures are considered to be pro forma financial information in terms of the JSE listings requirements, have been compiled for illustrative purposes only and are the responsibility of Ninety One's Board. Due to their nature, they may not fairly present Ninety One's financial position, changes in equity, results of operations or cash flows. The non-IFRS financial information has been prepared with reference to JSE Guidance Letter: Presentation of pro forma financial information dated 16 February 2026 and in accordance with paragraphs 11.8 to 11.18 of the JSE Listings Requirements, the Revised SAICA Guide on Pro forma Financial Information (issued September 2014) and International Standard on Assurance Engagement ("ISAE") 3420 - Assurance Engagements to Report on the Compilation of Pro Forma Financial Information included in a Prospectus, to the extent applicable given the Non-IFRS Financial Information's nature. This pro forma financial information has been reported on by PwC in terms of ISAE 3420 and their unmodified report is available for inspection on the Ninety One website (</span><span><span class="aft"><a href="http://www.ninetyone.com">www.ninetyone.com</a></span></span><span class="akd">).</span></p>
+<span class="afr"><br class="afs" />
+<br class="air" /></span>
+<p class="a"><span class="afq">&#160;</span></p>
+<p class="akr"><span class="afp">These non-IFRS measures, including reconciliations to their nearest consolidated financial statements equivalents, are as follows:</span></p>
+<table style="width: 716;" class="als" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="afl">
+<td style="width: 58%;" class="afo">
+<p class="a"><span class="akb">&#163; million</span></p>
+</td>
+<td style="width: 20%;" class="afn">
+<p class="akz" style="text-align:right;"><span class="akb">2026</span></p>
+</td>
+<td style="width: 20%;" class="afm">
+<p class="akz" style="text-align:right;"><span class="akb">2025</span></p>
+</td>
+</tr>
+<tr class="afg">
+<td style="width: 58%;" class="afk">
+<p class="a"><span class="akd">Net revenue</span></p>
+</td>
+<td style="width: 20%;" class="afi">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">650.2</span></span></p>
+</td>
+<td style="width: 20%;" class="afh">
+<p class="akz" style="text-align:right;"><span class="afj">594.6</span></p>
+</td>
+</tr>
+<tr class="afg">
+<td style="width: 58%;" class="aff">
+<p class="a"><span class="akd">Net gain on investments and other income</span></p>
+</td>
+<td style="width: 20%;" class="afe">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">14.4</span></span></p>
+</td>
+<td style="width: 20%;" class="afd">
+<p class="akz" style="text-align:right;"><span class="afj">9.8</span></p>
+</td>
+</tr>
+<tr class="afg">
+<td style="width: 58%;" class="afc">
+<p class="a"><span class="akd">Adjustments:</span></p>
+</td>
+<td style="width: 20%;" class="afb">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 20%;" class="afa">
+<p class="akz" style="text-align:right;"><span class="afj"><br /></span></p>
+</td>
+</tr>
+<tr class="afg">
+<td style="width: 58%;" class="afc">
+<p class="a"><span class="akd">Share of (loss)/profit from associates</span></p>
+</td>
+<td style="width: 20%;" class="afb">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(0.6)</span></span></p>
+</td>
+<td style="width: 20%;" class="afa">
+<p class="akz" style="text-align:right;"><span class="afj">2.4</span></p>
+</td>
+</tr>
+<tr class="afg">
+<td style="width: 58%;" class="afc">
+<p class="a"><span class="akd">Deferred employee benefit scheme gain</span><sup><span class="aez">(1)</span></sup></p>
+</td>
+<td style="width: 20%;" class="afb">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(5.4)</span></span></p>
+</td>
+<td style="width: 20%;" class="afa">
+<p class="akz" style="text-align:right;"><span class="afj">(2.7)</span></p>
+</td>
+</tr>
+<tr class="afg">
+<td style="width: 58%;" class="afc">
+<p class="a"><span class="akd">Corporate related fx loss</span></p>
+</td>
+<td style="width: 20%;" class="afb">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">2.6</span></span></p>
+</td>
+<td style="width: 20%;" class="afa">
+<p class="akz" style="text-align:right;"><span class="afj">-</span></p>
+</td>
+</tr>
+<tr class="afg">
+<td style="width: 58%;" class="afk">
+<p class="a"><span class="akd">Subletting income</span></p>
+</td>
+<td style="width: 20%;" class="afi">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(1.9)</span></span></p>
+</td>
+<td style="width: 20%;" class="afh">
+<p class="akz" style="text-align:right;"><span class="afj">(1.5)</span></p>
+</td>
+</tr>
+<tr class="afl">
+<td style="width: 58%;" class="afo">
+<p class="a"><span class="akd">Other income</span></p>
+</td>
+<td style="width: 20%;" class="afn">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">9.1</span></span></p>
+</td>
+<td style="width: 20%;" class="afm">
+<p class="akz" style="text-align:right;"><span class="afj">8.0</span></p>
+</td>
+</tr>
+<tr class="afl">
+<td style="width: 58%;" class="afo">
+<p class="a"><span class="aey">Adjusted operating revenue</span></p>
+</td>
+<td style="width: 20%;" class="afn">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">659.3</span></span></p>
+</td>
+<td style="width: 20%;" class="afm">
+<p class="akz" style="text-align:right;"><span class="afj">602.6</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="a"><span class="aew">&#160;</span></p>
+<table style="width: 718;" class="alt" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akb">&#163; million</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span class="aeu">2026</span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="akz" style="text-align:right;"><span class="aeu">2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aer">
+<p class="a"><span class="akd">Operating expenses</span></p>
+</td>
+<td style="width: 200;" class="aeq">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">468.5</span></span></p>
+</td>
+<td style="width: 144;" class="aen">
+<p class="alu" style="text-align:right;"><span class="aep">418.5</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Adjustments:</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Share scheme net (expense)/credit</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(7.6)</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">0.8</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Corporate related professional fees</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(4.8)</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">(3.7)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Deferred employee benefit scheme gain<sup>(1)</sup></span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(5.4)</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">(2.7)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Subletting income</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(1.9)</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">(1.5)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Interest expense on lease liabilities</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">3.4</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">3.3</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akd">Amortisation of intangible assets</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(4.2)</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">-</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Adjusted operating expenses</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">448.0</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">414.7</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" valign="bottom" class="aej">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+<td style="width: 200;" valign="bottom" class="aei">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 144;" valign="bottom" class="aeh">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akb">&#163; million</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span class="aeu">2026</span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="akz" style="text-align:right;"><span class="aeu">2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aer">
+<p class="a"><span class="akd">Staff expenses</span></p>
+</td>
+<td style="width: 200;" class="aeq">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">297.5</span></span></p>
+</td>
+<td style="width: 144;" class="aen">
+<p class="alu" style="text-align:right;"><span class="aep">260.5</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Adjustments:</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akd">Share scheme net (expense)/credit</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(7.6)</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">0.8</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Employee remuneration</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">289.9</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">261.3</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" valign="bottom" class="aej">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+<td style="width: 200;" valign="bottom" class="aei">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 144;" valign="bottom" class="aeh">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akb">&#163; million</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span class="aeu">2026</span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="akz" style="text-align:right;"><span class="aeu">2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aer">
+<p class="a"><span class="akd">Adjusted operating revenue</span></p>
+</td>
+<td style="width: 200;" class="aeq">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">659.3</span></span></p>
+</td>
+<td style="width: 144;" class="aen">
+<p class="alu" style="text-align:right;"><span class="aep">602.6</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akd">Adjusted operating expenses</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(448.0)</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">(414.7)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Adjusted operating profit</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">211.3</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">187.9</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Adjusted operating profit margin</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">32.0%</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">31.2%</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" valign="bottom" class="aej">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+<td style="width: 200;" valign="bottom" class="aei">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 144;" valign="bottom" class="aeh">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<span class="aef"><br class="air" />
+<br class="air" /></span>
+<p class="a"><span>&#160;</span></p>
+<table style="width: 718;" class="alt" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akb">&#163; million</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span class="aeu">2026</span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="akz" style="text-align:right;"><span class="aeu">2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aer">
+<p class="a"><span class="akd">Net interest income</span></p>
+</td>
+<td style="width: 200;" class="aeq">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">12.0</span></span></p>
+</td>
+<td style="width: 144;" class="aen">
+<p class="alu" style="text-align:right;"><span class="aep">16.0</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Adjustments:</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akd">Interest expense on lease liabilities</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">3.4</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">3.3</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Adjusted net interest income</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">15.4</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">19.3</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" valign="bottom" class="aej">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+<td style="width: 200;" valign="bottom" class="aei">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">&#160;</span></span></p>
+</td>
+<td style="width: 144;" valign="bottom" class="aeh">
+<p class="alu" style="text-align:right;"><span class="aep"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akb">&#163; million (unless stated otherwise)</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span class="aeu">2026</span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="akz" style="text-align:right;"><span class="aeu">2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aer">
+<p class="a"><span class="akd">Profit after tax</span></p>
+</td>
+<td style="width: 200;" class="aeq">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">153.5</span></span></p>
+</td>
+<td style="width: 144;" class="aen">
+<p class="alu" style="text-align:right;"><span class="aep">150.1</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Adjusted net interest income</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">(15.4)</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">(19.3)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Share scheme net expense/(credit)</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">7.6</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">(0.8)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Corporate related professional fees and fx losses</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">7.4</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">3.7</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aem">
+<p class="a"><span class="akd">Amortisation of intangible assets</span></p>
+</td>
+<td style="width: 200;" class="ael">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">4.2</span></span></p>
+</td>
+<td style="width: 144;" class="aek">
+<p class="alu" style="text-align:right;"><span class="aep">-</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="akd">Tax on adjusting items</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">1.0</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">5.2</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Adjusted earnings attributable to ordinary shareholders</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">158.3</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">138.9</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Number of ordinary shares in issue (m)</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">1,005.1</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">896.8</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Number of ordinary shares for adjusted EPS (m)</span><sup><span class="aey">(2)</span></sup></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">908.4</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">896.8</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 352;" class="aev">
+<p class="a"><span class="aey">Adjusted earnings per share (p)</span></p>
+</td>
+<td style="width: 200;" class="aet">
+<p class="akz" style="text-align:right;"><span style="font-weight: bold;"><span class="afj">17.4</span></span></p>
+</td>
+<td style="width: 144;" class="aes">
+<p class="alu" style="text-align:right;"><span class="aep">15.5</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="alv"><span>(1)&#160;&#160;</span> <span class="aew">The deferred employee benefit scheme invests in pooled vehicles managed by entities within the Group. Any gains or losses from these investments result in corresponding increases or decreases in the liability to employees, which are reflected as increases or decreases in operating expenses.</span></p>
+<p class="alv"><span>(2)&#160;&#160;</span> <span class="aew">Weighted shares used for adjusted EPS calculation at 31 March 2026:</span></p>
+<p class="alw"><span class="aew">Shares in issue excluding shares issued for Sanlam: 879.4m</span></p>
+<p class="alw"><span class="aew">Weighting of shares issued for Sanlam UK: 13.7m x 289/365 = 10.9m</span></p>
+<p class="alw"><span class="aew">Weighting of shares issued for Sanlam SA: 112.0m x 59/365 = 18.1m</span></p>
+<p class="alw"><span class="aew">Shares in issue for adjusted EPS calculation: 908.4m</span></p>
+<p class="all"><span class="aec">&#160;</span></p>
+<span class="aeb"><br class="air" />
+<br class="air" /></span>
+<p class="all"><span class="aea">&#160;</span></p>
+<p class="akr"><span class="akj">SHAREHOLDER INFORMATION AND DIVIDEND ANNOUNCEMENT&#160;</span></p>
+<p class="alc"><span>In terms of the DLC structure, Ninety One plc shareholders registered on the United Kingdom share register may receive all or part of their dividend entitlements through dividends declared and paid by Ninety One plc on their ordinary shares and/or through dividends declared and paid on the SA DAN share issued by Ninety One Limited.</span></p>
+<p class="alc"><span>Ninety One plc shareholders registered on the South African branch register may receive all or part of their dividend entitlements through dividends declared and paid by Ninety One plc on their ordinary shares and/or through dividends declared and paid on the SA DAS share issued by Ninety One Limited.</span></p>
+<p class="alx"><span class="akb">Ninety One plc dividend announcement</span></p>
+<p class="alc"><span>Notice is hereby given that a gross final dividend of 7.4 pence per ordinary share has been recommended by the Board from income reserves in respect of the financial year ended 31 March 2026. The final dividend will be paid on 6 August 2026 to shareholders recorded in the shareholders' registers of the company on close of business 17 July 2026.</span></p>
+<p class="alc"><span>Ninety One plc shareholders registered on the United Kingdom share register, will receive their dividend payment by Ninety One plc of 7.4 pence per ordinary share.</span></p>
+<p class="alc"><span>Ninety One plc shareholders registered on the South African branch register, will receive their dividend payment by Ninety One plc equivalent to 7.4 pence per ordinary share.</span></p>
+<p class="akr"><span>&#160;</span></p>
+<table class="aly" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="alz"><span class="agh">The relevant dates for the payment of the dividend are as follows:</span></p>
+<p class="a"><span class="adx">Last day to trade cum-dividend</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="akz" style="text-align:right;"><span class="adv"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="a"><span>On the Johannesburg Stock Exchange ("JSE")</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="akz" style="text-align:right;"><span>Tuesday, 14 July 2026</span></p>
+</td>
+</tr>
+<tr class="adr">
+<td style="width: 401;" valign="top" class="adt">
+<p class="a"><span>On the London Stock Exchange ("LSE")</span></p>
+</td>
+<td style="width: 269;" valign="top" class="ads">
+<p class="akz" style="text-align:right;"><span>Wednesday, 15 July 2026</span></p>
+</td>
+</tr>
+<tr class="adn">
+<td style="width: 401;" valign="top" class="adq">
+<p class="a"><span class="adx">Shares commence trading ex-dividend</span></p>
+</td>
+<td style="width: 269;" valign="top" class="ado">
+<p class="akz" style="text-align:right;"><span class="adp"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="a"><span>On the JSE</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="akz" style="text-align:right;"><span>Wednesday, 15 July 2026</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="a"><span>On the LSE</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="akz" style="text-align:right;"><span>Thursday, 16 July 2026</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="a"><span class="adx">Record date</span> <span>(on the JSE and LSE)</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="akz" style="text-align:right;"><span>Friday, 17 July 2026</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="a"><span class="adx">Payment date</span> <span>(on the JSE and LSE)</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="akz" style="text-align:right;"><span>Thursday, 6 August 2026</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="akr"><span class="adp">&#160;</span></p>
+<p class="akr"><span>Share certificates on the South African branch register may not be dematerialised or rematerialised between Wednesday, 15 July 2026&#160; and Friday, 17 July 2026, both dates inclusive, nor may transfers between the United Kingdom share register and the South African branch register take place between Wednesday, 15 July 2026 and Friday, 17 July 2026, both dates inclusive.</span></p>
+<p class="alc"><span class="akn">&#160;</span></p>
+<p class="akr"><span class="agh">Additional information for Ninety One shareholders registered on the South African branch register</span></p>
+<p class="ama"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>The final dividend paid by Ninety One plc to shareholders registered on the South African branch register is a local payment derived from funds sourced in South Africa.</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>Shareholders registered on the South African branch register are advised that the distribution of 7.40000 pence, equivalent to a gross dividend of 161.41620 cents per share (rounded to 161.00000 cents per share), has been arrived at using the rand/pound Sterling average buy/sell spot rate of ZAR21.8130/GBP, as determined at 11:00 (SA time) on Tuesday, 2 June 2026. Consequently, tax will be calculated on the gross dividend of 161.00000 cents per share.</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>Ninety One plc United Kingdom tax reference number: 623 59652 16053.</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>The issued ordinary share capital of Ninety One plc is 668,672,400 ordinary shares.</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>The dividend paid by Ninety One plc to South African resident shareholders registered on the South African branch register are subject to South African Dividend Tax ("Dividend Tax") of 20% (subject to any available exemptions as legislated).</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>Shareholders registered on the South African branch register who are exempt from paying the Dividend Tax will receive a net dividend of 161.00000 cents per share.</span></p>
+<p class="amc"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>Shareholders registered on the South African branch register who are not exempt from paying the Dividend Tax will receive a net dividend of 128.80000 cents per share (gross dividend of 161.00000 cents per share less Dividend Tax of 32.20000 cents per share).</span></p>
+<p class="akr"><span class="akn">&#160;</span></p>
+<p class="akr"><span class="akn">By order of the board</span></p>
+<p class="ald"><span class="akm">Amina Rasool</span></p>
+<p class="ald"><span class="akn">Company Secretary</span></p>
+<p class="ald"><span class="akn">3 June 2026</span></p>
+<p class="ald"><span class="akn">&#160;</span></p>
+<p class="ald"><span class="akn">&#160;</span></p>
+<p class="akr"><span class="akb">Ninety One Limited dividend announcement</span></p>
+<p class="ald"><span style="font-weight: bold;"><span class="adj">&#160;</span></span></p>
+<p class="alc"><span class="akn">Notice is hereby given that a gross final dividend of</span> <span class="akn">161.00000</span> <span class="akn">cents per ordinary share has been recommended by the Board from income reserves in respect of the financial year ended 31 March 2026. The final dividend will be paid on</span> <span class="akn">6 August 2026</span> <span class="akn">to shareholders recorded in the shareholders' register of the company on close of business 17 July 2026.</span></p>
+<p class="akr"><span class="adi">&#160;</span></p>
+<p class="akr"><span class="agh">The relevant dates for the payment of the dividend are as follows:</span></p>
+<table class="aly" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="akr"><span class="akm">Last day to trade cum-dividend</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="alu" style="text-align:right;"><span class="akn">Tuesday, 14 July 2026</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="akr"><span class="akm">Shares commence trading ex-dividend</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="alu" style="text-align:right;"><span class="akn">Wednesday, 15 July 2026</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="akr"><span class="akm">Record date</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="alu" style="text-align:right;"><span class="akn">Friday, 17 July 2026</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 401;" valign="top" class="adw">
+<p class="akr"><span class="akm">Payment date</span></p>
+</td>
+<td style="width: 269;" valign="top" class="adu">
+<p class="alu" style="text-align:right;"><span class="akn">Thursday, 6 August 2026</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="akr"><span class="akn">&#160;</span></p>
+<p class="akr"><span class="akn">The final gross dividend of</span> <span class="akn">161.41620</span> <span class="akn">cents per ordinary share (rounded to</span> <span class="akn">161.00000</span> <span class="akn">cents per ordinary share) has been determined by converting the Ninety One plc distribution of 7.40000</span> <span class="akn">pence per ordinary share into rands using the rand/pound sterling average buy/sell spot rate of ZAR</span><span class="akn">21.8130</span> <span class="akn">/GBP, as determined at 11:00 (SA time) on</span> <span class="akn">2 June 2026</span><span class="akn">.</span> <span class="akn">Consequently, tax will be calculated on the gross dividend of</span> <span class="akn">161.00000</span> <span class="akn">cents per share.</span></p>
+<p class="akr"><span class="akn">Share certificates may not be dematerialised or rematerialised between</span> <span class="akn">Wednesday, 15 July 2026</span> <span class="akn">and</span> <span class="akn">Friday, 17 July 2026</span><span class="akn">, both dates inclusive.</span></p>
+<p class="akr"><span class="akn">&#160;</span></p>
+<p class="akr"><span class="agh">Additional information to take note of:</span></p>
+<p class="ama"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>The final dividend paid by Ninety One Limited to shareholders registered on the South African register is a local payment derived from funds sourced in South Africa.</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>Ninety One Limited South African tax reference number: 9661 9311 71.</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>The issued ordinary share capital of Ninety One Limited is 332,961,027 ordinary shares.</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>The dividend paid by Ninety One Limited is subject to South African Dividend Tax ("Dividend Tax") of 20% (subject to any available exemptions as legislated).</span></p>
+<p class="amb"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>Shareholders who are exempt from paying the Dividend Tax will receive a net dividend of 161.00000 cents per ordinary share.</span></p>
+<p class="amc"><span class="adl">-&#160;&#160;&#160;&#160;&#160;</span> <span>Shareholders who are not exempt from paying the Dividend Tax will receive a net dividend of 128.8000 cents per ordinary share (gross dividend of 161.00000 cents per ordinary share less Dividend Tax of 32.20000 cents per ordinary share).</span></p>
+<p class="akr"><span class="akn">&#160;</span></p>
+<p class="ald"><span class="akn">By order of the board</span></p>
+<p class="ald"><span class="akn">&#160;</span></p>
+<p class="ald"><span class="akm">Ninety One Africa Proprietary Limited</span></p>
+<p class="ald"><span style="font-weight: bold;"><span class="akn">&#160;</span></span></p>
+<p class="ald"><span style="font-weight: bold;"><span class="akn">&#160;</span></span></p>
+<p class="ald"><span class="akn">Company Secretary</span></p>
+<p class="ald"><span class="akn">3 June 2026</span></p>
+<p class="ald"><span class="ajc">&#160;</span></p>
+<p class="akr"><span class="akm">&#160;</span></p>
+<p class="akr"><span class="akn">&#160;</span></p>
+</div>
+</div>
+
+
+<div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/N91" style="font-size:14px;">Ninety One
+                    (N91)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>4 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/helios-underwriting--huw/director-pdmr-dealing-and-total-voting-rights/9875327">Helios Underwriting</a>
+            </li>
+                        <li>
+                <span>8 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/breedon-group--bree/director-pdmr-shareholding/9875319">Breedon Group</a>
+            </li>
+                        <li>
+                <span>37 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/hgcapital-trust--hgt/director-pdmr-shareholding/9875236">HGCapital Trust</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/london-stock-exchange-group--lseg/director-pdmr-dealing/9875165">London Stock Exchange Group</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/tatton-asset-management--tam/exercise-of-options-and-pdmr-dealing/9875109">Tatton Asset Management</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>
