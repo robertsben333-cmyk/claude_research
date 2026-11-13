@@ -59,3 +59,7 @@
 ## Edge hunt (panel) — step 6b buy
 - Logged at 2026-11-13 18:58 UTC
 - 18:58 UTC (13:58 ET, 122 min to the close). LIVE (equity $2,700, held $0): plan and open --submit: nothing to trade, 0 orders. PAPER (equity $22,470.95, held $0): same, 0 orders. All three selected names fail the checks: NIU ($0.19m) and XTNT ($0.04m) below the $0.2m turnover floor, LNZA not shortable at Alpaca. Top-up not applied (0 strong names tradable; the only 70-79 candidate was BLDP, and top-up applies only with exactly one strong name in the book). Both accounts stay flat over the weekend. Note: publish.sh exits without pushing when it has nothing to commit, so after a CI race the note and panel history reached main by a merge commit (b27ebf48).
+
+## Holistic research — 2026-11-13 — STARTED
+- Logged at 2026-11-13 19:17 UTC
+- Stage H fired 19:17 UTC (14:17 ET); picking from E-P sweep, playbook hp.v2 + control hp.v1 on every name
