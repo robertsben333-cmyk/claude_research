@@ -51,3 +51,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-13 18:47 UTC
 - 20 packs, four judges (opus5, opus55, sonnet55, fable51), one file, no split. edge_score: 20 ranked, 19 not ranked (no hunt); floor-clearers NIU -5.0, XTNT -4.5. edge_grounded_score written.
+
+## Edge hunt (panel) — ranking
+- Logged at 2026-11-13 18:55 UTC
+- Panel: all four pinned judges ran, 20/20 ids each, no fallback. Selected (panel_pct >= 80, 4 members): NIU 98 S, XTNT 96 S, LNZA 85 S. Next: BLDP 76 S, GAME 73 S, ARMK 64 L. Searcher floor-clearers NIU -5.0, XTNT -4.5. rho(searcher impact_sum, panel_pct_signed) = +0.96. Stage E has no files today (Routine stopped). All three selected fail Alpaca checks per assets: NIU and XTNT below the turnover floor, LNZA not lendable.
