@@ -39,6 +39,21 @@ def _num(v):
     return f
 
 
+def _band_increment(bands, price):
+    """The increment of the highest band whose lowEdge is at or below `price`."""
+    best = None
+    for b in bands or []:
+        try:
+            lo, inc = float(getattr(b, "lowEdge")), float(getattr(b, "increment"))
+        except (TypeError, ValueError, AttributeError):
+            continue
+        if math.isnan(lo) or math.isnan(inc) or inc <= 0 or lo > price + 1e-12:
+            continue
+        if best is None or lo >= best[0]:
+            best = (lo, inc)
+    return best[1] if best else None
+
+
 class TwsApi:
     """The `Ibkr` interface over ib_async. `ib` may be injected (the smoke test does)."""
 
@@ -52,6 +67,7 @@ class TwsApi:
         self.route = route
         self.ib = ib
         self._details = {}
+        self._rules = {}
 
     # -------------------------------------------------------------- session
 
@@ -174,11 +190,50 @@ class TwsApi:
         return {"conid": c.conId, "symbol": c.symbol, "exchange": c.primaryExchange or c.exchange,
                 "currency": c.currency, "company_name": cd.longName}
 
-    def min_tick(self, conid):
+    def min_tick(self, conid, price=None):
+        """The price increment the exchange accepts AT `price`.
+
+        `contractDetails.minTick` is one contract-wide number and is finer than most
+        exchanges' price ladders: on 2026-11-13 the LSE refused a MEGP sell at 101.376p
+        (Error 110, "does not conform to the minimum price variation") because minTick
+        let three decimals through. The real ladder is the contract's market rule
+        (`marketRuleIds`, one per valid exchange, read with `reqMarketRule`): a list of
+        (lowEdge, increment) bands. With a price, use the band it falls in on the rule of
+        the primary listing; if the primary's rule cannot be picked out, the coarsest
+        increment any listed venue imposes (valid on all of them). Without a price, or if
+        no rule can be read, fall back to minTick."""
         try:
-            return _num(self._detail(conid).minTick)
+            cd = self._detail(conid)
         except Exception:
             return None
+        if price is not None and price > 0:
+            inc = self._rule_increment(cd, float(price))
+            if inc:
+                return inc
+        return _num(getattr(cd, "minTick", None))
+
+    def _rule_increment(self, cd, price):
+        ids = [x.strip() for x in str(getattr(cd, "marketRuleIds", "") or "").split(",")]
+        exs = [x.strip() for x in str(getattr(cd, "validExchanges", "") or "").split(",")]
+        if not any(ids):
+            return None
+        prim = getattr(cd.contract, "primaryExchange", "") or ""
+        pick = ids[exs.index(prim)] if prim and len(ids) == len(exs) and prim in exs else None
+        if pick:
+            inc = _band_increment(self._market_rule(pick), price)
+            if inc:
+                return inc
+        incs = [_band_increment(self._market_rule(r), price) for r in dict.fromkeys(i for i in ids if i)]
+        incs = [i for i in incs if i]
+        return max(incs) if incs else None
+
+    def _market_rule(self, rid):
+        if rid not in self._rules:
+            try:
+                self._rules[rid] = list(self.ib.reqMarketRule(int(rid)) or [])
+            except Exception:
+                self._rules[rid] = []
+        return self._rules[rid]
 
     def _contract(self, conid):
         from ib_async import Contract
