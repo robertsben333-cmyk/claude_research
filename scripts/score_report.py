@@ -63,7 +63,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance  # noqa: E402
 
-US_DIRS = {"edge", "edge-sonnet", "edge-panel", "edge-panel-fable", "edge-deep"}
+US_DIRS = {"edge", "edge-sonnet", "edge-panel", "edge-panel-fable", "edge-panel-v3b", "edge-deep"}
 DIR_MARKET = {v["dir"]: k for k, v in provenance.MARKETS.items()}
 MIN_HISTORY = 20
 
@@ -192,7 +192,9 @@ def model_history(run, reg, everything=False):
         # until its scale has been compared with the hunters' on resolved names.
         # ipo (stage IPO) sizes an INTRADAY window on a different event, so its sizes
         # are not a reference for an earnings hunt's, nor theirs for it.
-        if d.name not in DIR_MARKET or d.name in ("edge-panel", "edge-panel-fable", "edge-deep", "ipo"):
+        # edge-panel-v3b (stage E-P v3b) is stage E-P's searcher with a second addendum.
+        if d.name not in DIR_MARKET or d.name in ("edge-panel", "edge-panel-fable", "edge-panel-v3b",
+                                                  "edge-deep", "ipo"):
             continue
         model = run_model(d, reg)
         models[d.resolve()] = model

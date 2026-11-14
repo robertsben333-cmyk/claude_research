@@ -64,6 +64,23 @@ VARIANTS = {
                         "edit this copy. Give it the ticker, the event window and the path "
                         "to the sealed baseline."),
     }, "searcher-addendum.md"),
+    # stage E-P v3b (2026-11-14, operator's instruction): stage E-P's searcher with a
+    # second addendum, config/searcher-addendum-v3b.md, written from the review of
+    # us-panel.v3 (research/analyses/us-panel-v3-information/): evidence-type tags, an
+    # expectations block, mid-quarter statements, the next guide, counterparties before
+    # peers. Same model as stage E-P's searcher, so the prompt is the variable.
+    "unpriced-searcher-v3b.md": ("unpriced-hunter.md", {
+        "name": "unpriced-searcher-v3b",
+        "model": "claude-opus-5-5",
+        "description": ("Stage E-P v3b. The stage E-P searcher on Opus 5.5 with a second "
+                        "addendum that searches for the reaction, not only the quarter, with an "
+                        "expectations block, statements made inside the quarter, the next "
+                        "guide, counterparties before peers, and an evidence_type on every "
+                        "item. Generated from unpriced-hunter.md plus "
+                        "config/searcher-addendum.md and config/searcher-addendum-v3b.md by "
+                        "scripts/sync_hunter_core.py; never edit this copy. Give it the "
+                        "ticker, the event window and the path to the sealed baseline."),
+    }, ("searcher-addendum.md", "searcher-addendum-v3b.md")),
     # stage D (2026-10-07): the US hunter as a DEEP researcher on three names a day, with
     # config/deep-addendum.md inserted after the core: key questions frozen before the
     # research, a frozen quick first read as the depth control, a premortem. Bash for curl
@@ -134,10 +151,30 @@ IPO_PANEL_JUDGES = {
 }
 IPO_PANEL_NOTE = ("<!-- GENERATED from config/panel-judge-ipo.md by scripts/sync_hunter_core.py; "
                   "edit the source, not this copy -->\n\n")
+# Stage E-P v3b (2026-11-14): the same four models with a judge brief rewritten from the
+# review of us-panel.v3 (a consensus beat is the base case, expectations and the next
+# guide first, a three-part forecast recorded beside the numbers). Its own source and
+# its own agents, so stage E-P's judges are left exactly as they were.
+V3B_PANEL_SOURCE = os.path.join(REPO, "config", "panel-judge-v3b.md")
+V3B_PANEL_JUDGES = {
+    "panel-judge-v3b-opus5.md": "claude-opus-5",
+    "panel-judge-v3b-opus55.md": "claude-opus-5-5",
+    "panel-judge-v3b-sonnet55.md": "claude-sonnet-5-5",
+    "panel-judge-v3b-fable51.md": "claude-fable-5-1",
+}
+V3B_PANEL_NOTE = ("<!-- GENERATED from config/panel-judge-v3b.md by scripts/sync_hunter_core.py; "
+                  "edit the source, not this copy -->\n\n")
 
 
-def render_judge(name, model, body, intl=False, ipo=False):
-    if ipo:
+def render_judge(name, model, body, intl=False, ipo=False, v3b=False):
+    if v3b:
+        desc = ("Stage E-P v3b panel judge on %s. Judges the day's v3b searcher evidence blind, "
+                "from a packs file with the searcher's sizes removed, weighing expectations, the "
+                "next guide and counterparties ahead of a consensus beat, and returns abs_move_pct, "
+                "p_up, a signed impact_sum and a three-part forecast per company. Read and Write "
+                "only; one instance per model per day; give it the packs file and the output "
+                "path." % model)
+    elif ipo:
         desc = ("Stage IPO panel judge on %s. Judges the day's IPO hunter evidence (US debuts "
                 "and lock-up expiries, intraday window) blind, from a packs file with the hunters' "
                 "sizes removed, and returns abs_move_pct, p_up and a signed impact_sum per company. "
@@ -156,7 +193,8 @@ def render_judge(name, model, body, intl=False, ipo=False):
                 "day; give it the packs file and the output path." % model)
     return ("---\nname: %s\ndescription: %s\ntools: Read, Write\nmodel: %s\neffort: high\n"
             "maxTurns: 60\ncolor: cyan\n---\n\n" % (name[:-3], desc, model)) + \
-        (IPO_PANEL_NOTE if ipo else INTL_PANEL_NOTE if intl else PANEL_NOTE) + body.strip() + "\n"
+        (V3B_PANEL_NOTE if v3b else IPO_PANEL_NOTE if ipo else INTL_PANEL_NOTE if intl else PANEL_NOTE) \
+        + body.strip() + "\n"
 
 
 VARIANT_NOTE = ("<!-- GENERATED from %s by scripts/sync_hunter_core.py with the frontmatter "
@@ -233,7 +271,12 @@ def main():
                 open(path, "w", encoding="utf-8").write(new)
     for name, spec in VARIANTS.items():
         src, fields = spec[0], spec[1]
-        add = open(os.path.join(REPO, "config", spec[2]), encoding="utf-8").read() if len(spec) > 2 else None
+        add = None
+        if len(spec) > 2:
+            # one addendum, or a tuple of them inserted in order (stage E-P v3b)
+            names = spec[2] if isinstance(spec[2], tuple) else (spec[2],)
+            add = "\n\n".join(open(os.path.join(REPO, "config", n), encoding="utf-8").read().strip()
+                               for n in names)
         path = os.path.join(AGENTS, name)
         src_text = open(os.path.join(AGENTS, src), encoding="utf-8").read()
         if src in HUNTERS:
@@ -271,15 +314,26 @@ def main():
             drift.append(name)
             if not check:
                 open(path, "w", encoding="utf-8").write(new)
+    body = open(V3B_PANEL_SOURCE, encoding="utf-8").read()
+    for name, model in V3B_PANEL_JUDGES.items():
+        path = os.path.join(AGENTS, name)
+        new = render_judge(name, model, body, v3b=True)
+        old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if new != old:
+            drift.append(name)
+            if not check:
+                open(path, "w", encoding="utf-8").write(new)
     if check:
         if drift:
             print("hunter core out of date in: " + ", ".join(drift))
             sys.exit(1)
         print("hunter core current in all %d hunters, %d variants and %d panel judges"
-              % (len(HUNTERS), len(VARIANTS), len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES) + len(IPO_PANEL_JUDGES)))
+              % (len(HUNTERS), len(VARIANTS), len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES) + len(IPO_PANEL_JUDGES)
+                 + len(V3B_PANEL_JUDGES)))
     else:
         print("updated %d of %d hunters, variants and panel judges"
-              % (len(drift), len(HUNTERS) + len(VARIANTS) + len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES) + len(IPO_PANEL_JUDGES)))
+              % (len(drift), len(HUNTERS) + len(VARIANTS) + len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES) + len(IPO_PANEL_JUDGES)
+                 + len(V3B_PANEL_JUDGES)))
 
 
 if __name__ == "__main__":

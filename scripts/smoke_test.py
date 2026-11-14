@@ -1527,6 +1527,41 @@ def main():
           and "<RUN>/edge-panel-fable/" in pf_skill and "No `alpaca_trade.py` call of any kind" in pf_skill
           and "--market US-PF" in pf_skill and "--dry-run --stage E-PF" in pf_skill)
 
+    # STAGE E-P v3b (2026-11-14): stage E-P's searcher plus a second addendum, judges from
+    # their own source on the same four models, its own panel history, no orders. The
+    # packs carry the v3b fields only when a hunt has them, so E-P's packs are unchanged.
+    v3_agent = open(os.path.join(REPO, ".claude", "agents", "unpriced-searcher-v3b.md"), encoding="utf-8").read()
+    v3_add = open(os.path.join(REPO, "config", "searcher-addendum-v3b.md"), encoding="utf-8").read().strip()
+    v3_skill = open(os.path.join(REPO, ".claude", "skills", "earnings-edge-panel-v3b", "SKILL.md"),
+                    encoding="utf-8").read()
+    v3c = cfg.get("edge_panel_v3b") or {}
+    v3_body = v3_agent.split("-->", 1)[1]
+    check("stage E-P v3b searcher is stage E-P's searcher plus the v3b addendum, on Opus 5.5",
+          "\nmodel: claude-opus-5-5\n" in v3_agent.split("---", 2)[1] + "\n"
+          and v3_add in v3_body
+          and v3_body.replace("\n\n" + v3_add, "", 1).strip() == ep_agent.split("-->", 1)[1].strip())
+    v3_judges_ok = all(
+        os.path.exists(os.path.join(REPO, ".claude", "agents", f"panel-judge-v3b-{m}.md"))
+        and f"\nmodel: {mid}\n" in open(os.path.join(REPO, ".claude", "agents", f"panel-judge-v3b-{m}.md"),
+                                       encoding="utf-8").read()
+        for m, mid in (("opus5", "claude-opus-5"), ("opus55", "claude-opus-5-5"),
+                       ("sonnet55", "claude-sonnet-5-5"), ("fable51", "claude-fable-5-1")))
+    check("stage E-P v3b judges exist on the four pinned models and config names them",
+          v3_judges_ok and (v3c.get("judges") or {}).get("opus5") == "panel-judge-v3b-opus5")
+    check("stage E-P v3b places no orders, stamps US-PV3B and keeps its own panel history",
+          v3c.get("places_orders") is False
+          and v3c.get("panel_history") == "researcher_us/analysis/panel-history-v3b.json"
+          and "<RUN>/edge-panel-v3b/" in v3_skill and "No `alpaca_trade.py` call of any kind" in v3_skill
+          and "--market US-PV3B" in v3_skill
+          and "--history researcher_us/analysis/panel-history-v3b.json" in v3_skill
+          and os.path.exists(os.path.join(REPO, "researcher_us", "analysis", "panel-history-v3b.json")))
+    check("panel_packs passes the v3b fields only when a hunt carries them",
+          panel_packs.extra({"evidence_type": "peer", "link": "none stated", "x": 1},
+                            panel_packs.V3B_ITEM_KEYS) == {"evidence_type": "peer", "link": "none stated"}
+          and panel_packs.extra({"finding": "f"}, panel_packs.V3B_ITEM_KEYS) == {}
+          and panel_packs.extra({"expectations": {"real_bar": "a raise"}}, panel_packs.V3B_CONTEXT_KEYS)
+          == {"expectations": {"real_bar": "a raise"}})
+
     # STAGE E-PI (2026-10-14): stage E-P re-run at fixed New York times, one snapshot
     # directory per run. The first snapshot freezes the day's names, later ones reuse
     # them; a 16:00 snapshot hunts bmo only; an amc hunt written after 16:00 ET on its

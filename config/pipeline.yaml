@@ -271,6 +271,39 @@ edge_panel_fable:
   places_orders: false
   shadow_ledger: false
 
+# Stage E-P v3b (2026-11-14, operator's instruction: "a routine like E-P that doesn't
+# trade, named ep v3b, with the searcher and judges improved on the analysis; the goal is
+# to see if it predicts better than the current E-P"). The analysis is the review of
+# us-panel.v3 in research/analyses/us-panel-v3-information/. Two prompt changes, nothing
+# else: the searcher is unpriced-searcher-v3b (stage E-P's searcher plus
+# config/searcher-addendum-v3b.md, same model) and the judges are panel-judge-v3b-*
+# (config/panel-judge-v3b.md, same four models). Same sweep, cap, packs and selection
+# rule (edge_panel's). Its own panel history, seeded with a frozen copy of stage E-P's
+# on 2026-11-14, so each v3b judge is read against its own range once it has built one
+# (window 200, about ten run days); before that the seed sets the scale. The panel is
+# ALSO scored dry against stage E-P's history into edge-scores-panel-epscale.json, so
+# both stages can be read on one scale. Output research/<Y>/<M>/<DATE>/edge-panel-v3b/,
+# provenance US-PV3B, stage versions us-panel-v3b.vN: never pooled with stage E-P.
+# Compared with stage E-P only pooled, on the same names, by
+# researcher_us/scripts/v3b_compare.py, against the pre-registration in that folder.
+edge_panel_v3b:
+  inherits: edge_panel
+  output_dir: edge-panel-v3b
+  searcher_agent: unpriced-searcher-v3b
+  searcher_model: claude-opus-5-5
+  judges:
+    opus5: panel-judge-v3b-opus5
+    opus55: panel-judge-v3b-opus55
+    sonnet55: panel-judge-v3b-sonnet55
+    fable51: panel-judge-v3b-fable51
+  judge_source: config/panel-judge-v3b.md
+  panel_history: researcher_us/analysis/panel-history-v3b.json
+  panel_history_seed: "frozen copy of researcher_us/analysis/panel-history.json, 2026-11-14"
+  writes_panel_history: true     # its OWN file above, never stage E-P's
+  orchestrator_model: opus
+  places_orders: false
+  shadow_ledger: false
+
 # Stage E-PI (2026-10-14, operator's instruction): stage E-P re-run from scratch at fixed
 # New York times through the session, every run saved as its own snapshot, so the
 # development of each name's call through the day can be read. Every scoring rule is
@@ -911,6 +944,7 @@ budget:
     panel: 14
     edge_hunt: 20                 # sweep + hunters + adversaries, whole stage
     edge_panel: 25                # stage E-P: sweep + 20 searchers + 4 judges
+    edge_panel_v3b: 25            # stage E-P v3b: the same
   degrade_order:
     - reduce_panel_names_to_2
     - reduce_panel_names_to_1
