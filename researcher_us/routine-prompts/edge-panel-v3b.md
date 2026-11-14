@@ -8,6 +8,13 @@ the labels changed. Created by a session, so `update_trigger` works on it. **Kee
 file and the Routine in step: any re-paste changes both in the same commit.** The block
 below is the exact text the Routine holds.
 
+**Routine `trig_016YK3TQezvXuierckLwP9mj`**, created 2026-11-14 at 10:27:36 UTC and named
+"Stage E-P v3b — US edge hunt, v3b searcher + v3b four-model panel (no orders)". Read back
+at 10:27:40 UTC: prompt identical to the block below, model `claude-opus-5-5` (pinned with
+`update_trigger` because creation left it empty), cron
+`CRON_TZ=America/New_York 10 13 * * 1-5`, enabled, first run 2026-11-16 18:10 UTC, no MCP
+connectors, empty `sources` and `outcomes`.
+
 - Cron `CRON_TZ=America/New_York 10 13 * * 1-5` = 13:10 New York, four minutes after
   stage E-P (13:06) and two after stage E-PF (13:08), so all three seal their baselines
   on the same afternoon quotes.
