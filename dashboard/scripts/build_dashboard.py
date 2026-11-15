@@ -355,6 +355,7 @@ details.fmore[open] > summary { margin-bottom:8px; }
 <script id="ledger" type="application/json">__LEDGER__</script>
 <script id="markets" type="application/json">__MARKETS__</script>
 <script id="v2" type="application/json">__V2__</script>
+<script id="eehyp" type="application/json">__EEHYP__</script>
 <script id="scorebord" type="application/json">__SCOREBORD__</script>
 <script>
 const D = JSON.parse(document.getElementById('ledger').textContent);
@@ -4019,6 +4020,70 @@ function byGroup(tabs) {
     .map(x => x[0]);
 }
 
+
+/* ============================================================ Entry-exit */
+/* Stage E-P's entry/exit hypotheses (operator, 2026-11-15). Two leads from the
+   pre-registered indicator study, tracked per prompt version and never pooled; the
+   numbers are computed by build_entry_exit.py on the scorebord's own window and
+   prices, so this tab counts the same returns as the scorebord. */
+const EERAW = document.getElementById('eehyp');
+const EE = (EERAW && JSON.parse(EERAW.textContent)) || null;
+
+function tabEntryExit() {
+  let html = `<p class="lead">Hypotheses over <b>instap en uitstap</b> die bovenop het panel
+    komen. Elke regel is een vermoeden uit een eerder onderzoek dat hier vooruit wordt
+    gemeten, per promptversie en nooit samengevoegd. Venster en koersen zijn die van het
+    scorebord (instap 13:30 New York; amc uit op de volgende opening, bmo om 13:00).
+    De filters bovenaan gelden hier niet.</p>`;
+  if (!EE || !EE.names) return html + `<div class="card warnbox"><h3>Geen data</h3><p>De bouw
+    vond geen <code>dashboard/data/entry-exit.json</code>. Draai
+    <code>dashboard/scripts/build_entry_exit.py</code>.</p></div>`;
+  html += `<div class="warn"><b>Lees dit eerst.</b> Beide hypotheses zijn gevonden op de
+    rundagen tot en met 2026-11-12 en haalden daar hun vooraf vastgelegde lat niet
+    (<code>research/analyses/earnings-day-indicators/</code>). Alleen de regels
+    <b>vooruit</b> (rundagen vanaf ${esc(EE.forward_from)}) zijn een eerlijke toets. Zet niets
+    live voordat die over zo'n twintig dagen hetzelfde teken houden.</div>`;
+  const rhoCell = z => !z ? '–' : `${n2(z.rho)} <small>p ${n2(z.p)}</small>`;
+  const sCell = z => !z || !z.n ? '–' :
+    `<span class="${sgn(z.mean)}">${pc(z.mean)}</span> <small>n ${z.n}${z.t!=null?` · t ${n2(z.t)}`:''}</small>`;
+  for (const h of EE.hyp) {
+    const rows = EE.stats.filter(s => s.hyp === h.key);
+    html += `<div class="card"><h3>${esc(h.label)}</h3>
+      <p class="claim"><b>Vermoeden:</b> ${esc(h.claim)} Verwacht teken van ρ:
+      <b>${h.expect > 0 ? 'positief' : 'negatief'}</b>. <small>Gevonden: ${esc(h.found)}.</small></p>` +
+      table([
+        {h:'versie', f:r => esc(r.version)},
+        {h:'deel', f:r => r.part === 'vooruit' ? '<b>vooruit</b>' : 'alles'},
+        {h:'rho binnen dag', f:r => rhoCell(r.rho)},
+        {h:'dagen', f:r => r.rho ? r.rho.days : '–'},
+        {h:'laag tercile', f:r => sCell(r.terciles.low)},
+        {h:'hoog tercile', f:r => sCell(r.terciles.high)},
+        {h:'hoog − laag', f:r => r.terciles.diff == null ? '–' :
+            `<span class="${sgn(r.terciles.diff * h.expect)}">${pc(r.terciles.diff)}</span> <small>t ${n2(r.terciles.t)}</small>`},
+        {h:`pct ≥ ${EE.strong}, onze kant`, f:r => sCell(r.strong_ours)},
+        {h:`pct ≥ ${EE.strong}, tegen`, f:r => sCell(r.strong_against)}], rows) +
+      `<small>Groen in "hoog − laag" betekent: het vermoeden houdt. "Onze kant" = de
+      indicator wijst dezelfde kant op als het panel (${esc(h.unit)} &gt; 0).</small></div>`;
+  }
+  const last = EE.names.filter(r => r.run_date === EE.last_run && r.pct >= EE.strong);
+  html += `<div class="card"><h3>Laatste run (${esc(EE.last_run || '–')}), panel_pct ≥ ${EE.strong}</h3>
+    <p class="claim">Wat beide hypotheses over de namen van de laatste run zeggen. Een
+    vlag is geen handelsregel.</p>` +
+    table([
+      {h:'naam', f:r => `<b>${esc(r.ticker)}</b>`},
+      {h:'kant', f:r => r.side > 0 ? 'long' : 'short'},
+      {h:'panel_pct', f:r => n1(r.pct)},
+      {h:'sessie', f:r => esc(r.session || '–')},
+      {h:'VWAP, onze kant', f:r => r.vwap == null ? '–' :
+          `<span class="${r.vwap > 0 ? 'neg' : 'pos'}">${pc(r.vwap)}</span>`},
+      {h:'vorige reactie, onze kant', f:r => r.prev == null ? '–' :
+          `<span class="${sgn(r.prev)}">${pc(r.prev)}</span>`},
+      {h:'rendement', f:r => r.ret == null ? 'loopt' : `<span class="${sgn(r.ret)}">${pc(r.ret)}</span>`}],
+      last) + `<small>Rood bij VWAP: al ver onze kant op bij instap, wat in de steekproef slechter
+      afliep. Gebouwd ${esc(EE.built_utc)}.</small></div>`;
+  return html;
+}
+
 /* ===================================================================== V2 */
 /* Stage E V2 naast V1. De koersen komen uit ledger.json, net als op elk ander
    tabblad, dus pre-lessons, post-lessons en V2 worden tegen dezelfde uitstap en
@@ -4172,6 +4237,7 @@ const TABMETA = {
   /* Klok */
   'Timing':     {g:'Klok', q:'Waar hoort de uitstap te liggen: elke horizon van de nabeurs tot de slotkoers, per sessie.'},
   'Instap':     {g:'Klok', q:'Maakt het uur van instappen uit, met de uitstap vastgehouden?'},
+  'Entry-exit': {g:'Klok', q:'Hypotheses over instap en uitstap bovenop het panel (VWAP bij instap, vorige reactie), vooruit gemeten per promptversie.'},
   /* Doorsnedes */
   'Sector':     {g:'Doorsnedes', q:'Leeft de edge in één sector, en zit hij in de namen die particulieren verhandelen?'},
   'Zoekvolume': {g:'Doorsnedes', q:'Zegt de Google-aandacht rond de print iets over de uitkomst?'},
@@ -4463,7 +4529,7 @@ function tabStand() {
    beantwoordt. */
 const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
               ['Score',tabScore], ['Drempel',tabDrempel], ['Aanloop',tabAanloop],
-              ['Timing',tabTiming], ['Instap',tabInstap],
+              ['Timing',tabTiming], ['Instap',tabInstap], ['Entry-exit',tabEntryExit],
               ['Sector',tabSector], ['Zoekvolume',tabZoek],
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten],
               ['Lessons',tabLessons], ['V2',tabV2], ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
@@ -4475,7 +4541,8 @@ const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
    panel's fills live in the E-P Alpaca artifact, not in this ledger. */
 const EP_HIDDEN = ['Weging', 'Lessons', 'V2', 'Handel', 'Kosten', 'Capaciteit'];
 US_TABS.splice(0, US_TABS.length,
-  ...byGroup(US_TABS.filter(t => !IS_EP || !EP_HIDDEN.includes(t[0]))));
+  ...byGroup(US_TABS.filter(t => (!IS_EP || !EP_HIDDEN.includes(t[0])) &&
+                                (IS_EP || t[0] !== 'Entry-exit'))));
 const MARKETS = [['US','Verenigde Staten'], ['EU','Europa'], ['JP','Japan'],
                  ['AU','Australië'], ['CA','Canada']];
 let MKT = 'US';
@@ -4923,6 +4990,7 @@ def main():
     ap.add_argument("--ledger", default=str(DATA / "ledger.json"))
     ap.add_argument("--markets", default=str(DATA / "markets.json"))
     ap.add_argument("--v2", default=str(DATA / "v2.json"))
+    ap.add_argument("--entry-exit", default=str(DATA / "entry-exit.json"))
     ap.add_argument("--scorebord", default=str(DATA / "scorebord.json"))
     ap.add_argument("--out", default=str(ROOT / "dashboard" / "dashboard.html"))
     a = ap.parse_args()
@@ -4945,6 +5013,10 @@ def main():
     v2 = Path(a.v2)
     vblob = v2.read_text(encoding="utf-8").strip() if v2.exists() else "null"
     html = html.replace("__V2__", vblob.replace("</", "<\\/"))
+    # Stage E-P's entry/exit hypotheses. Missing is not an error: the tab says so.
+    ee = Path(a.entry_exit)
+    eblob = ee.read_text(encoding="utf-8").strip() if ee.exists() else "null"
+    html = html.replace("__EEHYP__", eblob.replace("</", "<\\/"))
     # The scorebord's own verdicts, for the Stand. Only the blocks the Stand reads
     # (open calls, the scorecard, which version each stage runs), so the page does
     # not carry the scorebord's per-call tables twice. Its "strong" is the stage
