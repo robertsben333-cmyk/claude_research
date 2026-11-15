@@ -77,6 +77,11 @@ python3 dashboard/scripts/build_ledger.py "${LEDGER_ARGS[@]+"${LEDGER_ARGS[@]}"}
 # both pages count the same strong calls.
 python3 dashboard/scripts/build_scorebord.py \
   || echo "update: scorebord failed, scorebord.html keeps the last one"
+# Stage E-P's entry/exit hypotheses -> the Entry-exit tab. After the scorebord,
+# because it reads scorebord-frozen.json for the returns; Alpaca 5-minute bars for the
+# VWAP at entry (cached in its own output). May fail without costing the rebuild.
+python3 dashboard/scripts/build_entry_exit.py \
+  || echo "update: entry-exit feeder failed, the Entry-exit tab keeps the last one"
 python3 dashboard/scripts/build_dashboard.py
 
 echo
