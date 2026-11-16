@@ -49,3 +49,7 @@
 ## Edge hunt (panel v3b) — 2026-11-16 amc + 2026-11-17 bmo — STARTED (retry)
 - Logged at 2026-11-16 19:01 UTC
 - Retry at operator's request after main gained 1917c874 (SEC User-Agent from SEC_USER_AGENT). 70 baselines sealed into edge-panel-v3b/baselines by 19:01 UTC (14:01 ET). Plan: own edge-sweep, up to 20 unpriced-searcher-v3b (amc first, <=6 per turn), four panel-judge-v3b-* judges, panel_score twice. No orders. Late start: amc names release from 16:00 ET, so searchers racing the clock.
+
+## Edge hunt (panel v3b) — sweep and waves
+- Logged at 2026-11-16 19:07 UTC
+- Sweep back 19:07 UTC: 70 names, 22 company-confirmed, 48 unconfirmed (38 small caps never searched for time), 4 likely phantoms (PAGS XP SUPV SMWB); baselines not read by the sweep, trades_on/short_interest unknown. Hunt 20 by edge_degrade_order: SHAZ RCAT INFQ POWL OMER YALA API (amc) KLAR AS MNSO ENR HUYA TME VIK OPRA JD ESLT WB DIS OCSL (bmo). Shed on priority: HD SR. INFQ and OCSL session unsettled. Wave 1 (6): SHAZ RCAT INFQ POWL OMER YALA.
