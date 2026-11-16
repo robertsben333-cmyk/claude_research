@@ -2054,6 +2054,30 @@ def main():
     import edge_shadow_engine as sh  # noqa: E402
     import edge_grounded_score as gs  # noqa: E402
 
+    # SEC's contact address comes from the environment, never from the repo. A
+    # privacy hook that refuses a script holding the account's own address stopped
+    # stage E-P v3b before its sweep on 2026-11-16 (sec_contact.py).
+    import sec_contact as sc  # noqa: E402
+    _saved = os.environ.pop(sc.ENV, None)
+    try:
+        check("without SEC_USER_AGENT the SEC client name carries no address",
+              sc.user_agent() == sc.GENERIC and not sc.has_contact())
+        os.environ[sc.ENV] = "smoke-test contact@example.invalid"
+        check("SEC_USER_AGENT, when set, is the User-Agent sent",
+              sc.user_agent() == "smoke-test contact@example.invalid" and sc.has_contact())
+    finally:
+        os.environ.pop(sc.ENV, None)
+        if _saved is not None:
+            os.environ[sc.ENV] = _saved
+    _addr = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
+    for _rel in ("researcher_us/scripts/priced_in.py",
+                 "researcher_us/scripts/session_resolve.py",
+                 "researcher_us/scripts/edge_shadow_engine.py",
+                 "researcher_us/scripts/sec_contact.py",
+                 "archive/backtest/scripts/common.py"):
+        check(f"{_rel} holds no contact address",
+              not _addr.search(open(os.path.join(REPO, _rel), encoding="utf-8").read()))
+
     k = sh.kappa_fit([(1.0, 0.5), (2.0, 1.0), (-3.0, -1.5)])
     check("kappa is the through-origin slope", k["kappa"] == 0.5 and k["se"] == 0.0, str(k))
     check("an empty fit is None, not zero", sh.kappa_fit([]) is None)
