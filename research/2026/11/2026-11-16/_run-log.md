@@ -53,3 +53,7 @@
 ## Edge hunt (panel v3b) — sweep and waves
 - Logged at 2026-11-16 19:07 UTC
 - Sweep back 19:07 UTC: 70 names, 22 company-confirmed, 48 unconfirmed (38 small caps never searched for time), 4 likely phantoms (PAGS XP SUPV SMWB); baselines not read by the sweep, trades_on/short_interest unknown. Hunt 20 by edge_degrade_order: SHAZ RCAT INFQ POWL OMER YALA API (amc) KLAR AS MNSO ENR HUYA TME VIK OPRA JD ESLT WB DIS OCSL (bmo). Shed on priority: HD SR. INFQ and OCSL session unsettled. Wave 1 (6): SHAZ RCAT INFQ POWL OMER YALA.
+
+## Edge hunt (panel v3b) — wave 2
+- Logged at 2026-11-16 19:13 UTC
+- 19:14 UTC: YALA back (search_complete true, v3b fields present). Launched API KLAR AS (8 running).
