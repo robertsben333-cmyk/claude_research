@@ -79,3 +79,7 @@
 ## Holistic research — learning step
 - Logged at 2026-11-16 19:39 UTC
 - Gate closed: hp.v2 has 24/30 resolved names over 2/3 run days; no drift alarm (32 lineage pairs, Brier diff -0.014, t -2.32). Reflector not launched. Tomorrow's run uses hp.v2. Today: 24/24 hunts ok, 0 recommendations.
+
+## Edge hunt (panel v3b) — panel and note
+- Logged at 2026-11-16 19:44 UTC
+- 19:46 UTC: four v3b judges on pinned models, 20/20 coverage each. panel_score dry-run on E-P scale -> edge-scores-panel-epscale.json, then own history (80 sizes appended to panel-history-v3b.json). Selected: OMER long 87, ENR short 86. Vs E-P: 8 names in common (separate sweeps), selected overlap OMER, Spearman rho of panel_pct_signed +0.83 on 8. No orders, no alpaca_trade.py, no shadow ledger.
