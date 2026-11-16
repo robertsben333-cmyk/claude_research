@@ -42,3 +42,7 @@
 ## Edge hunt (panel) — ranking
 - Logged at 2026-11-16 18:57 UTC
 - Panel: all four pinned judges ran, 20/20 ids each, no fallback. Selected (panel_pct >= 80, 4 members): STEM 95 S, IMDX 89 S, NXB 85 S, OMER 85 L, TMS 82 S, RCAT 82 S, KLAR 81 S. Next: POWL 77 S. Searcher floor-clearers IMDX -4.5, STEM -4.3, TMS -3.3, OMER +2.8. rho(searcher impact_sum, panel_pct_signed) = +0.86. Stage E has no files today (Routine stopped). Tradable at Alpaca: STEM, OMER, KLAR; IMDX TMS RCAT not lendable, NXB below the turnover floor.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-16 19:00 UTC
+- 18:59 UTC (13:59 ET, 121 min to the close). LIVE (equity $2,700, held $0): STEM short 593 @ 1.9917, OMER long 48 @ 17.2638, KLAR short 50 @ 13.681, all filled; gross $2,687 (99.5%). PAPER (equity $22,471, held $0): STEM short 2,959 @ 1.98 (capacity-capped at 1.00 ADV), OMER long 528 @ 17.27, KLAR short 551 @ 13.68, all filled (STEM and OMER partial at first read, complete by 19:00 UTC); gross $22,458. No unfilled entries. Not traded: IMDX TMS RCAT not shortable at Alpaca, NXB below turnover floor; top-up not applied (3 strong tradable). Live and paper books are the same three names. Exits: all three amc/bmo legs due 2026-11-17 (STEM OMER amc -> E-PX at the open; KLAR bmo -> E-P's own run).
