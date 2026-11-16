@@ -56,6 +56,7 @@ HUNTERS = {
     "unpriced-hunter-sonnet": "us-sonnet",
     "unpriced-searcher": "us-searcher",
     "unpriced-searcher-fable": "us-searcher-fable",
+    "unpriced-searcher-v3b": "us-searcher-v3b",
     "deep-question-researcher": "us-deep",
     "holistic-researcher": "us-holistic",
     "unpriced-hunter-jp": "jp",
@@ -97,6 +98,11 @@ MARKETS = {
     "US-PF": {"dir": "edge-panel-fable", "hunters": ["unpriced-searcher-fable"],
               "lessons": "researcher_us/LESSONS.md",
               "skill": ".claude/skills/earnings-edge-panel-fable/SKILL.md"},
+    # Stage E-P v3b (2026-11-14): stage E-P with the v3b searcher addendum and the v3b
+    # judges (config/panel-judge-v3b.md), its own directory and panel history. No orders.
+    "US-PV3B": {"dir": "edge-panel-v3b", "hunters": ["unpriced-searcher-v3b"],
+                "lessons": "researcher_us/LESSONS.md",
+                "skill": ".claude/skills/earnings-edge-panel-v3b/SKILL.md"},
     # Stage D (2026-10-07): three names a day, one deep researcher each, frozen key
     # questions and a frozen quick first read. Research only.
     "US-D": {"dir": "edge-deep", "hunters": ["deep-question-researcher"],
@@ -268,7 +274,7 @@ def build_registry(ref="origin/main"):
     return out
 
 
-STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-PF": "us-panel-fable", "US-D": "us-deep", "US-H": "us-holistic", "JP": "jp", "EU": "eu", "AU": "au",
+STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-PF": "us-panel-fable", "US-PV3B": "us-panel-v3b", "US-D": "us-deep", "US-H": "us-holistic", "JP": "jp", "EU": "eu", "AU": "au",
                "CA": "ca", "R": "rev", "IPO": "ipo"}
 
 
@@ -442,7 +448,8 @@ def stamp(run, market, orchestrator_model=None, hunter_model=None, force=False):
 # 2026-10-21 and to 20 on 2026-10-22 without a prompt change, so the stage version does not move; this field is
 # what tells a run under one cap from a run under the other.
 CAP_BLOCK = {"US": "edge_hunt", "US-S": "edge_hunt", "US-P": "edge_panel",
-             "US-PF": "edge_panel_fable", "US-PI": "edge_panel_intraday"}
+             "US-PF": "edge_panel_fable", "US-PI": "edge_panel_intraday",
+             "US-PV3B": "edge_panel_v3b"}
 
 
 def hunted_names_cap(market):

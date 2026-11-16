@@ -27,6 +27,11 @@ SIZE = re.compile(r'\b[Ss]ized? (at|to) [^.;]*|\bcut (it )?from [-+]?\d[^.;]*|\(
                   r'\blesson \d+\b[^.;]*|\bp_up\b[^.;]*|\babs_move[^.;]*|\bimpact_sum\b[^.;]*|'
                   r'\bexpected_impact[^.;]*', re.I)
 DROP_KEYS = ('headlines', 'raw', 'bars', 'series')
+# Stage E-P v3b's searcher (config/searcher-addendum-v3b.md) writes these on top of the
+# shared contract. They pass to the judges only when a hunt carries them, so a stage E-P
+# pack is byte for byte what it was.
+V3B_ITEM_KEYS = ('evidence_type', 'link')
+V3B_CONTEXT_KEYS = ('expectations', 'next_guide')
 
 
 def scrub(s):
@@ -40,6 +45,12 @@ def trim(o):
     return o
 
 
+def extra(d, keys):
+    return {k: trim(scrub(d[k]) if isinstance(d[k], str) else
+                    {kk: scrub(vv) for kk, vv in d[k].items()} if isinstance(d[k], dict) else d[k])
+            for k in keys if isinstance(d, dict) and d.get(k) is not None}
+
+
 def evidence(hunt_files):
     ev = []
     for h in hunt_files:
@@ -49,14 +60,16 @@ def evidence(hunt_files):
                        'lands_on': f.get('lands_on'), 'leg': f.get('leg'), 'resolves_by': f.get('resolves_by'),
                        'source': f.get('source'), 'source_date': f.get('source_date'),
                        'reaction_history_on_this_line': scrub(f.get('reaction_history_on_this_line')),
-                       'why_not_priced': scrub(f.get('why_not_priced')), 'independence': scrub(f.get('independence'))})
+                       'why_not_priced': scrub(f.get('why_not_priced')), 'independence': scrub(f.get('independence')),
+                       **extra(f, V3B_ITEM_KEYS)})
         for o in j.get('outside_window') or []:
             d = o if isinstance(o, dict) else {'finding': o}
             ev.append({'kind': 'put_outside_window_by_first_hunter', 'hunt': tag, 'text': scrub(d.get('finding')),
-                       'resolves_by': d.get('resolves_by'), 'source': d.get('source')})
+                       'resolves_by': d.get('resolves_by'), 'source': d.get('source'), **extra(d, V3B_ITEM_KEYS)})
         for r in j.get('rejected_candidates') or []:
             ev.append({'kind': 'rejected_by_first_hunter', 'hunt': tag, 'text': scrub(r.get('candidate')),
-                       'source': r.get('source'), 'first_hunter_reason': scrub(r.get('reason'))})
+                       'source': r.get('source'), 'first_hunter_reason': scrub(r.get('reason')),
+                       **extra(r, V3B_ITEM_KEYS)})
         for s in j.get('searched_and_found_nothing') or []:
             ev.append({'kind': 'listed_as_searched_and_found_nothing', 'hunt': tag,
                        'text': scrub(s if isinstance(s, str) else json.dumps(s))})
@@ -68,7 +81,7 @@ def context(hunt_file):
     d = json.load(open(hunt_file))
     return {'bar': scrub(d.get('bar')), 'positioning_check': d.get('positioning_check'),
             'already_public': d.get('already_public'), 'new_in_release': d.get('new_in_release'),
-            'session_check': d.get('session_check')}
+            'session_check': d.get('session_check'), **extra(d, V3B_CONTEXT_KEYS)}
 
 
 def build(run):

@@ -301,8 +301,10 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--run', required=True)
     ap.add_argument('--dry-run', action='store_true', help='score without appending to the history')
     ap.add_argument('--stage', default='E-P', help="label written into the output (stage E-PI passes 'E-PI')")
+    ap.add_argument('--history', default=None,
+                    help="a panel history file other than stage E-P's (stage E-P v3b keeps its own)")
     a = ap.parse_args()
-    out, added = score(a.run, cfg(), a.dry_run, stage=a.stage)
+    out, added = score(a.run, cfg(), a.dry_run, history=a.history, stage=a.stage)
     print(f"members {', '.join(out['members_present'])}"
           + (f" (MISSING {', '.join(out['members_missing'])})" if out['members_missing'] else '')
           + f"; selection {out['selection']}; {added} sizes added to the history")
