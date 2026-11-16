@@ -11,3 +11,7 @@
 ## Stage EU — universe and seal
 - Logged at 2026-11-16 14:41 UTC
 - Event date 2026-11-17 (Tue). 38 scheduled, 21 eligible above $100k, random draw of 20 (seed eu-2026-11-17): uk 5, se 3, dk 3, pl 3, de 2, es 2, fr 1, no 1. Largest market uk 25%, 8 markets. 20 baselines sealed ~14:45 UTC (intraday spots, not closes). Provenance stamped. Wave 1 launched: DPLM IMB ZEG ALO NIBE_B.
+
+## Stage EU — hunts
+- Logged at 2026-11-16 14:49 UTC
+- Banked so far: DPLM +0.5, IMB -1.7, ALO -0.2 (amc 18:00 CET confirmed), NIBE_B +0.9. Running at 5 concurrent rather than strict waves, to reach the IBKR handoff before the 17:30 CET close. DEFECT for a building session: NIBE_B baseline seals short 0.0 but FI shows 5.27% aggregate (LEI 549300ZQH0FIF1P0MX67); looks like a register name-join miss in eu_positioning for se. Baseline left sealed as is.
