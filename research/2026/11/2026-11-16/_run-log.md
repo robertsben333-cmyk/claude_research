@@ -64,3 +64,7 @@
 ## Holistic research — 2026-11-16 — STARTED
 - Logged at 2026-11-16 19:16 UTC
 - 14:16 ET. 12 names from E-P's sweep (INFQ RCAT DUOT NXB OMER STEM TMS POCI OPRA WRAP POWL IMDX), all on both arms (hp.v2 evolving, hp.v1 control): 24 holistic-researchers in three waves of 8. Research deadline 15:35 ET.
+
+## Edge hunt (panel v3b) — baseline amend
+- Logged at 2026-11-16 19:26 UTC
+- HUYA event_plausibility suspect -> unknown (company release confirms 2026-11-17 bmo; the 11-05 6-K was a share-pool filing). Applied after the hunter launched, event-existence only; only hunted suspect name. edge_baseline_amend.py table (per-run, edited by stage E-P for STEM) left untouched.
