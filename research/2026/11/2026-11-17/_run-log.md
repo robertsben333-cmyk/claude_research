@@ -15,3 +15,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-16 14:49 UTC
 - Banked so far: DPLM +0.5, IMB -1.7, ALO -0.2 (amc 18:00 CET confirmed), NIBE_B +0.9. Running at 5 concurrent rather than strict waves, to reach the IBKR handoff before the 17:30 CET close. DEFECT for a building session: NIBE_B baseline seals short 0.0 but FI shows 5.27% aggregate (LEI 549300ZQH0FIF1P0MX67); looks like a register name-join miss in eu_positioning for se. Baseline left sealed as is.
+
+## Stage EU — register defect
+- Logged at 2026-11-16 14:54 UTC
+- Second Swedish short-register miss: SEYE baseline 0.0 / anchor_covered false, FI aggregate lists 'Smart Eye Aktiebolag (publ)' at 4.47% (2026-11-13). With NIBE_B (5.27%) this is a systematic se name-join failure in eu_positioning; baselines left sealed. Fix in a building session.
