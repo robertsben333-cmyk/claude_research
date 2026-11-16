@@ -46,7 +46,10 @@ import urllib.request
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-UA = "claude_research edge/session_resolve (xavier.friesen@socfin.nl)"
+import sec_contact
+
+# Read from the environment, never written here: see sec_contact.py.
+UA = sec_contact.user_agent()
 TICKER_MAP = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS = "https://data.sec.gov/submissions/CIK{cik}.json"
 ARCHIVE = "https://www.sec.gov/Archives/edgar/data/{cik}/{acc}"
@@ -153,6 +156,10 @@ def press_evidence(ticker, event_dates, window_days=45):
 
 
 def ticker_cik_map():
+    """The whole map, or None without a contact: www.sec.gov refuses it then, and
+    each ticker is looked up on its own through sec_contact.lookup_cik()."""
+    if not sec_contact.has_contact():
+        return None
     doc = http(TICKER_MAP)
     if isinstance(doc, dict) and "_error" in doc:
         sys.exit(f"SEC ticker map unreachable: {doc['_error']}")
@@ -161,6 +168,8 @@ def ticker_cik_map():
 
 def doc_text(cik, filing, budget=2):
     """The filing's own words. The press release is an exhibit, not the wrapper."""
+    if not sec_contact.has_contact():
+        return []                       # www.sec.gov refuses; see archive_note in the report
     acc = filing["accession"].replace("-", "")
     base = ARCHIVE.format(cik=int(cik), acc=acc)
     index = http(base + "/index.json")
@@ -232,6 +241,8 @@ def announcement_scan(cik, recent, event_dates, since, budget=4):
     wanted = set()
     for ev in event_dates:
         wanted |= spellings(ev)
+    if not sec_contact.has_contact():
+        return None                     # www.sec.gov refuses; see archive_note in the report
     looked = 0
     for i in range(len(recent["form"])):
         if looked >= budget:
@@ -406,8 +417,15 @@ def main():
     cikmap = ticker_cik_map()
     report, keep, drop = [], [], []
     for row in unknown:
-        v = classify(row["ticker"], cikmap.get((row["ticker"] or "").upper()),
-                     event_dates, today, window)
+        t = (row["ticker"] or "").upper()
+        if cikmap is not None:
+            cik = cikmap.get(t)
+        else:
+            try:
+                cik = sec_contact.lookup_cik(t)
+            except Exception:                                        # noqa: BLE001
+                cik = None
+        v = classify(row["ticker"], cik, event_dates, today, window)
         v["ticker"], v["company"] = row["ticker"], row["company"]
         v["calendar_date"] = row["event_date"]
         if v["verdict"] == "session_resolved":
@@ -441,6 +459,12 @@ def main():
     doc = {"universe": str(path), "event_date": uni["event_date"], "window": window,
            "resolved_utc": datetime.now().astimezone().isoformat(timespec="seconds"),
            "source": "data.sec.gov submissions + EDGAR archives",
+           "archive_read": sec_contact.has_contact(),
+           "archive_note": (None if sec_contact.has_contact() else
+                            f"{sec_contact.NO_CONTACT}: 6-K results filings and "
+                            "date-announcement filings were not opened, so a foreign "
+                            "filer's print and a session read off a filing cannot "
+                            "appear here"),
            "unknown_rows": len(unknown),
            "killed": len(drop), "carried": len(keep),
            "announced": sum(1 for v in report if v["verdict"] == "announced"),

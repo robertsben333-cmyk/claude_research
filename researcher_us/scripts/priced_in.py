@@ -36,8 +36,11 @@ import urllib.request
 from datetime import date, datetime, timezone
 from pathlib import Path
 
+import sec_contact
+
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-SEC_UA = "claude-research-edge-hunt xavier.friesen@socfin.nl"
+# Read from the environment, never written here: see sec_contact.py.
+SEC_UA = sec_contact.user_agent()
 YQ = "https://query1.finance.yahoo.com"
 RISK_FREE = 0.04
 
@@ -152,7 +155,14 @@ def cik_for(ticker):
     while calendars and Yahoo hand out BF.A and BF.B. An exact match on the dotted
     form returns None, and None means no reaction history, no cadence check and a
     baseline that silently drops to thin. Both separators are tried.
+
+    Without a contact address in SEC_USER_AGENT, www.sec.gov refuses the ticker map,
+    so the CIK comes from EDGAR's company lookup instead, which answers a plain
+    client name and matches the same two separators.
     """
+    if not sec_contact.has_contact():
+        time.sleep(0.15)
+        return sec_contact.lookup_cik(ticker)
     j = get_json("https://www.sec.gov/files/company_tickers.json", sec=True)
     t = ticker.upper()
     forms = {t, t.replace(".", "-"), t.replace("-", ".")}
@@ -267,6 +277,11 @@ def sixk_prints(cik, recent, before, identity_since, n=8, scan=16):
     edge case. Cost is a filing index plus one exhibit per 6-K scanned, capped.
     """
     from zoneinfo import ZoneInfo
+    # The exhibits sit under www.sec.gov. Without a contact every fetch is refused,
+    # and the loop below would read that as "no 6-K carried results language".
+    if not sec_contact.has_contact():
+        return [], ("foreign private issuer: its 6-K exhibits are on www.sec.gov and "
+                    f"{sec_contact.NO_CONTACT}, so its earnings dates were not looked for")
     c = str(int(cik))
     out, looked = [], 0
     for i, form in enumerate(recent["form"]):

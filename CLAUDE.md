@@ -2454,6 +2454,17 @@ When a fetch is blocked: fall back to `WebSearch` snippets, cite the source URL,
 datum `snippet_only`, and record the unreachable domain in the run log. Do not disable
 TLS verification and do not try to route around the proxy.
 
+**SEC's contact address comes from `SEC_USER_AGENT`, since 2026-11-16.** SEC wants an
+address in the User-Agent, and an address is personal data, so no script holds one:
+`researcher_us/scripts/sec_contact.py` reads the variable from the environment and never
+prints it. Without it `data.sec.gov` and the EDGAR company lookup still answer, so tickers
+map to CIKs and 8-K history reads, while `www.sec.gov` answers 403: a foreign issuer's 6-K
+history in `priced_in.py`, the filing reads in `session_resolve.py` and the V2 shadow
+`collect` then say so in what they write instead of reporting an empty record. Set it in
+every environment a US Routine runs in, stage E-P's on the other account included. Until
+that day three scripts carried a personal address, and a privacy hook that refuses to run
+such a script stopped stage E-P v3b before its sweep on its first fire.
+
 If `scripts/get_earnings.py` exits 2 with `status_reason: network_blocked`, the
 environment is the problem — the Routines should be pointed at an environment with full
 network access. Flag it in the run log rather than quietly degrading every day.

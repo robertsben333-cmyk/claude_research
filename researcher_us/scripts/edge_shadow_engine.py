@@ -57,13 +57,16 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import sec_contact
+
 ET = ZoneInfo("America/New_York")
 REPO = Path(__file__).resolve().parents[2]
 LEDGER = REPO / "researcher_us" / "analysis" / "shadow-ledger.json"
 SHADOW_DIR = REPO / "researcher_us" / "analysis" / "shadow"
 CONFIG = REPO / "config" / "pipeline.yaml"
 
-SEC_UA = "claude_research edge/shadow (xavier.friesen@socfin.nl)"
+# Read from the environment, never written here: see sec_contact.py.
+SEC_UA = sec_contact.user_agent()
 WEB_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 TICKER_MAP = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS = "https://data.sec.gov/submissions/CIK{cik}.json"
@@ -177,6 +180,10 @@ def collect(tickers, since, until=None, ledger_path=LEDGER, limit_chars=None,
     since = max(since, min_date)
     doc = load_ledger(ledger_path)
     have = {it["id"] for it in doc["items"]}
+    # The ledger is the filing text, and the text is on www.sec.gov. Without a contact
+    # every filing would come back empty and be skipped as "no document text".
+    if not sec_contact.has_contact():
+        sys.exit(f"shadow collect needs the filing text: {sec_contact.NO_CONTACT}")
     tmap = http(TICKER_MAP)
     if not tmap:
         sys.exit("SEC ticker map unreachable")
