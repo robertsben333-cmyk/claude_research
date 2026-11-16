@@ -72,3 +72,6 @@
 ## Edge hunt (panel v3b) — panel STARTED
 - Logged at 2026-11-16 19:34 UTC
 - 19:37 UTC: all 20 searchers back, search_complete true, v3b fields on all 20 (no relaunch needed). edge_score.py ranked 20; edge_grounded_score.py written before the first print. 20 packs, four v3b judges.
+## Holistic research — IMDX control relaunch
+- Logged at 2026-11-16 19:34 UTC
+- IMDX control (hp.v1) came back search_complete=false (stocktaper 429 at ~19:31 UTC); relaunched once per skill step 2 at ~19:35 UTC. SEC_USER_AGENT unset in this environment: researchers got 403 from www.sec.gov via curl and read filings via WebFetch.
