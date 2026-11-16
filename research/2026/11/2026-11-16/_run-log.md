@@ -68,3 +68,7 @@
 ## Edge hunt (panel v3b) — baseline amend
 - Logged at 2026-11-16 19:26 UTC
 - HUYA event_plausibility suspect -> unknown (company release confirms 2026-11-17 bmo; the 11-05 6-K was a share-pool filing). Applied after the hunter launched, event-existence only; only hunted suspect name. edge_baseline_amend.py table (per-run, edited by stage E-P for STEM) left untouched.
+
+## Holistic research — IMDX control relaunch
+- Logged at 2026-11-16 19:34 UTC
+- IMDX control (hp.v1) came back search_complete=false (stocktaper 429 at ~19:31 UTC); relaunched once per skill step 2 at ~19:35 UTC. SEC_USER_AGENT unset in this environment: researchers got 403 from www.sec.gov via curl and read filings via WebFetch.
