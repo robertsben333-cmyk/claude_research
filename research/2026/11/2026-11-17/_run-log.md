@@ -19,3 +19,7 @@
 ## Stage EU — register defect
 - Logged at 2026-11-16 14:54 UTC
 - Second Swedish short-register miss: SEYE baseline 0.0 / anchor_covered false, FI aggregate lists 'Smart Eye Aktiebolag (publ)' at 4.47% (2026-11-13). With NIBE_B (5.27%) this is a systematic se name-join failure in eu_positioning; baselines left sealed. Fix in a building session.
+
+## Stage EU — Spain register lead
+- Logged at 2026-11-16 14:58 UTC
+- EDR hunter: CNMV per-issuer short page (posicionescortas?nif=A02850956, and per-holder posicionescortascomunicaciones.aspx?nif=…&idDecl=<LEI>) answers from this container where the grid the baseline uses does not; EDR disclosed shorts 3.15% (Citadel 1.46, CFM 0.89, ActusRay 0.80). Possible Spanish positioning anchor for a building session to verify; baselines unchanged.
