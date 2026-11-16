@@ -68,3 +68,7 @@
 ## Edge hunt (panel v3b) — baseline amend
 - Logged at 2026-11-16 19:26 UTC
 - HUYA event_plausibility suspect -> unknown (company release confirms 2026-11-17 bmo; the 11-05 6-K was a share-pool filing). Applied after the hunter launched, event-existence only; only hunted suspect name. edge_baseline_amend.py table (per-run, edited by stage E-P for STEM) left untouched.
+
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-16 19:34 UTC
+- 19:37 UTC: all 20 searchers back, search_complete true, v3b fields on all 20 (no relaunch needed). edge_score.py ranked 20; edge_grounded_score.py written before the first print. 20 packs, four v3b judges.
