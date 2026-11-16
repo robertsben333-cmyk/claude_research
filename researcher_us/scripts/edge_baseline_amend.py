@@ -73,15 +73,16 @@ from pathlib import Path
 # is where they can actually affect a number. Rewriting this table to {} rather than
 # leaving the 2026-09-10 entries in place is the point of the staleness guard below.
 AMENDMENTS: dict[str, tuple[str, str, str]] = {
-    # 2026-11-09, stage E-P (edge-panel). Applied BEFORE any searcher launched.
-    # Symmetry: of the 20 hunted names only PLUG reads 'suspect'; ASTS and BAP carry
-    # cadence_implausible with verdict 'unknown' and are left alone (searchers told).
-    "PLUG": ("unknown",
-             "Off 'suspect' to 'unknown', not to fits_cadence. The 'last print' the "
-             "matcher found on 2026-10-15 is the 8-K pre-announcing preliminary Q3 "
-             "revenue and cash use, not the results release; the company's own release "
-             "sets Q3 2026 results for 2026-11-09 with a 16:30 ET call.",
-             "https://finviz.com/news/402855/plug-power-reports-continued-business-progress-sets-dates-for-third-quarter-2026-earnings-call-and-global-plug-symposium"),
+    # 2026-11-16, stage E-P (edge-panel). Applied after wave 1 launched, before scoring.
+    # Symmetry: of the 20 hunted names only STEM reads 'suspect'; INFQ, RCAT, OPRA,
+    # KLAR, ELTK and GLAS carry cadence_implausible with verdict 'unknown' and are left
+    # alone (CMCM/LUXE reasoning). HUYA reads 'suspect' but was not hunted.
+    "STEM": ("unknown",
+             "Off 'suspect' to 'unknown', not to fits_cadence. The matcher missed the Q2 "
+             "print of 2026-08-12 (8-K and 10-Q on EDGAR, per the searcher); the company "
+             "itself rescheduled its Q3 2026 results from Nov 5 to Nov 16, release about "
+             "16:05 ET, call 17:00 ET.",
+             "https://finviz.com/news/415367/stem-reschedules-third-quarter-2026-earnings-results-conference-call-to-monday-november-16-2026"),
 }
 
 # SYMMETRY, 2026-09-22: one upgrade and no downgrades, which needs stating rather
