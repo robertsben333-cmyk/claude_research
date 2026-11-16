@@ -18,3 +18,7 @@
 ## Edge hunt (panel) — sweep and waves
 - Logged at 2026-11-16 18:22 UTC
 - Correction to the STARTED line: 18:07 UTC is 13:07 ET (EST), on time, not an hour late. Sweep: 70 names, 34 company-confirmed, 7 phantoms (RSSS WKHS CEPL SUPV GLBS SMWB GFUZ), 29 unconfirmed; short interest and trades_on left unknown by the sweep. Hunted 20 by budget.edge_degrade_order (unconfirmed shed first, then lowest hunt_priority): INFQ RCAT DUOT NXB OMER STEM TMS POCI OPRA WRAP POWL IMDX FTLF KLAR ELTK API AYTU YALA XBP GLAS (17 amc, 3 bmo). Shed confirmed on priority: MNSO BRFH AS HUYA ENR TME ESLT WB VIK JD DIS OCSL HD SR (several with option chains; no option-chain swap made, POWL RCAT KLAR in the hunt carry one). Wave 1 (8, 18:25 UTC): INFQ RCAT DUOT NXB OMER STEM TMS POCI.
+
+## Edge hunt (panel) — waves 2+
+- Logged at 2026-11-16 18:29 UTC
+- 18:40-18:58 UTC: INFQ NXB POCI OMER STEM RCAT TMS returned, all search_complete true. Launched WRAP POWL IMDX FTLF API AYTU YALA as slots freed (8-concurrent limit hit once on AYTU, relaunched). Baseline amend: STEM suspect -> unknown (company rescheduled Q3 to Nov 16; matcher missed the 08-12 Q2 print); only hunted 'suspect' name; cadence_implausible names left at unknown.
