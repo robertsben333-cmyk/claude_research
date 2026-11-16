@@ -61,3 +61,6 @@
 ## Edge hunt (panel v3b) — wave 3
 - Logged at 2026-11-16 19:17 UTC
 - Back and complete: YALA OMER INFQ POWL (INFQ confirmed amc 4:30 pm ET call). Launched MNSO ENR HUYA as slots freed.
+## Holistic research — 2026-11-16 — STARTED
+- Logged at 2026-11-16 19:16 UTC
+- 14:16 ET. 12 names from E-P's sweep (INFQ RCAT DUOT NXB OMER STEM TMS POCI OPRA WRAP POWL IMDX), all on both arms (hp.v2 evolving, hp.v1 control): 24 holistic-researchers in three waves of 8. Research deadline 15:35 ET.
