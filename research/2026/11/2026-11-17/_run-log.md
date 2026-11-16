@@ -27,3 +27,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-16 15:12 UTC
 - 20 of 20 hunted; 19 ranked, PXM not ranked (issuer's own date is 2026-11-23: a phantom). No name above the 2.8 floor; top NIBE_B/REACH +0.90, bottom OHLA -2.20. Packs built, four judges launching.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-16 15:18 UTC
+- ibkr-handoff.json written (no broker call): BUY NIBE_B (se, pct 86.1, 1189 sh @ 46.65 SEK, 49.99%) and BUY DPLM (uk, pct 70.8, 58 sh @ 71.8 GBP, 49.89%) on a 10,000 EUR offline plan. Not taken: REACH (turnover $0.12m below the $0.20m execution floor), OHLA (panel_pct 69.8 < 70), ZEG (65.5).
