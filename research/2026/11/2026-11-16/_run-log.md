@@ -38,3 +38,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-16 18:45 UTC
 - 20 packs, four judges (opus5, opus55, sonnet55, fable51), one file, no split. edge_score: 20 ranked, 50 not ranked. edge_grounded_score written (before the first print).
+
+## Edge hunt (panel v3b) — 2026-11-16 amc + 2026-11-17 bmo — STARTED (retry)
+- Logged at 2026-11-16 19:01 UTC
+- Retry at operator's request after main gained 1917c874 (SEC User-Agent from SEC_USER_AGENT). 70 baselines sealed into edge-panel-v3b/baselines by 19:01 UTC (14:01 ET). Plan: own edge-sweep, up to 20 unpriced-searcher-v3b (amc first, <=6 per turn), four panel-judge-v3b-* judges, panel_score twice. No orders. Late start: amc names release from 16:00 ET, so searchers racing the clock.
