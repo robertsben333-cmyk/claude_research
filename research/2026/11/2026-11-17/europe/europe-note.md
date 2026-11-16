@@ -49,7 +49,12 @@ Four blind judges (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) re-sized the hunters
 
 The panel and the key agree at the top: REACH and NIBE_B lead both. They split on DPLM and DAD, which the judges size above the hunters, and on EDR, where the judges split by model (Opus 5 and Fable short, Opus 5.5 and Sonnet long).
 
-**IBKR handoff rule** (`execution_eu`: panel_pct ≥ 70 with all four judges): REACH long, NIBE_B long, DPLM long (71), OHLA short (70). See the handoff file for the plan.
+**IBKR handoff** (`execution_eu`: panel_pct ≥ 70 with all four judges, `ibkr-handoff.json`; the offline plan, not fills). The plan buys **NIBE_B long** (pct 86.1) and **DPLM long** (70.8), each about 50% of equity. The other near-threshold names are not taken:
+- **REACH** (the panel's top name) is under the $0.20m execution turnover floor at $0.12m a day.
+- **OHLA** sits just below the line at 69.8.
+- **ZEG** is at 65.5.
+
+The fills are on branch `eu-ibkr-log`.
 
 ## Top and bottom, and what drives them
 

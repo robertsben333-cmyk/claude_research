@@ -31,3 +31,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-16 15:18 UTC
 - ibkr-handoff.json written (no broker call): BUY NIBE_B (se, pct 86.1, 1189 sh @ 46.65 SEK, 49.99%) and BUY DPLM (uk, pct 70.8, 58 sh @ 71.8 GBP, 49.89%) on a 10,000 EUR offline plan. Not taken: REACH (turnover $0.12m below the $0.20m execution floor), OHLA (panel_pct 69.8 < 70), ZEG (65.5).
+
+## Stage EU — DONE
+- Logged at 2026-11-16 15:19 UTC
+- 20 hunted, 19 ranked (PXM phantom: issuer date 23.11). No name above the 2.8 floor. Panel (4 of 4 members, no fallback) selects REACH and NIBE_B long. Handoff: NIBE_B, DPLM. Published to origin/main (pinned EARNINGS_DATA_BRANCH=main; publish.sh's rebase raced concurrent hunters writing eu-short-cache.json, so later pushes were done with plain git rebase + push HEAD:main). Defects for a building session: se short-register name join (NIBE_B 5.27, SEYE 4.47, BAHN_B 0.1 read as 0.0); CNMV per-issuer short page reachable (EDR).
