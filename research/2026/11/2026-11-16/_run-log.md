@@ -57,3 +57,7 @@
 ## Edge hunt (panel v3b) — wave 2
 - Logged at 2026-11-16 19:13 UTC
 - 19:14 UTC: YALA back (search_complete true, v3b fields present). Launched API KLAR AS (8 running).
+
+## Edge hunt (panel v3b) — wave 3
+- Logged at 2026-11-16 19:17 UTC
+- Back and complete: YALA OMER INFQ POWL (INFQ confirmed amc 4:30 pm ET call). Launched MNSO ENR HUYA as slots freed.
