@@ -38,3 +38,29 @@ None today: no name cleared the playbook's bar.
 | IMDX | control | ok | 45.0 | none | 55.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the recommendations were published)
+
+Stage E-P's `panel_pct_signed` and selection on the same names, from `edge-panel/edge-scores-panel.json`. Stage H made no recommendation today; its p_up is a lean, not a call.
+
+| ticker | H evolving p_up | H control p_up | H action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- | --- |
+| STEM | 46 | 40 | none | -95.1 | yes (short) |
+| IMDX | 45 | 45 | none | -89.2 | yes (short) |
+| NXB | 41 | 42 | none | -85.4 | yes (short) |
+| OMER | 60 | 57 | none | +85.4 | yes (long) |
+| TMS | 52 | 49 | none | -82.5 | yes (short) |
+| RCAT | 38 | 42 | none | -82.0 | yes (short) |
+| POWL | 45 | 40 | none | -77.1 | no |
+| WRAP | 43 | 45 | none | -49.6 | no |
+| INFQ | 47 | 45 | none | -45.8 | no |
+| DUOT | 43 | 46 | none | +30.9 | no |
+| POCI | 52 | 55 | none | +14.6 | no |
+| OPRA | 55 | 42 | none | -14.0 | no |
+
+Sign disagreements with E-P (evolving arm lean vs E-P side):
+- TMS: H evolving leans up (52), E-P selected it short at -82.5; the H control leans down (49), with E-P.
+- DUOT: both H arms lean down (43/46), E-P leans up (+30.9, not selected).
+- OPRA: H evolving leans up (55), E-P leans down (-14.0, not selected); the H control leans down (42), with E-P.
+
+On the six names E-P selected, H's evolving lean points the same way on five (all but TMS), but never past its 65 confidence bar.
