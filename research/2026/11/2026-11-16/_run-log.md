@@ -14,3 +14,7 @@
 ## Edge hunt (panel) — 2026-11-16 amc + 2026-11-17 bmo — STARTED
 - Logged at 2026-11-16 18:15 UTC
 - Fired 18:07 UTC (13:07 ET), an hour late against the 13:06 ET cron. Universe 70 names (43 amc 11-16, 27 bmo 11-17), 70 baselines sealed by 18:15 UTC. Plan: one edge-sweep, up to 20 unpriced-searchers (amc first, <=8 per turn), step 3s flatten live then paper, four judges, step 6b buy live then paper before 16:00 ET.
+
+## Edge hunt (panel) — sweep and waves
+- Logged at 2026-11-16 18:22 UTC
+- Correction to the STARTED line: 18:07 UTC is 13:07 ET (EST), on time, not an hour late. Sweep: 70 names, 34 company-confirmed, 7 phantoms (RSSS WKHS CEPL SUPV GLBS SMWB GFUZ), 29 unconfirmed; short interest and trades_on left unknown by the sweep. Hunted 20 by budget.edge_degrade_order (unconfirmed shed first, then lowest hunt_priority): INFQ RCAT DUOT NXB OMER STEM TMS POCI OPRA WRAP POWL IMDX FTLF KLAR ELTK API AYTU YALA XBP GLAS (17 amc, 3 bmo). Shed confirmed on priority: MNSO BRFH AS HUYA ENR TME ESLT WB VIK JD DIS OCSL HD SR (several with option chains; no option-chain swap made, POWL RCAT KLAR in the hunt carry one). Wave 1 (8, 18:25 UTC): INFQ RCAT DUOT NXB OMER STEM TMS POCI.
