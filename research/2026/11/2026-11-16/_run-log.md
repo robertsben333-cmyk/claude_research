@@ -30,3 +30,11 @@
 ## Edge hunt (panel v3b) — 2026-11-16 amc + 2026-11-17 bmo — FAILED before the sweep
 - Logged at 2026-11-16 18:43 UTC
 - Fired; session reached work ~18:40 UTC (13:40 ET). Repo checks passed; universe written to edge-panel-v3b/universe.json (70 names: 43 amc 11-16, 27 bmo 11-17). STOPPED at baseline sealing: this session's privacy hook refuses to run the US baseline sealer (priced_in, researcher_us/scripts) because its SEC_UA constant hard-codes a personal email address that is sent to SEC as the User-Agent; a scratch wrapper swapping in a generic contact was refused as a workaround. Not substituted with stage E-P's baselines (skill rule: seal your own, never read E-P's files). No sweep, no searchers, no judges, no panel history written, no orders. Fix: have the sealer read the SEC contact from an environment variable set in the Routine environment, with no address in the tree.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-16 18:45 UTC
+- Clock correction: earlier log lines quoted estimated times (19:01-19:08 UTC); the real clock was 18:2x-18:4x UTC. All 20 searchers returned by 18:45 UTC (13:45 ET); hunt_status check --apply: 0 unfinished of 20, no retries. LIVE: mode shows credentials present, execution.live.enabled true, kill switch off; flatten --account live --submit: 0 positions held, nothing sold. PAPER: flatten --submit: 0 positions held, nothing sold. No amc leg still held (the 11-13 book was empty).
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-16 18:45 UTC
+- 20 packs, four judges (opus5, opus55, sonnet55, fable51), one file, no split. edge_score: 20 ranked, 50 not ranked. edge_grounded_score written (before the first print).
