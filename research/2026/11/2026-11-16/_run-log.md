@@ -57,3 +57,7 @@
 ## Edge hunt (panel v3b) — wave 2
 - Logged at 2026-11-16 19:13 UTC
 - 19:14 UTC: YALA back (search_complete true, v3b fields present). Launched API KLAR AS (8 running).
+
+## Holistic research — 2026-11-16 — STARTED
+- Logged at 2026-11-16 19:16 UTC
+- 14:16 ET. 12 names from E-P's sweep (INFQ RCAT DUOT NXB OMER STEM TMS POCI OPRA WRAP POWL IMDX), all on both arms (hp.v2 evolving, hp.v1 control): 24 holistic-researchers in three waves of 8. Research deadline 15:35 ET.
