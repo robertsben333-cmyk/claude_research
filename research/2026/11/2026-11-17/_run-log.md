@@ -23,3 +23,7 @@
 ## Stage EU — Spain register lead
 - Logged at 2026-11-16 14:58 UTC
 - EDR hunter: CNMV per-issuer short page (posicionescortas?nif=A02850956, and per-holder posicionescortascomunicaciones.aspx?nif=…&idDecl=<LEI>) answers from this container where the grid the baseline uses does not; EDR disclosed shorts 3.15% (Citadel 1.46, CFM 0.89, ActusRay 0.80). Possible Spanish positioning anchor for a building session to verify; baselines unchanged.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-16 15:12 UTC
+- 20 of 20 hunted; 19 ranked, PXM not ranked (issuer's own date is 2026-11-23: a phantom). No name above the 2.8 floor; top NIBE_B/REACH +0.90, bottom OHLA -2.20. Packs built, four judges launching.
