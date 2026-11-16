@@ -75,3 +75,7 @@
 ## Holistic research — IMDX control relaunch
 - Logged at 2026-11-16 19:34 UTC
 - IMDX control (hp.v1) came back search_complete=false (stocktaper 429 at ~19:31 UTC); relaunched once per skill step 2 at ~19:35 UTC. SEC_USER_AGENT unset in this environment: researchers got 403 from www.sec.gov via curl and read filings via WebFetch.
+
+## Holistic research — learning step
+- Logged at 2026-11-16 19:39 UTC
+- Gate closed: hp.v2 has 24/30 resolved names over 2/3 run days; no drift alarm (32 lineage pairs, Brier diff -0.014, t -2.32). Reflector not launched. Tomorrow's run uses hp.v2. Today: 24/24 hunts ok, 0 recommendations.
