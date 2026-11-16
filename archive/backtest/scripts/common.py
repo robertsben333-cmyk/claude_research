@@ -23,7 +23,9 @@ def _load_keys():
 
 _load_keys()
 
-SEC_UA = os.environ.get("SEC_UA", "claude-research-backtest xavier.friesen@socfin.nl")
+# No contact address in the repo: see researcher_us/scripts/sec_contact.py.
+SEC_UA = (os.environ.get("SEC_USER_AGENT") or os.environ.get("SEC_UA")
+          or "claude-research-backtest")
 _last = {"sec": 0.0}
 
 
