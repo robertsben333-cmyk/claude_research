@@ -38,3 +38,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-16 18:45 UTC
 - 20 packs, four judges (opus5, opus55, sonnet55, fable51), one file, no split. edge_score: 20 ranked, 50 not ranked. edge_grounded_score written (before the first print).
+
+## Edge hunt (panel) — ranking
+- Logged at 2026-11-16 18:57 UTC
+- Panel: all four pinned judges ran, 20/20 ids each, no fallback. Selected (panel_pct >= 80, 4 members): STEM 95 S, IMDX 89 S, NXB 85 S, OMER 85 L, TMS 82 S, RCAT 82 S, KLAR 81 S. Next: POWL 77 S. Searcher floor-clearers IMDX -4.5, STEM -4.3, TMS -3.3, OMER +2.8. rho(searcher impact_sum, panel_pct_signed) = +0.86. Stage E has no files today (Routine stopped). Tradable at Alpaca: STEM, OMER, KLAR; IMDX TMS RCAT not lendable, NXB below the turnover floor.
