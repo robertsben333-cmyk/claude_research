@@ -22,3 +22,7 @@
 ## Edge hunt (panel) — waves 2+
 - Logged at 2026-11-16 18:29 UTC
 - 18:40-18:58 UTC: INFQ NXB POCI OMER STEM RCAT TMS returned, all search_complete true. Launched WRAP POWL IMDX FTLF API AYTU YALA as slots freed (8-concurrent limit hit once on AYTU, relaunched). Baseline amend: STEM suspect -> unknown (company rescheduled Q3 to Nov 16; matcher missed the 08-12 Q2 print); only hunted 'suspect' name; cadence_implausible names left at unknown.
+
+## Edge hunt (panel) — last launches
+- Logged at 2026-11-16 18:36 UTC
+- 19:08 UTC: all 20 searchers launched (last: OPRA KLAR ELTK). Back and complete: INFQ RCAT DUOT NXB OMER STEM TMS POCI WRAP FTLF API YALA IMDX. FTLF note: its Q3 10-Q went to EDGAR 07:30 ET today and the stock traded down on it intraday, so most of the print was public before the window opened. API note: searcher found the baseline's Q1 reaction rows misdated.
