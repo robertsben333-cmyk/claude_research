@@ -57,3 +57,22 @@
 2026-11-16T14:35:17+00:00   account U29945913: 0 position(s), 0 working order(s), gross 0.00 EUR
 2026-11-16T14:35:17+00:00   flatten: 0 sent, 0 skipped, 0 position(s) still held
 2026-11-16T14:35:17+00:00   exit 0
+2026-11-16T14:35:25+00:00 log pushed to eu-ibkr-log
+2026-11-16T15:00:03+00:00 waiting for today's handoff until 17:30 Amsterdam
+2026-11-16T15:20:23+00:00 handoff found in research/2026/11/2026-11-17/europe (main at c6751326)
+2026-11-16T15:20:23+00:00 $ /home/ubuntu/eu-executor/claude_research/researcher_europe/scripts/ibkr_trade.py open --run /home/ubuntu/eu-executor/claude_research/research/2026/11/2026-11-17/europe --submit
+2026-11-16T15:20:39+00:00   equity 2,100.35 EUR, held 0.00, budget 2,100.35, cap a name 1,050.17
+2026-11-16T15:20:39+00:00   rule: panel_pct >= 70 with all four judges
+2026-11-16T15:20:39+00:00     BUY  NIBE_B     se pct  86.1 qty     251 @ 46.35 SEK = 1,048.53 (49.92%) [yahoo (no IBKR quote)]
+2026-11-16T15:20:39+00:00     BUY  DPLM       uk pct  70.8 qty      12 @ 71.05 GBP = 1,021.48 (48.63%) [ibkr snapshot mid]
+2026-11-16T15:20:39+00:00     --   REACH      not taken: turnover $0.12m below the $0.20m floor
+2026-11-16T15:20:39+00:00     --   OHLA       not taken: panel_pct 69.8 below the 70 entry floor
+2026-11-16T15:20:39+00:00     --   ZEG        not taken: panel_pct 65.5 below the 70 entry floor
+2026-11-16T15:20:39+00:00     sent BUY 251 NIBE_B @ 46.82 -> 24
+2026-11-16T15:20:39+00:00     sent BUY 12 DPLM @ 7180 -> 26
+2026-11-16T15:20:39+00:00   open: 2 sent, 0 failed
+2026-11-16T15:20:39+00:00   Error 200, reqId 19: No security definition has been found for the request, contract: Contract(secType='STK', symbol='NIBE_B')
+2026-11-16T15:20:39+00:00   Error 354, reqId 21: Requested market data is not subscribed. Check API status by selecting the Account menu then under Management choose Market Data Subscription Manager and/or availability of delayed data.NIBE.B SFB (NIBE B) /TOP/ALL, contract: Contract(secType='STK', conId=492734118, symbol='NIBE.B', exchange='SMART', primaryExchange='SFB', currency='SEK')
+2026-11-16T15:20:39+00:00   Error 110, reqId 25: The price does not conform to the minimum price variation for this contract.
+2026-11-16T15:20:39+00:00   Canceled order: Trade(contract=Contract(secType='STK', conId=35151287, symbol='DPLM', exchange='SMART', primaryExchange='LSE', currency='GBP'), order=LimitOrder(orderId=25, clientId=17, action='BUY', totalQuantity=12, lmtPrice=7176.5, tif='DAY', orderRef='eu-2026-11-17-DPLM-entry-42434', account='U29945913'), orderStatus=OrderStatus(orderId=25, status='Cancelled', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 11, 16, 15, 20, 34, 645731, tzinfo=datetime.timezone.utc), status='PendingSubmit', message='', errorCode=0), TradeLogEntry(time=datetime.datetime(2026, 11, 16, 15, 20, 34, 648257, tzinfo=datetime.timezone.utc), status='Cancelled', message='Error 110, reqId 25: The price does not conform to the minimum price variation for this contract.', errorCode=110)], advancedError='')
+2026-11-16T15:20:39+00:00   exit 0
