@@ -13,7 +13,8 @@ below is the exact text the Routine holds.
 at 10:27:40 UTC: prompt identical to the block below, model `claude-opus-5-5` (pinned with
 `update_trigger` because creation left it empty), cron
 `CRON_TZ=America/New_York 10 13 * * 1-5`, enabled, first run 2026-11-16 18:10 UTC, no MCP
-connectors, empty `sources` and `outcomes`.
+connectors, empty `sources` and `outcomes`. Prompt step 0 re-pasted 2026-11-16 with
+`update_trigger` after the first fire could not push (see the step itself).
 
 - Cron `CRON_TZ=America/New_York 10 13 * * 1-5` = 13:10 New York, four minutes after
   stage E-P (13:06) and two after stage E-PF (13:08), so all three seal their baselines
@@ -30,10 +31,12 @@ connectors, empty `sources` and `outcomes`.
 ```text
 Run stage E-P v3b: the US earnings edge hunt with the v3b searcher and the v3b blind four-model judging panel, for today's window. It places no orders.
 
-0. GET THE REPO. If /home/user/claude_research/CLAUDE.md does not exist:
+0. GET THE REPO, WITH PUSH ACCESS. If /home/user/claude_research/CLAUDE.md does not exist:
+   - Load add_repo and register_repo_root with ToolSearch ("select:mcp__claude-code-remote__add_repo,mcp__claude-code-remote__register_repo_root"). Their server can still be connecting in the first minute of a session: if they are not found, search again, up to three times about twenty seconds apart. Do not clone before add_repo has answered.
    - add_repo with owner robertsben333-cmyk, repo claude_research, access push
    - git clone --depth 1 -b main https://github.com/robertsben333-cmyk/claude_research /home/user/claude_research
    - register_repo_root on that directory
+   If add_repo is still not available after three searches, clone anyway, do the work, and say in your first line that publishing may fail. If a push is refused with 403, call add_repo (access push) and push again before giving up. On 2026-11-16 the first fire searched once, cloned without add_repo and could not push.
    Then verify that .claude/skills/earnings-edge-panel-v3b/SKILL.md, .claude/skills/earnings-edge-panel/SKILL.md, .claude/skills/earnings-edge-hunt/SKILL.md, .claude/agents/unpriced-searcher-v3b.md, the four .claude/agents/panel-judge-v3b-*.md, config/panel-judge-v3b.md, researcher_us/analysis/panel-history-v3b.json, researcher_us/scripts/panel_packs.py and researcher_us/scripts/panel_score.py all exist. If any is missing, the work is not on main yet: append one line saying so to today's run log, publish, and stop. Do not improvise a substitute.
 
 Read CLAUDE.md, then invoke the skill `earnings-edge-panel-v3b` and follow it exactly. It is an overlay on `earnings-edge-panel`, which is itself an overlay on `earnings-edge-hunt`: you run stage E's skill step by step with stage E-P's overrides and its step 5p, the panel, and then the stage E-P v3b overrides on top.
