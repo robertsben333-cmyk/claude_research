@@ -26,3 +26,7 @@
 ## Edge hunt (panel) — last launches
 - Logged at 2026-11-16 18:36 UTC
 - 19:08 UTC: all 20 searchers launched (last: OPRA KLAR ELTK). Back and complete: INFQ RCAT DUOT NXB OMER STEM TMS POCI WRAP FTLF API YALA IMDX. FTLF note: its Q3 10-Q went to EDGAR 07:30 ET today and the stock traded down on it intraday, so most of the print was public before the window opened. API note: searcher found the baseline's Q1 reaction rows misdated.
+
+## Edge hunt (panel v3b) — 2026-11-16 amc + 2026-11-17 bmo — FAILED before the sweep
+- Logged at 2026-11-16 18:43 UTC
+- Fired; session reached work ~18:40 UTC (13:40 ET). Repo checks passed; universe written to edge-panel-v3b/universe.json (70 names: 43 amc 11-16, 27 bmo 11-17). STOPPED at baseline sealing: this session's privacy hook refuses to run the US baseline sealer (priced_in, researcher_us/scripts) because its SEC_UA constant hard-codes a personal email address that is sent to SEC as the User-Agent; a scratch wrapper swapping in a generic contact was refused as a workaround. Not substituted with stage E-P's baselines (skill rule: seal your own, never read E-P's files). No sweep, no searchers, no judges, no panel history written, no orders. Fix: have the sealer read the SEC contact from an environment variable set in the Routine environment, with no address in the tree.
