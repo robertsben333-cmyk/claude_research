@@ -86,3 +86,7 @@
 ## Edge hunt (panel) — step 6b re-run after margin fix
 - Logged at 2026-11-17 19:29 UTC
 - 19:29Z (operator's instruction): turnover floor removed for the panel book and margin-aware sizing merged to main (2ff2fd13). First plans kept as alpaca-plan*-first-1849Z.json. LIVE: FEAM short sized by margin fit (free $1,371 at $2.50/share) to 548 sh, filled 537 @ 1.5602; book now JMIA -295 (~50%) + FEAM -537 (~29%), buying power left $286. ICCM and ENRD now pass the floor but are not shortable at Alpaca. PAPER: nothing added (JMIA at cap, FEAM at its 1%-of-ADV cap, ICCM/ENRD not shortable); stays JMIA 50% + FEAM 24%.
+
+## Holistic research — learning step
+- Logged at 2026-11-17 19:41 UTC
+- Gate OPEN: hp.v2 36 resolved names / 3 days (needs 30/3); no drift alarm (44 pairs, diff -0.005, t -0.8). Reflector proposed 2 ops (P4: a price move proves only the news it can be tied to, a drawdown or run-in is not by itself a reason to move toward 50; P9: self-critique may move p_up either way, once). revise APPLIED hp.v2 -> hp.v3; tomorrow uses hp.v3. Research today: 24/24 hunts ok, 0 recommendations, all p_up within 42-57. Researchers ran as holistic-researcher (native). Note: SEC_USER_AGENT is unset in this environment; www.sec.gov 403'd for several researchers, and one control researcher (PRE) sent a generic made-up contact address in the User-Agent.

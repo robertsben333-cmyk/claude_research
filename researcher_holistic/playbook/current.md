@@ -1,4 +1,4 @@
-<!-- playbook: hp.v2 | parent: hp.v1 | written: 2026-11-11 | by: holistic-reflector -->
+<!-- playbook: hp.v3 | parent: hp.v2 | written: 2026-11-17 | by: holistic-reflector -->
 # The approach (playbook)
 
 This is your working approach for one company that reports earnings in the next window.
@@ -62,17 +62,11 @@ Read every data series yourself up to its latest point and quote that point with
 
 ## [P4] "Priced in" is a claim to prove
 
-The habit to break, measured on this repo's own stages: concluding the market holds a fact
-because it appeared in the news or in a downgrade. Awareness is not a number. Treat
-something as priced only when you can show it: a consensus that already reflects it,
-estimate revisions after the datapoint, a preview that quantifies it, or a price move you
-can tie to it. When you cannot show it, the gap between your answer and the stale number
-is unpriced.
+The habit to break, measured on this repo's own stages: concluding the market holds a fact because it appeared in the news or in a downgrade. Awareness is not a number. Treat something as priced only when you can show it: a consensus that already reflects it, estimate revisions after the datapoint, a preview that quantifies it, or a price move you can tie to it. When you cannot show it, the gap between your answer and the stale number is unpriced.
 
-Biases that keep a price behind: stale estimates (count the days since revision);
-anchoring on the company's guide after independent data moved; slow series the market
-underweights; thin coverage; extrapolating the last reaction; a consensus mean distorted
-by one outlier; crowded positioning that makes a small surprise move the stock a lot.
+A price move proves only what it can be tied to. A fall that came with dated news (a financing, a listing notice, a strategic review, a covenant waiver, last quarter's cut) holds that news. It does not hold the next step, which only this release can take: a further guide cut or a withdrawal, going-concern or impairment language, a raise or recapitalisation, or a ramp the company floated that did not arrive. The same holds upward: a run-up that came with peers' prints holds the peers, not this company's beat or raise. So a deep drawdown, a low multiple, a washed-out chart or a large run-in is not, by itself, a reason to pull p_up toward 50. Name the outcome the move is tied to, and ask whether your inputs point beyond it. If they do, the move is the bar and not the answer. Where the equity is small against debt or cash burn, a bad step in the release can change what the shares are worth outright, so a past fall does not cushion it.
+
+Biases that keep a price behind: stale estimates (count the days since revision); anchoring on the company's guide after independent data moved; slow series the market underweights; thin coverage; extrapolating the last reaction; a consensus mean distorted by one outlier; crowded positioning that makes a small surprise move the stock a lot.
 
 Be as willing to find a missed upside as a missed downside.
 
@@ -114,7 +108,4 @@ searches of the same kind.
 
 ## [P9] Before you emit
 
-Write the strongest case against your view and what in the release would flip it. If the
-case against is strong, move `p_up` toward 50 once, there and nowhere else. In
-`approach_notes`, say in a line or two which parts of this playbook helped on this name
-and which got in the way: the stage reads those notes when it revises its approach.
+Write the strongest case against your view and what in the release would flip it. Then read your number against what you wrote. If the case against is strong, move `p_up` toward 50 once. If writing it shows the opposite, that your own side's evidence is stronger than your number says, move `p_up` away from 50 by as much, once. Do either one there and nowhere else, and never emit a number your own critique says is wrong. In `approach_notes`, say in a line or two which parts of this playbook helped on this name and which got in the way: the stage reads those notes when it revises its approach.
