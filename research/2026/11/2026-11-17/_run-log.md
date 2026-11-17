@@ -62,3 +62,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-17 18:38 UTC
 - 20 packs, four judges
+
+## Edge hunt (panel) — panel and note
+- Logged at 2026-11-17 18:48 UTC
+- 18:48Z: 4/4 judges ran (opus5, opus55, sonnet55, fable51, all pinned, full coverage 20/20). Selected (panel_pct>=80): JMIA 84 S, ICCM 84 S, FEAM 82 S. ICCM below $200k turnover floor ($0.10m). No stage E dir today. Note published; step 6b next.
