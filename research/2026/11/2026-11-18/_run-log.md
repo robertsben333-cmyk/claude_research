@@ -59,3 +59,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:03 UTC
 - BLND banked: impact_sum +0.3, abs 2.6, p_up 50; bmo 07:00, H1 pre-released in 15 Oct trading statement. WKP launched (last name).
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:07 UTC
+- SSE banked: impact_sum +0.6, abs 3.0, p_up 53; bmo 07:00, H1 EPS pre-released 1 Oct.

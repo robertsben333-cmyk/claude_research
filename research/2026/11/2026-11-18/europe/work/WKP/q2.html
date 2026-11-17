@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="d44300e878b245a798f9f2a7b8924822-d12f14650c6c4f92-1"/><meta name="baggage" content="sentry-trace_id=d44300e878b245a798f9f2a7b8924822,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=f6533f8d7c1d6b199c5a9237826bb96c2a918d2d,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.626633"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "f6533f8d7c1d6b199c5a9237826bb96c2a918d2d",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from WORKSPACE GROUP PLC SECOND QUARTER BUSINESS UPDATE" />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "WORKSPACE GROUP PLC SECOND QUARTER BUSINESS UPDATE | Company Announcement | Investegate",
+            "description":"Investegate announcements from WORKSPACE GROUP PLC SECOND QUARTER BUSINESS UPDATE",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-10-15 06:01:15",
+            "dateModified": "2026-10-15 06:02:16",
+            "url": "https://www.investegate.co.uk/announcement/rns/workspace-group--wkp/workspace-group-plc-second-quarter-business-update/9823553"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='WORKSPACE GROUP PLC SECOND QUARTER BUSINESS UPDATE | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/workspace-group--wkp/workspace-group-plc-second-quarter-business-update/9823553' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>WORKSPACE GROUP PLC SECOND QUARTER BUSINESS UPDATE | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">WORKSPACE GROUP PLC SECOND QUARTER BUSINESS UPDATE</h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Workspace Group PLC reported a second quarter business update ending September 30, 2026, noting resilient occupancy and rents despite slower customer activity, with 18 unfurnished deals completed at 8% above ERV and 18 under offer at 14% above ERV. The company has completed £138 million in disposals since March 2025, progressing towards its £200 million target by March 2027, though some transactions are taking longer due to market conditions. Total rent roll decreased by 0.6% to £126.6 million, with total portfolio occupancy at 79.2%. The company is investing approximately £1.5 million in 24 furnished units, targeting mid-teen incremental yield on cost, and expects over 100 more furnished units in 2027. Net debt stood at £754 million as of September 30, 2026, with cash and undrawn facilities totaling £246 million and a proforma LTV of 36%.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head><style type="text/css">
+/*<![CDATA[*/
+/**/
+
+			@page Section_1 { size: 595.3pt 841.9pt margin-top: 56.7pt margin-right: 72pt margin-bottom: 56.7pt margin-left: 72pt -aw-footer-distance: 17pt -aw-header-distance: 22.7pt -aw-page-numbers-start: 0 }
+			.aspose-root div.Section_1 { margin: 56.7pt 72pt; page: Section_1 }
+			.aspose-root { font-family: "Times New Roman"; font-size: 12pt; max-width: 600.3pt; width: 600.3pt; margin: 1pt auto; position: relative; display: block }
+			.aspose-root h1, .aspose-root h2, .aspose-root h3, .aspose-root h4, .aspose-root h5, .aspose-root h6, .aspose-root p { margin: 0 }
+			.aspose-root li, .aspose-root table { margin-top: 0; margin-bottom: 0 }
+			.aspose-root h1 { margin-top: 12pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 16pt; font-weight: normal; color: rgba(47, 84, 150, 1) }
+			.aspose-root h2 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 13pt; font-weight: normal; color: rgba(47, 84, 150, 1) }
+			.aspose-root h3 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; color: rgba(31, 55, 99, 1) }
+			.aspose-root h4 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; font-style: italic; color: rgba(47, 84, 150, 1) }
+			.aspose-root h5 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; color: rgba(47, 84, 150, 1) }
+			.aspose-root h6 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; color: rgba(31, 55, 99, 1) }
+			.aspose-root .Heading7 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; font-style: italic; color: rgba(31, 55, 99, 1); -aw-style-name: heading7 }
+			.aspose-root .Heading8 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 10.5pt; font-weight: normal; color: rgba(39, 39, 39, 1); -aw-style-name: heading8 }
+			.aspose-root .Heading9 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 10.5pt; font-weight: normal; font-style: italic; color: rgba(39, 39, 39, 1); -aw-style-name: heading9 }
+			.aspose-root .\30 0Bodynospace { margin-bottom: 0; line-height: normal; font-family: Arial; font-size: 9pt; -aw-style-name: '**00_Body (no space)' }
+			.aspose-root .Caption { margin-bottom: 10pt; line-height: normal; font-family: "Times New Roman"; font-size: 9pt; font-style: italic; color: rgba(68, 84, 106, 1); -aw-style-name: caption }
+			.aspose-root .CommentSubject { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 10pt; font-weight: bold; -aw-style-name: comment-subject; -aw-style-parent: comment-text }
+			.aspose-root .CommentText { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: comment-text }
+			.aspose-root .Default { margin-bottom: 0; line-height: normal; font-family: Arial; font-size: 12pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .Footer { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: footer }
+			.aspose-root .Header { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: header }
+			.aspose-root .IntenseQuote { margin: 18pt 43.2pt; text-align: center; line-height: normal; border-top: 0.75pt solid rgba(68, 114, 196, 1); border-bottom: 0.75pt solid rgba(68, 114, 196, 1); padding-top: 10pt; padding-bottom: 10pt; font-family: "Times New Roman"; font-size: 12pt; font-style: italic; color: rgba(68, 114, 196, 1); -aw-border-bottom: 0.5pt single #4472c4; -aw-border-top: 0.5pt single #4472c4; -aw-style-name: intense-quote }
+			.aspose-root .ListParagraph { margin-left: 36pt; margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: list-paragraph }
+			.aspose-root .NoSpacing { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: no-spacing }
+			.aspose-root .PlainText { margin-bottom: 0; line-height: normal; font-family: Calibri; font-size: 11pt; -aw-style-name: plain-text }
+			.aspose-root .Quote { margin: 10pt 43.2pt 8pt; text-align: center; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; font-style: italic; color: rgba(64, 64, 64, 1); -aw-style-name: quote }
+			.aspose-root .Revision { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: revision }
+			.aspose-root .Subtitle { margin-bottom: 8pt; line-height: normal; font-family: Calibri; font-size: 11pt; letter-spacing: 0.75pt; color: rgba(90, 90, 90, 1); -aw-style-name: subtitle }
+			.aspose-root .TOCHeading { margin-top: 12pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: normal; font-family: "Calibri Light"; font-size: 16pt; color: rgba(47, 84, 150, 1); -aw-style-name: toc-heading; -aw-style-parent: heading1 }
+			.aspose-root .Title { margin-bottom: 0; line-height: normal; font-family: "Calibri Light"; font-size: 28pt; letter-spacing: -0.5pt; -aw-style-name: title }
+			.aspose-root .ag { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: Calibri; font-size: 11pt }
+			.aspose-root .ef { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: Calibri; font-size: 11pt }
+			.aspose-root .ei { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: Calibri; font-size: 11pt }
+			.aspose-root span.BookTitle { font-weight: bold; font-style: italic; letter-spacing: 0.25pt; -aw-style-name: book-title }
+			.aspose-root span.CommentReference { font-size: 8pt; -aw-style-name: comment-reference }
+			.aspose-root span.CommentSubjectChar { font-family: "Times New Roman"; font-size: 10pt; font-weight: bold }
+			.aspose-root span.CommentTextChar { font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root span.Emphasis { font-style: italic; -aw-style-name: emphasis }
+			.aspose-root span.FooterChar { font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root span.HeaderChar { font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root span.Heading1Char { font-family: "Calibri Light"; font-size: 16pt; color: rgba(47, 84, 150, 1) }
+			.aspose-root span.Heading2Char { font-family: "Calibri Light"; font-size: 13pt; color: rgba(47, 84, 150, 1) }
+			.aspose-root span.Heading3Char { font-family: "Calibri Light"; font-size: 12pt; color: rgba(31, 55, 99, 1) }
+			.aspose-root span.Heading4Char { font-family: "Calibri Light"; font-size: 12pt; font-style: italic; color: rgba(47, 84, 150, 1) }
+			.aspose-root span.Heading5Char { font-family: "Calibri Light"; font-size: 12pt; color: rgba(47, 84, 150, 1) }
+			.aspose-root span.Heading6Char { font-family: "Calibri Light"; font-size: 12pt; color: rgba(31, 55, 99, 1) }
+			.aspose-root span.Heading7Char { font-family: "Calibri Light"; font-size: 12pt; font-style: italic; color: rgba(31, 55, 99, 1) }
+			.aspose-root span.Heading8Char { font-family: "Calibri Light"; font-size: 10.5pt; color: rgba(39, 39, 39, 1) }
+			.aspose-root span.Heading9Char { font-family: "Calibri Light"; font-size: 10.5pt; font-style: italic; color: rgba(39, 39, 39, 1) }
+			.aspose-root span.Hyperlink { text-decoration: underline; color: rgba(0, 0, 255, 1); -aw-style-name: hyperlink }
+			.aspose-root span.IntenseEmphasis { font-style: italic; color: rgba(68, 114, 196, 1); -aw-style-name: intense-emphasis }
+			.aspose-root span.IntenseQuoteChar { font-family: "Times New Roman"; font-size: 12pt; font-style: italic; color: rgba(68, 114, 196, 1) }
+			.aspose-root span.IntenseReference { font-weight: bold; font-variant: small-caps; letter-spacing: 0.25pt; color: rgba(68, 114, 196, 1); -aw-style-name: intense-reference }
+			.aspose-root span.Mention { color: rgba(43, 87, 154, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: mention }
+			.aspose-root span.PageNumber { -aw-style-name: page-number }
+			.aspose-root span.PlainTextChar { font-family: Calibri }
+			.aspose-root span.QuoteChar { font-family: "Times New Roman"; font-size: 12pt; font-style: italic; color: rgba(64, 64, 64, 1) }
+			.aspose-root span.Strong { font-weight: bold; -aw-style-name: strong }
+			.aspose-root span.SubtitleChar { letter-spacing: 0.75pt; color: rgba(90, 90, 90, 1) }
+			.aspose-root span.SubtleEmphasis { font-style: italic; color: rgba(64, 64, 64, 1); -aw-style-name: subtle-emphasis }
+			.aspose-root span.SubtleReference { font-variant: small-caps; color: rgba(90, 90, 90, 1); -aw-style-name: subtle-reference }
+			.aspose-root span.TitleChar { font-family: "Calibri Light"; font-size: 28pt; letter-spacing: -0.5pt }
+			.aspose-root span.UnresolvedMention { color: rgba(96, 94, 92, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: unresolved-mention }
+			.aspose-root .rn-1 { text-align: justify; font-size: 11pt }
+			.aspose-root .rn-2.\30 0Bodynospace { text-align: justify; font-size: 11pt }
+			.aspose-root .rn-3.Default { text-align: justify; font-size: 11pt }
+			.aspose-root .rn-4 { font-family: Arial; font-weight: bold }
+			.aspose-root .rn-5 { text-align: center; font-size: 11pt }
+			.aspose-root .rn-6.\30 0Bodynospace { text-align: center; font-size: 11pt }
+			.aspose-root .rn-7 { font-family: Arial; -aw-import: ignore }
+			.aspose-root .rn-8.cz { font-family: Arial; -aw-import: ignore }
+			.aspose-root .rn-9 { font-family: Arial; font-weight: bold; text-transform: uppercase }
+			.aspose-root .rn-10 { font-size: 8pt }
+			.aspose-root .rn-11 { font-family: Arial }
+			.aspose-root .rn-12.cz { font-family: Arial }
+			.aspose-root .rn-13 { font-size: 11pt }
+			.aspose-root .rn-14.\30 0Bodynospace { font-size: 11pt }
+			.aspose-root .rn-15 { font-family: Arial; font-style: italic }
+			.aspose-root .rn-16 { font-family: Arial; font-weight: bold; -aw-import: ignore }
+			.aspose-root .rn-17 { margin: 0; padding-left: 0 }
+			.aspose-root .rn-18.ListParagraph { margin-left: 10.5pt; text-align: justify; padding-left: 7.35pt; font-family: serif; font-size: 11pt; -aw-font-family: 'Symbol'; -aw-font-weight: normal; -aw-number-format: '&#61623;' }
+			.aspose-root .rn-19 { margin-right: 0; margin-left: 0; padding-left: 0 }
+			.aspose-root .rn-20.ListParagraph { margin-left: 28.06pt; padding-left: 8.09pt; font-family: serif; font-size: 11pt; -aw-font-family: 'Courier New'; -aw-font-weight: normal; -aw-number-format: 'o' }
+			.aspose-root .rn-21.ListParagraph { margin-left: 10.5pt; margin-bottom: 14pt; text-align: justify; padding-left: 7.5pt; font-family: serif; font-size: 11pt; -aw-font-family: 'Symbol'; -aw-font-weight: normal; -aw-number-format: '&#61623;' }
+			.aspose-root .rn-22 { font-family: Arial; font-size: 7.33pt; vertical-align: super }
+			.aspose-root .rn-23 { text-align: justify; font-size: 7pt }
+			.aspose-root .rn-24 { font-family: Arial; font-size: 4.67pt; font-style: italic; vertical-align: super }
+			.aspose-root .rn-25 { text-align: justify }
+			.aspose-root .rn-26 { line-height: 108%; font-size: 11pt }
+			.aspose-root .rn-27 { width: 100%; border-collapse: collapse }
+			.aspose-root .rn-28 { width: 18.84%; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top }
+			.aspose-root .rn-29 { -aw-import: ignore }
+			.aspose-root .rn-30 { font-weight: bold }
+			.aspose-root .rn-31 { border-top: 0.75pt solid rgba(0, 0, 0, 1); border-left: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.03pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left: 0.5pt single #000000; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-32 { width: 13.52%; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-33 { width: 13.52%; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-34 { font-weight: bold; -aw-import: ignore }
+			.aspose-root .rn-35 { width: 13.52%; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-right: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.03pt; padding-left: 5.4pt; vertical-align: top; -aw-border-right: 0.5pt single #000000; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-36 { width: 13.52%; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-right: 0.75pt solid rgba(0, 0, 0, 1); border-left: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.03pt; padding-left: 5.03pt; vertical-align: top; -aw-border-left: 0.5pt single #000000; -aw-border-right: 0.5pt single #000000; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-37 { width: 13.52%; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-left: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.03pt; vertical-align: top; -aw-border-left: 0.5pt single #000000; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-38 { height: 12.25pt }
+			.aspose-root .rn-39 { width: 13.52%; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top }
+			.aspose-root .rn-40 { width: 13.52%; border-right: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.03pt; padding-left: 5.4pt; vertical-align: top; -aw-border-right: 0.5pt single #000000 }
+			.aspose-root .rn-41 { width: 13.52%; border-right: 0.75pt solid rgba(0, 0, 0, 1); border-left: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.03pt; padding-left: 5.03pt; vertical-align: top; -aw-border-left: 0.5pt single #000000; -aw-border-right: 0.5pt single #000000 }
+			.aspose-root .rn-42 { width: 13.52%; border-left: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.03pt; vertical-align: top; -aw-border-left: 0.5pt single #000000 }
+			.aspose-root .rn-43 { width: 13.52%; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: middle }
+			.aspose-root .rn-44 { width: 13.52%; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000 }
+			.aspose-root .rn-45 { width: 13.52%; border-right: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.03pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-right: 0.5pt single #000000 }
+			.aspose-root .rn-46 { -aw-import: spaces }
+			.aspose-root .rn-47 { width: 13.52%; border-right: 0.75pt solid rgba(0, 0, 0, 1); border-left: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.03pt; padding-left: 5.03pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left: 0.5pt single #000000; -aw-border-right: 0.5pt single #000000 }
+			.aspose-root .rn-48 { width: 13.52%; border-left: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.03pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left: 0.5pt single #000000 }
+			.aspose-root .rn-49 { width: 13.52%; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: middle; -aw-border-bottom: 0.5pt single #000000 }
+			.aspose-root .rn-50 { height: 17pt }
+			.aspose-root .rn-51 { width: 13.52%; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: middle; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-52 { height: 3pt }
+			.aspose-root .rn-53 { text-align: right; font-size: 11pt }
+			.aspose-root .rn-54 { width: 372.35pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom }
+			.aspose-root .rn-55 { width: 56.8pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom }
+			.aspose-root .rn-56 { text-align: right; line-height: 108%; font-size: 11pt }
+			.aspose-root .rn-57 { width: 123.9pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-style: nil }
+			.aspose-root .rn-58 { page-break-inside: avoid; page-break-after: avoid; font-size: 11pt }
+			.aspose-root .rn-59 { text-align: center; page-break-inside: avoid; page-break-after: avoid; font-size: 11pt }
+			.aspose-root .rn-60 { height: 12.3pt }
+			.aspose-root .rn-61 { width: 123.9pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top-style: nil }
+			.aspose-root .rn-62 { width: 73.15pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-63.Default { text-align: center; page-break-inside: avoid; page-break-after: avoid; font-size: 10.5pt }
+			.aspose-root .rn-64 { font-size: 7pt; vertical-align: super }
+			.aspose-root .rn-65 { height: 13.05pt }
+			.aspose-root .rn-66 { width: 73.15pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom-style: nil; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-67 { width: 73.15pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-style: nil }
+			.aspose-root .rn-68 { font-family: Arial; -aw-import: spaces }
+			.aspose-root .rn-69 { width: 73.15pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top-style: nil }
+			.aspose-root .rn-70 { font-size: 7pt }
+			.aspose-root .rn-71 { width: 36pt; display: inline-block }
+			.aspose-root .rn-72 { width: 130.95pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-style: nil }
+			.aspose-root .rn-73 { width: 130.95pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top-style: nil }
+			.aspose-root .rn-74 { width: 67.45pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-75 { width: 67.5pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-76 { width: 67.45pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom-style: nil; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-77 { width: 67.5pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom-style: nil; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top: 0.5pt single #000000 }
+			.aspose-root .rn-78 { width: 67.45pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-style: nil }
+			.aspose-root .rn-79 { width: 67.5pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-style: nil }
+			.aspose-root .rn-80 { width: 67.45pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top-style: nil }
+			.aspose-root .rn-81 { width: 67.5pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.5pt single #000000; -aw-border-left-style: nil; -aw-border-right-style: nil; -aw-border-top-style: nil }
+			.aspose-root .rn-82 { width: 36pt; font-family: Arial; display: inline-block }
+			.aspose-root .rn-83 { font-family: Arial; font-size: 11pt }
+		
+/**/
+/*]]>*/
+</style>
+
+</head><body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6337605_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Workspace Group PLC</div>  <div>15 October 2026</div>  <div>&#160;</div></div><div class="aspose-root">
+<div class="Section_1">
+<p class="rn-1">
+<img src="https://dw6uz0omxro53.cloudfront.net/3848324/af0c011d-1869-4fe7-84e1-dbb135e6a189.png" width="123" height="69" alt="A blue circle with black text
+
+AI-generated content may be incorrect." class="fr-draggable" style="display: inline-block; vertical-align: bottom; margin: 5px 0px 5px 5px; max-width: calc(100% - 5px); text-align: right; float: right;" /><br /><span class="rn-4"></span></p><p class="rn-1"><br /></p><p class="rn-1"><br /></p><p class="rn-1"><br /></p><p class="rn-1"><br /></p><p class="rn-1"><span class="rn-4">15 October 2026</span>
+</p>
+<p class="rn-5">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-5">
+<br /><span class="rn-9">Workspace GROUP PLC</span>
+</p>
+<p class="rn-5">
+<span style="font-family:Arial; font-weight:bold; text-transform:uppercase; -aw-import:ignore;">&#160;</span>
+</p>
+<p class="rn-5">
+<span class="rn-9">SECOND Quarter business update FOR THE </span>
+</p>
+<p class="rn-5">
+<span class="rn-9">PERIOD ENDING 30 SEPTEMBER 2026</span>
+</p>
+<p class="rn-10">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Workspace Group PLC (&#8220;Workspace&#8221;), London&#8217;s leading owner and operator of sustainable, flexible work space, provides a business update for the second quarter ending 30 September 2026.</span>
+</p>
+<p class="rn-10">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-13">
+<span class="rn-4">Charlie Green, Chief Executive Officer, Workspace Group PLC, commented:</span><span class="rn-11">&#160;</span>
+</p>
+<p class="rn-10">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-15">&#8220;We continue to execute our strategy. Occupancy and rents remain resilient despite a quieter quarter for customer activity. We have been making significant changes across the business: investing in our two products, adjusting our pricing model and working on the new branding, launching next month. Our new, all-inclusive pricing for Unfurnished space was introduced across the portfolio at the beginning of September and initial signs are encouraging, with completed and under offer lettings above ERV. We are moving at pace to deliver our Furnished product, with 24 units being fitted out for delivery by December 2026 and a further 100+ expected to follow during 2027. In addition, our Case Study refurbishments are progressing and we expect them to be launched in the second half of calendar year 2027. Our new website, built with embedded AI, will launch in November 2026.</span>
+</p>
+<p class="rn-13">
+<span style="font-family:Arial; font-style:italic; -aw-import:ignore;">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-15">&#8220;We have completed &#163;138m of disposals since March 2025 and continue to make progress towards our &#163;200m disposal target by year-end March 2027. However, against a backdrop of higher interest rates and UK macroeconomic uncertainty, transactions are taking longer and, in some cases, buyers&#8217; pricing expectations have been substantially below book value. We are disciplined sellers and will only pursue sales at prices we believe would maximise shareholder value. As a result, the additional &#163;100m+ of disposals we announced as under consideration in June 2026 is likely to take more time.</span>
+</p>
+<p class="rn-13">
+<span class="rn-15">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-15">&#8220;Having been with Workspace for eight months, I have a clear vision of how to deliver sustainable earnings growth from our operating platform and we are taking definitive steps to get there. Whilst the transformation will take time, I&#8217;m incredibly excited about realising the full potential of this business.&#8221;</span>
+</p>
+<p class="rn-1">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">Highlights</span>
+</p>
+<p class="rn-1">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-15">Good progress made on strategic objectives</span>
+</p>
+<ul type="disc" class="rn-17">
+<li class="ListParagraph rn-18">
+<span class="rn-11">All-inclusive pricing model introduced in September:</span>
+<ul type="circle" class="rn-19">
+<li class="ListParagraph rn-20">
+<span class="rn-11">18 Unfurnished deals </span><span class="rn-4">completed</span><span class="rn-11"> on 6,000 sq. ft. at a weighted average of &#163;60.57psf, 8% above ERV</span>
+</li>
+<li class="ListParagraph rn-20">
+<span class="rn-11">18 Unfurnished deals </span><span class="rn-4">under offer</span><span class="rn-11"> on 11,000 sq. ft. at a weighted average of &#163;59.71psf, 14% above ERV</span>
+</li>
+</ul>
+</li>
+<li class="ListParagraph rn-18">
+<span class="rn-11">All four Case Study refurbishments progressing through design and procurement stages</span>
+</li>
+<li class="ListParagraph rn-21">
+<span class="rn-11">New brand identity and website built with embedded AI launching in November</span>
+</li>
+</ul>
+<p style="margin-top:14pt; text-align:justify; font-size:11pt;">
+<span class="rn-15">Occupancy impact due to strategic actions</span>
+</p>
+<ul type="disc" class="rn-17">
+<li class="ListParagraph rn-18">
+<span class="rn-11">Stabilised Portfolio</span><span class="rn-22">1,2</span><span class="rn-11"> occupancy decreased 0.5pp to 82.8% and rate increased 0.4% to &#163;46.13psf, resulting in a 0.5% (&#163;0.6m) decrease in rent roll to &#163;109.7m</span>
+<ul type="circle" class="rn-19">
+<li class="ListParagraph rn-20">
+<span class="rn-11">Excluding the impact of the 24 units being fitted out for the Furnished product, Stabilised Portfolio occupancy was 0.1pp down in the quarter </span>
+</li>
+</ul>
+</li>
+<li class="ListParagraph rn-18">
+<span class="rn-11">Total Portfolio</span><span class="rn-22">3</span><span class="rn-11"> occupancy decreased 1.0pp to 79.2% and total portfolio rate was up 0.1% to &#163;42.71psf, resulting in a 0.6% (&#163;0.8m) decrease in the rent roll to &#163;126.6m</span>
+<ul type="circle" class="rn-19">
+<li class="ListParagraph rn-20">
+<span class="rn-11">Excluding the impact of the unlet area of the completed new space at Block J, Biscuit Factory, Case Studies and the 24 units being fitted out for the Furnished product, occupancy increased 0.1pp in the quarter</span>
+</li>
+</ul>
+</li>
+<li class="ListParagraph rn-21">
+<span class="rn-11">&#163;246m of cash and undrawn facilities (Jun 26: &#163;260m) and proforma LTV at 36% based on the March 2026 valuation (Jun 26: 35%)</span>
+</li>
+</ul>
+<p class="rn-23">
+<span class="rn-24">1 </span><span class="rn-15">Stabilised portfolio (previously like-for-like) is where the site is within London and is either 24 months post-refurbishment or acquisition or has 12 months of stable occupancy &#8211; whichever is earlier.</span>
+</p>
+<p class="rn-23">
+<span class="rn-24">2 </span><span class="rn-15">Restated for the transfer out of Chiswick Studios, W4 and One Crown Square, GU21 due to sale and the Case Studies and Self Storage area at Kennington Park, SW9</span>
+</p>
+<p class="rn-23">
+<span class="rn-24">3</span><span class="rn-15"> Restated for disposals of 66 Wilson Street, EC2A, Parkhall Business Centre (Blocks A &amp; B), SE21, Chiswick Studios, W4, One Crown Square, GU21 and Evergreen Studios, TW9. </span>
+</p>
+<p class="rn-25">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-26">
+<span class="rn-4">Customer activity </span>
+</p>
+<table cellspacing="0" cellpadding="0" class="rn-27"><tbody><tr style="height:17.05pt;"><td class="rn-28">
+<p class="00Bodynospace rn-14">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td colspan="3" style="border-top:0.75pt solid #000000; border-right:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.4pt; vertical-align:top; -aw-border-right:0.5pt single #000000; -aw-border-top:0.5pt single #000000;">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">Quarterly Average</span>
+</p>
+</td>
+<td colspan="3" class="rn-31">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">Monthly Activity</span>
+</p>
+</td></tr>
+<tr style="height:9.85pt;"><td class="rn-28">
+<p class="00Bodynospace rn-14">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td class="rn-32">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">Q2 </span>
+</p>
+<p class="00Bodynospace rn-6">
+<span class="rn-30">2026/27</span>
+</p>
+</td>
+<td style="width:13.52%; border-top:0.75pt solid #000000; border-right:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.4pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-right:0.5pt single #000000; -aw-border-top:0.5pt single #000000;">
+<p class="00Bodynospace rn-6">
+<span>Q1 </span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026/27</span>
+</p>
+</td>
+<td style="width:13.52%; border:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border:0.5pt single #000000;">
+<p class="00Bodynospace rn-6">
+<span>Q2</span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2025/26</span>
+</p>
+</td>
+<td style="width:13.52%; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.4pt; padding-left:5.03pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-left:0.5pt single #000000; -aw-border-top:0.5pt single #000000;">
+<p class="00Bodynospace rn-6">
+<span>30 Sep</span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026</span>
+</p>
+</td>
+<td class="rn-32">
+<p class="00Bodynospace rn-6">
+<span>31 Aug </span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026</span>
+</p>
+</td>
+<td class="rn-32">
+<p class="00Bodynospace rn-6">
+<span>31 Jul</span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026</span>
+</p>
+</td></tr>
+<tr style="height:1.35pt;"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td class="rn-33">
+<p class="00Bodynospace rn-2">
+<span class="rn-34">&#160;</span>
+</p>
+</td>
+<td class="rn-35">
+<p class="00Bodynospace rn-2">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td class="rn-36">
+<p class="00Bodynospace rn-2">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td class="rn-37">
+<p class="00Bodynospace rn-2">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td class="rn-33">
+<p class="00Bodynospace rn-2">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td class="rn-33">
+<p class="00Bodynospace rn-2">
+<span class="rn-29">&#160;</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Enquiries</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">516</span>
+</p>
+</td>
+<td class="rn-40">
+<p class="00Bodynospace rn-6">
+<span>621</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="00Bodynospace rn-6">
+<span>666</span>
+</p>
+</td>
+<td class="rn-42">
+<p class="00Bodynospace rn-6">
+<span>489</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="00Bodynospace rn-6">
+<span>439</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="00Bodynospace rn-6">
+<span>619</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Viewings</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">322</span>
+</p>
+</td>
+<td class="rn-40">
+<p class="00Bodynospace rn-6">
+<span>465</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="00Bodynospace rn-6">
+<span>519</span>
+</p>
+</td>
+<td class="rn-42">
+<p class="00Bodynospace rn-6">
+<span>299</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="00Bodynospace rn-6">
+<span>256</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="00Bodynospace rn-6">
+<span>410</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Conversion</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="00Bodynospace rn-6">
+<span style="font-weight:bold; -aw-import:spaces;">&#160;</span><span class="rn-30">62%</span>
+</p>
+</td>
+<td class="rn-45">
+<p class="00Bodynospace rn-6">
+<span class="rn-46">&#160;</span><span>75%</span>
+</p>
+</td>
+<td class="rn-47">
+<p class="00Bodynospace rn-6">
+<span class="rn-46">&#160;</span><span>78%</span>
+</p>
+</td>
+<td class="rn-48">
+<p class="00Bodynospace rn-6">
+<span class="rn-46">&#160;</span><span>61%</span>
+</p>
+</td>
+<td class="rn-49">
+<p class="00Bodynospace rn-6">
+<span class="rn-46">&#160;</span><span>58%</span>
+</p>
+</td>
+<td class="rn-49">
+<p class="00Bodynospace rn-6">
+<span class="rn-46">&#160;</span><span>66%</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>New Lettings</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">76</span>
+</p>
+</td>
+<td class="rn-40">
+<p class="00Bodynospace rn-6">
+<span>88</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="00Bodynospace rn-6">
+<span>109</span>
+</p>
+</td>
+<td class="rn-42">
+<p class="00Bodynospace rn-6">
+<span>79</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="00Bodynospace rn-6">
+<span>50</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="00Bodynospace rn-6">
+<span>98</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Conversion</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">15%</span>
+</p>
+</td>
+<td class="rn-45">
+<p class="00Bodynospace rn-6">
+<span>14%</span>
+</p>
+</td>
+<td class="rn-47">
+<p class="00Bodynospace rn-6">
+<span>16%</span>
+</p>
+</td>
+<td class="rn-48">
+<p class="00Bodynospace rn-6">
+<span>16%</span>
+</p>
+</td>
+<td class="rn-49">
+<p class="00Bodynospace rn-6">
+<span>11%</span>
+</p>
+</td>
+<td class="rn-49">
+<p class="00Bodynospace rn-6">
+<span>16%</span>
+</p>
+</td></tr></tbody></table>
+<p>
+<span class="rn-29">&#160;</span>
+</p>
+<p class="rn-26">
+<span class="rn-4">New Lettings</span>
+</p>
+<table cellspacing="0" cellpadding="0" class="rn-27"><tbody><tr class="rn-50"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span class="rn-34">&#160;</span>
+</p>
+</td>
+<td colspan="3" style="border-top:0.75pt solid #000000; border-right:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.4pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-right:0.5pt single #000000; -aw-border-top:0.5pt single #000000;">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">Quarterly Total</span>
+</p>
+</td>
+<td colspan="3" class="rn-31">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">Monthly Activity</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-14">
+<span class="rn-29">&#160;</span>
+</p>
+</td>
+<td class="rn-33">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">Q2 </span>
+</p>
+<p class="00Bodynospace rn-6">
+<span class="rn-30">2026/27</span>
+</p>
+</td>
+<td class="rn-35">
+<p class="00Bodynospace rn-6">
+<span>Q1 </span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026/27</span>
+</p>
+</td>
+<td class="rn-36">
+<p class="00Bodynospace rn-6">
+<span>Q2</span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2025/26</span>
+</p>
+</td>
+<td class="rn-37">
+<p class="00Bodynospace rn-6">
+<span>30 Sep</span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026</span>
+</p>
+</td>
+<td class="rn-33">
+<p class="00Bodynospace rn-6">
+<span>31 Aug </span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026</span>
+</p>
+</td>
+<td class="rn-33">
+<p class="00Bodynospace rn-6">
+<span>31 Jul</span>
+</p>
+<p class="00Bodynospace rn-6">
+<span>2026</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Total</span>
+</p>
+</td>
+<td class="rn-33">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">227</span>
+</p>
+</td>
+<td class="rn-35">
+<p class="00Bodynospace rn-6">
+<span>264</span>
+</p>
+</td>
+<td class="rn-36">
+<p class="00Bodynospace rn-6">
+<span>326</span>
+</p>
+</td>
+<td class="rn-37">
+<p class="00Bodynospace rn-6">
+<span>79</span>
+</p>
+</td>
+<td class="rn-51">
+<p class="00Bodynospace rn-6">
+<span>50</span>
+</p>
+</td>
+<td class="rn-51">
+<p class="00Bodynospace rn-6">
+<span>98</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Rental value</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">&#163;4.9m</span>
+</p>
+</td>
+<td class="rn-40">
+<p class="00Bodynospace rn-6">
+<span>&#163;7.8m</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="00Bodynospace rn-6">
+<span>&#163;7.3m</span>
+</p>
+</td>
+<td class="rn-42">
+<p class="00Bodynospace rn-6">
+<span>&#163;2.3m</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span>&#163;0.8m</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span>&#163;1.9m</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Floor sq. ft.</span>
+</p>
+</td>
+<td style="width:7.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">121.0k</span>
+</p>
+</td>
+<td class="rn-40">
+<p class="00Bodynospace rn-6">
+<span>195.6k</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="00Bodynospace rn-6">
+<span>179.0k</span>
+</p>
+</td>
+<td class="rn-42">
+<p class="00Bodynospace rn-6">
+<span>50.1k</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span>18.7k</span>
+</p>
+</td>
+<td class="rn-39">
+<p class="00Bodynospace rn-6">
+<span>52.2k</span>
+</p>
+</td></tr>
+<tr class="rn-38"><td class="rn-28">
+<p class="00Bodynospace rn-2">
+<span>Rent psf</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="00Bodynospace rn-6">
+<span class="rn-30">&#163;40.59</span>
+</p>
+</td>
+<td class="rn-45">
+<p class="00Bodynospace rn-6">
+<span>&#163;39.94</span>
+</p>
+</td>
+<td class="rn-47">
+<p class="00Bodynospace rn-6">
+<span>&#163;40.79</span>
+</p>
+</td>
+<td class="rn-48">
+<p class="00Bodynospace rn-6">
+<span>&#163;45.45</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="00Bodynospace rn-6">
+<span>&#163;41.21</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="00Bodynospace rn-6">
+<span>&#163;35.70</span>
+</p>
+</td></tr></tbody></table>
+<p class="rn-1">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Customer activity was lower during the quarter, with 227 lettings and 96 renewals completed with a total rental value of &#163;7.9m (Q2 25/26: 326 lettings and 124 renewals, with a total rental value of &#163;10.8m). This reflected a subdued August across the market, with some improvement seen in September. Conversion rates remained at the same level as the first quarter. Our focus on customer retention has underpinned occupancy, despite a lower level of customer activity.</span>
+</p>
+<p class="rn-1">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">Rent Roll</span>
+</p>
+<table cellspacing="0" cellpadding="0" style="width:450.75pt; margin-left:0.75pt; border-collapse:collapse;"><tbody><tr class="rn-52"><td style="width:372.35pt; border-bottom:1pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:bottom; -aw-border-bottom:1pt single #000000; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top-style:nil;">
+<p class="rn-1">
+<span class="rn-11">Total Rent Roll</span>
+</p>
+</td>
+<td style="width:56.8pt; border-bottom:1pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:bottom; -aw-border-bottom:1pt single #000000; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top-style:nil;">
+<p class="rn-53">
+<span class="rn-11">&#163;m</span>
+</p>
+</td></tr>
+<tr class="rn-52"><td class="rn-54">
+<p class="rn-1">
+<span class="rn-11">At 30 June 2026</span>
+</p>
+</td>
+<td class="rn-55">
+<p class="rn-53">
+<span class="rn-11">128.0</span>
+</p>
+</td></tr>
+<tr class="rn-52"><td class="rn-54">
+<p class="rn-1">
+<span class="rn-11">Stabilised Portfolio </span>
+</p>
+</td>
+<td class="rn-55">
+<p class="rn-56">
+<span class="rn-11">(0.6)</span>
+</p>
+</td></tr>
+<tr class="rn-52"><td class="rn-54">
+<p class="rn-1">
+<span class="rn-11">Completed Projects </span>
+</p>
+</td>
+<td class="rn-55">
+<p class="rn-56">
+<span class="rn-11">0.1</span>
+</p>
+</td></tr>
+<tr class="rn-52"><td class="rn-54">
+<p class="rn-1">
+<span class="rn-11">Case Studies</span>
+</p>
+</td>
+<td class="rn-55">
+<p class="rn-56">
+<span class="rn-11">(0.3) </span>
+</p>
+</td></tr>
+<tr class="rn-52"><td class="rn-54">
+<p class="rn-1">
+<span class="rn-11">South East Offices</span>
+</p>
+</td>
+<td class="rn-55">
+<p class="rn-56">
+<span class="rn-11">0.1</span>
+</p>
+</td></tr>
+<tr class="rn-52"><td class="rn-54">
+<p class="rn-1">
+<span class="rn-11">Disposals</span>
+</p>
+</td>
+<td class="rn-55">
+<p class="rn-56">
+<span class="rn-11">(0.7)</span>
+</p>
+</td></tr>
+<tr class="rn-52"><td style="width:372.35pt; border-top:1pt solid #000000; border-bottom:1pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:bottom; -aw-border-bottom:1pt single #000000; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top:1pt single #000000;">
+<p class="rn-1">
+<span class="rn-4">At 30 September 2026</span>
+</p>
+</td>
+<td style="width:56.8pt; border-top:1pt solid #000000; border-bottom:1pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:bottom; -aw-border-bottom:1pt single #000000; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top:1pt single #000000;">
+<p class="rn-53">
+<span class="rn-4">126.6</span>
+</p>
+</td></tr></tbody></table>
+<p class="rn-13">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">As set out above, total rent roll decreased by 1.1% (&#163;1.4m) in the second quarter to &#163;126.6m; excluding disposals, rent roll decreased 0.6% (&#163;0.7m). The movement reflected growth in the South East Offices and Completed Projects, offset by Disposals, Case Study activity and the Stabilised Portfolio.</span>
+</p>
+<p class="rn-13">
+
+<br /></p>
+<p class="rn-13">
+<span class="rn-4">Total Portfolio</span>
+</p>
+<table cellspacing="0" cellpadding="0" style="width:470.5pt; -aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse;"><tbody><tr class="rn-50"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td colspan="4" style="width:325pt; border-top:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top:0.5pt single #000000;">
+<p class="rn-59">
+<span class="rn-4">Quarter Ended</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-61">
+<p class="rn-58">
+<span class="rn-16">&#160;</span>
+</p>
+</td>
+<td class="rn-62">
+<p class="Default rn-63">
+<span>30 Sep 26</span>
+</p>
+</td>
+<td class="rn-62">
+<p class="Default rn-63">
+<span>30 Jun 26</span><span class="rn-64">1</span>
+</p>
+</td>
+<td class="rn-62">
+<p class="Default rn-63">
+<span>31 Mar 26</span><span class="rn-64">1</span>
+</p>
+</td>
+<td class="rn-62">
+<p class="Default rn-63">
+<span>31 Dec 25</span><span class="rn-64">1,2</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td style="width:123.9pt; border-top:0.75pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border-bottom-style:nil; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top:0.5pt single #000000;">
+<p class="rn-58">
+<span class="rn-11">Floor space sq. ft.</span>
+</p>
+</td>
+<td class="rn-66">
+<p class="rn-59">
+<span class="rn-11">3.7m</span>
+</p>
+</td>
+<td class="rn-66">
+<p class="rn-59">
+<span class="rn-11">3.7m</span>
+</p>
+</td>
+<td class="rn-66">
+<p class="rn-59">
+<span class="rn-11">3.7m</span>
+</p>
+</td>
+<td class="rn-66">
+<p class="rn-59">
+<span class="rn-11">3.7m</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-11">Floor space sq. ft. change</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">0.5%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">0.3%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">0.4%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">(0.9%)</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-11">Occupancy</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">79.2%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">80.2%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">79.8%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">79.3%</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-11">Occupancy change</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">(1.0pp)</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">0.4pp</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">0.5pp</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">1.0pp</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-11">Rent per sq. ft.</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;42.71</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;42.68</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;42.25</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;42.73</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-11">Rent per sq. ft. change</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">0.1%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">1.0%</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">(1.1%)</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">(0.8%)</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-57">
+<p class="rn-58">
+<span class="rn-11">Rent roll</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;126.6m</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;127.4m</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;125.0m</span>
+</p>
+</td>
+<td class="rn-67">
+<p class="rn-59">
+<span class="rn-11">&#163;125.1m</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-61">
+<p class="rn-58">
+<span class="rn-11">Rent roll change</span><span class="rn-68">&#160; </span>
+</p>
+</td>
+<td class="rn-69">
+<p class="rn-59">
+<span class="rn-11">(0.6%)</span>
+</p>
+</td>
+<td class="rn-69">
+<p class="rn-59">
+<span class="rn-11">1.9%</span>
+</p>
+</td>
+<td class="rn-69">
+<p class="rn-59">
+<span class="rn-11">(0.1%)</span>
+</p>
+</td>
+<td class="rn-69">
+<p class="rn-59">
+<span class="rn-11">(0.6%)</span>
+</p>
+</td></tr></tbody></table>
+<p class="rn-70">
+<span style="font-family:Arial; font-size:4.67pt; font-style:italic; vertical-align:super; -aw-import:ignore;">&#160;</span>
+</p>
+<p class="rn-70">
+<span class="rn-24">1 </span><span class="rn-15">Restated for disposals of 66 Wilson Street, Hackney, Parkhall Business Centre (Blocks A &amp; B), Dulwich, Chiswick Studios, Chiswick, One Crown Square, Woking and Evergreen Studios, Richmond upon Thames. </span>
+</p>
+<p class="rn-70">
+<span class="rn-24">2</span><span class="rn-15">Restated for Workspace and third-party caf&#233;s being removed from floor area and rent roll to standardise reporting and the removal of floor space at Kennington Park, Oval which is being converted to self-storage space.</span>
+</p>
+<p class="rn-1">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Total Portfolio occupancy decreased 1.0pp to 79.2% in the quarter, impacted by the completion of works at J Block at The Biscuit Factory in July, which added 31,000 sq. ft. of new lettable space and is currently 16% occupied. The unlet floor area accounted for 0.7pp of occupancy. Occupancy was also impacted by our decision to withhold space in order to deliver our Furnished product and Case Studies, which accounted for a further 0.4pp of occupancy reduction. Excluding the impact of these, occupancy would have increased by 0.1pp. </span>
+</p>
+<p class="rn-25">
+<span class="rn-71">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">Stabilised Portfolio</span>
+</p>
+<table cellspacing="0" cellpadding="0" style="width:454.85pt; -aw-border:0.5pt single #000000; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse;"><tbody><tr class="rn-50"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td colspan="4" style="width:302.3pt; border-top:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top:0.5pt single #000000;">
+<p class="rn-59">
+<span class="rn-4">Quarter Ended</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-73">
+<p class="rn-58">
+<span class="rn-16">&#160;</span>
+</p>
+</td>
+<td class="rn-74">
+<p class="Default rn-63">
+<span>30 Sep 26</span>
+</p>
+</td>
+<td class="rn-75">
+<p class="Default rn-63">
+<span>30 Jun 26</span><span class="rn-64">3</span>
+</p>
+</td>
+<td class="rn-74">
+<p class="Default rn-63">
+<span>31 Mar 26</span><span class="rn-64">3</span>
+</p>
+</td>
+<td class="rn-75">
+<p class="Default rn-63">
+<span>31 Dec 25</span><span class="rn-64">2,3</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td style="width:130.95pt; border-top:0.75pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border-bottom-style:nil; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top:0.5pt single #000000;">
+<p class="rn-58">
+<span class="rn-11">Floor space sq. ft.</span>
+</p>
+</td>
+<td class="rn-76">
+<p class="rn-59">
+<span class="rn-11">2.9m</span>
+</p>
+</td>
+<td class="rn-77">
+<p class="rn-59">
+<span class="rn-11">2.9m</span>
+</p>
+</td>
+<td class="rn-76">
+<p class="rn-59">
+<span class="rn-11">2.9m</span>
+</p>
+</td>
+<td class="rn-77">
+<p class="rn-59">
+<span class="rn-11">2.9m</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-11">Floor space sq. ft. change</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">(0.3%)</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">0.2%</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">(0.1%)</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">-</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-11">Occupancy</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">82.8%</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">83.3%</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">82.5%</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">82.1%</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-11">Occupancy change</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">(0.5pp)</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">0.8pp</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">0.4pp</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">0.5pp</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-11">Rent per sq. ft.</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">&#163;46.13</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">&#163;45.96</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">&#163;45.54</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">&#163;45.86</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-11">Rent per sq. ft. change</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">0.4%</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">0.9%</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">(0.7%)</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">(1.4%)</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-7">&#160;</span>
+</p>
+</td></tr>
+<tr class="rn-60"><td class="rn-72">
+<p class="rn-58">
+<span class="rn-11">Rent roll</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">&#163;109.7m</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">&#163;110.3m</span>
+</p>
+</td>
+<td class="rn-78">
+<p class="rn-59">
+<span class="rn-11">&#163;108.0m</span>
+</p>
+</td>
+<td class="rn-79">
+<p class="rn-59">
+<span class="rn-11">&#163;108.2m</span>
+</p>
+</td></tr>
+<tr class="rn-65"><td class="rn-73">
+<p class="rn-58">
+<span class="rn-11">Rent roll change</span><span class="rn-68">&#160; </span>
+</p>
+</td>
+<td class="rn-80">
+<p class="rn-59">
+<span class="rn-11">(0.5%)</span>
+</p>
+</td>
+<td class="rn-81">
+<p class="rn-59">
+<span class="rn-11">2.1%</span>
+</p>
+</td>
+<td class="rn-80">
+<p class="rn-59">
+<span class="rn-11">(0.2%)</span>
+</p>
+</td>
+<td class="rn-81">
+<p class="rn-59">
+<span class="rn-11">(0.8%)</span>
+</p>
+</td></tr></tbody></table>
+<p class="rn-13">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-70">
+<span class="rn-24">2 </span><span class="rn-15">Restated for Workspace and third-party caf&#233;s being removed from floor area and rent roll to standardise reporting, removal of floor space at Kennington Park, Oval which is being converted to self-storage.</span>
+</p>
+<p class="rn-70">
+<span class="rn-24">3 </span><span class="rn-15">Restated for the transfer out of Chiswick Studios, Chiswick, One Crown Square, Woking and Wilson Street due to sale space and the Case Study floor areas at Cargo Works, Edinburgh House, Salisbury House and Centro Buildings.</span>
+</p>
+<p class="rn-1">
+<span class="rn-68">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">The Case Study floor areas at Cargo Works, Edinburgh House, Salisbury House and Centro Buildings have been removed from the Stabilised Portfolio during the refurbishment of the spaces. </span>
+</p>
+<p class="rn-13">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Stabilised Portfolio occupancy decreased 0.5pp to 82.8% in the quarter, while rent was up 0.4% to &#163;46.13psf. Together these movements resulted in a 0.5% (&#163;0.6m) decrease in rent roll to &#163;109.7m.</span>
+</p>
+<p class="rn-1">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Excluding the occupancy loss in the 24 units held back for fitting out as Furnished product at Clerkenwell Workshops, Record Hall and Exmouth House, Stabilised Portfolio occupancy was 0.1pp down in the quarter.</span>
+</p>
+<p class="rn-13">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-13">
+<span class="rn-4">Product update</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">As outlined at our Full Year results, we have refocused our portfolio around two products: &#8220;Unfurnished&#8221; and &#8220;Furnished&#8221; (formerly referred to as &#8220;Space&#8221; and &#8220;Managed&#8221;, respectively).</span>
+</p>
+<p class="rn-1">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Unfurnished is our established product. At the beginning of September, we introduced a new, all-inclusive pricing model across the portfolio, excluding the South-East Offices. Early indications are encouraging, albeit there is typically a lag between an enquiry and a completed letting. To date, we have completed 18 unfurnished lettings at a weighted average rent of &#163;60.57psf, 8% above ERV. We have a further 18 deals under offer at a weighted average rent of &#163;59.71psf, 14% above ERV.</span>
+</p>
+<p class="rn-1">
+<span class="rn-68">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">We are also launching Furnished, our fully fitted and managed product. We are currently fitting out 24 units across our Clerkenwell Cluster (Clerkenwell Workshops, Exmouth House and Record Hall), with the first five expected to be delivered in November and the remainder during December 2026. We expect to invest approximately &#163;1.5m in these units, targeting an aggregate incremental yield on cost percentage in the mid-teens once fully let. A further 100+ Furnished units are expected to be delivered in 2027.</span>
+</p>
+<p class="rn-13">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-13">
+<span class="rn-4">Case Studies</span>
+</p>
+<p class="Default rn-3">
+<span>We are progressing our low-risk, high-return investments in Salisbury House, Cargo Works, Edinburgh House and Centro Buildings, which will elevate the buildings, improve the amenities and deliver over 120 additional Furnished units. Designs are being finalised and tenders progressed, with completion of the Case Studies expected in the second half of calendar year 2027. We intend to begin marketing and leasing before practical completion.</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-29">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">Branding update</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Our rebrand is well-advanced and is expected to be completed in mid-November, ahead of the Half Year results.</span><span class="rn-68">&#160; </span><span class="rn-11">We will retain the Workspace name given its brand equity, while introducing a new visual identity, website and marketing collateral that better reflect our evolving customer proposition.</span><span class="rn-68">&#160; </span>
+</p>
+<p class="rn-1">
+<span class="rn-16">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">Disposals</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">During the quarter, we completed the previously contracted sales of Parkhall Blocks A&amp;B and 66 Wilson Street, generating cash proceeds of &#163;13.0m. </span>
+</p>
+<p class="rn-1">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Following the three disposals agreed in the first quarter for &#163;12.6m (at an aggregate discount to March 2026 book value of 28.0%) cumulative disposals made since March 2025 total &#163;138.3m. With over &#163;50m of assets under offer and a further close to &#163;200m subject to active discussions, we continue to work towards our &#163;200m disposals target by March 2027.</span>
+</p>
+<p class="rn-1">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Against a backdrop of higher interest rates and UK macroeconomic uncertainty, some buyers are seeking more substantial discounts and transactions are taking longer to complete. Our objective is to maximise value, and we will remain pragmatic on timing and pricing, progressing transactions where they support shareholder value. Given market conditions, the additional &#163;100m+ of disposals that was being considered is unlikely to be fully achieved by March 2027.</span>
+</p>
+<p class="rn-1">
+<span class="rn-7">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">Balance sheet and financing</span>
+</p>
+<p class="Default rn-3">
+<span>Against a backdrop of challenging market conditions and the recent material increase in bond yields, we remain focused on our upcoming refinancings and our credit rating.</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-29">&#160;</span>
+</p>
+<p class="Default rn-3">
+<span>At 30 June 2026 our net debt sat at &#163;740m. It increased by &#163;14m in the quarter to &#163;754m, attributable to disposal proceeds (net of costs) of &#163;13m received during the period offset by dividends paid. As at 30 September 2026, cash and undrawn facilities totaled &#163;246m, with proforma LTV of 36%, based on the 31 March 2026 valuation.</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-34">&#160;</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-34">&#160;</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-30">Half year results</span>
+</p>
+<p class="Default rn-3">
+<span>Workspace will publish its half year results for the six months to 30 September 2026 on 18 November 2026. A presentation to analysts and investors will be held at 11:00am at our Eventspace, Salisbury House, 114 London Wall, EC2M 5QA.</span>
+</p>
+<p class="Default" style="font-size:11pt;">
+<span class="rn-29">&#160;</span>
+</p>
+<p class="Default" style="text-align:center; font-size:11pt;">
+<span>&#8211; ENDS &#8211;</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-34">&#160;</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-34">&#160;</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-30">For further information, please contact: </span>
+</p>
+<p class="Default rn-3">
+<span class="rn-29">&#160;</span>
+</p>
+<p class="Default" style="text-align:justify;">
+<span style="font-size:11pt; font-weight:bold;">Workspace Group PLC</span><span class="rn-13"> </span><span style="width:4.78pt; display:inline-block;">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-13">020 7138 3300 </span>
+</p>
+<p class="Default rn-3">
+<span>Paul Hewlett, Director of Strategy &amp; Corporate Development</span>
+</p>
+<p class="Default rn-3">
+<span>Gregory Tinker, Corporate Communications Manager</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-34">&#160;</span>
+</p>
+<p class="Default rn-3">
+<span class="rn-30">FGS Global</span><span style="width:20.63pt; font-weight:bold; display:inline-block;">&#160;</span><span> </span><span style="width:33.8pt; display:inline-block;">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-71">&#160;</span><span class="rn-46">&#160; &#160; &#160; &#160; &#160; &#160; &#160;&#160;&#160;</span><span>020 7251&#160;3801</span></p>
+<p class="rn-1">
+<span class="rn-11">Chris Ryall </span>
+</p>
+<p class="rn-1">
+<span class="rn-11">Guy Lamming</span><span style="width:10.2pt; font-family:Arial; display:inline-block;">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-82">&#160;</span><span class="rn-82">&#160;</span><span class="rn-82">&#160;</span><span class="rn-82">&#160;</span><span class="rn-82">&#160;</span><span class="rn-82">&#160;</span><span class="rn-82">&#160;</span><span class="rn-82">&#160;</span>
+</p>
+<p class="rn-13">
+<span class="rn-4">Notes to Editors</span>
+</p>
+<p class="rn-13">
+<span class="rn-4">About Workspace Group PLC:</span>
+</p>
+<p class="rn-1">
+<span class="cz rn-12">Workspace is London&#8217;s leading owner and operator of flexible workspace, currently managing 3.7 million sq. ft. of sustainable space at 50+ locations in London and the South East. </span>
+</p>
+<p class="rn-1">
+<span class="cz rn-8">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="cz rn-12">We are home to nearly 4,000 of London&#8217;s fastest growing and established brands from a diverse range of sectors. Our purpose, to give businesses the freedom to grow, is based on the belief that in the right space, teams can achieve more. That in environments they tailor themselves, free from constraint and compromise, teams are best able to collaborate, build their culture and realise their potential. </span>
+</p>
+<p class="rn-1">
+<span class="cz rn-8">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="cz rn-12">We have a unique combination of a highly effective and scalable operating platform, a portfolio of distinctive properties, and an ownership model that allows us to offer true flexibility. We provide customers with space to create a home for their business, alongside leases that give them the freedom to easily scale up and down within our well-connected, extensive portfolio. </span>
+</p>
+<p class="rn-1">
+<span class="cz rn-8">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="cz rn-12">We are inherently sustainable &#8211; we invest across the capital, breathing new life into old buildings and creating hubs of economic activity that help flatten London&#8217;s working map. We work closely with our local communities to ensure we make a positive and lasting environmental and social impact, creating value over the long term. </span>
+</p>
+<p class="rn-1">
+<span class="cz rn-8">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="cz rn-12">Workspace was established in 1987, has been listed on the London Stock Exchange since 1993, is a FTSE 250 listed Real Estate Investment Trust (REIT) and a member of the European Public Real Estate Association (EPRA). </span>
+</p>
+<p class="rn-1">
+<span class="cz rn-8">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="cz rn-12">Workspace&#174; is a registered trademark of Workspace Group PLC, London, UK. </span>
+</p>
+<p class="rn-1">
+<span class="cz rn-12">LEI: 2138003GUZRFIN3UT430 </span>
+</p>
+<p class="rn-1">
+<span class="cz rn-8">&#160;</span>
+</p>
+<p class="rn-25">
+<span class="cz rn-83">For more information on Workspace, visit </span><a href="http://www.workspace.co.uk" style="text-decoration:none;"><span class="Hyperlink rn-83">www.workspace.co.uk</span></a>
+</p>
+</div>
+
+</div><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/WKP" style="font-size:14px;">Workspace Group
+                    (WKP)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>4 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/qinetiq-group--qq./director-pdmr-shareholding/9880164">QinetiQ Group</a>
+            </li>
+                        <li>
+                <span>10 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/wetherspoon-j-d---jdw/director-pdmr-shareholding/9880145">Wetherspoon (J.D.)</a>
+            </li>
+                        <li>
+                <span>49 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/aib-group-cdi---aibg/director-pdmr-shareholding/9880073">AIB Group (CDI)</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/tesco--tsco/director-pdmr-shareholding/9880044">Tesco</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/ampeak-energy-limited--amp/grant-of-ltip-options-/9879955">Ampeak Energy Limited</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>

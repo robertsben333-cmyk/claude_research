@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="dd7a33677f4e49388ac28fb472e6071c-0db123c40dae4fa7-1"/><meta name="baggage" content="sentry-trace_id=dd7a33677f4e49388ac28fb472e6071c,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=f6533f8d7c1d6b199c5a9237826bb96c2a918d2d,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.888637"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "f6533f8d7c1d6b199c5a9237826bb96c2a918d2d",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from Third Quarter Update and Results  " />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "Third Quarter Update and Results   | Company Announcement | Investegate",
+            "description":"Investegate announcements from Third Quarter Update and Results  ",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2025-11-19 07:01:57",
+            "dateModified": "2025-11-19 07:04:08",
+            "url": "https://www.investegate.co.uk/announcement/rns/ithaca-energy--ith/third-quarter-update-and-results-/9242765"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Third Quarter Update and Results   | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/ithaca-energy--ith/third-quarter-update-and-results-/9242765' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>Third Quarter Update and Results   | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">Third Quarter Update and Results  </h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Ithaca Energy PLC reported strong financial and operational results for the nine months ended September 30, 2025, with YTD average production reaching 115 kboe/d and adjusted EBITDAX of $1,501.2 million, significantly up from $758.5 million in the prior year. The company has successfully reduced operating expenditure per barrel to $19.1/boe from $28.9/boe and maintained a strong balance sheet with $1.7 billion in liquidity and a leverage ratio of 0.50x, bolstered by a €450 million bond issuance and a $300 million RBL facility upsizing. Ithaca Energy reaffirms its 2025 outlook and dividend target of $500 million, with an expected production exit rate of approximately 145 kboe/d in Q4 2025, and continues to advance its growth strategy through organic investments and acquisitions, including a farm-in to the Tobermory gas field.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<style type="text/css">
+/*<![CDATA[*/
+/**/
+/**/
+/**/
+/**/
+sup{font-size:80%}sub{font-size:80%}h1{margin-top:0cm;margin-right:0cm;margin-bottom:26.0pt;margin-left:0cm;line-height:38.0pt;font-size:36.0pt;font-family:"Calibri","sans-serif";color:black;letter-spacing:-1.4pt;font-weight:normal;}p{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";}ol{margin-bottom:0cm;}ul{margin-bottom:0cm;}link{ color: blue }visited{ color: black }
+.bm{size:595.3pt 841.9pt;margin:87.9pt 2.0cm 3.0cm 2.0cm;}div.bm{}h1.es{margin-bottom:12.0pt}span.et{color:#2A2A63}p.ev{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:0cm;margin-right:0cm;margin-bottom:12.0pt; margin-left:0cm}span.ew{color: #2A2A63; font-family: "Calibri","sans-serif"; font-size: 11.0pt; font-weight: bold}p.ex{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align: center}span.ey{font-size:11.0pt;font-family: "Calibri","sans-serif";color:#2A2A63}span.ez{color: #2A2A63; font-family: "Calibri","sans-serif"; font-size: 11.0pt; font-weight: bold}p.fa{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align:justify}
+span.en{font-size:11.0pt;font-family:"Calibri","sans-serif"; color:#2A2A63}p.fb{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align:justify}span.fc{font-size:11.0pt;font-family:"Calibri","sans-serif"; color:black}p.fd{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:106%;background:white}span.ek{font-size:11.0pt;line-height:106%;font-family:Symbol;color:#AFCA0B}span.ej{font-size:11.0pt;line-height:106%;color:#2A2A63}span.ei{font-size:11.0pt;line-height: 106%;color:#2A2A63}p.fe{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:106%;background:white}span.eg{font-size:11.0pt; line-height:106%;color:#2A2A63}span.ef{font-size:11.0pt;line-height:106%; color:#2A2A63}
+span.ee{font-size: 11.0pt;line-height:106%;color:#2A2A63}p.ff{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:0cm;margin-right:0cm; margin-bottom:8.0pt;margin-left:54.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}span.ed{font-size:11.0pt; line-height:106%;font-family:Symbol;color:#AFCA0B}p.fg{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:106%;background:white}p.fh{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:8.0pt;margin-left:36.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}p.fi{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:8.0pt;margin-left:36.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}p.fj{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:8.0pt;margin-left:36.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}p.fk{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm;margin-bottom:8.0pt; margin-left:18.0pt;text-align:justify;line-height:106%;background:white}table.fl{margin-left:-5.4pt;border-collapse:collapse}tr.dt{height:4.0pt}
+td.dx{width:329.15pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}p.a,li.a,div.a{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;}span.fm{font-size:11.0pt}span.dy{font-size:11.0pt;color:#2A2A63}td.dv{width:45.9pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}p.fn{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;text-align:right}td.du{width:53.75pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}td.ds{width:329.15pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt}td.dr{width:45.9pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.dq{width:53.75pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}
+td.dp{width:329.15pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.do{width:45.9pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.dn{width:53.75pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.dm{width:329.15pt;padding:0cm 5.4pt 0cm 5.4pt}td.dl{width:45.9pt;padding:0cm 5.4pt 0cm 5.4pt}td.dk{width:53.75pt;padding:0cm 5.4pt 0cm 5.4pt}p.fo{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:10.0pt;line-height:115%}span.di{font-size:11.0pt;line-height:115%;color:#2A2A63}p.fp{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify;line-height: 106%;background:white}p.fq{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:12.0pt;text-align:justify;background:white}
+span.df{font-size:11.0pt;color:#AFCA0B}p.fr{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:0cm;margin-left:35.7pt;margin-bottom:.0001pt;text-align:justify; text-indent:-17.85pt;background:white}span.dd{font-size:11.0pt; font-family:Symbol;color:#AFCA0B}p.fs{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-align:justify; text-indent:-18.0pt;background:white}p.ft{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-align:justify; text-indent:-18.0pt;background:white}p.fu{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-align:justify; text-indent:-18.0pt;background:white}p.fv{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:0cm;margin-left:72.0pt;margin-bottom:.0001pt;text-align:justify; text-indent:-18.0pt;background:white}span.da{font-size:11.0pt; color:#AFCA0B}span.cz{font-size:11.0pt; color:#2A2A63}span.cx{font-size:11.0pt;line-height:115%;color:#AFCA0B}
+p.fw{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:0cm;margin-right:0cm;margin-bottom:0cm; margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:-18.0pt}span.cw{font-size:11.0pt;font-family:Symbol;color:#AFCA0B}p.fx{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-left:2.0cm;text-align:justify; text-indent:-14.15pt;background:white}p.fy{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-left:2.0cm;text-align:justify; text-indent:-14.15pt;background:white}p.fz{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:12.0pt;margin-right:0cm;margin-bottom: 0cm;margin-left:18.0pt;margin-bottom:.0001pt;text-align:justify;background: white}p.ga{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:0cm;margin-left:2.0cm;margin-bottom:.0001pt;text-align:justify; text-indent:-14.15pt;background:white}span.cr{font-size:11.0pt;line-height: 106%;color:#AFCA0B}span.cp{font-size:11.0pt;line-height:115%;font-family:"Calibri","sans-serif"; color:#AFCA0B}br.cq{page-break-before:always}p.gb{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;text-align:justify;background:white}
+span.cn{font-size:11.0pt;line-height:115%;font-family:"Calibri","sans-serif"; color:#2A2A63}p.gc{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-align:justify;background:white}span.dz{font-size:11.0pt}span.cl{font-size:11.0pt; color:#2A2A63;text-decoration:none}p.gd{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align:justify; line-height:115%;}span.ck{font-size: 11.0pt;line-height:115%;font-family:"Calibri","sans-serif";color:#2A2A63}.ci{text-decoration: underline}table.ge{margin-left:-10.8pt;border-collapse:collapse}td.cg{width:290.55pt;padding:0cm 5.4pt 0cm 5.4pt}span.ch{font-size:11.0pt; line-height:115%;font-family:"Calibri","sans-serif";color:#2A2A63}
+td.cf{width:144.5pt;padding:0cm 5.4pt 0cm 5.4pt}td.ce{border:none;padding:0cm 0cm 0cm 0cm}tr.bz{height:22.0pt}td.cc{width:290.55pt;padding:0cm 5.4pt 0cm 5.4pt; height:22.0pt}p.gf{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;line-height:115%}td.ca{width:144.5pt;padding:0cm 5.4pt 0cm 5.4pt; height:22.0pt}p.gg{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align: center;line-height:115%}td.bx{width:296.2pt;padding:0cm 5.4pt 0cm 5.4pt}span.by{font-size:8.0pt;line-height:115%;font-family:"Calibri","sans-serif"; color:#2A2A63}td.bu{width:158.7pt;padding:0cm 5.4pt 0cm 5.4pt}
+p.gh{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align: right;line-height:115%}span.bw{font-size:11.0pt;line-height:115%; font-family:"Calibri","sans-serif";color:#2A2A63}tr.br{height:3.0pt}td.bt{width:296.2pt;padding:0cm 5.4pt 0cm 5.4pt; height:3.0pt}td.bs{width:158.7pt;padding:0cm 5.4pt 0cm 5.4pt; height:3.0pt}p.gi{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;text-align:justify;}p.f,li.f,div.f{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";}p.gj{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;text-align:justify; vertical-align:baseline}p.gk{margin:0cm;margin-bottom:.0001pt;line-height:14.0pt;font-size:11.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:8.1pt;margin-right:215.05pt; margin-bottom:0cm;margin-left:214.35pt;margin-bottom:.0001pt;text-align:center} .fr-view-element{font-family: sans-serif;font-size: 12pt;line-height: 140%;padding: 20px;box-sizing: border-box;overflow-x: auto;min-height: 60px;text-align: left;margin-bottom: 10px;width: 837px;} .fr-view-element img{padding: 0 1px;} .fr-view-element .bm{margin: 63.8pt 1.6cm 62.35pt 1.6cm;} .fr-view-element p{font-size: 10pt;}
+/**/
+/**/
+/**/
+/**/
+/*]]>*/
+</style>
+<title></title>
+</head>
+<body><img src="https://tracker.live.rns-distribution.com/track.live-rns/5908180_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Ithaca Energy PLC</div>  <div>19 November 2025</div>  <div>&#160;</div></div>
+<div class="fr-view-element">
+<div class="bm">
+<h1 class="es"><span class="et">Press release</span></h1>
+<p class="ev"><span class="ew">19 November 2025</span></p>
+<p class="ex" style="text-align:center;"><span class="ew">ITHACA ENERGY PLC</span></p>
+<p class="ex" style="text-align:center;"><span class="ey">("Ithaca Energy", the "Company" or the "Group")</span></p>
+<p class="ex" style="text-align:center;"><span class="ez">&#160;</span></p>
+<p class="ex" style="text-align:center;"><span class="ew">Third Quarter Update and Results for the Nine Months to 30 September 2025</span></p>
+<p class="ex" style="text-align:center;"><span class="ew">&#160;</span></p>
+<p class="ex" style="text-align:center;"><span class="ew">Strong execution across our portfolio to deliver 2025 outlook</span></p>
+<p class="ex" style="text-align:center;"><span class="ew">Reaffirming management guidance and dividend</span></p>
+<p class="fa"><span class="en">&#160;</span></p>
+<p class="fa"><span class="en">Ithaca Energy today announced its unaudited financial results for the nine months ended 30 September 2025.</span></p>
+<p class="fb"><span class="fc">&#160;</span></p>
+<p class="fb"><span style="font-weight: bold;"><span class="en">Celebrating a year of successful operations following Business Combination:</span></span></p>
+<p class="fd" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Strong YTD production:</span></span> <span class="ei">YTD average production of 115 kboe/d (YTD 2024: 52.5 kboe/d), following execution of unprecedented levels of summer shut down activity</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Continued strong HSE performance:</span></span> <span class="eg">Zero Tier 1 or Tier 2 events recorded in the year and improved HSE performance with a material reduction in Total Recordable Injury Rate (TRIR) and in the Greenhouse Gas emission intensity of the Group's portfolio from 2024</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Transformed cost base:</span></span> <span class="ef">YTD opex per barrel of $19.1/boe (YTD 2024: $28.9/boe), reflecting impact of the Eni UK Business Combination on the Group's cost profile and high netback capability of the enlarged portfolio</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Enhanced financial performance:</span></span> <span class="ei">YTD adjusted EBITDAX of $1,501.2 million (YTD 2024: $758.5 million)</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Strong balance sheet:</span></span> <span class="ei">Successful &#8364;450 million 2031 bond issuance and $300 million upsizing of Reserves Based Lending (RBL) facility in Q3, with strong investor demand</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Material financial firepower:</span></span> <span class="eg">Low leverage position of 0.50x with significant available liquidity of $1.7 billion</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Focus on growth and high return investments</span></span><span class="ee">:</span></p>
+<p class="ff" style="text-align: left;"><span class="ed">&#183;&#160;&#160;&#160;</span> <span class="ej">Executing targeted and increased organic investment supporting production upside, reliability enhancement and efficiency focus alongside investment in high return wells in the year</span></p>
+<p class="ff"><span class="ed">&#183;&#160;&#160;&#160;</span> <span class="ej">Material progression of West of Shetland growth strategy supporting the Group's long-term production outlook. Farm-in to Tobermory announced today, 19 November, forming part of the Group's gas strategy in the area</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Continued delivery of consolidation strategy in the UKCS:</span></span> <span class="ej">Completion of the acquisitions of JAPEX UK E&amp;P and a further 46.25% stake in the Cygnus Field from Spirit Energy adding circa. 18 kboe/d proforma production in 2025</span></p>
+<p class="fg" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Attractive shareholder returns:</span></span> <span class="eg">First interim dividend of $167 million declared and paid in September 2025 and second interim dividend of $133 million accelerated and payable in December, taking total cash distributions declared in 2025 to $500 million</span></p>
+<p class="fb"><span style="font-weight: bold;"><span class="en">2025 Outlook and increased production capacity trend into 2026:</span></span></p>
+<p class="fh" style="text-align: left;"><span class="ed">&#183;&#160;&#160;&#160;</span> <span class="ej">Management reaffirms all previously provided guidance ranges for FY 2025, supporting the improved 2025 outlook announced in August, and reaffirms its targeted 2025 dividend of $500 million</span></p>
+<p class="fi" style="text-align: left;"><span class="ed">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">FY 2025 production outlook:</span></span> <span class="eg">On track to deliver upgraded full year production guidance of 119 - 125 kboe/d, with production trending to the bottom end of the range, primarily due to the Group's decision to extend the Captain shutdown to allow for increased scope and further investment into safeguarding longer-term environmental and operational performance, and the delayed start-up to three new high production wells to December 2025</span></p>
+<p class="fj" style="text-align: left;"><span class="ed">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ej">Increasing production capacity trend into 2026:</span></span> <span class="ej">Uplift to the Group's 2025 exit rate in Q4 from 140 kboe/d to circa 145 kboe/d is expected. Following the successful completion of the unprecedented TAR season, and with three new high production wells expected on stream in December, the Group is entering 2026 with an increased installed total production system capacity</span></p>
+<p class="fk"><span style="font-weight: bold;"><span class="ej">Executive Chairman, Yaniv Friedman</span></span><span class="eg">, commented: "Our Q3 YTD results for 2025 show what a pivotal period it has been for Ithaca Energy. The successful integration of Eni's UK assets and our additional M&amp;A success is reflected in our strong operational and financial performance, with average production levels of 115k boe/d, an uplift of our expected exit rate to 145 kboe/d in Q4, and EBITDAX of over $1.5 billion. We have continued to deliver on our strategy of disciplined investment, operational excellence, and targeted growth across our core assets, further strengthening our position as the leading energy company in the UK North Sea, all while delivering material improvements in our HSE performance.</span></p>
+<p class="fk"><span class="ej">Building on the momentum in the year to date we are continuing to progress our West of Shetland growth strategy supporting the Group's long-term production outlook and we remain vigilant for M&amp;A opportunities that fulfil our investment criteria, aided by our significant liquidity position of $1.7bn following our successful bond issuance and RBL expansion this quarter.</span></p>
+<p class="fk"><span class="ej">At the same time, we continue to deliver on our commitment for shareholder returns, evidenced by our first interim 2025 dividend declared of $167 million and further accelerated dividend of $133 million announced today totalling $500 million of cash dividend in 2025, supporting the reaffirmation of the Group's FY 2025 dividend target of $500 million. As we approach the end of a landmark year, we focus on our ambition to drive long-term value for all stakeholders and to play a leading role in the UK's energy future."</span></p>
+<table class="fl" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="dt">
+<td style="width: 439;" valign="top" class="dx">
+<p class="a"><span class="fm">&#160;</span><span style="font-weight: bold;"><span class="dy">Financial key performance indicators (KPIs)</span></span></p>
+</td>
+<td style="width: 61;" valign="top" class="dv">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="du">
+<p class="fn" style="text-align:right;"><span class="dy"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">YTD</span></span></p>
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">Sep 2025</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">YTD</span></p>
+<p class="fn" style="text-align:right;"><span class="dy">Sep 2024</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Adjusted EBITDAX<sup>1</sup> ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">1,501.2</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">758.5</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Profit before tax ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">668.1</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">183.7</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Adjusted net income</span><sup><span class="dy">1</span></sup> <span class="dy">($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">226.9</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">181.9</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">(Loss)/profit for the period</span><sup><span class="dy">2</span></sup> <span class="dy">($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">(119.1)</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">134.7</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Basic EPS (cents)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">(7.2)</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">13.4</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Net cash flow from operating activities ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">1,279.6</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">792.5</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Unit operating expenditure<sup>1</sup> ($/boe)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">19.1</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">28.9</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">YTD</span></span></p>
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">Sep 2025</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">Q4 2024</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Available liquidity <sup>1</sup> ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">1,664.3</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">1,015.1</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Adjusted net debt <sup>1</sup> ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">1,063.8</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">884.9</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Pro forma leverage ratio <sup>1</sup></span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">0.50x</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">0.45x</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="dp">
+<p class="a"><span class="dy"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="do">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dn">
+<p class="fn" style="text-align:right;"><span class="dy"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="dm">
+<p class="a"><span style="font-weight: bold;"><span class="dy">Other KPIs</span></span></p>
+</td>
+<td style="width: 61;" valign="top" class="dl">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dk">
+<p class="fn" style="text-align:right;"><span class="dy"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span class="dy">YTD</span></p>
+<p class="fn" style="text-align:right;"><span class="dy">Sep 2025</span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">YTD</span></p>
+<p class="fn" style="text-align:right;"><span class="dy">Sep 2024</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Total production (boe/d)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">114,928</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">52,501</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Tier 1 &amp; Tier 2 process safety events</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">0</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">0</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ds">
+<p class="a"><span class="dy">Serious injury and fatality frequency</span></p>
+</td>
+<td style="width: 61;" valign="top" class="dr">
+<p class="fn" style="text-align:right;"><span style="font-weight: bold;"><span class="dy">0</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="dq">
+<p class="fn" style="text-align:right;"><span class="dy">0</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="a"><sup><span class="et">1</span></sup> <span class="et">Non-GAAP measure</span></p>
+<p class="a"><sup><span class="et">2</span></sup> <span class="et">Reflects one-off, non-cash deferred tax charge in Q1 2025 of $327.6 million due to the two-year extension of EPL to 31 March 2030. Q3 2025 profit for the period of $98.3 million (Q3 2024: $29.0 million)</span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="di">&#160;</span></span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="di">Q3 2025 Strategic Highlights</span></span></p>
+<p class="fp"><span class="ei">Continued strong execution across the Group's strategic pillars, maximising value and returns for shareholders.</span></p>
+<p class="fq"><span style="font-weight: bold;"><span class="df">Organic growth: Investing across our portfolio</span></span></p>
+<p class="fr" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Successful progression of Captain 13<sup>th</sup> well campaign and expected sanctioning of the 14<sup>th</sup> drilling campaign in Q4 2025, that will support further drilling activity at the end of 2026, reflecting the Group's significant ongoing investment in the field</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Captain Flotel campaign ongoing with decision to extend the duration beyond the initial term. The material scopes of work being executed support the asset life extension programme including backlog reduction and optimisation activities</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Cygnus infill well campaign continues with the first of the four firm wells (C12) expected to achieve first production in early December, and the second well spudding immediately thereafter. The Group has sanctioned further investment in the area for 2026, following our acquisition of an additional 46.25% from Spirit Energy, with the fourth well added to the ongoing campaign and further development wells being considered</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">First production from the fourth and final Seagull well (J4) was achieved in Q4, following a technical issue experienced in H1. The well is performing in line with expectations, however the delay to first production reduces the assets expected production contribution in FY 2025</span></p>
+<p class="ft" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Material activity in the J Area following the decision to proceed with further value-led investment, with additional well activity sanctioned at Judy East Flank (JEF) and investment in Joanne well stimulation activity, based on continued strong J Area performance. Production start-up of the JEF well expected mid-December</span></p>
+<p class="fq"><span style="font-weight: bold;"><span class="df">Organic growth: West of Shetland Area strategy momentum building</span></span></p>
+<p class="fu"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Rosebank development project progressing towards key milestones that are critical to achieving first production timeline of 2026/27:</span></p>
+<p class="fv" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;&#160;</span> <span class="cz">Material progress toward achieving refreshed consents with the submission of an updated Environmental Statement in Q3, including the assessment of 'Scope 3' emissions associated with the&#160;project</span></p>
+<p class="fv" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;&#160;</span> <span class="cz">2025 offshore subsea installation scopes delivered on time and budget with excellent HSE statistics</span></p>
+<p class="fv" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;&#160;</span> <span class="cz">Drilling activities scheduled to commence Q1 2026, as planned</span></p>
+<p class="fv" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;&#160;</span> <span class="cz">Floating Production Storage and Offloading (FPSO) refurbishment activity progressing at pace, with a target to sail away early 2026 in order to enable mooring in field during 2026</span></p>
+<p class="fv" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;&#160;</span> <span class="cz">Maintaining FPSO sail away date in Q1 2026, together with drilling and hook up and commissioning works, remains critical to achieving first production target of 2026/27. Cost updates from the Operator indicate that assuming key milestones are achieved, including limited carry over activities post FPSO sail away,</span> <span class="cz">the total project cost outturn forecasts do not need to be materially updated at this time and will be revisited post FPSO sail away</span></p>
+<p class="fs"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Continued Cambo project maturation towards final investment decision (FID) and potential farm-down, subject to fiscal and regulatory clarity:</span></p>
+<p class="fv" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;&#160;</span> <span class="cz">Tenders for main project packages including FPSO Engineering, Procurement, Construction and Commissioning (EPCC)</span> <span class="dy">and Subsea, Umbilicals, Risers and Flowlines (SURF) activities have commenced, following the successful technical refresh of the project</span></p>
+<p class="fv" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;&#160;</span> <span class="cz">Working towards submission of an updated Field Development Plan and Environmental Statement in Q4 2025, reflecting project optimisations</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">The Tornado project is progressing towards FID with tendering and advancement of the Environmental Statement, forming part of the Group's wider West of Shetland gas strategy that has the potential to enable further exploration and appraisal in the area, subject to fiscal and regulatory clarity</span></p>
+<p class="ft" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">50% Farm-in to Shell's Tobermory gas field announced today (19 Nov), forming part of the Group's West of Shetland gas development strategy with the potential for significant synergies between the Tornado and Tobermory gas fields</span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="cx">&#160;</span></span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="cx">Inorganic growth: Pursuing consolidation strategy in UKCS, increasing stakes in key assets</span></span></p>
+<p class="fw" style="text-align: left;"><span class="cw">&#183;&#160;&#160;&#160;</span> <span class="en">Successful delivery of inorganic growth strategy with low-risk consolidation in core UKCS basin demonstrating the Group's execution capabilities:</span></p>
+<p class="fx" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;</span> <span class="cz">Acquisition of JAPEX UK completed 7 July 2025, increasing stake in well-understood, high-quality, long-life Seagull field from 35% to 50% and adding pro forma 2025 production of approximately 4 - 4.5 kboe/d. Completion payment in Q3 of $136 million (based on an effective date for the transaction of 1 January 2024 and after customary purchase price adjustments)</span></p>
+<p class="fy" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;</span> <span class="cz">Acquisition of 46.25% stake in the Group's operated Cygnus field from Spirit Energy completed 1 October 2025 in line with targeted completion date. The acquisition increased the Group's stake in the high-margin, low-emission operated Cygnus gas field to 85%, adding circa 12.5 - 13.5 kboe/d net production on a pro forma basis, enhancing the gas weighting of the Group's portfolio. Completion payment in Q4 of &#163;115 million (based on an effective date for the transaction of 1 January 2025 and after customary purchase price adjustments)</span></p>
+<p class="fw" style="text-align: left;"><span class="cw">&#183;&#160;&#160;&#160;</span> <span class="en">Bolt-on acquisitions have been completed at attractive investment metrics, increasing the Group's ownership stakes in key assets across its portfolio, where the Group believes additional upside potential exists</span></p>
+<p class="fz"><span style="font-weight: bold;"><span class="df">Value creation and shareholder returns</span></span></p>
+<p class="fd" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">First interim 2025 dividend of $167 million declared and paid in September 2025, representing a dividend per share of $0.101</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">Acceleration of second interim dividend of $133 million, representing a dividend per share of $0.0804, announced today (19 November) and payable 18 December 2025, demonstrating the Group's strong year-to-date performance and cash generation and taking the Group's total 2025 cash distributions to $500 million</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">Reaffirming dividend for 2025, targeting $500 million for FY 2025 with the remaining tranche payable following the Group's full year results announcement in March 2026</span></p>
+<p class="fg" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">Expansion of the Group's free float to 13.6% from 10.6% following majority shareholder sell-down on a pro forma basis</span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="di">Q3 2025 Operational Update</span></span></p>
+<p class="fh" style="text-align: left;"><span class="ed">&#183;&#160;&#160;&#160;</span> <span class="ej">Strong process safety performance with zero Tier 1 or Tier 2 events recorded in the first nine months of the year and a material reduction in Total Recordable Injury Rate (TRIR) from 2024, with 1.62 cases per million hours year to date from</span> <span class="eg">2.89 YTD 2024</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Significant reduction in Greenhouse Gas (GHG) emission intensity of the Group's portfolio, bringing our gross operated emissions intensity to 17.34 kgCO<sub>2</sub>e/boe from 20.14 kgCO<sub>2</sub>e/boe YTD 2024</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Unprecedent levels of turnaround activity executed during Q3 across the Group's operated and non-operated portfolio with material activity scopes concluded successfully during October</span></p>
+<p class="ga" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;</span> <span class="cz">12 out of 15 TARs were delivered on plan or better. Captain turnaround execution extended due to increased scope, with further investments made safeguarding longer-term environmental and operational performance. Return to full production achieved in the first week of November</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Average YTD production of 114.9 kboe/d (YTD 2024: 52.5 kboe/d), reflecting heavy turnaround activity in Q3 in line with the Group's expectations and as incorporated into full year production guidance</span></p>
+<p class="ga" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;</span> <span class="cz">YTD 2025 production split 58% liquids, 42% gas and 38% operated, 62% non-operated reflecting the impact of the Eni UK Business Combination</span></p>
+<p class="fi" style="text-align: left;"><span class="ed">&#183;&#160;&#160;&#160;</span> <span class="ej">Material improvement in production efficiency YTD across the Group's operated and non-operated asset base, consistently achieving higher than 2024 average of 80% and 2024 industry average of 75%, and reflected in strong operational performance</span></p>
+<p class="ft" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">New wells, including Jocelyn South and Talbot, continue to perform ahead of expectations</span></p>
+<p class="fk"><span class="ej">&#160;</span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="di">Q3 2025 Financial Highlights</span></span></p>
+<p class="fp"><span style="font-weight: bold;"><span class="cr">Enhanced balance sheet with financial strength and flexibility to support future growth</span></span></p>
+<p class="fd" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">Strong credit credentials highlighted by successful &#8364;450 million issuance of 5.5% senior notes, due 2031, with significant investor demand providing further financial firepower, optimising the Group's financial structure and extending its debt maturity profile. Effective all-in USD interest rate of 6.7%</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">Liquidity position further supported by $300 million upsizing of the Group's Reserves Based Lending (RBL) facility via accordion, with the addition of all new lending institutions</span></p>
+<p class="fe" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">Low leverage position of 0.50x with significant available liquidity of $1.7 billion (31 December 2024: $1.0 billion), providing material financial firepower for growth</span></p>
+<p class="fs"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Adjusted net debt at end of the quarter of $1,063.8 million (31 December 2024: $884.9 million)</span></p>
+<p class="ft" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Rating agencies retained previous rating upgrades in October 2024 following the completion of the Business Combination with Eni UK, reflecting the enhanced strength of the enlarged Group</span></p>
+<span style="font-weight: bold;"><span class="cp"><br class="cq" />
+<br class="cq" /></span></span>
+<p class="fo"><span style="font-weight: bold;"><span class="cx">&#160;</span></span></p>
+<p class="fz"><span style="font-weight: bold;"><span class="df">Strong financial performance and cash generation</span></span></p>
+<p class="fu"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD adjusted EBITDAX of $1,501.2 million (YTD 2024: $758.5 million)</span></p>
+<p class="fs"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD profit before tax of $668.1 million (YTD 2024: $183.7 million). Q3 2025 profit before taxation of $154.6 million (Q3 2024: loss before taxation of $5.7 million) reflecting a full quarters contribution from the Eni UK Business Combination and a lower level of impairment charges partly offset by higher finance costs</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD loss for the period of $119.1 million (YTD 2024: net profit of $134.7 million), reflecting primarily a one-off, non-cash deferred tax charge of $327.6 million due to the two-year extension of EPL to 31 March 2030. Q3 2025 profit for the period of $98.3 million (Q3 2024: $29.0 million)</span></p>
+<p class="fs"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD adjusted net income of $226.9 million (YTD 2024: $181.9 million)</span></p>
+<p class="fs"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD realised oil prices of $71/bbl before hedging and $73/bbl after hedging (YTD 2024: $84/bbl before hedging and $83/bbl after hedging) and gas prices of 88p/therm before hedging and 90p/therm after hedging (YTD 2024: 73p/therm before hedging and 110p/therm after hedging)</span></p>
+<p class="fs" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD operating costs of $600.1 million (YTD 2024: $415.6 million) reflecting a YTD opex per barrel of $19.1/boe (YTD 2024: $28.9/boe) demonstrates the Group's focus on cost control and the high netback capability of the enlarged portfolio</span></p>
+<p class="fs"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD producing assets capex of $468 million (YTD 2024: $272 million) and Rosebank capex of $183 million (YTD 2024: $141 million)</span></p>
+<p class="fs"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">YTD net cash flow from operating activities of $1,279.6 million (YTD 2024: $792.5 million)</span></p>
+<p class="ft"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">As at 18 November 2025, the Group had 39.5 million barrels of oil equivalent (54% oil) hedged from Q4 2025 into 2027 at an average floor price of $68/bbl for oil swaps, $62/bbl for oil puts/collar floors, 98p/therm for gas swaps, and 81p/therm for gas puts/collar floors</span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="di">&#160;</span></span></p>
+<p class="fo"><span style="font-weight: bold;"><span class="di">FY 2025 Management Guidance</span></span></p>
+<p class="fu" style="text-align: left;"><span class="dd">&#183;&#160;&#160;&#160;</span> <span class="dy">Management <span style="font-weight: bold;">reaffirms</span> all previously provided guidance ranges for full year 2025, updated 19 August 2025 to reflect stronger 2025 outlook:</span></p>
+<p class="ga" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="cz">FY 2025 production in range of 119-125 kboe/d</span></span> <span class="dy">with production trending to the bottom end of the range, primarily due to the Group's decision to extend the Captain shutdown to allow for increased scope and further investment into safeguarding longer-term environmental and operational performance, and the delayed start-up to three new high production wells to December 2025</span></p>
+<p class="ga"><span class="da">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="cz">FY 2025 net operating cost guidance range of $790-840 million</span></span></p>
+<p class="ga" style="text-align: left;"><span class="da">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="cz">FY 2025 net producing asset capital cost guidance range of $630-670 million</span></span> <span class="dy">(excluding pre-FID projects and Rosebank development)</span></p>
+<p class="ga"><span class="da">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="cz">FY 2025 net Rosebank development capex guidance range of $230-270 million</span></span></p>
+<p class="ga"><span class="da">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="cz">FY 2025 cash tax guidance range of $270-300 million</span></span><span class="dy">, trending to the bottom end of the range</span></p>
+<p class="fg" style="text-align: left;"><span class="ek">&#183;&#160;&#160;&#160;</span> <span class="ej">The Group uplifts its expected production exit rate in Q4 2025 from 140kboe/d to around 145kboe/d. Following the successful completion of the unprecedented TAR season and with three new high production wells expected on stream in December, the Group is entering 2026 with an increased installed total production system capacity</span></p>
+<p class="gb"><span style="font-weight: bold;"><span class="dy">&#160;</span></span></p>
+<span style="font-weight: bold;"><span class="cn"><br class="cq" />
+<br class="cq" /></span></span>
+<p class="fo"><span style="font-weight: bold;"><span class="di">&#160;</span></span></p>
+<p class="gb"><span style="font-weight: bold;"><span class="dy">Webcast and Conference call</span></span></p>
+<p class="gc"><span class="dy">Ithaca Energy will host a virtual presentation and Q&amp;A session for investors and analysts at 09:00 (GMT) today, 19 November 2025. Details are accessible via our website.</span></p>
+<p class="gc"><span style="font-weight: bold;"><span class="dy">Investors and Analysts - Webcast link</span></span></p>
+<p class="gc"><span><span class="dz"><a href="https://www.investis-live.com/ithaca-energy/690a37f00727be00165e1d15/fefd">https://www.investis-live.com/ithaca-energy/690a37f00727be00165e1d15/fefd</a></span></span></p>
+<p class="gc"><span class="dz">&#160;</span></p>
+<p class="gc"><span style="font-weight: bold;"><span class="dy">Investors and Analysts - Conference call</span></span></p>
+<p class="gc"><span class="dy">Operator Assisted Dial-In: United Kingdom (Local): +44 20 3936 2999 United Kingdom (Toll-Free):</span> <span><span class="cl">+44 808 189 0158</span></span> <span class="dy">Global Dial-In Numbers&#160;Access Code: 750843&#160;</span></p>
+<p class="gd"><span style="font-weight: bold;"><span class="ck">&#160;</span></span></p>
+<p class="gd"><span style="font-weight: bold;" class="ci"><span class="cn">Enquiries</span></span></p>
+<table class="ge" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 387;" valign="top" class="cg">
+<p class="gd"><span style="font-weight: bold;"><span class="ch">Ithaca Energy</span></span></p>
+</td>
+<td style="width: 193;" valign="top" class="cf">
+<p class="gd"><span class="ch"><br /></span></p>
+</td>
+<td class="ce" style="width: 19;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="bz">
+<td style="width: 387;" valign="top" class="cc">
+<p class="gf"><span class="cn">Kathryn Reid - Head of Investor Relations &amp; External Affairs</span></p>
+</td>
+<td style="width: 193;" valign="top" class="ca">
+<p class="gg" style="text-align:center;"><span><span class="cn"><a href="mailto:kathryn.reid@ithacaenergy.com">kathryn.reid@ithacaenergy.com</a></span></span></p>
+</td>
+<td class="ce" style="width: 19;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 395;" valign="top" class="bx">
+<p class="gf"><span style="font-weight: bold;"><span class="cn">&#160;</span></span></p>
+<p class="gf"><span style="font-weight: bold;"><span class="by">&#160;</span></span></p>
+<p class="gf"><span style="font-weight: bold;"><span class="cn">Camarco (PR Advisers to Ithaca Energy)</span></span></p>
+</td>
+<td style="width: 212;" colspan="2" valign="top" class="bu">
+<p class="gh" style="text-align:right;"><span class="bw">&#160;</span></p>
+<p class="gh" style="text-align:right;"><span class="bw">&#160;</span></p>
+<p class="gh" style="text-align:right;"><span class="bw">+44 (0)203 757 4980</span></p>
+</td>
+</tr>
+<tr class="br">
+<td style="width: 395;" valign="top" class="bt">
+<p class="gf"><span class="cn">Billy Clegg / Owen Roberts / Violet Wilson</span></p>
+</td>
+<td style="width: 212;" colspan="2" valign="top" class="bs">
+<p class="gh" style="text-align:right;"><span class="bw">ithacaenergy@apcoworldwide.com</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 387;" valign="top" class="cg">
+<p class="gf"><span class="cn"><br /></span></p>
+</td>
+<td style="width: 193;" valign="top" class="cf">
+<p class="gh" style="text-align:right;"><span class="bw"><br /></span></p>
+</td>
+<td class="ce" style="width: 19;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="gi"><span style="font-weight: bold;" class="ci"><span class="dy">Notes:</span></span></p>
+<p class="f"><sup><span class="cz">1</span></sup> <span class="cz">Non-GAAP measure</span></p>
+<p class="f"><sup><span class="cz">&#160;</span></sup></p>
+<p class="gi"><span style="font-weight: bold;"><span class="dy">About Ithaca Energy plc</span></span></p>
+<p class="gj"><span class="dy">&#160;</span></p>
+<p class="gb"><span class="et">Ithaca Energy is a leading UK independent exploration and production company with a strong track record of material value creation. In recent years, the Company has been focused on growing its portfolio of assets through both organic investment programmes and acquisitions and has seen a period of significant M&amp;A driven growth centred upon three transformational acquisitions in recent years, including the recent Business Combination with Eni UK. Today, Ithaca Energy is one of the largest independent oil and gas companies in the United Kingdom Continental Shelf (the "UKCS"), ranking second largest independent by production with the largest resource base.</span></p>
+<p class="gb"><span class="et">&#160;</span></p>
+<p class="gb"><span class="et">With stakes in six of the ten largest fields in the UKCS and two of UKCS's largest pre-development fields, and with energy security currently being a key focus of the UK Government, the Group believes it can utilise its significant reserves and operational capabilities to play a key role in delivering security of domestic energy supply from the UKCS.</span></p>
+<p class="gb"><span class="et">&#160;</span></p>
+<p class="gb"><span class="et">Ithaca Energy serves today's needs for domestic energy through operating sustainably. The Group achieves this by harnessing Ithaca Energy's deep operational expertise and innovative minds to collectively challenge the norm, continually seeking better ways to meet evolving demands.</span></p>
+<p class="gb"><span class="et">&#160;</span></p>
+<p class="gb"><span class="et">Ithaca Energy's commitment to delivering attractive and sustainable returns is supported by a well-defined emissions-reduction strategy with a target of achieving net zero ahead of targets set out in the North Sea Transition Deal.</span></p>
+<p class="gb"><span class="et">&#160;</span></p>
+<p class="gb"><span class="et">Ithaca Energy plc was admitted to trading on the London Stock Exchange (LON: ITH) on 14 November 2022.</span></p>
+<p class="gk" style="text-align:center;"><span class="et">-ENDS-</span></p>
+</div>
+</div>
+
+
+<div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/ITH" style="font-size:14px;">Ithaca Energy
+                    (ITH)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>5 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/qinetiq-group--qq./director-pdmr-shareholding/9880164">QinetiQ Group</a>
+            </li>
+                        <li>
+                <span>12 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/wetherspoon-j-d---jdw/director-pdmr-shareholding/9880145">Wetherspoon (J.D.)</a>
+            </li>
+                        <li>
+                <span>50 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/aib-group-cdi---aibg/director-pdmr-shareholding/9880073">AIB Group (CDI)</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/tesco--tsco/director-pdmr-shareholding/9880044">Tesco</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/ampeak-energy-limited--amp/grant-of-ltip-options-/9879955">Ampeak Energy Limited</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>
