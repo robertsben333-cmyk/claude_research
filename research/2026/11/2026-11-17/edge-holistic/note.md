@@ -38,3 +38,30 @@ None today: no name cleared the playbook's bar.
 | PONY | control | ok | 52.0 | none | 52.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the recommendations were published)
+
+| ticker | H evolving p_up / action | H control p_up / action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- |
+| JMIA | 54 none | 53 none | -83.8 | yes |
+| FEAM | 49 none | 46 none | -82.4 | yes |
+| LZB | 52 none | 53 none | -61.6 | no |
+| GLBE | 45 none | 46 none | +60.1 | no |
+| PRE | 56 none | 45 none | +52.1 | no |
+| SQM | 55 none | 57 none | -44.1 | no |
+| JJSF | 57 none | 55 none | +43.5 | no |
+| IIIV | 47 none | 47 none | +42.1 | no |
+| PONY | 54 none | 52 none | +33.6 | no |
+| DLB | 47 none | 42 none | -30.2 | no |
+| KRNT | 52 none | 56 none | -13.6 | no |
+| BRBR | 44 none | 45 none | -6.6 | no |
+
+Sign disagreements (H evolving p_up against E-P's side):
+- JMIA: H leans up (54) where E-P selects it short (-83.8).
+- LZB: H leans up (52), E-P down (-61.6).
+- SQM: H leans up (55), E-P down (-44.1).
+- KRNT: H leans up (52), E-P down (-13.6).
+- GLBE: H leans down (45), E-P up (+60.1).
+- IIIV: H leans down (47), E-P up (+42.1).
+
+FEAM, E-P's other selected short, H leans the same way only faintly (49). Every H view today is within 8 points of 50; no researcher found a dated fact it could show was outside the price.
