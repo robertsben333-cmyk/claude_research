@@ -63,3 +63,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:07 UTC
 - SSE banked: impact_sum +0.6, abs 3.0, p_up 53; bmo 07:00, H1 EPS pre-released 1 Oct.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:07 UTC
+- CTEC banked: impact_sum -1.2, abs 7.5, p_up 45; 10-month trading update confirmed (H1 scheduled events), bmo 07:00 by precedent.
