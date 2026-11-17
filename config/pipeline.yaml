@@ -1080,6 +1080,14 @@ execution:
     min_panel_pct: 80
     zero_weight_pct: 60
     require_full_panel: true      # all four judges present, as panel_score's own `selected`
+    # TURNOVER FLOOR, REMOVED FOR THIS BOOK (2026-11-17, operator's instruction). The
+    # book used benchmark.min_dollar_volume_usd ($200k of 20-day average turnover),
+    # which leaves out the earnings day itself, when turnover runs at a multiple of
+    # it. On 2026-11-17 it dropped ICCM ($0.10m) and ENRD ($0.15m). Size is still
+    # bounded by sizing.max_position_pct_of_adv (1% of that average) and
+    # min_position_usd, so a $0.10m name is at most a $1,000 position and a name under
+    # $20k a day buys nothing. Stage E's benchmark floor is unchanged.
+    min_dollar_volume_usd: 0
     max_position_pct_of_equity: 50
     gross_exposure_pct_of_equity: 100
     redistribute_cap_excess: true

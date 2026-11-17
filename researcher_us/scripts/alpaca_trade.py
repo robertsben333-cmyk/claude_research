@@ -512,7 +512,12 @@ def select_panel(panel, baselines, bench, pcfg, top=None, min_pct=None):
     tu = pcfg.get("top_up") or {}
     fill_floor = (max(float(tu.get("min_panel_pct", 70)), zero)
                   if tu.get("enabled") and top is None and min_pct is None else None)
-    min_dv = float(bench.get("min_dollar_volume_usd") or 0)
+    # The panel book has its own turnover floor since 2026-11-17 (operator's
+    # instruction): `panel.min_dollar_volume_usd`, 0 = none. The 20-day average it is
+    # measured on leaves out the earnings day itself, when turnover is a multiple of
+    # it; the ADV cap and min_position_usd in `sizing` still size a thin name down.
+    min_dv = float(pcfg["min_dollar_volume_usd"] if "min_dollar_volume_usd" in pcfg
+                   else (bench.get("min_dollar_volume_usd") or 0))
     full = not panel.get("members_missing")
     taken, rejected = [], []
     for row in panel.get("ranking", []):
@@ -2129,6 +2134,9 @@ def cmd_assets(a, api, ex):
     bench = ex.get("benchmark") or {}
     floor = float(bench.get("min_conviction") or 0)
     min_dv = float(bench.get("min_dollar_volume_usd") or 0)
+    pcfg = ex.get("panel") or {}
+    if Path(run).name == "edge-panel" and "min_dollar_volume_usd" in pcfg:
+        min_dv = float(pcfg["min_dollar_volume_usd"] or 0)   # the panel book's own floor
     # Below this the note calls the name THIN. It is not a floor and nothing is
     # dropped on it: it is the proxy for the "limited liquidity" warning a broker
     # shows, and the operator's rule is not to trade into one. $1m/day unless
