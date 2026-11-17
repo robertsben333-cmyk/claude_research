@@ -50,3 +50,7 @@
 ## Edge hunt (panel v3b) — 2026-11-17 amc + 2026-11-18 bmo — STARTED
 - Logged at 2026-11-17 18:21 UTC
 - 32 names in window (12 amc 11-17, 20 bmo 11-18), own baselines sealed 18:21Z; plan: 1 edge-sweep, up to 20 unpriced-searcher-v3b, 4 panel-judge-v3b judges; no orders.
+
+## Edge hunt (panel v3b) — sweep and waves
+- Logged at 2026-11-17 18:30 UTC
+- Sweep: 29 confirmed of 32 (phantom/unconfirmed KNDI, CAAP, CISS); SQM session unsettled (reaction lands 11-18 either way). Cap 20 by hunt_priority: hunted BRBR PONY PRE GLBE JMIA KRNT BLSH LZB FEAM DLB IIIV ENRD SQM TGT ZKH JJSF AUNA CSHR LOW ICCM; shed (lowest priority) TJX IRIX ZTO NVDA GLNG HAFN GBDC GLAD ZIM. Wave 1 (amc first, max 6 a turn): LZB FEAM DLB IIIV SQM AUNA.
