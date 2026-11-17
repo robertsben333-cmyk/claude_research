@@ -39,3 +39,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:00 UTC
 - ARR banked: impact_sum -0.5, abs 8.0, p_up 44; bmo 07:30 Oslo confirmed. BLND launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:01 UTC
+- SVEAF_B banked: impact_sum 0.0, abs 5.5, p_up 47; bmo 07:30 CET confirmed. CTEC and ITH launched (6 concurrent from here, to reach the handoff before the 17:30 CET close).
