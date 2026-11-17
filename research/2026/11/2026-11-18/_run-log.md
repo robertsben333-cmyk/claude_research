@@ -43,3 +43,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:01 UTC
 - SVEAF_B banked: impact_sum 0.0, abs 5.5, p_up 47; bmo 07:30 CET confirmed. CTEC and ITH launched (6 concurrent from here, to reach the handoff before the 17:30 CET close).
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:02 UTC
+- HAFNI banked: impact_sum +0.2, abs 4.5, p_up 52; bmo ~07:30 CET (NewsWeb 686176). MSLH launched.

@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="7f6a0c5450b341a996091dd417ec852e-2a7e3c54013141a9-1"/><meta name="baggage" content="sentry-trace_id=7f6a0c5450b341a996091dd417ec852e,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=f6533f8d7c1d6b199c5a9237826bb96c2a918d2d,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.513512"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "f6533f8d7c1d6b199c5a9237826bb96c2a918d2d",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from First Half Results: Six Months to 30 June 2026" />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "First Half Results: Six Months to 30 June 2026 | Company Announcement | Investegate",
+            "description":"Investegate announcements from First Half Results: Six Months to 30 June 2026",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-08-19 06:01:12",
+            "dateModified": "2026-08-19 06:02:15",
+            "url": "https://www.investegate.co.uk/announcement/rns/ithaca-energy--ith/first-half-results-six-months-to-30-june-2026/9728521"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='First Half Results: Six Months to 30 June 2026 | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/ithaca-energy--ith/first-half-results-six-months-to-30-june-2026/9728521' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>First Half Results: Six Months to 30 June 2026 | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">First Half Results: Six Months to 30 June 2026</h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Ithaca Energy PLC reported strong first half results for 2026, driven by record quarterly production of 131 kboe/d in Q2, leading to reaffirmed full-year production guidance of 120-130 kboe/d and an improved operating cost outlook of approximately $18/boe. The company generated adjusted EBITDAX of over $1.1 billion, supported by robust cash flow and significant liquidity of $1.9 billion, bolstered by a successful €155 million senior notes placement. Rosebank is entering its final execution phase with first production expected in H1 2027, and the company is advancing over 200 mmboe of organic growth opportunities. Consequently, Ithaca Energy has upgraded its 2026 dividend guidance to $500-530 million, declaring a first interim dividend of $255 million.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<style type="text/css">
+/*<![CDATA[*/
+/**/
+/**/
+/**/
+/**/
+sup{font-size:80%}sub{font-size:80%}h1{margin-top:0cm;margin-right:0cm;margin-bottom:26.0pt;margin-left:0cm;line-height:38.0pt;font-size:36.0pt;font-family:"Calibri","sans-serif";color:black;letter-spacing:-1.4pt;font-weight:normal;}h2{margin-top:.2pt;margin-right:0cm;margin-bottom:0cm;margin-left:1.0pt;margin-bottom:.0001pt;text-autospace:none;font-size:14.0pt;font-family:"Arial Black","sans-serif";font-weight:normal;}h3{margin-top:2.0pt;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Calibri","sans-serif";color:#00506F;font-weight:normal;}h4{margin-top:9.8pt;margin-right:0cm;margin-bottom:0cm;margin-left:5.5pt;margin-bottom:.0001pt;line-height:11.25pt;text-autospace:none;font-size:9.5pt;font-family:"Calibri","sans-serif";font-weight:bold;}h5{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:5.5pt;margin-bottom:.0001pt;line-height:12.9pt;text-autospace:none;font-size:9.5pt;font-family:"Arial Black","sans-serif";font-weight:normal;}p{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";}ol{margin-bottom:0cm;}ul{margin-bottom:0cm;}link{ color: blue }visited{ color: black }
+
+.bu{size:595.3pt 841.9pt;margin:76.0pt 2.0cm 49.65pt 2.0cm;}div.bu{}h1.gc{margin-bottom:12.0pt}span.gd{color:#2A2A63}p.gf{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:0cm;margin-right:0cm;margin-bottom:12.0pt; margin-left:0cm}span.gg{color: #2A2A63; font-family: "Calibri","sans-serif"; font-size: 11.0pt; font-weight: bold}p.gh{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align: center}span.gi{font-size:11.0pt;font-family: "Calibri","sans-serif";color:#2A2A63}p.gj{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align:justify}span.fx{font-size:11.0pt;font-family:"Calibri","sans-serif"; color:#2A2A63}
+p.gk{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align:justify}span.gl{font-size:11.0pt;font-family:"Calibri","sans-serif"; color:black}p.gm{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:106%;background:white}span.fu{font-size:11.0pt;line-height:106%;font-family:Symbol;color:#AFCA0B}span.ft{font-size:11.0pt;line-height:106%;color:#2A2A63}span.fs{font-size:11.0pt; line-height:106%;color:#2A2A63}p.gn{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:106%;background:white}span.fq{font-size:11.0pt;line-height:106%; color:#2A2A63}span.fp{font-size: 11.0pt;line-height:106%;color:#2A2A63}p.go{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:115%;background:white}
+span.fo{font-size:11.0pt;line-height:115%;font-family:Symbol;color:#AFCA0B}span.fn{font-size:11.0pt;line-height:115%;color:#2A2A63}p.gp{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:115%;background:white}span.gq{font-size:11.0pt;line-height:115%;font-family:Symbol; color:#AFCA0B}span.fk{font-size:11.0pt; line-height:115%;color:#2A2A63}p.gr{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-top:6.0pt;margin-right:0cm;margin-bottom:8.0pt; margin-left:0cm;text-align:justify;line-height:106%;background:white}span.fj{font-size:11.0pt;line-height:106%;font-family:"Calibri","sans-serif"; color:#2A2A63}table.gs{margin-left:-5.4pt;border-collapse:collapse}tr.ez{height:4.0pt}td.fe{width:329.15pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}
+p.n,li.n,div.n{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;}span.gt{font-size:11.0pt}p.a,li.a,div.a{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";}span.gu{font-size:11.0pt;font-family: "Calibri","sans-serif"}span.ff{font-size:11.0pt; color:#2A2A63}td.fb{width:45.9pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}p.gv{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";text-align:right}span.fd{font-size:11.0pt;font-family:"Calibri","sans-serif";color:#2A2A63}td.fa{width:53.75pt;padding:0cm 5.4pt 0cm 5.4pt; height:4.0pt}td.ey{width:329.15pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt}
+td.ex{width:45.9pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.ew{width:53.75pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}span.ev{font-size:11.0pt; font-family:"Calibri","sans-serif";color:#2A2A63}tr.er{height:3.5pt}td.eu{width:329.15pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt}td.et{width:45.9pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt}td.es{width:53.75pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt;height:3.5pt}td.eq{width:329.15pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.ep{width:45.9pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.eo{width:53.75pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}
+td.en{width:329.15pt;padding:0cm 5.4pt 0cm 5.4pt}td.em{width:45.9pt;padding:0cm 5.4pt 0cm 5.4pt}td.el{width:53.75pt;padding:0cm 5.4pt 0cm 5.4pt}span.ej{font-size:10.0pt;font-family: "Calibri","sans-serif";color:#2A2A63}span.ei{font-size:10.0pt;font-family:"Calibri","sans-serif";color:#2A2A63}p.gw{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-bottom:10.0pt;line-height:115%}span.eh{font-size:11.0pt;line-height:115%;font-family:"Calibri","sans-serif"; color:#2A2A63}div.ed{border:none;border-bottom:solid windowtext 1.0pt;padding:0cm 0cm 1.0pt 0cm}p.gx{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-bottom:10.0pt;line-height:115%;border:none; padding:0cm}span.ef{font-size:11.0pt;line-height:115%; font-family:"Calibri","sans-serif";color:#2A2A63}
+p.gy{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-bottom:8.0pt;text-align:justify;line-height: 106%;background:white}span.ec{font-size:11.0pt;line-height: 106%;font-family:"Calibri","sans-serif";color:#2A2A63}span.ea{font-size:11.0pt;line-height:115%;font-family:"Calibri","sans-serif"; color:#AFCA0B}p.gz{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:0cm;margin-right:0cm;margin-bottom:0cm; margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:-18.0pt}span.dz{font-size:11.0pt;font-family:Symbol;color:#AFCA0B}p.ha{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-top:6.0pt;line-height:115%}p.hb{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:8.0pt;margin-left:36.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}span.dw{font-size:11.0pt; line-height:106%;font-family:Symbol;color:#AFCA0B}p.hc{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:8.0pt;margin-left:72.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}span.du{font-size:11.0pt; line-height:106%;font-family:"Courier New";color:#2A2A63}
+p.hd{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;text-indent:-18.0pt}span.ds{font-size:11.0pt;color:#2A2A63}br.dq{page-break-before:always}p.he{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; text-indent:-18.0pt;line-height:106%;background:white}p.hf{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-top:12.0pt;text-align:justify;background:white}span.dp{font-size:11.0pt;font-family:"Calibri","sans-serif"; color:#AFCA0B}p.hg{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;text-align:justify;text-indent:-18.0pt; line-height:15.0pt}span.dn{font-size:11.0pt;font-family:Symbol; color:#AFCA0B}p.hh{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;text-align:justify;text-indent:-18.0pt; line-height:15.0pt}p.hi{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:0cm;margin-right:0cm; margin-bottom:8.0pt;margin-left:72.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}
+span.dl{font-size:11.0pt; line-height:106%;color:#AFCA0B}p.hj{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:0cm;margin-left:72.0pt;margin-bottom:.0001pt;text-align:justify; text-indent:-18.0pt;background:white}span.dj{font-size:11.0pt; color:#AFCA0B}p.hk{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-align:justify; text-indent:-18.0pt;background:white}span.dh{font-size:11.0pt; font-family:Symbol;color:#AFCA0B}p.hl{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:12.0pt;margin-right:0cm; margin-bottom:8.0pt;margin-left:36.0pt;text-align:justify;text-indent:-18.0pt; line-height:106%;background:white}.de{font-style: italic}p.hm{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-indent:-18.0pt; background:white}p.hn{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-indent:-18.0pt; background:white}p.ho{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-indent:-18.0pt; background:white}
+p.hp{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-align:justify; text-indent:-18.0pt;background:white}p.hq{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;text-align:justify; text-indent:-18.0pt;background:white}span.db{font-size:11.0pt;line-height:115%;font-family: "Calibri","sans-serif";color:#AFCA0B}br.dc{page-break-before: always}div.cz{border:none;border-bottom:solid windowtext 1.0pt;padding:0cm 0cm 1.0pt 0cm; background:white}p.hr{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-bottom:10.0pt;text-align:justify;line-height: 115%;border:none;padding:0cm}p.hs{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:6.0pt;margin-right:0cm; margin-bottom:0cm;margin-left:2.0cm;margin-bottom:.0001pt;text-align:justify; text-indent:-14.15pt;background:white}span.cx{font-size: 11.0pt;color:#2A2A63}p.ht{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";color:black;margin-bottom:8.0pt;text-align:justify; line-height:106%;background:white}p.hu{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";text-align:justify;background:white}
+p.hv{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-top:6.0pt;text-align:justify;background:white}span.ct{font-size:11.0pt;font-family:"Calibri","sans-serif"}span.cs{font-size:11.0pt;font-family:"Calibri","sans-serif"; color:#2A2A63;text-decoration:none}p.hw{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align:justify; line-height:115%;}span.cr{font-size: 11.0pt;line-height:115%;font-family:"Calibri","sans-serif";color:#2A2A63}p.hx{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:6.0pt;margin-right:0cm;margin-bottom: 0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:center}p.hy{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm; margin-left:0cm;margin-bottom:.0001pt}span.co{font-size: 11.0pt;font-family:"Calibri","sans-serif";color:#2A2A63}p.hz{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm; margin-left:0cm;margin-bottom:.0001pt;border:none;padding:0cm}p.ia{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-top:6.0pt;text-align:justify;line-height:106%; background:white}
+span.cl{font-size:11.0pt;line-height:106%; font-family:"Calibri","sans-serif";color:#2A2A63}p.ib{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-top:6.0pt;text-align:justify;line-height:106%; border:none;padding:0cm}span.cj{font-size: 11.0pt;line-height:106%;font-family:"Calibri","sans-serif";color:#2A2A63}p.ic{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm; margin-left:0cm;margin-bottom:.0001pt;text-align:justify}span.cg{font-size:11.0pt;line-height:106%; color:#AFCA0B}h2.cf{margin-top:6.0pt;text-align:justify}span.gb{color: #2A2A63; font-family: "Calibri","sans-serif"; font-size: 11.0pt; font-weight: bold}.ce{text-decoration: underline}td.cc{width:290.55pt;padding:0cm 5.4pt 0cm 5.4pt}span.cd{font-size:11.0pt; line-height:115%;font-family:"Calibri","sans-serif";color:#2A2A63}
+td.cb{width:158.7pt;padding:0cm 5.4pt 0cm 5.4pt}p.id{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;line-height:115%}p.ie{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align: center;line-height:115%}p.if{margin-right:0cm;margin-left:0cm;font-size:12.0pt;font-family:"Times New Roman","serif";margin:0cm;margin-bottom:.0001pt;text-align: right;line-height:115%}p.ig{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";text-align:justify;}p.f,li.f,div.f{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Calibri","sans-serif";}p.ih{margin:0cm;margin-bottom:.0001pt;font-size:12.0pt;font-family:"Aptos","sans-serif";text-align:justify; vertical-align:baseline}span.fy{font-size:11.0pt;font-family: "Calibri","sans-serif";color:#2A2A63}p.ii{margin:0cm;margin-bottom:.0001pt;line-height:14.0pt;font-size:11.0pt;font-family:"Calibri","sans-serif";color:black;margin-top:8.1pt;margin-right:215.05pt; margin-bottom:0cm;margin-left:214.35pt;margin-bottom:.0001pt;text-align:center} .fr-view-element{font-family: sans-serif;font-size: 12pt;line-height: 140%;padding: 20px;box-sizing: border-box;overflow-x: auto;min-height: 60px;text-align: left;margin-bottom: 10px;width: 837px;} .fr-view-element img{padding: 0 1px;} .fr-view-element .bu{margin: 63.8pt 1.6cm 62.35pt 1.6cm;} .fr-view-element p{font-size: 10pt;}
+/**/
+/**/
+/**/
+/**/
+/*]]>*/
+</style>
+<title></title>
+</head>
+<body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6259713_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Ithaca Energy PLC</div>  <div>19 August 2026</div>  <div>&#160;</div></div>
+<div class="fr-view-element displayHScroll">
+<div class="bu">
+<p class="gc"><span style="color: rgb(42, 42, 99); font-family: Calibri, &quot;sans-serif&quot;; font-size: 14.6667px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;" id="isPasted">Please see the Full Audited Results in attached PDF</span><br />
+<span id="isPasted"><a href="http://www.rns-pdf.londonstockexchange.com/rns/2222R_1-2026-8-18.pdf" id="isPasted" name="isPasted">http://www.rns-pdf.londonstockexchange.com/rns/2222R_1-2026-8-18.pdf</a></span></p>
+<p class="gf"><span class="gg">19 August 2026</span></p>
+<p class="gh" style="text-align:center;"><span class="gg">ITHACA ENERGY PLC</span></p>
+<p class="gh" style="text-align:center;"><span class="gi">("Ithaca Energy", the "Company" or the "Group")</span></p>
+<p class="gh" style="text-align:center;"><span class="gg">First Half Results for the Six Months to 30 June 2026</span></p>
+<p class="gh" style="text-align:center;"><span class="gg">&#160;</span></p>
+<p class="gh" style="text-align:center;"><span class="gg">Record quarterly production underpins reaffirmed management guidance and upgraded 2026 dividend</span></p>
+<p class="gh" style="text-align:center;"><span class="gg">Strong strategic execution focused on maximising long-term value of resource base</span></p>
+<p class="gj"><span class="fx">&#160;</span></p>
+<p class="gj"><span class="fx">Ithaca Energy today announced its unaudited financial results for the six months ended 30 June 2026.</span></p>
+<p class="gk"><span class="gl">&#160;</span></p>
+<p class="gk"><span style="font-weight: bold;"><span class="fx">H1 2026 key highlights</span></span></p>
+<p class="gm"><span class="fu">&#183;&#160; &#160;</span><span style="font-weight: bold;"><span class="ft">Record quarterly production</span></span> <span class="fs">achieved in Q2 of 131 kboe/d, strengthening confidence in full year production outlook of 120-130 kboe/d, with management guidance reaffirmed</span></p>
+<p class="gn"><span class="fu">&#183;&#160;&#160;&#160;</span><span style="font-weight: bold;"><span class="ft">Continued strong operational performance</span></span><span class="fs">, with improved cost outlook and opex per barrel trending to stronger full year outcome of ~$18/boe at mid-point of guidance</span></p>
+<p class="gn"><span class="fu">&#183;&#160; &#160;</span><span style="font-weight: bold;"><span class="ft">Robust cash flow generation</span></span> <span class="fq">supports capital allocation flexibility, underpinning long-term growth with</span> <span class="fq">adjusted H1 2026 EBITDAX over $1.1bn</span></p>
+<p class="gn"><span class="fu">&#183;&#160; &#160;</span><span style="font-weight: bold;"><span class="ft">Rosebank entering final execution phase</span></span> <span class="fp">with the Operator narrowing the first production window to H1 2027, with ramp up to production plateau through the summer of 2027</span></p>
+<p class="gn"><span class="fu">&#183;&#160;&#160;&#160;</span><span style="font-weight: bold;"><span class="ft">Material pipeline of organic growth opportunities</span></span> <span class="ft">with over 200 mmboe of resources being actively advanced through to FID corridor in 2026 and 2027</span></p>
+<p class="go"><span class="fo">&#183;&#160;&#160;&#160;</span><span style="font-weight: bold;"><span class="fn">Significant available liquidity of $1.9 billion</span></span><span class="fn">, bolstered by successful private placement of a further &#8364;155 million 5.5% senior notes, due 2031, with strong investor demand and low leverage of 0.49x to adjusted EBITDAX</span></p>
+<p class="gp"><span class="gq">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="fk">Upgraded dividend guidance</span></span> <span class="fn">to $500-530 million for FY 2026, with first interim dividend of $255 million declared today</span></p>
+<p class="gr"><span style="font-weight: bold;"><span class="fj">Executive Chairman, Yaniv Friedman</span></span><span class="fj">, commented: "<span style="font-style: italic;">Ithaca Energy delivered another strong quarter and first half performance in 2026, demonstrating the strength of our business. Record quarterly production in Q2, continued safe and efficient operations, robust cash generation and disciplined capital allocation have enabled us to reaffirm full year production guidance, reduce operating cost guidance and increase our dividend outlook for the year. We have also continued to execute against our strategy, strengthening our balance sheet, extending our hedge position and advancing a material pipeline of organic growth opportunities across our portfolio. With Rosebank progressing towards first production, Cambo advancing through key development milestones and continued investment in high-return, short-cycle opportunities across our producing assets, we remain focused on maximising long-term value creation and delivering attractive, sustainable returns for our shareholders."</span></span></p>
+<table class="gs" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="ez">
+<td style="width: 439;" valign="top" class="fe">
+<p class="n"><span class="gt">&#160;</span></p>
+<p class="a"><span class="gu">&#160;</span><span style="font-weight: bold;"><span class="ff">Financial key performance indicators (KPIs)</span></span></p>
+</td>
+<td style="width: 61;" valign="top" class="fb">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="fa">
+<p class="gv" style="text-align:right;"><span class="fd"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">H1 2026</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">H1 2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Adjusted EBITDAX<sup>1</sup> ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">1,121.4</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">1,117.0</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Profit before tax ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">493.8</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">513.4</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Adjusted net income</span><sup><span class="ev">1</span></sup> <span class="fd">($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">127.7</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">128.7</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Profit / (loss) for the period</span><sup><span class="fd">2</span></sup> <span class="fd">($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">127.0</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">(217.5)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Basic EPS (cents)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">7.7</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">(13.2)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Net cash flow from operating activities ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">954.6</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">1,004.6</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Unit operating expenditure<sup>1</sup> ($/boe)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">18.0</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">17.5</span></p>
+</td>
+</tr>
+<tr class="er">
+<td style="width: 439;" valign="top" class="eu">
+<p class="a"><span class="fx"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="et">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="es">
+<p class="gv" style="text-align:right;"><span class="fd"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">H1 2026</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">Q4 2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Available liquidity <sup>1</sup> ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">1,871.4</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">1,470.1</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Adjusted net debt <sup>1</sup> ($m)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">1,018.7</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">1,258.2</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Pro forma leverage ratio <sup>1</sup></span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">0.49x</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">0.56x</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="eq">
+<p class="a"><span class="fx"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="ep">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="eo">
+<p class="gv" style="text-align:right;"><span class="fd"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="en">
+<p class="a"><span style="font-weight: bold;"><span class="fx">Other KPIs</span></span></p>
+</td>
+<td style="width: 61;" valign="top" class="em">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">&#160;</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="el">
+<p class="gv" style="text-align:right;"><span class="fd"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx"><br /></span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">H1 2026</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">H1 2025</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Total average production (kboe/d)</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">128</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">124</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Tier 1 &amp; Tier 2 process safety events</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">0</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">0</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 439;" valign="top" class="ey">
+<p class="a"><span class="fx">Serious injury and fatality frequency</span></p>
+</td>
+<td style="width: 61;" valign="top" class="ex">
+<p class="gv" style="text-align:right;"><span style="font-weight: bold;"><span class="fd">0</span></span></p>
+</td>
+<td style="width: 72;" valign="top" class="ew">
+<p class="gv" style="text-align:right;"><span class="fd">0</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="a"><sup><span class="ej">1</span></sup> <span class="ei">Non-GAAP measure as set out on pages 39 to 41</span></p>
+<p class="a"><sup><span class="ej">2</span></sup> <span class="ei">Reflects one-off, non-cash deferred tax charge in Q1 2025 of $327.6 million due to the two-year extension of EPL to 31 March 2030</span></p>
+<p class="gw"><span style="font-weight: bold;"><span class="eh">&#160;</span></span></p>
+<div class="ed">
+<p class="gx"><span style="font-weight: bold;"><span class="ef">H1 2026 Strategic and operational highlights</span></span></p>
+</div>
+<p class="gy"><span class="ec">The Group has made material progress in advancing its value-orientated organic and inorganic growth strategy, driving long-term value creation and enhancing returns through disciplined capital allocation and strong strategic execution.</span></p>
+<p class="gw"><span style="font-weight: bold;"><span class="ea">Inorganic growth: M&amp;A as an enabler of the Group's organic growth strategy</span></span></p>
+<p class="gz"><span class="dz">&#183;&#160;&#160;&#160;</span> <span class="fx">M&amp;A activity in H1 has been closely aligned with supporting the Group's organic growth strategy, helping to unlock material long-term organic growth opportunities across the Group's development portfolio. Through the completion of the farm-in to the Tobermory discovery and the farm-down of the Fotla discovery, the Group has established commercial partnerships that will facilitate the progression of key projects towards final investment decisions, while strengthening its position in core West of Shetland gas hub</span></p>
+<p class="gz"><span class="dz">&#183;&#160;&#160;&#160;</span> <span class="fx">The Group continues to maintain an active but patient pursuit of M&amp;A opportunities both in the UKCS and internationally, in line with its focused international expansion strategy</span></p>
+<p class="ha"><span style="font-weight: bold;"><span class="ea">Strong operational momentum throughout H1 2026</span></span></p>
+<p class="hb"><span class="dw">&#183;&#160;&#160;&#160;</span> <span class="ft">Maintaining strong HSE record into H1 2026</span></p>
+<p class="hc"><span class="du">o&#160;</span> <span class="ft">Zero Tier 1 or Tier 2 events</span></p>
+<p class="hc"><span class="du">o&#160;</span> <span class="ft">Total Recordable Injury Rate (TRIR) of 1.2 cases per million hours and TTM June 2026 TRIR of 1.7 (H1 2025: 1.14), meaningfully below the industry average TRIR of 3.95</span></p>
+<p class="hc"><span class="du">o&#160;</span> <span class="ft">Gross operated emissions intensity of 16.4 kgCO<sub>2</sub>e/boe in H1 2026 (H1 2025: 16.9 kgCO<sub>2</sub>e/boe), substantially below the latest basin average of approximately 25 kgCO&#8322;e/boe</span></p>
+<p class="gn"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">Record quarterly production performance achieved in Q2 of 131 kboe/d, supporting a robust H1 2026 average production of 128 kboe/d (H1 2025:</span> <span class="ft">124</span> <span class="ft">kboe/d)</span></p>
+<p class="gn"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">The Group's operated assets achieved a record average production efficiency of 90% in Q2, reflecting the operational momentum achieved from the 'perfect day' philosophy</span></p>
+<p class="hd"><span class="dz">&#183;&#160;&#160;&#160;</span> <span class="ds">Production mix comprised 52% liquids and 48% gas, with 40% operated and 60% non&#8209;operated</span></p>
+<span style="font-weight: bold;"><span class="ea"><br class="dq" />
+<br class="dq" /></span></span>
+<p class="gw"><span style="font-weight: bold;"><span class="ea">&#160;</span></span></p>
+<p class="ha"><span style="font-weight: bold;"><span class="ea">Delivering value through industry collaboration</span></span></p>
+<p class="gm"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">In May, the Group entered a rig sharing agreement with Harbour Energy, designed to unlock operational synergies through the shared use of the high-performing Paul B. Loyd Junior (PBLJ) drilling rig through to 2030, enabling activity from development wells to execution of well P&amp;A</span></p>
+<p class="he"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">Immediate value creation demonstrated by the PBLJ's deployment to the Captain field, where a three-month re-drill programme of well B15 is expected to deliver production from Q4</span></p>
+<p class="hf"><span style="font-weight: bold;"><span class="dp">Organic growth: <span style="font-style: italic;">Optimising investment plans to sustain and optimise production</span></span></span></p>
+<p class="gm"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">The Captain 13<sup>th</sup> well campaign remains on track, with the C75 well brought onstream in Q2. Recertification of the platform rig is currently underway, ahead of the planned resumption of well operations towards the end of Q3</span></p>
+<p class="gn"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">Cygnus infill drilling campaign continues to progress strongly, with the C13 well outperforming expectations and first production from well C14 expected in November, before moving to the C15 well. Potential to unlock further investment activity in 2027, with the rig expected to move to the Bravo area subject to further wells FID</span></p>
+<p class="hg"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">Two well programme sanctioned at Elgin Franklin in H1, scheduled to commence in Q4 with incremental production expected in 2028</span></p>
+<p class="hf"><span style="font-weight: bold;"><span class="dp">Organic growth: <span style="font-style: italic;">Advancing over 200 mmboe of resources to FID corridor in 2026 and 2027, unlocking the Group's material organic growth opportunities</span></span></span></p>
+<p class="hh"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">The Rosebank development project continues to progress towards the final stages of execution, with the Operator narrowing the first production window to H1 2027, with ramp-up to production plateau from summer 2027 in line with project delivery expectations, subject to regulatory approval</span></p>
+<p class="hi"><span class="dl">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ft">FPSO Rosebank arrived and moored on station in June 2026, in line with the project schedule, with</span> <span class="ft">remaining scopes to hook-up and commissioning, on the critical path to first production</span></p>
+<p class="hj"><span class="dj">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ff">Following a rig contractor equipment handling incident in April, which resulted in the rig coming off-hire, the rig has returned to service in July and has restarted well activities. The campaign is expected to deliver the minimum well stock to support production ramp-up in 2027</span></p>
+<p class="hc"><span class="dl">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ft">Capital spend in 2026 is expected to be lower than previously guided, reflecting the rephasing of drilling activity and associated costs from 2026 into 2027. At the midpoint, this represents a deferral of approximately $35 million</span></p>
+<p class="hj"><span class="dj">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ff">As the project enters its final stages of execution with increased certainty on the cost outlook, management expects the total post-tax project capex per project reserves to be less than $4/boe<sup>3</sup>. With the anticipated addition of a high value 8th well on the drilling campaign reducing the total overall post-tax development cost per boe to less than $3.5/boe, representing attractive project metrics and a cost performance well within the project's delivery contingency envelope</span></p>
+<p class="hj"><span class="dj">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ff">The joint venture partnership continues to anticipate receipt of the required regulatory approvals by the end of 2026, supporting the first oil schedule, enabling well testing activities and optimising the drilling programme to achieve the planned production ramp-up</span></p>
+<p class="hk"><span class="dh">&#183;&#160;&#160;&#160;</span> <span class="ds">Significant progression towards unlocking material organic growth opportunities in H1, with key projects being actively advanced through to FID corridors in 2026 and 2027, subject to regulatory approval</span></p>
+<p class="hj"><span class="dj">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ff">Cambo has now entered the value engineering and pre-execution phase moving the project towards sanction in 2027</span></p>
+<p class="hj"><span class="dj">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ff">Fotla continues to progress towards the execution phase in 2026, with critical long-lead items secured, including the installation vessel and PBLJ drilling rig</span></p>
+<p class="hj"><span class="dj">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ff">Tornado advancing towards FID, supported by the successful 18-month license extension to March 2028</span></p>
+<p class="hj"><span class="dj">-&#160;&#160;&#160;&#160;&#160;</span> <span class="ff">Continued maturation of West of Shetland tie-in opportunities, around Tornado and Tobermory, including Suilven and Spitfire</span></p>
+<p class="hl"><span class="dw">&#183;&#160;&#160;&#160;</span> <span class="ft">Reviewing potential Transitional Energy Certificate (TEC) targets for Infrastructure-led exploration (ILX) and Production-led exploration (PLX) opportunities around existing infrastructure to build further optionality above the currently licensed 1bn BOE resource potential</span></p>
+<p class="gw"><span style="font-weight: bold;"><span class="ea">Enhanced shareholder returns with increase in dividend guidance for FY 2026</span></span></p>
+<p class="gm"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">First interim 2026 dividend of $255 million declared today and payable in September, representing a dividend per share of $0.1542, and reflecting the Group's transition to an equal dividend payment schedule with 50% following half year results and 50% following full year results</span></p>
+<p class="he"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">Reaffirming dividend commitment of 30% post-tax CFFO, with an upgraded guidance range of $500-530 million from $470-520 million for FY 2026, reflecting the Group's strong financial performance, robust cash flow generation and confidence in the outlook for the remainder of the financial year</span></p>
+<p class="gw"><span style="font-weight: bold;"><span class="eh">&#160;</span></span></p>
+<div class="ed">
+<p class="gx"><span style="font-weight: bold;"><span class="ef">H1 2026 Financial Highlights</span></span></p>
+</div>
+<p class="hf"><span style="font-weight: bold;" class="de"><span class="dp">Strong cash flow generation supported by robust production, improved realised prices and high-net back capability of the portfolio and offset by commodity hedging losses</span></span></p>
+<p class="hm"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">H1 2026 adjusted EBITDAX of $1.1 billion (H1 2025: $1.1 billion) and net cash flow from operating activities of $1.0 billion (H1 2025: $1.0 billion)</span></p>
+<p class="hn"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">Recognised prices of $83/boe for oil and gas before hedging results and $69/boe after hedging results (H1 2025: $71/boe for oil and gas before hedging results and $72/boe after hedging results)</span></p>
+<p class="hn"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">H1 2026 operating costs of $419 million (H1 2025: $391 million) and unit operating expenditure of $18.0/boe (H1 2025: $17.5/boe), significantly lower than the latest published basin average of $24/boe demonstrating the high-quality of the Group's assets</span></p>
+<p class="hn"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">H1 2026 profit before tax of $494 million (H1 2025: $513 million)</span></p>
+<p class="hn"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">H1 2026 profit for the period of $127 million (H1 2025: loss of $217 million) and H1 2026 adjusted net income of $128 million (H1 2025: $129 million)</span></p>
+<p class="ho"><span class="dn">&#183;&#160;&#160;&#160;</span> <span class="ds">H1 2026 producing assets capex of $266 million (H1 2025: $290 million) and Rosebank capex of $120 million (H1 2025: $130 million)</span></p>
+<p class="hf"><span style="font-weight: bold;" class="de"><span class="dp">Significant available liquidity to support growth strategy</span></span></p>
+<p class="hp"><span class="dh">&#183;&#160;&#160;&#160;</span> <span class="ds">Successful private placement ('bond tap') of a further &#8364;155 million (c.$180 million) 5.5% senior notes, as an extension to the Group's existing &#8364;450 million senior notes, due 2031, with strong investor demand</span></p>
+<p class="hk"><span class="dh">&#183;&#160;&#160;&#160;</span> <span class="ds">Adjusted net debt at 30 June 2026 of $1.0 billion (31 December 2025: $1.3 billion),</span> <span class="ds">representing a</span> <span class="ds">pro forma leverage ratio at 30 June 2026 of 0.49x (31 December 2025: 0.56x)</span></p>
+<p class="hq"><span class="dh">&#183;&#160;&#160;&#160;</span> <span class="ds">Significant available liquidity at 30 June 2026 of $1.9 billion (31 December 2025: $1.5 billion), bolstered by bond tap, supplemented by an additional available accordion of over $430 million, providing incremental liquidity potential of up to circa $2.3 billion and a solid financial foundation for growth</span></p>
+<span style="font-weight: bold;" class="de"><span class="db"><br class="dc" />
+<br class="dq" /></span></span>
+<p class="ha"><span style="font-weight: bold;" class="de"><span class="ea">Extension of hedge position in high price environment, protecting cash flows into 2028</span></span></p>
+<p class="hp"><span class="dh">&#183;&#160;&#160;&#160;</span> <span class="ds">Material build on hedge position during H1, in high commodity price environment, providing strong cash flow protection with the focus on deepening distribution cover into 2028</span></p>
+<p class="hq"><span class="dh">&#183;&#160;&#160;&#160;</span> <span class="ds">Hedged position at 17 August 2026 of 58.8 mmboe (c.59% oil, c.41% gas) from 30 June 2026 through the end of 2028</span></p>
+<p class="gw"><span style="font-weight: bold;"><span class="eh">&#160;</span></span></p>
+<div class="cz">
+<p class="hr"><span style="font-weight: bold;"><span class="eh">Strong FY 2026 outlook:</span></span> <span style="font-weight: bold;"><span class="fn">Lower cash costs and higher shareholder returns expected</span></span></p>
+</div>
+<p class="gm"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">Management provides the following updates to guidance ranges for full year 2026 (provided 19 March 2026), reflecting strong operational performance in the first half of the year and re-phasing of Rosebank capital spend:</span></p>
+<p class="hs"><span class="dj">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ff">FY 2026 production guidance range reaffirmed at 120-130 kboe/d</span></span><span class="ds">,</span> <span class="ds">reflecting robust asset production performance in H1 continuing into Q3</span></p>
+<p class="hs"><span class="dj">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ff">FY 2026</span></span> <span class="ff"><span style="font-weight: bold;">net operating cost</span> <span style="font-weight: bold;">guidance range reduced to $800-840 million</span> from $820-860 million,</span> <span class="cx">normalised using USD:GBP exchange rate of 1.35, representing an <span style="font-weight: bold;">improved opex per barrel estimated cost of between $17/boe and $19/boe</span></span></p>
+<p class="hs"><span class="dj">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ff">FY 2026</span></span> <span class="ff"><span style="font-weight: bold;">net producing asset capital cost guidance range reaffirmed at $600-700 million</span>, normalised using USD:GBP exchange rate of 1.35 (excludes pre-FID projects and Rosebank development)</span></p>
+<p class="hs"><span class="dj">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ff">FY 2026</span></span> <span class="ff"><span style="font-weight: bold;">net Rosebank project capital cost guidance range reduced to $250-280 million</span> from $280-320</span> <span class="cx">million, reflecting the rephasing of drilling activity and associated costs from 2026 into 2027, and</span> <span class="ds">including the phasing of the FPSO commissioning scopes</span></p>
+<p class="hs"><span class="dj">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ff">FY 2026</span></span> <span class="ff"><span style="font-weight: bold;">net decommissioning cost guidance range of $170-210 million reaffirmed</span>, based on USD:GBP exchange rate of 1.35</span></p>
+<p class="hs"><span class="dj">-&#160;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="ff">FY 2026 cash tax guidance of $290-340 million reaffirmed</span></span></p>
+<p class="ht"><span class="fs">&#160;</span></p>
+<p class="he"><span class="fu">&#183;&#160;&#160;&#160;</span> <span class="ft">Management reaffirms the Group's dividend commitment of <span style="font-weight: bold;">30% post-tax CFFO</span>,</span> <span class="ft">with an <span style="font-weight: bold;">upgraded guidance range of $500-530 million</span> from $470-520 million for FY 2026,</span> <span class="ft">as illustrated by the first interim dividend of $255 million declared today</span></p>
+<p class="hu"><span style="font-weight: bold;"><span class="fx">Notes:</span></span></p>
+<p class="hu"><span class="fx">3. Cost per boe calculated on a post-tax basis assuming 78% tax relief for development costs</span></p>
+<p class="hu"><span style="font-weight: bold;"><span class="fx">&#160;</span></span></p>
+<p class="hu"><span style="font-weight: bold;"><span class="fx">&#160;</span></span></p>
+<p class="hu"><span style="font-weight: bold;"><span class="fx">Webcast and Conference call</span></span></p>
+<p class="hv"><span class="fx">Ithaca Energy will host a virtual presentation and Q&amp;A session for investors and analysts at 09:00 (BST) today, 19 August 2026. Details are accessible via our website.</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">Investors and Analysts - Webcast link</span></span></p>
+<p class="hv"><span class="ct"><a href="https://gbr01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.investis-live.com%2Fithaca-energy%2F6a7305654aa199000e12df76%2Fpedv&amp;data=05%7C02%7Ckathryn.reid%40ithacaenergy.com%7C6affdaded91d43479a2408def39699bd%7C91145d135cbe4b90846cfe1cfea471ce%7C0%7C0%7C639216025991046684%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&amp;sdata=UqOMUjJ2UbiFvK3xUTUV%2Bp2fvcVQzF595nUOGI6HcmE%3D&amp;reserved=0">https://www.investis-live.com/ithaca-energy/6a7305654aa199000e12df76/pedv</a></span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">Investors and Analysts - Conference call</span></span></p>
+<p class="hv"><span class="fx">Operator Assisted Dial-In: United Kingdom (Local): +44 20 3936 2999 United Kingdom (Toll-Free):</span> <span><span class="cs"><a href="tel:+448003581035">+44 800 358 1035</a></span></span> <span class="fx">Global Dial-In Numbers&#160;Access Code: 659853</span></p>
+<p class="hw"><span style="font-weight: bold;"><span class="cr">&#160;</span></span></p>
+<span style="font-weight: bold;"><span class="eh"><br class="dq" />
+<br class="dq" /></span></span>
+<p class="gw"><span style="font-weight: bold;"><span class="eh">&#160;</span></span></p>
+<p class="hx" style="text-align:center;"><span class="gg">Half Year 2026 performance in review</span></p>
+<p class="hx" style="text-align:center;"><span class="gg">&#160;</span></p>
+<p class="hy"><span style="font-weight: bold;"><span class="co">Operational and strategic execution supporting long-term value creation and sustainable shareholder returns</span></span></p>
+<p class="hv"><span class="fx">The Group delivered a strong first half performance strategically, operationally and financially. Record high production in Q2, robust cash flow generation, continued project maturation, increased available liquidity, and disciplined capital allocation and execution have further strengthened the Group's outlook.</span></p>
+<p class="hv"><span class="fx">Guided by our vision for further 'scale, stability and strength', the Group continues to invest in sustaining and optimising production over the short to medium-term, while progressing its material pipeline of organic growth opportunities, primarily in the strategically important West of Shetland Basin, as it aims to deliver attractive reserves replacement supporting long-term value creation for our shareholders.</span></p>
+<p class="hy"><span style="font-weight: bold;"><span class="co">&#160;</span></span></p>
+<div class="ed">
+<p class="hz"><span style="font-weight: bold;"><span class="fx">H1 Operational overview - Strong operational momentum continues into 2026, with record production achieved in Q2</span></span></p>
+</div>
+<p class="hv"><span class="fx">The operational momentum established through the Group's 'perfect day' philosophy during 2025 has continued into the first half of 2026, driving sustained improvements across all key performance metrics.<br />
+This disciplined focus on operational excellence has delivered enhanced safety and environmental performance, strong production efficiency and a reduction in operating cost per barrel.</span></p>
+<p class="hv"><span class="fx">The Group achieved record production in Q2 2026, averaging 131 kboe/d, as operations rebounded strongly from the weather-related challenges experienced in Q1. This performance supported robust average production of 128 kboe/d for H1 2026 (H1 2025: 124 kboe/d), that has continued into Q3, providing confidence in the Group's production outlook for the year. Production during the six-month period comprised 52% oil and 48% gas, compared with 59% oil and 41% gas in H1 2025. The change reflects the continued evolution of the portfolio following gas-weighted M&amp;A activity undertaken in 2025, increasing the contribution of the Group's Cygnus and Seagull gas fields to the Group's overall production mix.</span></p>
+<p class="hv"><span class="fx">During H1 2026, the Group maintained its strong safety performance, recording zero Tier 1 and Tier 2 process safety events and a Total Recordable Injury Rate (TRIR) of 1.2 cases per million hours worked</span> <span class="ds">and TTM June 2026 TRIR of 1.7</span> <span class="fx">(H1 2025: 1.14), meaningfully below the industry average TRIR of 3.95. This achievement is particularly notable given that two operated assets reached cessation of production during the period, requiring heightened focus and vigilance to safely execute critical end-of-field-life activities while maintaining high HSE standards. The FPF-1 and Alba FSU have both been off stationed from their field locations and moved to the decommissioning yard according to plans and without recordable incidents.</span></p>
+<p class="hv"><span class="fx">The Group's gross operated emissions intensity of 16.4 kgCO&#8322;e/boe in H1 2026 (H1 2025: 16.9 kgCO&#8322;e/boe) remained substantially below the latest basin average of approximately 25 kgCO&#8322;e/boe and continues to trend downward. This performance reflects the increased stakes in lower-emission assets and the retirement of the higher-intensity Alba and GSA fields towards the end of the first half of the year.</span></p>
+<p class="hv"><span class="fx">Operating costs, net of tanker expenses and tariff income, totalled $419 million during the period (H1 2025: $391 million), reflecting a unit operating expenditure of $18.0/boe (H1 2025: $17.5/boe) and supporting a positive trend toward reducing full year opex per bbl. Unit operating cost remains significantly below the latest published UKCS basin average of approximately $24/boe, demonstrating both the quality of the Group's asset base and its disciplined cost management The Group's operated assets achieved a record average production efficiency of 90% in Q2, reflecting the operational momentum achieved from the 'perfect day' philosophy, with PE levels achieved materially above the UKCS basin average of 75%.</span></p>
+<p class="hv"><span class="fx">Total net producing asset capital expenditure (excluding decommissioning) in H1 2026 of $266 million (H1 2025: $290 million) reflects material ongoing capital investment across key producing assets, including Captain, Cygnus and Elgin Franklin. In response to strong cash flow generation in the period, management chose to increase capital deployment targeting short-cycle, high-return opportunities in the period including the Captain B15 well intervention, supporting near-term production, with a plan to start flowing in November 2026.</span></p>
+<p class="hv"><span class="fx">Net capital investment in the Rosebank development totalled $120 million (H1 2025: $130 million) as the project continued to progress through its final stages of execution ahead of first production. Capital spend during the period was lower than planned due to the rephasing of drilling activity and associated costs into 2027, following the rig coming off-hire in April before returning to operations in Q3.</span></p>
+<p class="ia"><span style="font-weight: bold;"><span class="cl">&#160;</span></span></p>
+<div class="cz">
+<p class="ib"><span style="font-weight: bold;"><span class="cj">H1 Strategic Overview - Disciplined execution supporting our vision for 'Scale. Stability. Strength'</span></span></p>
+</div>
+<p class="hv"><span style="font-weight: bold;"><span class="dp">Inorganic growth - M&amp;A supporting long-term organic growth ambitions</span></span></p>
+<p class="hv"><span class="fx">The Group continued to execute its inorganic growth strategy during H1, leveraging M&amp;A as a strategic enabler to advance key development projects and unlock long-term organic growth across its portfolio.</span></p>
+<p class="hv"><span class="fx">During the period, the Group signed an agreement with Harbour Energy for their 45% farm-in to the Fotla discovery, which subsequently completed on 1 July, unlocking the development of the field and building on the existing infrastructure partnership in the Greater Britannia Area. The strategic farm-in has established the commercial framework to move the project towards final investment decision in 2026, with the project now moving into the execution phase.</span></p>
+<p class="hv"><span class="fx">The Group also completed a strategic 50% farm-in to licences P2629 and P2630 in the West of Shetland basin, which contains the Tobermory discovery, on 1 May. The farm-in aligns with the Group's vision of building scale, strengthening its role as a strategic infrastructure partner in the area and positioning the Group as part of a new northern gas hub. The farm-in creates the potential for regional synergies between the Tornado and Tobermory gas fields, while enhancing its exposure to infrastructure-led exploration opportunities across the area.</span></p>
+<p class="hv"><span class="fx">Together, these transactions demonstrate the Group's disciplined approach to portfolio management, deepening strategic infrastructure partnerships and creating commercial frameworks that support future project sanctions. In doing so, the Group continues to enhance and de-risk its resource base supporting future reserves maturation and long-term production growth potential.</span></p>
+<p class="hv"><span class="fx">Looking ahead, the Group continues to maintain an active but patient pursuit of M&amp;A opportunities both in the UKCS and internationally, in line with its focused international expansion strategy.</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="dp">Organic growth - Delivering value through industry collaborations</span></span></p>
+<p class="hv"><span class="fx">In May, the Group established an industry collaboration with Harbour Energy and Dolphin Drilling, which is designed to unlock operational synergies through the shared use of drilling rigs and associated services. The collaboration seeks to enhance operational efficiency, reduce costs and support delivery across the full field life cycle, from development drilling through to late-life asset management and decommissioning.</span></p>
+<p class="hv"><span class="fx">Central to the collaboration is the rig-sharing agreement with Harbour Energy for the high-performing PBLJ semi-submersible drilling rig, through to 2030. This agreement strengthens the Group's organic growth strategy by securing access to critical drilling capacity, supporting drilling activities at the Fotla development, enabling ongoing infill drilling programmes to sustain and de-risk production across the portfolio, and providing the rig availability required to execute future plugging and abandonment activities, in line with the Group's commitments to the regulator.</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="dp">Organic growth - Sustaining and optimising production through disciplined investment</span></span></p>
+<p class="hv"><span class="fx">The Group continues to prioritise disciplined investment across its producing asset base, delivering near-term value creation while supporting stable and reliable production performance.</span></p>
+<p class="hv"><span class="fx">At Captain, the deployment of the PBLJ rig demonstrates the immediate value creation potential from the Group's industry collaboration, through a three-month re-drill programme on well B15, which is expected to come onstream from the fourth quarter. The wider Captain 13th well campaign remains on schedule, with the C75 well successfully brought onstream during the second quarter. Platform rig recertification activities are currently underway ahead of the planned resumption of well operations towards the end of the third quarter.</span></p>
+<p class="hv"><span class="fx">Sanction of the Captain subsea well campaign comprising two wells and leveraging secured PBLJ rig capacity, is expected during the second half of the year, further supporting the field's long-term production outlook with first production from the campaign forecast in 2028.</span></p>
+<p class="hv"><span class="fx">At Cygnus, the infill drilling programme continues to deliver strong operational progress. The C13 well, brought onstream in May, has exceeded expectations, confirming the success of the well completion and hydraulic fracturing programme. Operations are currently underway on the C14 well, which is expected to come onstream in November, and will be followed by the drilling of the C15 well. Upon completion of the C15 well, the rig is expected to mobilise to the Bravo area to execute the C16 and C17 two-well drilling campaign expected to be sanctioned in H2, which is subject to the timely receipt of the required regulatory approvals for the Field Development Plan. The C16 well represents an example of production-led exploration, demonstrating the Group's continued commitment to investing in and maximising the value of the Cygnus asset. Timely regulatory approval is therefore critical to maintain momentum and enable the continued delivery of domestic gas production from one of the UK's most significant gas fields.</span></p>
+<p class="hv"><span class="fx">Across the Group's non-operated portfolio, the J Area continues to deliver a stable production contribution, supported by the strong performance of both the recently developed Jocelyn South well and the Talbot field, which continue to outperform expectations. At Elgin Franklin, the Group has sanctioned a two well programme, together with the operator Neo Next+, including the EIJ well and the EIH well, a well that was previously cancelled as a response to the energy profits levy. The well campaign, that is scheduled to commence in Q4, represents a short-cycle, high-return investment that will deliver net incremental production of 4.5 kboe/d from the field in 2028, with the EIJ well expected onstream in January 2028 and the EIH well in August 2028.</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="dp">Organic growth - Advancing material organic growth opportunities</span></span></p>
+<p class="hv"><span class="fx">The Group continues to make strong progress in unlocking material value across its long-life, high-value resource base, actively advancing more than 200 mmboe of resources to FID corridors during 2026 and 2027, providing a clear pathway to sustainable production growth and long-term value creation.</span></p>
+<p class="ia"><span style="font-weight: bold;" class="de"><span class="ec">Rosebank progressing towards first production</span></span></p>
+<p class="hv"><span class="fx">The Rosebank development continues to advance towards the final stages of execution. The Operator has narrowed its expected first production window to the first half of 2027, with production anticipated to ramp up to plateau levels from summer 2027, in line with project delivery expectations and subject to regulatory approvals.</span></p>
+<p class="hv"><span class="fx">A major milestone was achieved in June 2026 with the arrival and mooring of the Rosebank FPSO on location, following its short dock in Bergen, with remaining activities, including hook-up and commissioning, on the critical path to first production. Following an equipment handling incident in April which resulted in the drilling rig coming off-hire, the rig has returned to service in July and has restarted well activities. The campaign remains focused on delivering the minimum well stock required to support the planned production ramp-up in 2027.</span></p>
+<p class="hv"><span class="fx">Capital spend in 2026 is now expected to be lower than previously guided, reflecting the rephasing of drilling activity and associated costs into 2027, including final FPSO commissioning activities. As the project enters its final stages of execution with increased certainty on the cost outlook, management expects the total post-tax project capex per project reserves to be less than $4/boe, with the anticipated addition of a high value 8th well on the drilling campaign reducing the total overall post-tax development cost per boe to less than $3.5/boe, representing attractive project metrics and a cost performance within the project's delivery contingency envelope.</span></p>
+<p class="hv"><span class="fx">The joint venture partnership continues to anticipate receipt of the necessary regulatory approvals by the end of 2026, supporting its planned first oil schedule, and importantly enabling well testing activities and optimisation of the drill programme to achieve the anticipated production ramp-up.</span></p>
+<p class="hv"><span style="font-weight: bold;" class="de"><span class="fx">Cambo: A strategic project for the UK</span></span></p>
+<p class="hv"><span class="fx">As the largest pre-FID undeveloped discovery on the UK Continental Shelf, Cambo remains a strategically important option for Ithaca Energy and more broadly for the UK.</span></p>
+<p class="hv"><span class="fx">The project continues to mature through key development milestones. Front-end engineering and design activities, together with the tendering phase, are substantially complete with major project contract packages ready for award. Cambo has now entered the value engineering and pre-execution phase as it progresses towards sanction, subject to the necessary regulatory approvals. &#160;</span></p>
+<p class="hv"><span class="fx">Completion of the tendering phase marks a significant milestone, materially de-risking the project by providing greater execution certainty. &#160;Activity also continues across rig tendering, commercial and financing workstreams supporting the project timeline to FID and equity farm-down.</span></p>
+<p class="ia"><span style="font-weight: bold;" class="de"><span class="ec">Unlocking the next wave of resource maturation</span></span></p>
+<p class="hv"><span class="fx">Fotla continues to progress towards execution, supported by the successful farm-down transaction and the rig-sharing agreement with Harbour Energy. Key long-lead items, including the installation vessel and PBLJ drilling rig capacity, have already been secured, reducing development risk and increasing confidence in reaching FID in 2026.</span></p>
+<p class="hv"><span class="fx">The Group's West of Shetland gas strategy continues to maintain strong momentum as a strategically important growth basin. The Tornado development, that will serve as a key enabler for future tie-backs providing the foundation for additional value creation, is advancing towards FID following the award of an 18-month licence extension to March 2028. The project continues to secure critical long-lead items, while project sanction remains subject to regulatory approvals.</span></p>
+<p class="ic"><span class="fd">Alongside these developments, a full review of all potential Transitional Energy Certificate (TEC) targets for ILX and PLX opportunities around existing infrastructure continues to identify further optionality above the Group's currently licensed 1bn BOE resource potential. &#160;The Group is actively maturing and prioritising a range of infrastructure-led exploration opportunities across the Greater Tornado and Tobermory areas in the West of Shetland, including the Suilven and Spitfire discoveries, while progressing production-led exploration opportunities in the Greater Cygnus Area and the J Area, including the Peach discovery</span><span style="font-weight: bold;"><span class="fx">.</span></span></p>
+<p class="hy"><span style="font-weight: bold;"><span class="co">&#160;</span></span></p>
+<div class="ed">
+<p class="hz"><span style="font-weight: bold;"><span class="fx">H1 Financial overview - Financial strength and flexibility</span></span></p>
+</div>
+<p class="hv"><span style="font-weight: bold;"><span class="dp">Strong cash flow generation underpinned by production growth and portfolio quality</span></span></p>
+<p class="hv"><span class="fx">The Group delivered a strong financial performance in the first half of 2026, with adjusted EBITDAX of $1.1 billion during the period (H1 2025: $1.1 billion), while net cash flow from operating activities totalled $1.0 billion (H1 2025: $1.0 billion). This performance reflects the strength of the Group's portfolio and operational performance driving higher production volumes, improved realised commodity prices and the continued contribution from high-netback assets across the portfolio, which were offset by commodity hedging losses.</span></p>
+<p class="hv"><span class="fx">The Group recorded Profit before tax for the period of $494 million (H1 2025: $513 million). Profit after<br />
+tax was $127 million, compared with a loss of $217 million in the prior period, which was materially impacted by the non-cash deferred tax charge arising from the extension of the Energy Profits Levy. The Group<br />
+delivered adjusted net income of $128 million in the period (H1 2025: $129 million).</span></p>
+<span style="font-weight: bold;"><span class="ea"><br class="dq" />
+<br class="dq" /></span></span>
+<p class="gw"><span style="font-weight: bold;"><span class="ea">&#160;</span></span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="dp">Material financial firepower supports growth strategy</span></span></p>
+<p class="hv"><span class="fx">The Group further strengthened its financial position during the first half of the year through strong cash flow generation and proactive balance sheet management. In June 2026, the Group successfully completed a private placement of an additional &#8364;155 million (~$180 million) of 5.5% senior notes, due 2031, as an extension to the Group's existing &#8364;450 million senior notes. The bond tap attracted strong investor demand, reflecting confidence in the Group's financial strength, strategy and growth outlook. It also demonstrates the Group's continued agility to respond to favourable market conditions to further optimise its capital structure&#160;while enhancing available liquidity to pursue growth opportunities.</span></p>
+<p class="hv"><span class="fx">As at 30 June 2026, the Group had significant available liquidity of $1.9 billion, further supplemented by an unused accordion facility of over $430 million, which provides additional liquidity capacity of up to $2.3 billion. Despite significant continued investment, leverage remains low, with a pro forma leverage ratio of 0.49x at the period end (31 December 2025: 0.56x), reflecting an adjusted net debt position at 30 June 2026 of $1.0 billion (31 December 2025: $1.3 billion).</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="dp">Extension of hedge book to protect cash flows into 2028</span></span></p>
+<p class="hv"><span class="fx">The Group continued to materially build on its hedge position during H1, capitalising on a favourable commodity price environment which presented attractive hedge opportunities and resulted in a hedged position at 17 August of 58.8 mmboe (c.59% oil, c.41% gas) from 30 June 2026 through the end of 2028. The Group's proactive hedging strategy is designed to provide protection for future cash flows, investment capacity and shareholder distributions in line with its capital allocation framework, while maintaining meaningful exposure to commodity price upside, particularly across its gas portfolio. This balanced approach supports earnings resilience while preserving the potential to benefit from favourable market conditions.</span></p>
+<p class="ia"><span style="font-weight: bold;"><span class="cg">Enhanced shareholder returns with increased guidance range</span></span></p>
+<p class="hv"><span class="fx">The Group remains committed to delivering attractive and sustainable shareholder returns in line with its disciplined capital allocation framework. Consistent with this commitment, Ithaca Energy has today declared a first interim dividend for 2026 of $255 million, equivalent to $0.1542 per share, payable in September 2026.</span></p>
+<p class="hv"><span class="fx">The dividend reflects the Group's strong financial performance, robust cash flow generation and confidence in the outlook for the remainder of the financial year. The Group continues to reaffirm its FY 2026 dividend commitment to return 30% of post-tax cash flow from operations (CFFO) to shareholders with management upgrading its FY 2026 dividend guidance range to $500-530 million from $470-520 million.</span></p>
+<p class="hv"><span class="fx">The 2026 interim dividend also reflects the refreshed capital allocation policy introduced alongside the Group's FY 2025 results. Under the revised framework, the Group transitioned to an equal dividend payment schedule, with approximately 50% of the annual dividend distributed following the half-year results and 50% following the full-year results, replacing the previous one-third/two-thirds distribution structure. This approach provides shareholders with a more balanced distribution profile while maintaining the flexibility to support the Group's investment programme and growth ambitions.</span></p>
+<p class="hy"><span style="font-weight: bold;"><span class="co">&#160;</span></span></p>
+<div class="ed">
+<p class="hz"><span style="font-weight: bold;"><span class="fx">Improved FY 2026 outlook</span></span></p>
+</div>
+<h2 class="cf"><span class="ev">The Group enters the second half of 2026 from a position of significant strength, supported by continued strong operational momentum, disciplined capital allocation and successful execution across its organic and inorganic growth strategy. Performance in H1 has strengthened confidence in the outlook for the remainder of the year and provides a solid platform for long-term value creation.</span></h2>
+<h2 class="cf"><span class="fd">Against this backdrop, management provides updates to its previously provided guidance ranges for full year 2026:</span></h2>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">FY 2026</span></span> <span class="gb">production guidance</span> <span style="font-weight: bold;"><span class="ds">range reaffirmed at 120-130 kboe/d</span></span><span class="fx">, reflecting robust asset production performance in H1 continuing into the second half of the year</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">FY 2026 net operating cost guidance range reduced to $800-840 million from $820-860 million</span></span><span class="ev">, normalised using USD: GBP exchange rate of 1.35, representing an improved opex per barrel cost of between $17/boe to $19/boe and reflecting ongoing strict cost management</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">FY 2026 net producing asset capital cost guidance range reaffirmed at $600-700 million</span></span><span class="co">, normalised using USD:GBP exchange rate of 1.35 (excludes pre-FID projects and Rosebank development).</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">FY 2026 net Rosebank project capital cost guidance range reduced to $250-280 million from $280-320 million</span></span><span class="fd">, reflecting the rephasing of drilling activity and associated costs from 2026 into 2027, including the final FPSO commissioning scopes</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">FY 2026 net decommissioning cost guidance range of $170-210 million reaffirmed</span></span><span class="ev">, based on USD:GBP exchange rate of 1.35</span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">FY 2026 cash tax guidance of $290-340 million reaffirmed</span></span></p>
+<p class="hv"><span style="font-weight: bold;"><span class="fx">FY 2026 dividend guidance range upgraded to $500-530 million from $470-520 million</span></span></p>
+<p class="gw"><span style="font-weight: bold;"><span class="eh">&#160;</span></span></p>
+<p class="gw"><span style="font-weight: bold;" class="ce"><span class="eh">Enquiries:</span></span></p>
+<table class="gs" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 387;" valign="top" class="cc">
+<p class="hw"><span style="font-weight: bold;"><span class="cd">Ithaca Energy</span></span></p>
+</td>
+<td style="width: 212;" valign="top" class="cb">
+<p class="hw"><span class="cd"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 387;" valign="top" class="cc">
+<p class="id"><span class="eh">Kathryn Reid - Head of Investor Relations &amp; External Affairs</span></p>
+</td>
+<td style="width: 212;" valign="top" class="cb">
+<p class="ie" style="text-align:center;"><span><span class="eh"><a href="mailto:kathryn.reid@ithacaenergy.com">kathryn.reid@ithacaenergy.com</a></span></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 387;" valign="top" class="cc">
+<p class="id"><span class="eh"><br /></span></p>
+</td>
+<td style="width: 212;" valign="top" class="cb">
+<p class="if" style="text-align:right;"><span class="ef"><br /></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 387;" valign="top" class="cc">
+<p class="id"><span style="font-weight: bold;"><span class="eh">Camarco (PR Advisers to Ithaca Energy)</span></span></p>
+</td>
+<td style="width: 212;" valign="top" class="cb">
+<p class="if" style="text-align:right;"><span class="ef">+44 (0)203 757 4980</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 387;" valign="top" class="cc">
+<p class="id"><span class="eh">Billy Clegg / Owen Roberts / Violet Wilson</span></p>
+</td>
+<td style="width: 212;" valign="top" class="cb">
+<p class="if" style="text-align:right;"><span class="ef">ithacaenergy@apcoworldwide.com</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 387;" valign="top" class="cc">
+<p class="id"><span class="eh"><br /></span></p>
+</td>
+<td style="width: 212;" valign="top" class="cb">
+<p class="if" style="text-align:right;"><span class="ef"><br /></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="ig"><span style="font-weight: bold;" class="ce"><span class="fx">Notes:</span></span></p>
+<p class="f"><sup><span class="ff">1</span></sup> <span class="ff">Non-GAAP measure</span></p>
+<p class="f"><sup><span class="ff">&#160;</span></sup></p>
+<p class="ig"><span style="font-weight: bold;"><span class="fx">About Ithaca Energy plc</span></span></p>
+<h2 class="cf"><span class="ev">Ithaca Energy is a leading UK exploration and production company with a strong track record of material value creation. In recent years, the Company has been focused on growing its portfolio of assets through both organic investment programmes and acquisitions and has seen a period of significant M&amp;A driven growth centred upon three transformational acquisitions in recent years, including the recent Business Combination with Eni UK. Today, Ithaca Energy is one of the largest oil and gas companies in the United Kingdom Continental Shelf (the "UKCS") by production and resources.</span></h2>
+<h2 class="cf"><span class="ev">With stakes in six of the ten largest fields in the UKCS and two of UKCS's largest pre-development fields, and with energy security currently being a key focus of the UK Government, the Group believes it can utilise its significant reserves and operational capabilities to play a key role in delivering security of domestic energy supply from the UKCS.</span></h2>
+<h2 class="cf"><span class="ev">Ithaca Energy serves today's needs for domestic energy through operating sustainably. The Group achieves this by harnessing Ithaca Energy's deep operational expertise and innovative minds to collectively challenge the norm, continually seeking better ways to meet evolving demands.</span></h2>
+<h2 class="cf"><span class="ev">Ithaca Energy's commitment to delivering attractive and sustainable returns is supported by a well-defined emissions-reduction strategy with a target of achieving net zero ahead of targets set out in the North Sea Transition Deal.</span></h2>
+<h2 class="cf"><span class="ev">Ithaca Energy plc was admitted to trading on the London Stock Exchange (LON: ITH) on 14 November 2022.</span></h2>
+<p class="ih"><span class="fy">&#160;</span></p>
+<p class="ii" style="text-align:center;"><span style="font-weight: bold;"><span class="gd">-ENDS-</span></span></p>
+</div>
+</div>
+
+
+<div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/ITH" style="font-size:14px;">Ithaca Energy
+                    (ITH)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>2 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/qinetiq-group--qq./director-pdmr-shareholding/9880164">QinetiQ Group</a>
+            </li>
+                        <li>
+                <span>9 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/wetherspoon-j-d---jdw/director-pdmr-shareholding/9880145">Wetherspoon (J.D.)</a>
+            </li>
+                        <li>
+                <span>47 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/aib-group-cdi---aibg/director-pdmr-shareholding/9880073">AIB Group (CDI)</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/tesco--tsco/director-pdmr-shareholding/9880044">Tesco</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/ampeak-energy-limited--amp/grant-of-ltip-options-/9879955">Ampeak Energy Limited</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>

@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="51f556d7a5d24c8597d3f88fcb5ad1cc-0ed66be145b740e0-1"/><meta name="baggage" content="sentry-trace_id=51f556d7a5d24c8597d3f88fcb5ad1cc,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=f6533f8d7c1d6b199c5a9237826bb96c2a918d2d,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.207067"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "f6533f8d7c1d6b199c5a9237826bb96c2a918d2d",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from STRATEGIC ACQUISITION OF OFFSHORE CANADA ASSETS " />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "STRATEGIC ACQUISITION OF OFFSHORE CANADA ASSETS  | Company Announcement | Investegate",
+            "description":"Investegate announcements from STRATEGIC ACQUISITION OF OFFSHORE CANADA ASSETS ",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-10-05 06:01:08",
+            "dateModified": "2026-10-05 06:02:14",
+            "url": "https://www.investegate.co.uk/announcement/rns/ithaca-energy--ith/strategic-acquisition-of-offshore-canada-assets-/9805232"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='STRATEGIC ACQUISITION OF OFFSHORE CANADA ASSETS  | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/ithaca-energy--ith/strategic-acquisition-of-offshore-canada-assets-/9805232' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>STRATEGIC ACQUISITION OF OFFSHORE CANADA ASSETS  | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">STRATEGIC ACQUISITION OF OFFSHORE CANADA ASSETS </h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Ithaca Energy plc has entered into an agreement to acquire offshore Canada assets from Suncor for US$860 million upfront cash consideration, plus up to US$250 million in contingent consideration. This acquisition establishes a strategic position in Offshore East Coast Canada, adding approximately 103 million barrels of 2P reserves and expected incremental average 2P production of 30 kboe/d between 2027 and 2031, supporting a medium-term growth outlook of 140-150 kboe/d. The transaction, expected to be financed through cash, borrowing facilities, and in-country financing, is anticipated to be immediately cash flow and dividend accretive while maintaining a strong balance sheet. The deal is targeted for completion in the first half of 2027, subject to regulatory approvals.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head><style type="text/css">
+			@page Section_1 { size: 612pt 792pt margin-top: 72pt margin-right: 72pt margin-bottom: 0 margin-left: 72pt -aw-footer-distance: 36pt -aw-header-distance: 36pt }
+			@page Section_2 { size: 612pt 792pt margin-top: 0 margin-right: 72pt margin-bottom: 0 margin-left: 72pt -aw-footer-distance: 36pt -aw-header-distance: 36pt }
+			@page Section_3 { size: 612pt 792pt margin-top: 0 margin-right: 72pt margin-bottom: 72pt margin-left: 72pt -aw-footer-distance: 36pt -aw-header-distance: 36pt }
+			.aspose-root div.Section_1 { margin: 72pt 72pt 0; page: Section_1 }
+			.aspose-root div.Section_2 { margin: 0 72pt; page: Section_2 }
+			.aspose-root div.Section_3 { margin: 0 72pt 72pt; page: Section_3 }
+			.aspose-root { line-height: 108%; font-family: Aptos; font-size: 11pt; max-width: 617pt; width: 617pt; margin: 1pt auto; position: relative; display: block }
+			.aspose-root h1, .aspose-root h2, .aspose-root h3, .aspose-root h4, .aspose-root h5, .aspose-root h6, .aspose-root p { margin: 0 0 8pt }
+			.aspose-root li, .aspose-root table { margin-top: 0; margin-bottom: 8pt }
+			.aspose-root h1 { margin-top: 18pt; margin-bottom: 4pt; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Aptos Display"; font-size: 20pt; font-weight: normal; color: rgba(15, 71, 97, 1) }
+			.aspose-root h2 { margin-top: 8pt; margin-bottom: 4pt; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Aptos Display"; font-size: 16pt; font-weight: normal; color: rgba(15, 71, 97, 1) }
+			.aspose-root h3 { margin-top: 8pt; margin-bottom: 4pt; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: Aptos; font-size: 14pt; font-weight: normal; color: rgba(15, 71, 97, 1) }
+			.aspose-root h4 { margin-top: 4pt; margin-bottom: 2pt; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: Aptos; font-size: 11pt; font-weight: normal; font-style: italic; color: rgba(15, 71, 97, 1) }
+			.aspose-root h5 { margin-top: 4pt; margin-bottom: 2pt; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: Aptos; font-size: 11pt; font-weight: normal; color: rgba(15, 71, 97, 1) }
+			.aspose-root h6 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: Aptos; font-size: 11pt; font-weight: normal; font-style: italic; color: rgba(89, 89, 89, 1) }
+			.aspose-root .Heading7 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: Aptos; font-size: 11pt; font-weight: normal; font-style: normal; color: rgba(89, 89, 89, 1); -aw-style-name: heading7 }
+			.aspose-root .Heading8 { margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: Aptos; font-size: 11pt; font-weight: normal; font-style: italic; color: rgba(39, 39, 39, 1); -aw-style-name: heading8 }
+			.aspose-root .Heading9 { margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: Aptos; font-size: 11pt; font-weight: normal; font-style: normal; color: rgba(39, 39, 39, 1); -aw-style-name: heading9 }
+			.aspose-root .ArticleL1 { margin-left: 0; margin-bottom: 12pt; text-indent: 0; text-align: center; page-break-after: avoid; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; font-weight: bold; text-transform: uppercase; color: rgba(0, 0, 0, 1); -aw-outline-level: 1; -aw-style-name: 'Article_L1' }
+			.aspose-root .ArticleL2 { margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; page-break-after: avoid; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; font-weight: bold; color: rgba(0, 0, 0, 1); -aw-outline-level: 2; -aw-style-name: 'Article_L2' }
+			.aspose-root .ArticleL3 { margin-left: 72pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 3; -aw-style-name: 'Article_L3' }
+			.aspose-root .ArticleL3runin { margin-left: 72pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 3; -aw-style-name: 'Article_L3_runin' }
+			.aspose-root .ArticleL4 { margin-left: 108pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 4; -aw-style-name: 'Article_L4' }
+			.aspose-root .ArticleL5 { margin-left: 144pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 5; -aw-style-name: 'Article_L5' }
+			.aspose-root .ArticleL6 { margin-left: 180pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 6; -aw-style-name: 'Article_L6' }
+			.aspose-root .ArticleL7 { margin-left: 216pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 7; -aw-style-name: 'Article_L7' }
+			.aspose-root .ArticleL8 { margin-left: 252pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 8; -aw-style-name: 'Article_L8' }
+			.aspose-root .ArticleL9 { margin-left: 288pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-outline-level: 9; -aw-style-name: 'Article_L9' }
+			.aspose-root .CommentSubject { margin-bottom: 8pt; line-height: normal; font-size: 10pt; font-weight: bold; -aw-style-name: comment-subject; -aw-style-parent: comment-text }
+			.aspose-root .CommentText { margin-bottom: 8pt; line-height: normal; font-size: 10pt; -aw-style-name: comment-text }
+			.aspose-root .Default { margin-bottom: 0; line-height: normal; font-family: Arial; font-size: 12pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .EndnoteText { margin-bottom: 0; line-height: normal; font-size: 10pt; -aw-style-name: endnote-text }
+			.aspose-root .Footer { margin-bottom: 0; line-height: normal; font-size: 11pt; -aw-style-name: footer }
+			.aspose-root .FootnoteText { margin-bottom: 0; line-height: normal; font-size: 10pt; -aw-style-name: footnote-text }
+			.aspose-root .Header { margin-bottom: 0; line-height: normal; font-size: 11pt; -aw-style-name: header }
+			.aspose-root .IntenseQuote { margin: 18pt 43.2pt; text-align: center; line-height: 108%; border-top: 0.75pt solid rgba(15, 71, 97, 1); border-bottom: 0.75pt solid rgba(15, 71, 97, 1); padding-top: 10pt; padding-bottom: 10pt; font-size: 11pt; font-style: italic; color: rgba(15, 71, 97, 1); -aw-border-bottom: 0.5pt single #0f4761; -aw-border-top: 0.5pt single #0f4761; -aw-style-name: intense-quote }
+			.aspose-root .ListParagraph { margin-left: 36pt; margin-bottom: 8pt; line-height: 108%; font-size: 11pt; -aw-style-name: list-paragraph }
+			.aspose-root .MacroText { margin-bottom: 0; line-height: 108%; font-family: Consolas; font-size: 10pt; -aw-style-name: macro }
+			.aspose-root .NormalWeb { margin-bottom: 8pt; line-height: 108%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: normal-web }
+			.aspose-root .Quote { margin-top: 8pt; margin-bottom: 8pt; text-align: center; line-height: 108%; font-size: 11pt; font-style: italic; color: rgba(64, 64, 64, 1); -aw-style-name: quote }
+			.aspose-root .Revision { margin-bottom: 0; line-height: normal; font-size: 11pt; -aw-style-name: revision }
+			.aspose-root .Subtitle { margin-bottom: 8pt; line-height: 108%; font-size: 14pt; letter-spacing: 0.75pt; color: rgba(89, 89, 89, 1); -aw-style-name: subtitle }
+			.aspose-root .Title { margin-bottom: 4pt; line-height: normal; font-family: "Aptos Display"; font-size: 28pt; letter-spacing: -0.5pt; -aw-style-name: title }
+			.aspose-root .xmsolistparagraph { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'x_msolistparagraph' }
+			.aspose-root span.ArticleL3runinChar { font-family: "Times New Roman"; font-size: 12pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Article_L3_runin Char' }
+			.aspose-root span.CommentReference { font-size: 8pt; -aw-style-name: comment-reference }
+			.aspose-root span.CommentSubjectChar { font-size: 10pt; font-weight: bold }
+			.aspose-root span.CommentTextChar { font-size: 10pt }
+			.aspose-root span.EndnoteReference { vertical-align: super; -aw-style-name: endnote-reference }
+			.aspose-root span.EndnoteTextChar { font-size: 10pt }
+			.aspose-root span.FollowedHyperlink { text-decoration: underline; color: rgba(150, 96, 125, 1); -aw-style-name: followed-hyperlink }
+			.aspose-root span.FootnoteReference { vertical-align: super; -aw-style-name: footnote-reference }
+			.aspose-root span.FootnoteTextChar { font-size: 10pt }
+			.aspose-root span.Heading1Char { font-family: "Aptos Display"; font-size: 20pt; color: rgba(15, 71, 97, 1) }
+			.aspose-root span.Heading2Char { font-family: "Aptos Display"; font-size: 16pt; color: rgba(15, 71, 97, 1) }
+			.aspose-root span.Heading3Char { font-size: 14pt; color: rgba(15, 71, 97, 1) }
+			.aspose-root span.Heading4Char { font-style: italic; color: rgba(15, 71, 97, 1) }
+			.aspose-root span.Heading5Char { color: rgba(15, 71, 97, 1) }
+			.aspose-root span.Heading6Char { font-style: italic; color: rgba(89, 89, 89, 1) }
+			.aspose-root span.Heading7Char { color: rgba(89, 89, 89, 1) }
+			.aspose-root span.Heading8Char { font-style: italic; color: rgba(39, 39, 39, 1) }
+			.aspose-root span.Heading9Char { color: rgba(39, 39, 39, 1) }
+			.aspose-root span.Hyperlink { text-decoration: underline; color: rgba(0, 0, 255, 1); -aw-style-name: hyperlink }
+			.aspose-root span.IntenseEmphasis { font-style: italic; color: rgba(15, 71, 97, 1); -aw-style-name: intense-emphasis }
+			.aspose-root span.IntenseQuoteChar { font-style: italic; color: rgba(15, 71, 97, 1) }
+			.aspose-root span.IntenseReference { font-weight: bold; font-variant: small-caps; letter-spacing: 0.25pt; color: rgba(15, 71, 97, 1); -aw-style-name: intense-reference }
+			.aspose-root span.MacroTextChar { font-family: Consolas; font-size: 10pt }
+			.aspose-root span.Prompt { color: rgba(0, 0, 0, 1); -aw-style-aliases: 'PR' }
+			.aspose-root span.QuoteChar { font-style: italic; color: rgba(64, 64, 64, 1) }
+			.aspose-root span.SubtitleChar { font-size: 14pt; letter-spacing: 0.75pt; color: rgba(89, 89, 89, 1) }
+			.aspose-root span.TitleChar { font-family: "Aptos Display"; font-size: 28pt; letter-spacing: -0.5pt }
+			.aspose-root span.UnresolvedMention { color: rgba(96, 94, 92, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: unresolved-mention }
+		</style><style>
+			.aspose-root .rn-1 { margin-bottom: 12pt; line-height: normal }
+			.aspose-root .rn-2 { font-weight: bold }
+			.aspose-root .rn-3 { margin: 0; padding-left: 0 }
+			.aspose-root .rn-4 { margin-left: 28pt; margin-bottom: 12pt; text-align: justify; line-height: normal; padding-left: 8pt; font-family: serif; font-size: 10pt; -aw-font-family: 'Symbol'; -aw-font-weight: normal; -aw-number-format: '&#61623;' }
+			.aspose-root .rn-5 { font-family: Aptos; font-size: 11pt }
+			.aspose-root .rn-6 { text-decoration: none }
+			.aspose-root .rn-7.FootnoteReference { font-family: Aptos; font-size: 7.33pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .rn-8 { font-family: Aptos; font-size: 7.33pt; vertical-align: super }
+			.aspose-root .rn-9 { margin-bottom: 12pt; text-align: justify; line-height: normal }
+			.aspose-root .rn-10 { text-align: justify }
+			.aspose-root .rn-11 { margin-left: 28pt; margin-bottom: 12pt; line-height: normal; padding-left: 8pt; font-family: serif; font-size: 10pt; -aw-font-family: 'Symbol'; -aw-font-weight: normal; -aw-number-format: '&#61623;' }
+			.aspose-root .rn-12 { font-family: Aptos; font-size: 11pt; font-weight: bold }
+			.aspose-root .rn-13 { margin-right: 0; margin-left: 0; padding-left: 0 }
+			.aspose-root .rn-14 { margin-left: 27.46pt; margin-bottom: 12pt; text-align: justify; padding-left: 8.54pt; -aw-font-family: 'Courier New'; -aw-font-weight: normal; -aw-number-format: 'o' }
+			.aspose-root .rn-15 { clear: both; mso-break-type: section-break }
+			.aspose-root .rn-16 { margin-left: 63.46pt; margin-bottom: 12pt; text-align: justify; line-height: normal; padding-left: 8.54pt; font-family: serif; font-size: 10pt; -aw-font-family: 'Courier New'; -aw-font-weight: normal; -aw-number-format: 'o' }
+			.aspose-root .rn-17.FootnoteReference { font-family: Aptos; font-size: 7.33pt }
+			.aspose-root .rn-18 { font-weight: bold; -aw-import: ignore }
+			.aspose-root .rn-19 { height: 1.15pt }
+			.aspose-root .rn-20 { margin-bottom: 0; line-height: normal }
+			.aspose-root .rn-21 { -aw-import: ignore }
+			.aspose-root .rn-22 { width: 302.6pt; border-top: 0.75pt solid rgba(217, 217, 214, 1); border-right: 0.75pt solid rgba(217, 217, 214, 1); border-bottom: 0.75pt solid rgba(217, 217, 214, 1); padding: 6pt 5.62pt; vertical-align: top; background-color: rgba(255, 255, 255, 1) }
+			.aspose-root .rn-23 { width: 151.9pt; border-top: 0.75pt solid rgba(217, 217, 214, 1); border-left: 0.75pt solid rgba(217, 217, 214, 1); border-bottom: 0.75pt solid rgba(217, 217, 214, 1); padding: 6pt 5.62pt; vertical-align: top; background-color: rgba(255, 255, 255, 1) }
+			.aspose-root .rn-24 { margin-top: 10pt; margin-bottom: 10pt; text-align: justify }
+			.aspose-root .rn-25 { -aw-import: spaces }
+			.aspose-root .rn-26.FootnoteReference { font-size: 7.33pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .rn-27 { line-height: 108%; font-size: 7.33pt; vertical-align: super }
+			.aspose-root .rn-28.ListParagraph { margin-left: 28pt; margin-bottom: 0; text-align: justify; line-height: normal; padding-left: 8pt; font-family: serif; font-size: 10pt; -aw-font-family: 'Symbol'; -aw-font-weight: normal; -aw-number-format: '&#61623;' }
+			.aspose-root .rn-29.ListParagraph { margin-left: 27.46pt; margin-bottom: 0; line-height: normal; padding-left: 8.54pt; font-size: 10pt; -aw-font-family: 'Courier New'; -aw-font-weight: normal; -aw-number-format: 'o' }
+			.aspose-root .rn-30 { font-weight: bold; font-style: italic }
+			.aspose-root .rn-31 { font-weight: bold; text-decoration: underline }
+			.aspose-root .rn-32 { font-size: 7.33pt; vertical-align: super }
+			.aspose-root .rn-33 { -aw-footnote-isauto: 1 }
+			.aspose-root .rn-34.FootnoteReference { font-size: 6.67pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .rn-35 { -aw-footnote-isauto: 0 }
+		</style></head><body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6323298_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Ithaca Energy PLC</div>  <div>05 October 2026</div>  <div>&#160;</div></div><div class="aspose-root">
+<div class="Section_1">
+<p class="rn-1">
+<span class="rn-2">FOR IMMEDIATE RELEASE</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">NOT FOR RELEASE, PUBLICATION OR DISTRIBUTION, IN WHOLE OR IN PART, DIRECTLY OR INDIRECTLY, IN, INTO OR FROM ANY JURISDICTION WHERE TO DO SO WOULD CONSTITUTE A VIOLATION OF THE RELEVANT LAWS OF THAT JURISDICTION. THIS ANNOUNCEMENT IS FOR INFORMATION PURPOSES ONLY AND IS NOT AN OFFER OF SECURITIES IN ANY JURISDICTION.</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">THIS ANNOUNCEMENT CONTAINS INSIDE INFORMATION.</span>
+</p>
+<p class="rn-1">
+<span>5 October 2026</span>
+</p>
+<p class="rn-1" style="text-align: center;">
+<span class="rn-2">STRATEGIC ACQUISITION OF OFFSHORE CANADA ASSETS FROM SUNCOR </span>
+</p>
+<ul type="disc" class="rn-3">
+<li class="rn-4">
+<span class="rn-5">Establishes a transformational strategic position in Offshore East Coast Canada, closely aligned with Ithaca Energy&#8217;s growth strategy</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Builds scale and diversification over two key operating hubs, with incremental average 2P production of ~30 kboe/d</span><a name="_ftnref1"></a><a href="#_ftn1" class="rn-6"><span class="FootnoteReference rn-7">[1]</span></a><span class="rn-5"> between 2027 and 2031 (with peak 2P production of 35-40 kboe/d</span><span class="rn-8">1</span><span class="rn-5"> in 2029), supporting a Group medium-term growth outlook of 140 &#8211; 150 kboe/d</span><span class="rn-8">1,</span><a name="_ftnref2"></a><a href="#_ftn2" class="rn-6"><span class="FootnoteReference rn-7">[2]</span></a><span class="rn-5"> </span>
+</li>
+<li class="rn-4">
+<span class="rn-5">High-quality, low-decline and de-risked asset base in well-understood basin with growing production following recent material capital investment programme</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Access to established and experienced operating team, offers stability and regional expertise</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Adds 2P Reserves of 103 mmboe</span><span class="rn-8">1</span><span class="rn-5"> at ~US$8/boe, with further resources offering material organic growth optionality</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Platform for further M&amp;A, with potential for building further scale across North America</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Transaction expected to be financed through cash in hand, utilisation of borrowing base facility and secured in country financing, comfortably within our capital allocation leverage ceiling</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Expected to be immediately cash flow and dividend accretive, while maintaining a strong balance sheet</span>
+</li>
+</ul>
+<p class="rn-9">
+<span>Ithaca Energy plc (&#8220;Ithaca Energy&#8221;, the &#8220;Company&#8221; or the &#8220;Group&#8221;) today announces that it has entered into an agreement (&#8220;Acquisition Agreement&#8221;) with Suncor Energy Inc. (&#8220;Suncor&#8221;) to acquire a portfolio of conventional offshore oil assets located in shallow waters off the East Coast of Newfoundland and Labrador, Canada, for upfront cash consideration of US$860 million, plus potential oil price related contingent consideration of up to US$250 million based on a sharing factor of 50% (the &#8220;Transaction&#8221;). </span>
+</p>
+<p class="rn-9">
+<span>The assets comprise a 48% operated working interest in Terra Nova, a 40% non-operated interest in the White Rose Existing Lands, and a 38.6% non-operated interest in the White Rose Growth Lands, including the West White Rose Extension (collectively, &#8220;White Rose&#8221; and together with Terra Nova, the &#8220;Assets&#8221;).</span>
+</p>
+<p class="rn-9">
+<span>Terra Nova is a producing, operated shallow-water oil asset supported by a recently completed Floating Production Storage and Offloading (&#8220;FPSO&#8221;) asset life extension project. White Rose is operated by Cenovus Energy Inc. (&#8220;Cenovus&#8221;) and has high-margins and substantial near-term production growth expected from West White Rose, where first production is anticipated in Q4 2026.</span>
+</p>
+<p class="rn-10">
+<span class="rn-2">Yaniv Friedman, Executive Chairman of Ithaca Energy</span><span>, commented &#8220;This acquisition marks the next era of growth for Ithaca Energy as we make our inaugural international acquisition in Offshore East Coast Canada. The Transaction delivers on our clear stated growth strategy as we seek to diversify and grow our production and resource base and replicate our success in the United Kingdom Continental Shelf (&#8220;UKCS&#8221;) through disciplined international expansion in regions we believe we can create long-term value for our shareholders.&#8221; </span>
+</p>
+<p class="rn-10">
+<span>&#8220;The Transaction builds on our vision for &#8216;Scale, Stability and Strength&#8217;. It adds long-life, low-decline barrels in an offshore operating environment similar to the UKCS, which will materially enhance our medium-term production outlook and create a platform for further organic growth and consolidation, while expected to deliver immediate cash flow and dividend accretion.&#8221; </span>
+</p>
+<p class="rn-10">
+<span>&#8220;We are excited to welcome an experienced operating team with deep regional expertise and to build on the strong operating history of these assets.&#8221;</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Key Transaction Highlights </span>
+</p>
+<p class="rn-1">
+<span>The Transaction is fully aligned with the Group&#8217;s inorganic growth strategy, delivering value accretive M&amp;A, while meeting all of the Group&#8217;s strategic investment parameters.</span>
+</p>
+<ul type="disc" class="rn-3">
+<li class="rn-11">
+<span class="rn-12">Transformational strategic basin entry into Offshore East Coast Canada </span>
+<ul type="circle" class="rn-13">
+<li class="rn-14">
+<span class="rn-5">Execution of international expansion strategy enhances portfolio scale, diversification and exposure to premium Northern OECD barrels </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Disciplined and transformational entry into a well-understood basin, with many similar characteristics to UKCS </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Attractive fiscal and regulatory regime with pragmatic federal and provincial government, providing strong support for further investment and development in the basin</span>
+</li>
+</ul>
+</li>
+<li class="rn-11">
+<span class="rn-12">High-quality, low-decline assets in well-understood basin</span>
+<ul type="circle" class="rn-13">
+<li class="rn-14">
+<span class="rn-5">Shallow water, long-life conventional oil assets with significant operating history, located in a well- developed, low-complexity operating environment </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Basin similarities play to Ithaca Energy&#8217;s expertise and capabilities, including operating FPSOs </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Long-life assets with 2P reserves life of ~17 years and estimated five-year average 2P production expected to be ~30 kboe/d over 2027-31</span><a name="_ftnref3"></a><a href="#_ftn3" class="rn-6"><span class="FootnoteReference rn-7">[1]</span></a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<br class="rn-15" />
+<div class="Section_2">
+<ul type="circle" class="rn-3">
+<li class="rn-16">
+<span class="rn-5">Material recent investment across the portfolio, including FPSO refurbishments, provides solid foundation for next phase of field development </span>
+</li>
+</ul>
+<ul type="disc" class="rn-3">
+<li class="rn-11">
+<span class="rn-12">Established and experienced operating team</span>
+<ul type="circle" class="rn-13">
+<li class="rn-14">
+<span class="rn-5">Secures access to high-calibre operatorship credentials upon basin entry, with proven track record of delivering safe, environmentally responsible and efficient operations in Offshore East Coast of Canada </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Extensive history of and expertise in exploration, development, production and optimisation across portfolio of operated and non-operated assets </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Maintains established relationships with leading blue-chip partners critical to ongoing success in the basin </span>
+</li>
+</ul>
+</li>
+<li class="rn-11">
+<span class="rn-12">Material organic and inorganic growth potential</span>
+</li>
+</ul>
+<p style="margin-left:18pt; margin-bottom:12pt; text-indent:18pt; line-height:normal;">
+<span class="rn-2">Offers further organic growth optionality:</span>
+</p>
+<ul type="circle" class="rn-3">
+<li class="rn-16">
+<span class="rn-5">2P Production expected to grow to 35-40 kboe/d by 2029</span><a name="_ftnref4"></a><a href="#_ftn4" class="rn-6"><span class="FootnoteReference rn-7">[1]</span></a><span class="rn-5">, driven by near-term production growth from West White Rose development, with first production anticipated in Q4 2026 </span>
+</li>
+<li class="rn-16">
+<span class="rn-5">Acquisition supports upgrade of Ithaca Energy&#8217;s medium-term production outlook to between 140 - 150 kboe/d</span><span class="FootnoteReference rn-17">1,</span><a name="_ftnref5"></a><a href="#_ftn5" class="rn-6"><span class="FootnoteReference rn-7">[2]</span></a>
+</li>
+<li class="rn-16">
+<span class="rn-5">Adds material 2P reserves of 103 mmboe</span><span class="FootnoteReference rn-17">1</span><span class="rn-5">, diversifying the Group&#8217;s reserves base, with substantial additional remaining resource volumes of c.200 mmboe</span><span class="rn-8">1</span><span class="rn-5"> providing further investment optionality with significant resources advancing towards Final Investment Decision (&#8220;FID&#8221;)</span>
+</li>
+<li style="margin-left:63.46pt; margin-bottom:12pt; text-align:justify; line-height:normal; padding-left:8.54pt; font-family:serif; font-size:6.67pt; vertical-align:super; -aw-font-family:'Courier New'; -aw-font-weight:normal; -aw-number-format:'o';">
+<span class="rn-5">Material organic growth potential from infill drilling, near-field step-out opportunities and exploration exposure</span>
+</li>
+</ul>
+<p>
+<span class="rn-18">&#160;</span>
+</p>
+<p style="margin-left:36pt; margin-bottom:12pt; line-height:normal;">
+<span class="rn-2">Establishes platform for further M&amp;A: </span>
+</p>
+<ul type="circle" class="rn-3">
+<li class="rn-16">
+<span class="rn-5">Acquisition positions Group as the 5th largest operator in Offshore Canada by production, establishing a strong platform in the region</span>
+</li>
+<li class="rn-16">
+<span class="rn-5">Creates credible platform for further inorganic growth in North America, as the Group continues to seek scale</span>
+</li>
+<li class="rn-16">
+<span class="rn-5">Continued active but disciplined screening of inorganic growth opportunities, with focus on adding premium northern-OECD barrels </span>
+</li>
+</ul>
+<ul type="disc" class="rn-3">
+<li class="rn-11">
+<span class="rn-12">Expected to be immediately cash flow and dividend accretive </span>
+<ul type="circle" class="rn-13">
+<li class="rn-14">
+<span class="rn-5">Acquisition to be financed via a combination of cash in hand, utilisation of the Group&#8217;s existing borrowing base facility and secured financing in country. Deal contingent hedging executed to protect transaction value and future cash flows at current market pricing</span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Portfolio offers brent-linked pricing assets, with limited future base capex following a period of material investment in the Assets, increasing efficiency and lower operating costs and an attractive corporate tax rate </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Expected to be immediately accretive to Adjusted EBITDAX (as defined below), free cash flow and dividend per share from Completion </span>
+</li>
+<li class="rn-14">
+<span class="rn-5">Increased cash flow generation and modest leverage position post-acquisition, sitting considerably below the Group&#8217;s capital allocation framework ceiling, supports near-term deleveraging and enhanced and sustainable shareholder returns </span><span style="font-family:Aptos; font-size:11pt; -aw-import:spaces;">&#160;</span>
+</li>
+</ul>
+</li>
+</ul>
+<p class="rn-1">
+<span class="rn-2">Transaction Consideration and Financing</span>
+</p>
+<p class="rn-9">
+<span>The base consideration for the Transaction is US$860 million in cash payable on completion of the Transaction (&#8220;Completion&#8221;), subject to customary adjustments based on an economic effective date of 1 July 2026. The Group expects to fully finance the Transaction through cash in hand, utilisation of its borrowing base facility and secured in country financing. In addition, the Group may pay Suncor up to an additional US$250 million of contingent consideration linked to Brent crude oil prices over a 27-month period commencing 1 July 2026, which would be funded from Ithaca Energy&#8217;s free cash flow.</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Transaction Completion and Timing</span>
+</p>
+<p class="rn-9">
+<span>Completion is targeted for H1 2027, subject to satisfaction of customary closing conditions, including applicable regulatory and government approvals in Canada.</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Board Approval</span>
+</p>
+<p class="rn-9">
+<span>The board of directors of Ithaca Energy believes that the Transaction is in the best interests of the Company and its shareholders as a whole and has approved the Company&#8217;s entry into the Acquisition Agreement.</span>
+</p>
+<p>
+<span class="rn-2">Analyst and Investor Presentation </span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy will host a live online presentation for analysts and investors at 09:00 (GMT) today, 5 October 2026</span><span class="rn-2">,</span><span class="rn-2">&#160;</span><span>which will be accessible via the Group&#8217;s investor relations website:</span><span>&#160;</span><a href="https://investors.ithacaenergy.com/" class="rn-6"><span class="Hyperlink" style="font-weight:bold;">https://investors.ithacaenergy.com/</span></a>
+</p>
+<p class="rn-9">
+<span>A replay will be available on Ithaca Energy&#8217;s investor relations website following the event.</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Advisers on the Transaction</span>
+</p>
+<p class="rn-9">
+<span>Scotiabank served as financial adviser to Ithaca Energy, and Stikeman Elliott LLP served as legal counsel.</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Enquiries</span>
+</p>
+<table cellspacing="0" cellpadding="0" style="width:479.25pt; margin-bottom:0pt; border:0.75pt solid #d9d9d6; border-collapse:collapse;"><tbody><tr class="rn-19"><td style="width:302.6pt; border-right:0.75pt solid #d9d9d6; border-bottom:0.75pt solid #d9d9d6; padding:6pt 5.62pt; vertical-align:top; background-color:#ffffff;"><p class="rn-20">
+<span class="rn-2">Ithaca Energy</span>
+</p></td>
+<td style="width:151.9pt; border-left:0.75pt solid #d9d9d6; border-bottom:0.75pt solid #d9d9d6; padding:6pt 5.62pt; vertical-align:top; background-color:#ffffff;"><p class="rn-20">
+<span class="rn-21">&#160;</span>
+</p></td></tr>
+<tr><td class="rn-22"><p class="rn-20">
+<span>Kathryn Reid &#8211; Head of Investor Relations &amp; External Affairs</span>
+</p></td>
+<td class="rn-23"><p class="rn-20">
+<a href="mailto:kathryn.reid@ithacaenergy.com" class="rn-6"><span class="Hyperlink">kathryn.reid@ithacaenergy.com</span></a>
+</p></td></tr>
+<tr><td class="rn-22"><p class="rn-20">
+<span class="rn-2">Camarco (PR Advisers to Ithaca Energy)</span>
+</p></td>
+<td class="rn-23"><p class="rn-20">
+<span>+44 (0)203 757 4980</span>
+</p></td></tr>
+<tr class="rn-19"><td style="width:302.6pt; border-top:0.75pt solid #d9d9d6; border-right:0.75pt solid #d9d9d6; padding:6pt 5.62pt; vertical-align:top; background-color:#ffffff;"><p class="rn-20">
+<span>Billy Clegg / Owen Roberts / Violet Wilson</span>
+</p></td>
+<td style="width:151.9pt; border-top:0.75pt solid #d9d9d6; border-left:0.75pt solid #d9d9d6; padding:6pt 5.62pt; vertical-align:top; background-color:#ffffff;"><p class="rn-20">
+<span class="rn-21">&#160;</span>
+</p></td></tr></tbody></table>
+<p class="rn-1">
+<span class="rn-21">&#160;</span>
+</p>
+<p>
+<span class="rn-18">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">FURTHER INFORMATION ABOUT THE TRANSACTION</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">UK Listing Rules</span>
+</p>
+<p class="rn-9">
+<span>Due to its size in relation to Ithaca Energy, the Transaction constitutes a Significant Transaction for the purposes of the UK Listing Rules made by the Financial Conduct Authority (the "FCA") for the purposes of Part VI of the Financial Services and Markets Act 2000 (as amended) (the "UKLRs"), and is therefore notifiable in accordance with UKLR 7.3.1R and 7.3.2R. In accordance with the UKLRs, the Transaction is not subject to shareholder approval. </span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Key Indicative Financial Information Regarding the Assets</span>
+</p>
+<p style="margin-top:10pt; margin-bottom:10pt;">
+<span class="rn-2">Profits attributable to the Assets the subject of the Transaction</span>
+</p>
+<p class="rn-24">
+<span>Adjusted EBITDAX attributable to the Assets was approximately US$235 million for the last twelve months ended 30 June 2026 (translated for illustrative purposes at the average FX rate for the period of US$1:CA$1.3817).</span>
+</p>
+<p class="rn-24">
+<span>Adjusted EBITDAX for the period is reflective of a period of low production, prior to production ramp-up post asset refurbishments and ahead of anticipated first production from West White Rose (expected in Q4 2026).</span>
+</p>
+<p class="rn-24">
+<span>The Board considers Adjusted EBITDAX to be the most appropriate indicator of the profits attributable to the Assets the subject of the Transaction for the purposes of UKLR 7 Annex 2 Part 1.</span>
+</p>
+<p class="rn-24">
+<span>In calculating Adjusted EBITDAX for the Assets, the Group has sought to align the measure where possible, on an illustrative basis, to its own definition of Adjusted EBITDAX as set out in "Non-GAAP measures" below. The information used to derive the Adjusted EBITDAX figures stated above has been extracted without material adjustment from Suncor&#8217;s unaudited management information. The definition applied has not been subject to a full alignment exercise and may not correspond in all respects to the Group's own definition of Adjusted EBITDAX. The figures presented above are therefore subject to change once a full alignment exercise has been completed.</span>
+</p>
+<p class="rn-24">
+<span>Adjusted EBITDAX is a non-GAAP measure used by the Group as set out in "Non-GAAP measure" below.</span>
+</p>
+<p style="margin-top:10pt; margin-bottom:10pt; text-align:justify; page-break-after:avoid;">
+<span class="rn-2">Value of the gross assets the subject of the Transaction</span>
+</p>
+<p class="rn-24">
+<span>The value of the gross assets the subject of the Transaction is approximately US$1.8 billion. </span>
+</p>
+<p class="rn-24">
+<span>The value of gross assets disclosed above has been calculated as the aggregate of the consideration (excluding contingent consideration) and Suncor&#8217;s gross book value of liabilities being assumed in respect of the Assets of approximately US$0.9 billion.</span><span class="rn-25">&#160; </span>
+</p>
+<p class="rn-24">
+<span>Suncor&#8217;s gross book value of liabilities being assumed has been extracted without material adjustment from the historical unaudited management information prepared by Suncor as at 30 June 2026, being the most recent available balance sheet date, and translated at an FX rate of US$1:CA$1.4210 (being the spot rate as at 30 June 2026) for illustrative purposes only.</span>
+</p>
+<p class="rn-24">
+<span>The calculation of gross assets represents an estimate of the value of the Assets and assumed liabilities only. It does not reflect any purchase price allocation adjustments, including, for example, recognition of goodwill, other acquired intangible assets and deferred tax, that may arise on Completion and be recognised in the Company's consolidated financial statements in due course.</span>
+</p>
+<p class="rn-24">
+<span>In particular, the Asset Retirement Obligation ("ARO") included within the liabilities assumed is stated at the historical book value recorded in the unaudited management accounts of Suncor, without adjustment. The ARO is subject to significant estimation uncertainty, and its value could change through revaluation during the purchase price allocation exercise. A reliable estimate of any such revaluation cannot be made at this time, and the final value recognised in the Company&#8217;s consolidated financial statements may differ materially from the amount disclosed above.</span>
+</p>
+<p class="rn-24">
+<span class="rn-2">Basis of preparation of Adjusted EBITDAX and gross assets</span>
+</p>
+<p class="rn-24">
+<span>The Adjusted EBITDAX and gross assets presented above have been prepared in accordance with Suncor's accounting policies, and no adjustments have been made to align to those of the Company. A full exercise to align the financial information for the Assets with the Company's accounting policies has not yet been performed. Accordingly, the financial information presented in respect of the Assets may be subject to adjustment once prepared in accordance with the Company's accounting policies. The information does not constitute statutory financial statements and has not been subject to audit or independent review.</span>
+</p>
+<p class="rn-24">
+<span>Non-GAAP measure</span>
+</p>
+<p class="rn-24">
+<span>The Group uses certain performance metrics that are not specifically defined under United Kingdom adopted International Financial Reporting Standards or other generally accepted accounting principles. These measures are considered to be important as they track both operational and financial performance and are used to manage the business and to provide an objective comparison to Ithaca Energy's peer group. The non-GAAP measure which is presented in the Annual Report and Accounts and used in this announcement is defined below.</span>
+</p>
+<p class="rn-24">
+<span>Adjusted EBITDAX: earnings before finance income, finance costs, taxation charges, premium payments on oil and gas derivative contracts, revaluation gains or losses on financial instruments, depletion depreciation and amortisation, impairment charges on oil and gas assets, exploration and evaluation expenditure, fair value remeasurements of contingent consideration, restructuring costs and business combination costs. </span>
+</p>
+<p class="rn-24">
+<span>The Group believes that Adjusted EBITDAX is a useful measure for stakeholders because it is a measure closely tracked by management to evaluate the Group's operating performance and to make financial, strategic and operating decisions. Adjusted EBITDAX may help stakeholders to better understand and evaluate, in the same manner as management, the underlying trends in the Group's operational performance on a comparable basis, period-on-period.</span>
+</p>
+<p>
+<span class="rn-18">&#160;</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Key Benefits of the Transaction</span>
+</p>
+<p class="rn-10">
+<span>The Transaction is expected to be accretive to Ithaca Energy across key operational and financial metrics, adding approximately 103 mmboe</span><a name="_ftnref6"></a><a href="#_ftn6" class="rn-6"><span class="FootnoteReference rn-26">[3]</span></a><span> of 2P reserves, supporting five-year average 2P production of approximately 30 kboe/d</span><span class="rn-27">1</span><span> between 2027 and 2031 and enhancing the Group&#8217;s medium-term production outlook to 140-150 kboe/d</span><span class="rn-27">1,</span><a name="_ftnref7"></a><a href="#_ftn7" class="rn-6"><span class="FootnoteReference rn-26">[4]</span></a><span>. The Transaction is also expected to be immediately accretive to Adjusted EBITDAX, free cash flow and dividend per share from Completion.</span>
+</p>
+<p class="rn-9">
+<span>The Transaction is expected to lead to an increase in underlying earnings, gross assets and liabilities of Ithaca Energy.</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Key Terms of the Acquisition Agreement</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Consideration</span>
+</p>
+<p class="rn-9">
+<span>The consideration payable under the Acquisition Agreement is:</span>
+</p>
+<ul type="disc" class="rn-3">
+<li class="ListParagraph rn-28">
+<span class="rn-5">US$860 million in cash payable on Completion, subject to customary adjustments based on an economic effective date of 1 July 2026; and </span>
+</li>
+<li class="ListParagraph rn-28">
+<span class="rn-5">Up to an additional US$250 million contingent on average Brent crude oil prices exceeding certain threshold prices during the 12-month period ended 30 June 2027, the 12-month period ended 30 June 2028, and the three-month period ended 30 September 2028. The threshold price for a given period will be calculated on a pro rata basis based on the following annual reference prices: </span>
+<ul type="circle" class="rn-13">
+<li class="ListParagraph rn-29">
+<span class="rn-5">US$80/barrel for the period from 1 July 2026 through 30 June 2027</span>
+</li>
+<li class="ListParagraph rn-29">
+<span class="rn-5">US$74/barrel for the period from 1 July 2027 through 30 June 2028</span>
+</li>
+<li class="ListParagraph rn-29">
+<span class="rn-5">US$73/barrel for the period from 1 July 2028 through 30 September 2028</span>
+</li>
+</ul>
+</li>
+<li class="ListParagraph" style="margin-left:28pt; margin-bottom:12pt; text-align:justify; line-height:normal; padding-left:8pt; font-family:serif; font-size:10pt; -aw-font-family:'Symbol'; -aw-font-weight:normal; -aw-number-format:'&#61623;';">
+<span class="rn-5">The amount of a contingent payment in a given period, if any, would be based on production from the Assets in such period, reflect an adjustment for taxes and royalties that Ithaca Energy are exposed to on Suncor&#8217;s behalf, and a sharing factor of 50%.</span>
+</li>
+</ul>
+<p class="rn-9">
+<span>Ithaca Energy has agreed to a full transfer from Suncor of all decommissioning obligations related to the Assets. With expected cessation of production dates extending into the mid-2030s and potential to further extend hub life through identified growth opportunities, the Company believes potential exists to defer meaningful decommissioning obligations into the 2040s. Ithaca Energy&#8217;s proven experience in abandonment activities in a relatively similar shallow-water environment and in the</span><span>&#160;</span><span>decommissioning of floating infrastructure provides a strong foundation for executing this work efficiently. The obligations of Ithaca Energy Canada Limited </span><span class="rn-2">(&#8220;Ithaca Energy Canada&#8221;)</span><span> under the Acquisition Agreement are guaranteed by Ithaca Energy pursuant to a parent company guarantee.</span>
+</p>
+<p>
+<span class="rn-18">&#160;</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Conditions</span>
+</p>
+<p class="rn-9">
+<span>Completion is subject to customary closing conditions for a transaction of this size and nature, including approval under the Competition Act (Canada).</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Representations, warranties and covenants</span>
+</p>
+<p class="rn-9">
+<span>The Acquisition Agreement contains customary representations, warranties and covenants for a transaction of this size and nature. The Acquisition Agreement also contains customary pre-Completion covenants, including the obligation on Suncor to operate the Assets in the ordinary course consistent with past practice and to refrain from taking certain specified actions without the consent of Ithaca Energy.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Break Fee</span>
+</p>
+<p class="rn-9">
+<span>In connection with the Transaction, the Company, Ithaca Energy Canada, Petro-Canada (Terra Nova) Partnership (&#8220;</span><span class="rn-2">PCTNP</span><span>&#8221; and together with Suncor, the &#8220;</span><span class="rn-2">Vendor</span><span>&#8221;)) and Suncor have entered into a break fee agreement (the &#8220;</span><span class="rn-2">Break Fee Agreement</span><span>&#8221;). Pursuant to the Break Fee Agreement, the purchasing parties have agreed to pay to the Vendor a break fee of US$50,000,000 (&#8220;</span><span class="rn-2">Break Fee Amount</span><span>&#8221;) if the Acquisition Agreement is terminated in certain circumstances, including where the Vendor terminates the Acquisition Agreement as a result of a breach by Ithaca Energy Canada of the representations, warranties, covenants or other obligations under the Acquisition Agreement that results in the relevant closing conditions not being satisfied and such breach remains uncured following the applicable cure period, or where the Transaction fails to complete by the agreed long-stop date in circumstances where Ithaca Energy Canada has failed to comply with certain obligations relating to the pursuit of Completion, obtaining regulatory approvals and related cooperation undertakings.</span><span class="rn-25">&#160;&#160;&#160; </span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Governing Law</span>
+</p>
+<p class="rn-9">
+<span>The Acquisition Agreement is governed by the laws of the Province of Alberta and the laws of Canada applicable therein.</span>
+</p>
+<p class="rn-1">
+<span class="rn-2">Risks</span>
+</p>
+<p class="rn-9">
+<span>The risks disclosed below are limited to those which Ithaca Energy considers are risks to the Group as a result of the Transaction. The information given is as at the date of this announcement and, except as required by the FCA, the London Stock Exchange, the UKLRs, the UK Market Abuse Regulation and/or any regulatory requirements or applicable law, will not be updated.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">The Transaction is conditional upon certain customary conditions which may take longer to satisfy than expected or may not be satisfied, as a result of which the Transaction may not be implemented on its current terms, in a timely manner or possibly at all.</span>
+</p>
+<p class="rn-9">
+<span>The Transaction</span><span class="rn-2"> </span><span>is subject to customary closing conditions for a transaction of this size and nature, including the receipt of required consents and authorisations, and approval under the Competition Act (Canada). Whilst it is currently anticipated that Completion will occur by the end of H1 2027, there is no guarantee that the conditions will be satisfied by 31 December 2027, being the outside date for Completion in the Acquisition Agreement (the &#8220;Outside Date&#8221;). If Completion has not occurred by the Outside Date (or the outstanding conditions have not been waived, where applicable), then, absent agreement being reached between the parties to the Acquisition Agreement to extend the Outside Date, either party may terminate the Acquisition Agreement and the Transaction will not complete. In certain circumstances where Suncor terminates the Acquisition Agreement and the Transaction does not complete, Ithaca Energy may be required to pay the Break Fee Amount to the Vendor.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">The Company will be exposed to risks associated with operating in a new jurisdiction</span>
+</p>
+<p class="rn-9">
+<span>The Company's entry into Canada will expose it to legal, regulatory, tax, political, economic and commercial conditions that may differ materially from those in its existing operating areas. Changes in applicable laws, regulations, fiscal regimes, permitting requirements or government policies could increase costs, delay development activities or materially impact the Company's ability to achieve its objectives in Canada.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">The anticipated benefits of the Company's expansion into Canada may not be realised</span>
+</p>
+<p class="rn-9">
+<span>The Company expects its entry into Canada to provide strategic, operational and financial benefits. However, there can be no assurance that these benefits will be realised to the extent anticipated, within the expected timeframe, or at all. If the Company is unable to successfully execute its strategy in Canada, the anticipated benefits of the Transaction may not be achieved and the Company's business, financial condition and results of operations may be adversely affected.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">The West White Rose Extension project may not achieve the operational and financial outcomes currently anticipated</span>
+</p>
+<p class="rn-9">
+<span>The Company's expectations regarding future production, cash flow generation and reserves development assume the successful completion, commissioning and operation of the West White Rose Extension project. However, there can be no assurance that the project will be completed on the timetable currently expected or that future development, commissioning and operating costs will not exceed current estimates. Any material delay in achieving first production, or any increase in project costs beyond current expectations, could adversely affect the timing and amount of future cash flows generated from the asset and reduce the anticipated benefits of the Transaction.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Failure to complete the Transaction may have an adverse impact on Ithaca Energy&#8217;s business and the price of the Company&#8217;s shares</span>
+</p>
+<p class="rn-9">
+<span>If the Transaction does not complete for any reason, the ongoing business of Ithaca Energy may be adversely affected and the Company may be subject to a number of risks, including:</span>
+</p>
+<ul type="disc" class="rn-3">
+<li class="rn-4">
+<span class="rn-5">negative reactions from financial markets, including adverse impacts on the price of Ithaca Energy&#8217;s shares;</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">negative reputational impacts; and</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">matters relating to the Transaction requiring substantial commitments of time and resources by Ithaca Energy&#8217;s management, which would otherwise have been devoted to the operations and opportunities of the Company&#8217;s existing business.</span>
+</li>
+</ul>
+<p class="rn-9">
+<span>Furthermore, if the Acquisition Agreement is terminated in circumstances that trigger the payment obligations under the Break Fee Agreement, Ithaca Energy will be required to pay the Break Fee Amount to the Vendor. Any payment of the Break Fee Amount could have an adverse effect on Ithaca Energy&#8217;s financial position. </span>
+</p>
+<p class="rn-9">
+<span class="rn-2">As the consideration for the Transaction is fixed at signing, subject to certain customary adjustments, the value paid by the Company may exceed the value of the Assets at Completion</span>
+</p>
+<p class="rn-9">
+<span>The consideration for the Transaction will be fixed at signing, subject to certain customary Completion adjustments applying from the effective date of 1 July 2026 to Completion. Completion is targeted to occur in H1 2027, and the value of the consideration paid by Ithaca Energy may exceed the value of the Assets at Completion.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Ithaca Energy may be unable to verify the accuracy, reliability or completeness of the information it has received regarding the Assets</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy has conducted due diligence in connection with the Transaction. As part of this, the Company has relied on information provided by, and disclosures made on behalf of, Suncor, as well as on the due diligence investigations conducted by its advisers. In particular, the reserves and resources estimates attributed to the Assets have been derived from the Company&#8217;s management estimates based on data and information provided by Suncor and have not been independently verified by a qualified reserves evaluator or prepared in accordance with an independent reserves report. Such due diligence may not reveal all relevant facts necessary or helpful in evaluating the Assets and the Transaction, or all of the risks associated with the Assets and the Transaction, or the full extent of any liability which may arise from such risks. To the extent that any information provided to Ithaca Energy or its advisers, including reserves and resources information, is incomplete, inaccurate or misleading, the financial effects of the Transaction and the actual performance of the Assets following Completion may differ materially from expectations.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Ithaca Energy may incur higher than expected costs related to the Transaction</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy has incurred and expects to incur further costs in connection with the Transaction, including post-Completion costs. Such costs include, among others, financial services, accounting, tax and legal fees and expenses incurred in evaluating and negotiating the terms of the Transaction, some of which are payable whether or not the Transaction completes. Furthermore, Ithaca Energy may incur additional unanticipated costs in connection with the Transaction following Completion, when the Group has ownership of the Assets.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Following Completion of the Transaction, the indebtedness and financial leverage of Ithaca Energy will increase in the near-term</span>
+</p>
+<p class="rn-9">
+<span>The Group expects to fully finance the Transaction through a combination of cash in hand, the undrawn portion of its Reserves Based Lending facility, and in country secured financing to fund the cash payment payable on Completion under the Acquisition Agreement. As a result, overall indebtedness and financial leverage of the Company will increase following Completion, resulting in increased repayment commitments and borrowing costs and potentially limiting Ithaca Energy&#8217;s commercial and financial flexibility.</span>
+</p>
+<p class="rn-9">
+<span>In the longer-term, an increased level of debt may reduce Ithaca Energy&#8217;s ability to respond to changing business and economic conditions. Increased debt servicing obligations may reduce funds available for capital expenditure, further acquisitions, dividends, share repurchases and other activities, and may place the Company at a competitive disadvantage relative to companies with lower levels of indebtedness.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">The anticipated benefits of the Transaction depend on Ithaca Energy&#8217;s ability to ensure business continuity and safe operational performance on transfer of the Assets and to successfully integrate the Assets into the Group</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy and Suncor may fail to ensure continued safe operational performance and business continuity in connection with the Transaction. The transition and integration of the Assets&#8217; operations, organisational structures, personnel, processes, controls and systems into the Group may be complex and may give rise to challenges that are not currently foreseeable.</span>
+</p>
+<p class="rn-9">
+<span>The integration of the Assets into Ithaca Energy may prove more difficult, more costly or take longer than anticipated. Unexpected integration issues may require increased management focus, diverting attention from other aspects of the business, and actual integration costs may exceed current estimates. If the integration of the Assets into the Group is delayed or unsuccessful, or if the Company fails to ensure continued safe operational performance and business continuity, the market price of Ithaca Energy&#8217;s shares may decline.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">White Rose is operated by a third party </span>
+</p>
+<p class="rn-9">
+<span>The operational performance of White Rose depends on the expertise and experience of a third-party operator. As a result, Ithaca Energy cannot control the operational performance, safety outcomes or the Company&#8217;s ability to realise the anticipated benefits of the Transaction in relation to White Rose following Completion.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Estimates of oil and gas reserves and resources of the Assets are subject to uncertainty</span>
+</p>
+<p class="rn-9">
+<span>Estimates of oil and gas reserves and resources and rates of production are inherently uncertain and are based on assumptions regarding geology, reservoir performance, commodity prices, operating and development costs, regulatory conditions and future capital investment. The reserves and resources estimates attributed to the Assets have been derived from the Company&#8217;s management estimates based on data and information provided by Suncor and have not been independently verified by a qualified reserves evaluator or prepared in accordance with an independent reserves report. Accordingly, such estimates may be subject to a greater degree of uncertainty than would be the case had they derived from an independent reserves assessment. Actual production rates, recoverable volumes (including volumes considered to be commercially recoverable) and/or development costs may differ materially from estimates. Accordingly, these estimates may change as additional information becomes available in the future, and may differ materially from assessments of independent reserve engineers. If the reserves or resources of the Assets are lower than expected, or decline more rapidly than anticipated, this could adversely affect Ithaca Energy&#8217;s production profile, cash flows and asset values following Completion.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">The Assets may be adversely affected by changes in commodity prices</span>
+</p>
+<p class="rn-9">
+<span>Revenues, cash flows and the values of the Assets are highly sensitive to oil and natural gas prices, which are volatile and influenced by factors beyond the control of Ithaca Energy, including global supply and demand dynamics, geopolitical developments, regulatory actions and macroeconomic conditions. Sustained periods of low commodity prices could reduce the Assets&#8217; cash generation, limit Ithaca Energy&#8217;s ability to fund capital expenditure or decommissioning obligations and adversely affect the financial performance of the Group following Completion.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">The Assets are subject to extensive regulatory, environmental and climate-related requirements</span>
+</p>
+<p class="rn-9">
+<span>The Assets are subject to extensive federal and provincial laws and regulations relating to environmental protection, emissions, health and safety, offshore permitting and decommissioning. Changes in regulatory requirements, increased enforcement activity or the introduction of more stringent decommissioning security or climate-related policies could increase compliance costs, restrict operations or reduce the economic viability of the Assets. In addition, the Assets and, following Completion, Ithaca Energy may be exposed to climate-related litigation or challenges, which could result in additional costs or reputational harm.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Non-Financial Information</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Significant change</span>
+</p>
+<p class="rn-9">
+<span class="rn-30">Ithaca Energy</span>
+</p>
+<p class="rn-9">
+<span>There has been no significant change in the financial position of the Group since 30 June 2026, being the end of the last period for which financial information for the Group has been published.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Material Contracts</span>
+</p>
+<p class="rn-9">
+<span class="rn-30">Ithaca Energy</span>
+</p>
+<p class="rn-9">
+<span>The following is a summary of those material contracts, not being contracts entered into in the ordinary course of business, which have been entered into by Ithaca Energy or any member of the Group within the two years immediately preceding the date of this announcement, and of those other contracts, not being contracts entered into in the ordinary course of business by any member of the Group, that contain provisions under which Ithaca Energy and/or any member of the Group has an obligation or entitlement which is or may be material to the Group as at the date of this announcement and which shareholders would require for the purpose of making a properly informed assessment of the transaction and its impact on the Group:</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Material Transactions</span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Ithaca J E&amp;P Limited Acquisition</span>
+</p>
+<p class="rn-9">
+<span>On 7 July 2025, the Group completed the acquisition of the entire issued share capital of Ithaca J E&amp;P Limited (formerly Japex UK E&amp;P Limited). The total cash consideration payable was US$156.4 million, and following completion, the acquisition increased the Group&#8217;s working interest in the Seagull field from 35% to 50%. The agreement included customary warranties from Japan Petroleum Exploration Co., Ltd and indemnities in respect of certain decommissioning and environmental liabilities. </span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Cygnus Acquisition</span>
+</p>
+<p class="rn-9">
+<span>On 1 October 2025, the Group completed the acquisition of Spirit Energy Southern North Sea Limited&#8217;s 46.25% interest in the Cygnus field, which increased the Group&#8217;s working interest in the Cygnus field to 85%. The total cash consideration payable was approximately &#163;115 million, based on an effective date for the transaction of 1 January 2025 and other customary price adjustments. The agreement includes customary warranties from Spirit Energy and indemnities in respect of certain decommissioning and environmental liabilities. </span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Financing Facilities</span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Reserves Base Lending Credit Facility</span>
+</p>
+<p class="rn-9">
+<span>The Group has a revolving borrowing base facility agreement (&#8220;RBL Facility&#8221;) in place, comprising a cash revolving loan facility (Facility A) with commitments of US$1.3 billion, available for general corporate purposes, and a letter of credit facility (Facility B) with commitments of US$500 million, available to provide credit support for payment obligations including decommissioning costs, with further accordion capacity of up to US$435 million across both facilities. As at the date of the announcement, the RBL Facility is undrawn.</span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Guarantee Subordination Agreement</span>
+</p>
+<p class="rn-9">
+<span>The Guarantee Subordination Agreement (the &#8220;GSA&#8221;) was entered into on 21 October 2024 and governs the relative priority of creditors in respect of the guarantees granted by the Ithaca Group. Under the GSA, the RBL Facility creditors and secured hedging counterparties rank as senior creditors, with their liabilities ranking ahead of other creditors (including noteholders). </span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Bond Issuances</span>
+</p>
+<p class="rn-9">
+<span>On 22 October 2024, Ithaca issued US$750 million aggregate principal amount of 8</span><span class="rn-32">1/8</span><span>% Senior Notes, which are due to mature in 2029. On 23 September 2025, Ithaca issued &#8364;450 million aggregate principal amount of 5</span><span class="rn-32">1/2</span><span>% Senior Notes, which are due to mature in 2031, and Ithaca subsequently issued an additional &#8364;155 million aggregate principal amount of 5</span><span class="rn-32">1/2</span><span>% Senior Notes on 11 June 2026, which are also due to mature in 2031.</span><span class="rn-25">&#160;&#160; </span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Surety Facilities</span>
+</p>
+<p class="rn-9">
+<span>Ithaca has several committed surety bond facilities, with commitments totalling &#163;298 million, utilised for the provision of decommissioning guarantees related to its UK operations.</span>
+</p>
+<p class="rn-9">
+<span>Additionally, Ithaca has access to uncommitted surety bond facilities, of which approximately &#163;163 million is unutilised as at the date of this announcement. </span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Relationship Agreements</span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Eni Relationship Agreement</span>
+</p>
+<p class="rn-9">
+<span>On 3 October 2024, Ithaca Energy, Eni S.p.A and Eni UK entered into a relationship agreement to regulate their relationship following completion of the Business Combination Agreement (the &#8220;Eni Relationship Agreement&#8221;). The Eni Relationship Agreement will remain in force as long as Eni UK and its affiliates own at least 10% of the ordinary shares or voting rights in Ithaca Energy. Pursuant to the Eni Relationship Agreement, Eni UK is granted the right to nominate directors to the Board of Ithaca Energy based on its shareholding percentage, with specific entitlements for appointing up to two directors if they hold at least 20% of the shares, and one director if they hold between 10% and 20%. Additionally, Eni UK can appoint observers to the Board of Ithaca Energy and its committee meetings if certain shareholding thresholds are met. </span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Amended Delek Relationship Agreement</span>
+</p>
+<p class="rn-9">
+<span>On 9 November 2022, Ithaca and Delek Group Limited (&#8220;Delek&#8221;) entered into a relationship agreement to regulate their relationship following the admission of Ithaca Energy&#8217;s shares to the premium listing segment of the Official List and trading on the Main Market (&#8220;Delek Relationship Agreement&#8221;). The Delek Relationship Agreement was amended on 23 April 2023, 21 August 2024, 3 October 2024 and 30 September 2025 (&#8220;Amended Delek Relationship Agreement&#8221;). The principal terms remain unchanged, but the amendments grant Delek the right to nominate directors to the Board of Ithaca Energy based on its shareholding percentage, up to a maximum of 3 directors. Where Delek holds at least 20% of the shares in Ithaca Energy, they can appoint a maximum of 2 directors and where Delek holds between 10% and 20%, they can appoint a maximum of 1 director.</span><span class="rn-25">&#160; </span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Other Material Contracts</span>
+</p>
+<p class="rn-9">
+<span class="rn-31">Eni Technical Services Agreement</span>
+</p>
+<p class="rn-9">
+<span>On 3 October 2024, in connection with the combination with Eni UK, Ithaca Energy entered into an agreement in respect of certain technical services to be provided by the Eni group to the Group (the &#8220;Service Agreement&#8221;). The Eni group, on Ithaca Energy&#8217;s request, shall provide exploration, subsurface and projects services (the &#8220;Specific Services&#8221;) and other additional services (the &#8220;Additional Services&#8221;) (together the &#8220;Services&#8221;) on arm&#8217;s length terms in return for a fee. The fee for the provision of a Service will be either (i) the actual cost of the provision of the relevant Service or (ii) a fixed overall amount based on hourly rates applicable to the relevant Service that was provided. </span>
+</p>
+<p class="rn-9">
+<span class="rn-30">Terra Nova and White Rose</span>
+</p>
+<p class="rn-9">
+<span>Based on the due diligence conducted by Ithaca Energy, the material agreements in connection with the Assets comprise agreements entered into in the ordinary course of business. Accordingly, there are no material contracts (not being contracts entered into in the ordinary course of business) which have been entered into by Suncor or any member of the Suncor group in connection with the Assets within the two years immediately preceding the date of this announcement, nor any such contracts which contain provision under which Suncor or any member of the Suncor group, in connection with the Assets, has an obligation or entitlement which is, or may be, material at the date of this announcement, for the purposes of UKLR Rule 7, Annex 2, Part 3.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Litigation</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Ithaca Energy</span>
+</p>
+<p class="rn-9">
+<span>The following is a summary of any governmental, legal or arbitration proceedings (including any such proceedings which are pending or threatened of which Ithaca is aware) which may have, or have had during the 12 months preceding the date of this announcement, a significant effect on Ithaca Energy&#8217;s or the Group&#8217;s financial position or profitability:</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Rosebank Judicial Review</span>
+</p>
+<p class="rn-9">
+<span>Ithaca SP E&amp;P Limited (&#8220;ISPEPL&#8221;) has a 20% interest in the Rosebank field, which is operated by Adura Operations Limited. Environmental campaigners Uplift and Greenpeace UK brought separate judicial review proceedings in respect of the following decisions in respect of the Rosebank field (the &#8220;Decisions&#8221;): (i) the agreement to the grant of consent by the Secretary of State and (ii) the grant of consent by the NSTA, both made pursuant to the Offshore Oil and Gas Exploration, Production, Unloading and Storage (Environmental Impact Assessment) 2020 (the &#8220;2020 Regulations&#8221;). The proceedings were heard together alongside a judicial review of decisions in relation to Adura Energy Limited&#8217;s (formerly Shell) Jackdaw development. ISPEPL participated in the proceedings as an Interested Party. Judgment was issued on 30 January 2025 reducing (i.e., quashing) the Decisions but delaying the implementation of that reduction until the date on which the NSTA makes a new decision pursuant to the 2020 Regulations as to whether or not to grant consent for Rosebank. Until such time the Decisions remain in effect although no oil or gas may be extracted from the Rosebank field. A revised Environmental Statement incorporating a Scope 3 emissions assessment has been submitted to the Secretary of State, and the Group targets receipt of the required regulatory approvals by the end of 2026.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">Terra Nova and White Rose</span>
+</p>
+<p class="rn-9">
+<span>There are no, and have not been any, governmental, legal or arbitration proceedings (including any such proceedings which are pending or threatened of which Suncor is aware) in connection with the Terra Nova and White Rose assets which may have, or have had during the 12 months preceding the date of this announcement, a significant effect on Suncor&#8217;s financial position or profitability.</span>
+</p>
+<p class="rn-10">
+<span class="rn-2">The information contained within this announcement is deemed by Ithaca Energy to constitute inside information for the purposes of Article 7 of the Market Abuse Regulation (EU) No 596/2014 (as it forms part of UK domestic law by virtue of the European Union (Withdrawal) Act 2018). By the publication of this announcement via a Regulatory Information Service, this inside information is now considered to be in the public domain. The person responsible for making this announcement on behalf of Ithaca Energy is Julie McAteer, General Counsel and Company Secretary.</span>
+</p>
+<p>
+<span class="rn-18">&#160;</span>
+</p>
+<p class="rn-10">
+<span class="rn-2">NOTE TO EDITORS</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">About Ithaca Energy plc</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy is a leading UK exploration and production company with a strong track record of material value creation. In recent years, the Company has been focused on growing its portfolio of assets through both organic investment programmes and acquisitions and has seen a period of significant M&amp;A driven growth centred upon three transformational acquisitions in recent years, including the recent Business Combination with Eni UK. Today, Ithaca Energy is one of the largest oil and gas companies in the UKCS by production and resources.</span>
+</p>
+<p class="rn-9">
+<span>With stakes in six of the ten largest fields in the UKCS and two of UKCS&#8217;s largest pre-development fields, and with energy security currently being a key focus of the UK Government, the Group believes it can utilise its significant reserves and operational capabilities to play a key role in delivering security of domestic energy supply from the UKCS.</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy serves today&#8217;s needs for domestic energy through operating sustainably. The Group achieves this by harnessing Ithaca Energy&#8217;s deep operational expertise and innovative minds to collectively challenge the norm, continually seeking better ways to meet evolving demands.</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy&#8217;s commitment to delivering attractive and sustainable returns is supported by a well-defined emissions-reduction strategy with a target of achieving net zero ahead of targets set out in the North Sea Transition Deal.</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy plc was admitted to trading on the London Stock Exchange (LON: ITH) on 14 November 2022 and forms part of the FTSE 100, effective 21 September 2026.</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">About the Assets</span>
+</p>
+<p class="rn-9">
+<span>The Assets offer an attractive mix of current production, near-term growth, and future development and exploration upside, particularly in White Rose.</span>
+</p>
+<p class="rn-9">
+<span>Ithaca Energy attributes the following resource classifications to the Assets</span><span class="rn-32">1</span><span>: 103 mmboe of 2P reserves, 20 mmboe of 2C Resources and approximately 180 mmboe of prospective resources. Together the Assets are estimated to contribute average five-year net production over 2027 to 2031 of ~30 kboe/d. </span>
+</p>
+<p class="rn-9">
+<span>Terra Nova</span>
+</p>
+<ul type="disc" class="rn-3">
+<li class="rn-4">
+<span class="rn-5">48% operated working interest (Cenovus holds a 34% non-operated interest; Murphy Oil Corp. holds an 18% non-operated interest)</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Terra Nova is located in the southeastern margin of the Jeanne d&#8217;Arc Basin, 350 km east of Newfoundland in ~95m shallow water </span>
+</li>
+<li class="rn-4">
+<span class="rn-5">First oil was achieved in 2002 </span>
+</li>
+<li class="rn-4">
+<span class="rn-5">The field was developed with an FPSO and four subsea drill centers </span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Currently, there are 29 active wells (18 oil producers, 9 water injectors, 2 gas injectors) </span>
+</li>
+<li style="margin-left:28pt; margin-bottom:12pt; text-align:justify; line-height:108%; padding-left:8pt; font-family:serif; font-size:10pt; -aw-font-family:'Symbol'; -aw-font-weight:normal; -aw-number-format:'&#61623;';">
+<span style="line-height:108%; font-family:Aptos; font-size:11pt;">Significant recent investment in refurbishment of the FPSO, totalling CAD$0.9bn (gross), enhancing reliability and positioning the asset for its next phase of development</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Net production for the 12 months to 30 June 2026 of 11.6 kboe/d</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Net H2 2026 production estimate of ~10.3 kboe/d</span>
+</li>
+</ul>
+<p class="rn-9">
+<span>White Rose</span>
+</p>
+<ul type="disc" class="rn-3">
+<li class="rn-4">
+<span class="rn-5">Comprised of a 40% non-operating interest in the White Rose Existing Lands (Cenovus holds a 60% interest and is operator) and a 38.6% non-operated working interest in the White Rose Growth Lands, including the West White Rose Extension (Cenovus holds 56.4% and is operator; Oil and Gas Company of Newfoundland and Labrador holds a 5% non-operated interest)</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">White Rose is located in the eastern margin of the Jeanne d&#8217;Arc Basin, 350 km east of Newfoundland in ~110m shallow water</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">First oil was achieved from the field in 2005</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Production utilises five subsea drill centers and 42 active wells (25 oil producers) with flexible tiebacks to a FPSO vessel </span>
+</li>
+<li class="rn-4">
+<span class="rn-5">White Rose FPSO underwent an extensive refurbishment programme in 2024, and is expected to deliver higher reliability operations</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Net production for the 12 months to 30 June 2026 of 4.9 kboe/d</span>
+</li>
+<li class="rn-4">
+<span class="rn-5">Net H2 2026 production estimate of ~5.6 kboe/d and substantial near-term production growth </span>
+</li>
+</ul>
+</div>
+<br class="rn-15" />
+<div class="Section_3">
+<p class="rn-9">
+<span>White Rose Growth Lands, including the West White Rose Extension</span>
+</p>
+<ul type="disc" class="rn-3">
+<li class="rn-4">
+<span class="rn-5">Commercial production expected in Q4 2026</span>
+</li>
+</ul>
+<p class="rn-9">
+<span>Crude oil from both White Rose and Terra Nova is transported via basin-wide pool of shuttle tankers and marketed from the Newfoundland Transshipment Limited terminal in Whiffen Head, Newfoundland. </span><span class="rn-25">&#160;</span>
+</p>
+<p>
+<span class="rn-18">&#160;</span>
+</p>
+<p class="rn-9">
+<span class="rn-2">IMPORTANT INFORMATION</span>
+</p>
+<p class="rn-9">
+<span>The information contained in this announcement is for information purposes only and does not purport to be complete. The information in this announcement is subject to change.</span>
+</p>
+<p class="rn-9">
+<span>This announcement has been prepared in accordance with English law, the Market Abuse Regulation and the Disclosure Guidance and Transparency Rules and UKLRs and information disclosed may not be the same as that which would have been prepared in accordance with the laws of jurisdictions outside England.</span>
+</p>
+<p class="rn-9">
+<span>No person has been authorised to give any information or make any representations to shareholders with respect to the Transaction other than the information contained in this announcement and, if given or made, such information or representations must not be relied upon as having been authorised by or on behalf of Ithaca Energy, the Ithaca Energy directors, Suncor or the Suncor directors, or any other person involved in the Transaction. None of the above take any responsibility or liability for, and can provide no assurance as to the reliability of, other information that you may be given. Subject to the UK Market Abuse Regulation and the FCA's Disclosure Guidance and Transparency Rules and UKLRs, the delivery of this announcement shall not create any implication that there has been no change in the affairs of Ithaca Energy or Suncor since the date of this announcement or that the information in this announcement is correct as at any time subsequent to its date. </span>
+</p>
+<p class="rn-9">
+<span>Scotiabank is a marketing name for the global corporate and investment banking and capital markets businesses of The Bank of Nova Scotia and certain of its affiliates. The Bank of Nova Scotia, London Branch is authorised by the UK Prudential Regulation Authority and is subject to regulation by the UK Financial Conduct Authority and limited regulation by the UK Prudential Regulation Authority. Details about the extent of The Bank of Nova Scotia&#8217;s regulation by the UK Prudential Regulation Authority are available on request. Scotiabank is acting exclusively as financial adviser for Ithaca Energy and no one else in connection with the Transaction and the matters referred to in this announcement, and will not regard any other person as a client in relation to the Transaction or this announcement and will not be responsible to anyone other than Ithaca Energy for providing the protections afforded to its clients, or for providing advice, in relation to the Transaction, this announcement or any other transaction, arrangement or matter referred to in this announcement. Neither The Bank of Nova Scotia, Scotia Capital Inc., nor any of their respective subsidiaries, branches or affiliates owes or accepts any duty, liability or responsibility whatsoever, whether direct or indirect, whether in contract, in tort, under statute or otherwise, to any person who is not its client in connection with this announcement, any statements contained herein or otherwise.</span>
+</p>
+<p class="rn-9">
+<span>The contents of this announcement are not to be construed as legal, business or tax advice. Each shareholder should consult its own legal adviser, financial adviser or tax adviser for legal, financial or tax advice respectively.</span>
+</p>
+<p class="rn-9">
+<span>Percentages in tables have been rounded and accordingly may not add up to 100 per cent. Certain financial data have also been rounded. As a result of this rounding, the totals of data presented in this press release may vary slightly from the actual arithmetic totals of such data.</span>
+</p>
+<p>
+<span style="font-weight:bold; font-style:italic; -aw-import:ignore;">&#160;</span>
+</p>
+<p class="rn-9">
+<span class="rn-30">Forward-Looking Information is Subject to Risk and Uncertainty</span><span class="rn-2"> </span>
+</p>
+<p class="rn-9">
+<span>This announcement may include certain &#8220;forward-looking&#8221; statements. Forward-looking statements include all statements that are not historical facts and can be identified by the use of forward-looking terminology such as the words &#8220;believes,&#8221; &#8220;expects,&#8221; &#8220;may,&#8221; &#8220;will,&#8221; &#8220;would,&#8221; &#8220;should,&#8221; &#8220;seeks,&#8221; &#8220;pro forma,&#8221; &#8220;anticipates,&#8221; &#8220;intends,&#8221; &#8220;plans,&#8221; &#8220;estimates,&#8221; or the negative of any thereof or other variations thereof or comparable terminology, or by discussions of strategy or intentions. These statements are not guarantees of future actions or performance and involve risks, uncertainties and assumptions as to future events that may not prove to be accurate. Actual actions or results may differ materially from what is expressed or forecasted in these forward-looking statements as the Company may be unable to complete the Transaction. As a result, these statements speak only as of the date they were made and the Company undertakes no obligation to publicly update or revise any forward-looking statements, whether as a result of new information, future events or otherwise. Many important factors could cause the Company's results to differ materially from those expressed in these forward-looking statements. These factors include, but are not limited to, general market conditions, national or global events affecting the capital markets, unforeseen developments in the Company's business or industry or changes in law or regulations governing the Company's ability to complete the Transaction. </span>
+</p>
+</div>
+<hr style="width:33%; height:1px; text-align:left; -aw-footnote-numberstyle:0; -aw-footnote-startnumber:1; -aw-footnote-type:0;" />
+<div id="_ftn1" class="rn-33">
+<p class="FootnoteText">
+<a href="#_ftnref1" class="rn-6"><span class="FootnoteReference rn-34">[1]</span></a><span> Net 2P Reserves, 2C Resources and production profiles are estimated as of 30 June 2026 by Ithaca Energy management based on cessation of production in 2037 for Terra Nova and 2039 for White Rose. Prospective Resources data provided by Suncor</span>
+</p>
+</div>
+<div id="_ftn2" class="rn-33">
+<p class="FootnoteText">
+<a href="#_ftnref2" class="rn-6"><span class="FootnoteReference rn-34">[2]</span></a><span> NSAI CPR as of 31 December 2025</span>
+</p>
+</div>
+<div id="_ftn3" class="rn-35">
+<p class="FootnoteText">
+<a href="#_ftnref3" class="rn-6"><span class="FootnoteReference rn-26">[1]</span></a><span> Net 2P Reserves, 2C Resources and production profiles are estimated as of 30 June 2026 by Ithaca Energy management based on cessation of production in 2037 for Terra Nova and 2039 for White Rose. Prospective Resources data provided by Suncor</span>
+</p>
+</div>
+<div id="_ftn4" class="rn-35">
+<p class="FootnoteText">
+<a href="#_ftnref4" class="rn-6"><span class="FootnoteReference rn-26">[1]</span></a><span class="rn-21">&#160;</span>
+</p>
+</div>
+<div id="_ftn5" class="rn-35">
+<p class="FootnoteText">
+<a href="#_ftnref5" class="rn-6"><span class="FootnoteReference rn-26">[2]</span></a><span> NSAI CPR as of 31 December 2025</span>
+</p>
+</div>
+<div id="_ftn6" class="rn-33">
+<p class="FootnoteText">
+<span class="FootnoteReference" style="font-size:6.67pt;">1</span><span> Net 2P Reserves, 2C Resources and production profiles are estimated as of 30 June 2026 by Ithaca Energy management based on cessation of production in 2037 for Terra Nova and 2039 for White Rose. Prospective Resources data provided by Suncor</span>
+</p>
+</div>
+<div id="_ftn7" class="rn-33">
+<p class="FootnoteText">
+<a href="#_ftnref7" class="rn-6"><span class="FootnoteReference rn-34">[4]</span></a><span> NSAI CPR as of 31 December 2025 </span>
+</p>
+</div>
+
+</div><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/ITH" style="font-size:14px;">Ithaca Energy
+                    (ITH)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>2 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/qinetiq-group--qq./director-pdmr-shareholding/9880164">QinetiQ Group</a>
+            </li>
+                        <li>
+                <span>9 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/wetherspoon-j-d---jdw/director-pdmr-shareholding/9880145">Wetherspoon (J.D.)</a>
+            </li>
+                        <li>
+                <span>47 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/aib-group-cdi---aibg/director-pdmr-shareholding/9880073">AIB Group (CDI)</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/tesco--tsco/director-pdmr-shareholding/9880044">Tesco</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/ampeak-energy-limited--amp/grant-of-ltip-options-/9879955">Ampeak Energy Limited</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>
