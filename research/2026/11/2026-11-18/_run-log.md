@@ -47,3 +47,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:02 UTC
 - HAFNI banked: impact_sum +0.2, abs 4.5, p_up 52; bmo ~07:30 CET (NewsWeb 686176). MSLH launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:03 UTC
+- VOW banked: impact_sum -0.9, abs 8.0, p_up 46; bmo confirmed (NewsWeb 686196). SDY launched.
