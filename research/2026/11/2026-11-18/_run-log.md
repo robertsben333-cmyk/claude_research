@@ -67,3 +67,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:07 UTC
 - CTEC banked: impact_sum -1.2, abs 7.5, p_up 45; 10-month trading update confirmed (H1 scheduled events), bmo 07:00 by precedent.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:07 UTC
+- ITH banked: impact_sum +0.9, abs 5.5, p_up 52; Q3 bmo confirmed (issuer calendar). Rosebank consent risk filed outside window.
