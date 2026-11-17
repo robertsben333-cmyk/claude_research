@@ -75,3 +75,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:07 UTC
 - SVT banked: impact_sum +0.1, abs 2.5, p_up 52; interims bmo confirmed (9 Jul trading update). Remaining: MSLH SDY WKP.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:08 UTC
+- MSLH banked: impact_sum -1.4, abs 5.5, p_up 45; 10-month trading update confirmed (notice 3 Nov), bmo 07:00 by precedent. Remaining: SDY WKP.
