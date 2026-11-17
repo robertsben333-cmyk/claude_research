@@ -83,3 +83,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:08 UTC
 - SDY banked: impact_sum -0.7, abs 8.0, p_up 46; H1 bmo 07:00 confirmed (issuer calendar). Remaining: WKP.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-17 15:09 UTC
+- 20 of 20 hunted; 18 ranked, ENH and TISG not ranked (no event on 18 Nov: ENH Q3 is 27 Nov per issuer calendar; TISG suspended under concordato). No name above the 2.8 floor; top ITH +0.90, bottom MSLH -1.40. 18 packs, four judges launching.
