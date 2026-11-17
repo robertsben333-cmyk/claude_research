@@ -71,3 +71,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:07 UTC
 - ITH banked: impact_sum +0.9, abs 5.5, p_up 52; Q3 bmo confirmed (issuer calendar). Rosebank consent risk filed outside window.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:07 UTC
+- SVT banked: impact_sum +0.1, abs 2.5, p_up 52; interims bmo confirmed (9 Jul trading update). Remaining: MSLH SDY WKP.
