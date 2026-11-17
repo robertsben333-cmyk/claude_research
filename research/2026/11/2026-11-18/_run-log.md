@@ -15,3 +15,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 14:50 UTC
 - TISG banked: no event (shares suspended by Borsa Italiana since 2026-11-03 under concordato preventivo; issuer calendar has no 18 Nov date) -> phantom, impact 0. ELON launched in its slot.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 14:54 UTC
+- CLN banked: impact_sum -0.2, abs 5.5, p_up 46. Hunter set session_check amc (6 of last 7 periodic reports released after the 17:00 Warsaw close). SVEAF_B launched.
