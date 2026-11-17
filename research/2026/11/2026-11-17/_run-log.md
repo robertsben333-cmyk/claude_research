@@ -82,3 +82,7 @@
 ## Holistic research — 2026-11-17 — STARTED
 - Logged at 2026-11-17 19:17 UTC
 - 19:18 UTC (14:18 ET). Stage H: pick up to 12 names from E-P's sweep, evolving hp.v2 + frozen control hp.v1 on every name, collect before 15:45 ET, then the learning step. No orders.
+
+## Edge hunt (panel) — step 6b re-run after margin fix
+- Logged at 2026-11-17 19:29 UTC
+- 19:29Z (operator's instruction): turnover floor removed for the panel book and margin-aware sizing merged to main (2ff2fd13). First plans kept as alpaca-plan*-first-1849Z.json. LIVE: FEAM short sized by margin fit (free $1,371 at $2.50/share) to 548 sh, filled 537 @ 1.5602; book now JMIA -295 (~50%) + FEAM -537 (~29%), buying power left $286. ICCM and ENRD now pass the floor but are not shortable at Alpaca. PAPER: nothing added (JMIA at cap, FEAM at its 1%-of-ADV cap, ICCM/ENRD not shortable); stays JMIA 50% + FEAM 24%.
