@@ -70,3 +70,15 @@
 ## Edge hunt (panel) — step 6b buy
 - Logged at 2026-11-17 18:50 UTC
 - 18:50Z, 130 min to close. LIVE (equity $2,901): plan JMIA short 295 (49.9%), FEAM short 926 (50.0%); JMIA SENT and filled 295 @ 4.910; FEAM NOT SENT, HTTP 403 insufficient buying power (low-priced short margin on a small account), so the live book is JMIA only. PAPER (equity $21,479): JMIA short 2187 (50.0%) filled @ 4.91; FEAM short 3330 (24.3%, capacity-capped at 1% ADV) filled @ 1.55. ICCM selected but not traded on either account (turnover $0.10m below the $0.2m floor). No top-up (two strong names in the book).
+
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-17 18:59 UTC
+- All 20 searchers returned by 18:59Z, search_complete true on all 20, v3b fields (expectations, next_guide, evidence_type on every item) on all 20; no relaunch. edge_score ranked 20; only GLBE clears the 2.8 floor (-2.80). Packs built; four panel-judge-v3b judges launching.
+
+## Edge hunt (panel v3b) — DONE
+- Logged at 2026-11-17 19:12 UTC
+- Judges: all four v3b judges on pinned models, 20/20 coverage. Panel (own history) selects BRBR short (89); E-P scale also BRBR (88). Stage E-P selected FEAM, ICCM, JMIA: no overlap; Spearman rho of panel_pct_signed v3b vs E-P = +0.06 on 18 shared names; 6 side disagreements. V2 grounded written before the first print. No orders, no alpaca_trade.py call, no shadow ledger. panel-history-v3b.json +80 sizes; stage E-P's history untouched.
+
+## Holistic research — 2026-11-17 — STARTED
+- Logged at 2026-11-17 19:17 UTC
+- 19:18 UTC (14:18 ET). Stage H: pick up to 12 names from E-P's sweep, evolving hp.v2 + frozen control hp.v1 on every name, collect before 15:45 ET, then the learning step. No orders.
