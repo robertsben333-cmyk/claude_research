@@ -11,3 +11,7 @@
 ## Stage EU — universe sealed
 - Logged at 2026-11-17 14:47 UTC
 - Event date 2026-11-18 (Wed). 47 scheduled, 27 eligible above $100k, random draw of 20 (seed eu-2026-11-18): uk 8, no 5, pl 3, se 2, de 1, it 1 (fr/dk/fi/es 0). Largest market uk 40%, 6 markets. No market closed. 20 baselines sealed ~14:45 UTC (intraday spots, not closes). Provenance stamped (orchestrator claude-opus-5-5). Wave 1 launched: PFS0 TISG CLN CPS KGH.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 14:50 UTC
+- TISG banked: no event (shares suspended by Borsa Italiana since 2026-11-03 under concordato preventivo; issuer calendar has no 18 Nov date) -> phantom, impact 0. ELON launched in its slot.
