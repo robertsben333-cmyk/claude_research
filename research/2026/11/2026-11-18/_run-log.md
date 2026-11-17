@@ -35,3 +35,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 14:58 UTC
 - KGH banked: impact_sum -0.2, abs 4.5, p_up 47; session_check amc (last three releases 17:30-17:49 Warsaw). ENH banked: phantom — issuer calendar (NewsWeb 685636) dates Q3 to 2026-11-27, event_confirmed false. PEN and VOW launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:00 UTC
+- ARR banked: impact_sum -0.5, abs 8.0, p_up 44; bmo 07:30 Oslo confirmed. BLND launched.
