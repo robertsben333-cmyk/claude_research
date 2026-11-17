@@ -43,3 +43,7 @@
 ## Edge hunt (panel) — 2026-11-17 amc + 2026-11-18 bmo — STARTED
 - Logged at 2026-11-17 18:09 UTC
 - 32 names in window (12 amc 11-17, 20 bmo 11-18), baselines sealed 18:09Z; plan: 1 edge-sweep, up to 20 unpriced-searchers, 4 judges. Orchestrator Routine fired 18:07 UTC (13:07 ET). SEC_USER_AGENT absence may thin 6-K histories (hist_n=0 on foreign issuers).
+
+## Edge hunt (panel) — sweep and waves
+- Logged at 2026-11-17 18:14 UTC
+- Sweep: 29 confirmed of 32 (phantoms KNDI, CAAP, CISS); session unsettled TJX, SQM (both out before 11-18 open). Cap 20 by hunt_priority: hunted PRE IIIV BRBR LZB FEAM GLBE DLB JJSF JMIA SQM KRNT PONY BLSH ZIM ZKH ENRD TGT CSHR ZTO ICCM; shed (lowest priority) GLNG AUNA HAFN IRIX TJX GBDC LOW GLAD NVDA. Wave 1 (amc first): IIIV LZB FEAM DLB SQM ZTO PRE BRBR.
