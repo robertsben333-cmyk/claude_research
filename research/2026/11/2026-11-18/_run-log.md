@@ -23,3 +23,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 14:56 UTC
 - PFS0 banked: impact_sum -1.3, abs 9.0, p_up 46; Q3 confirmed (EQS 2026-11-11), bmo 08:00 CET from issuer timestamps. ARR launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 14:56 UTC
+- ELON banked: impact_sum +0.7, abs 10, p_up 52; Q3 confirmed (issuer calendar, MFN est. 08:30 CET). ENH launched.
