@@ -54,3 +54,11 @@
 ## Edge hunt (panel v3b) — sweep and waves
 - Logged at 2026-11-17 18:30 UTC
 - Sweep: 29 confirmed of 32 (phantom/unconfirmed KNDI, CAAP, CISS); SQM session unsettled (reaction lands 11-18 either way). Cap 20 by hunt_priority: hunted BRBR PONY PRE GLBE JMIA KRNT BLSH LZB FEAM DLB IIIV ENRD SQM TGT ZKH JJSF AUNA CSHR LOW ICCM; shed (lowest priority) TJX IRIX ZTO NVDA GLNG HAFN GBDC GLAD ZIM. Wave 1 (amc first, max 6 a turn): LZB FEAM DLB IIIV SQM AUNA.
+
+## Edge hunt (panel) — step 3s flatten
+- Logged at 2026-11-17 18:38 UTC
+- 18:38Z: all 20 searchers returned, hunt_status 0 unfinished of 20. LIVE: held KLAR -50 sh (short), closed at market. PAPER: held KLAR -551 sh (short), closed at market. Both accounts flat.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-17 18:38 UTC
+- 20 packs, four judges
