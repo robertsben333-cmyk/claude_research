@@ -74,3 +74,7 @@
 ## Edge hunt (panel v3b) — panel STARTED
 - Logged at 2026-11-17 18:59 UTC
 - All 20 searchers returned by 18:59Z, search_complete true on all 20, v3b fields (expectations, next_guide, evidence_type on every item) on all 20; no relaunch. edge_score ranked 20; only GLBE clears the 2.8 floor (-2.80). Packs built; four panel-judge-v3b judges launching.
+
+## Edge hunt (panel v3b) — DONE
+- Logged at 2026-11-17 19:12 UTC
+- Judges: all four v3b judges on pinned models, 20/20 coverage. Panel (own history) selects BRBR short (89); E-P scale also BRBR (88). Stage E-P selected FEAM, ICCM, JMIA: no overlap; Spearman rho of panel_pct_signed v3b vs E-P = +0.06 on 18 shared names; 6 side disagreements. V2 grounded written before the first print. No orders, no alpaca_trade.py call, no shadow ledger. panel-history-v3b.json +80 sizes; stage E-P's history untouched.
