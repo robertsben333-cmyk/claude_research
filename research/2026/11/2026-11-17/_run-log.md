@@ -39,3 +39,7 @@
 ## Stage E-P amc exit — 2026-11-17
 - Logged at 2026-11-17 14:09 UTC
 - Guards: live and paper both exit 0 (amc open as day, matched on placement). Verify: live 0 exit legs; paper CURI 4303/4303 and CTVA 839/839 filled, nothing UNFILLED, no rescue. Close --today-only (2026-11-16 run): LIVE STEM amc day SENT 54030db3-9b56-454d-9249-39dd982939d5, OMER amc day SENT 323bbad8-d1f7-4c9a-a585-ecb9862c1f43; PAPER STEM amc day SENT c8f4389c-ed16-48af-a902-8e3aa26b20a9, OMER amc day SENT 35bd0688-6423-41aa-8794-dab2a91c4f7d. KLAR bmo refused on both accounts: market placement and the market is closed, left for stage E-P's own run. Market DAY orders queued 09:09 ET for the 09:30 open.
+
+## Edge hunt (panel) — 2026-11-17 amc + 2026-11-18 bmo — STARTED
+- Logged at 2026-11-17 18:09 UTC
+- 32 names in window (12 amc 11-17, 20 bmo 11-18), baselines sealed 18:09Z; plan: 1 edge-sweep, up to 20 unpriced-searchers, 4 judges. Orchestrator Routine fired 18:07 UTC (13:07 ET). SEC_USER_AGENT absence may thin 6-K histories (hist_n=0 on foreign issuers).
