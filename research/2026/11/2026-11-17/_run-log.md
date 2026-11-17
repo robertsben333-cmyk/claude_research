@@ -66,3 +66,7 @@
 ## Edge hunt (panel) — panel and note
 - Logged at 2026-11-17 18:48 UTC
 - 18:48Z: 4/4 judges ran (opus5, opus55, sonnet55, fable51, all pinned, full coverage 20/20). Selected (panel_pct>=80): JMIA 84 S, ICCM 84 S, FEAM 82 S. ICCM below $200k turnover floor ($0.10m). No stage E dir today. Note published; step 6b next.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-17 18:50 UTC
+- 18:50Z, 130 min to close. LIVE (equity $2,901): plan JMIA short 295 (49.9%), FEAM short 926 (50.0%); JMIA SENT and filled 295 @ 4.910; FEAM NOT SENT, HTTP 403 insufficient buying power (low-priced short margin on a small account), so the live book is JMIA only. PAPER (equity $21,479): JMIA short 2187 (50.0%) filled @ 4.91; FEAM short 3330 (24.3%, capacity-capped at 1% ADV) filled @ 1.55. ICCM selected but not traded on either account (turnover $0.10m below the $0.2m floor). No top-up (two strong names in the book).
