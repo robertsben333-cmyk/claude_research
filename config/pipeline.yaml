@@ -1053,6 +1053,21 @@ execution:
     # only one that was measured.
     max_positions: null
 
+  # MARGIN FIT (2026-11-17, operator's instruction). The live account refused FEAM
+  # for buying power: Alpaca values an opening short at MAX(limit, ask + 3%) and
+  # requires the greater of $2.50 a share or 100% on a short under $5, so two
+  # sub-$5 shorts at 50% each did not fit. alpaca_trade.margin_fit() prices the
+  # panel book that way and scales it (weights kept) into usable_pct of
+  # (equity - initial margin); `open` re-reads the account once after a
+  # buying-power refusal and resends what fits (client id suffix -fit).
+  margin:
+    enabled: true
+    usable_pct_of_free_equity: 95
+    ask_pad_pct: 3
+    low_price_below: 5.0
+    low_price_per_share: 2.5
+    regt_initial: 0.5
+
   # STAGE E-P'S BOOK (2026-10-19, operator's instruction). alpaca_trade.py places it
   # for an edge-panel/ run (`--book auto`); stage E's benchmark above is never read for
   # it, except the turnover floor. Selection and size come from the panel's mean

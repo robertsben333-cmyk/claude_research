@@ -724,6 +724,123 @@ def size(taken, equity, sizing, weights=None, budget=None, held_usd=None,
     return sized, dropped
 
 
+# ---------------------------------------------------------------- margin
+
+def margin_cfg(ex):
+    """execution.margin, with Alpaca's documented short rules as defaults."""
+    m = ex.get("margin") or {}
+    return {"enabled": bool(m.get("enabled", True)),
+            "usable_pct_of_free_equity": float(m.get("usable_pct_of_free_equity", 95)),
+            "ask_pad_pct": float(m.get("ask_pad_pct", 3)),
+            "low_price_below": float(m.get("low_price_below", 5.0)),
+            "low_price_per_share": float(m.get("low_price_per_share", 2.5)),
+            "regt_initial": float(m.get("regt_initial", 0.5))}
+
+
+def order_value_px(side, ref, ask, limit_pct, mc):
+    """The per-share price Alpaca values an opening order at. For a short it is
+    MAX(limit price, ask + 3%) (docs.alpaca.markets/docs/orders-at-alpaca, Buying
+    Power); for a buy, the limit price."""
+    lim = limit_price(ref, side, limit_pct) if limit_pct is not None else ref
+    if side == "sell":
+        a = float(ask) if ask else float(ref)
+        return max(lim, a * (1 + mc["ask_pad_pct"] / 100.0))
+    return lim
+
+
+def margin_per_share(side, px, mc, band_px=None):
+    """Initial requirement per share at order price `px`. A short under $5 is the
+    greater of $2.50 a share or 100% of value (docs/margin-and-short-selling); the
+    live account confirmed 100% on JMIA at $4.91 on 2026-11-17. Everything else at
+    the Reg T 50%. A long under $2.50 is not marginable: 100%. The band is read off
+    the share price (`band_px`), not the padded order value: JMIA at $4.91 is
+    valued at $5.07 and still carries 100%."""
+    band = px if band_px is None else band_px
+    if side == "sell" and band < mc["low_price_below"]:
+        return max(mc["low_price_per_share"], px)
+    if side == "buy" and band < 2.5:
+        return px
+    return px * mc["regt_initial"]
+
+
+def free_margin(acct, mc):
+    """What new positions may use: usable_pct of (equity - initial margin)."""
+    eq = float(acct.get("equity") or 0)
+    im = float(acct.get("initial_margin") or 0)
+    return max(0.0, (eq - im) * mc["usable_pct_of_free_equity"] / 100.0)
+
+
+def margin_fit(keep, acct, ex, mc):
+    """Scale the book down, keeping the weights' ratios, until its initial margin
+    at Alpaca's own order valuation fits inside free_margin(). Operator's
+    instruction 2026-11-17, after FEAM was refused on the live account: two sub-$5
+    shorts at 50% each need 100% of equity plus the ask pad, and there is no
+    leverage on them. Returns (keep, dropped, info)."""
+    if not mc["enabled"] or not acct or not keep:
+        return keep, [], None
+    lim_pct = entry_limit_pct(ex)
+    need = 0.0
+    for c in keep:
+        ask = (c.get("quote_at_plan") or {}).get("ask")
+        vpx = order_value_px(c["side"], c["price_used_usd"], ask, lim_pct, mc)
+        c["order_value_px"] = round(vpx, 4)
+        c["margin_per_share"] = round(margin_per_share(c["side"], vpx, mc,
+                                                       c["price_used_usd"]), 4)
+        need += c["qty"] * c["margin_per_share"]
+    avail = free_margin(acct, mc)
+    info = {"free_margin_usd": round(avail, 2), "margin_needed_usd": round(need, 2),
+            "scale": 1.0}
+    if need <= avail or need <= 0:
+        return keep, [], info
+    scale = avail / need
+    info["scale"] = round(scale, 4)
+    eq = float(acct.get("equity") or 0)
+    min_usd = float(ex["sizing"].get("min_position_usd", 200))
+    out, dropped = [], []
+    for c in keep:
+        qty = int(math.floor(c["qty"] * scale))
+        notional = qty * c["price_used_usd"]
+        row = {**c, "qty_before_margin_fit": c["qty"], "qty": qty,
+               "notional_usd": round(notional, 2),
+               "pct_of_equity": round(100 * notional / eq, 2) if eq else None,
+               "binding_cap": "margin"}
+        if qty < 1 or notional < min_usd:
+            dropped.append({**row, "reason": f"margin fit leaves {qty} shares "
+                                             f"(${notional:.0f})"})
+        else:
+            out.append(row)
+    return out, dropped, info
+
+
+def fit_qty_after_refusal(api, body, ex, mc):
+    """After an 'insufficient buying power' refusal: re-read the account and the
+    open orders, and return the share count that fits now (0 if none)."""
+    acct, err = api.account()
+    if not acct:
+        return 0, f"account unreadable: {err}"
+    avail = free_margin(acct, mc)
+    opn, _ = api.call("GET", "/v2/orders?status=open&limit=200")
+    for o in (opn if isinstance(opn, list) else []):
+        try:
+            q = float(o.get("qty") or 0) - float(o.get("filled_qty") or 0)
+            opx = float(o.get("limit_price") or 0)
+        except (TypeError, ValueError):
+            continue
+        if q > 0 and opx > 0 and o.get("position_intent", "").endswith("_to_open"):
+            avail -= q * margin_per_share(o.get("side"), opx, mc, opx)
+    sym, side = body["symbol"], body["side"]
+    qts, _ = api.latest_quotes([sym])
+    qs = quote_snapshot(qts.get(sym)) if qts else None
+    ref = float(body.get("limit_price") or (qs or {}).get("mid") or 0)
+    if not ref:
+        return 0, "no price"
+    vpx = max(ref, (qs or {}).get("ask", 0) * (1 + mc["ask_pad_pct"] / 100.0)) \
+        if side == "sell" else ref
+    per = margin_per_share(side, vpx, mc, (qs or {}).get("mid") or ref)
+    q = int(max(0.0, avail) // per) if per > 0 else 0
+    return min(q, int(body["qty"])), f"free ${avail:,.0f} at ${per:.2f}/share"
+
+
 # ---------------------------------------------------------------- plan
 
 def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
@@ -824,7 +941,7 @@ def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
             c["baseline_drift_pct"] = (round(100 * (r["price"] - c["spot"]) / c["spot"], 3)
                                        if c.get("spot") else None)
 
-    held_usd, held_gross, budget, top_up = {}, 0.0, None, None
+    held_usd, held_gross, budget, top_up, margin_info = {}, 0.0, None, None, None
     if book == "panel":
         # Never take the account past the gross limit: what is still held from an
         # earlier book (nothing in this stage sells) comes off the budget first, and
@@ -839,6 +956,8 @@ def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
         budget = float(equity) * gross_pct / 100.0 - held_gross
         keep, undersized, top_up = panel_book(tradable, float(equity), sizing, pcfg,
                                               budget, held_usd)
+        keep, mdrop, margin_info = margin_fit(keep, acct, ex, margin_cfg(ex))
+        undersized = list(undersized) + mdrop
     else:
         keep, undersized = size(tradable, float(equity), sizing)
     rejected += undersized
@@ -872,7 +991,8 @@ def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
                                    pcfg.get("redistribute_cap_excess", True),
                                "top_up": top_up,
                                "held_gross_usd": round(held_gross, 2),
-                               "budget_usd": round(max(budget, 0.0), 2)}}
+                               "budget_usd": round(max(budget, 0.0), 2),
+                               "margin_fit": margin_info}}
                if book == "panel" else {}),
             "positions": keep, "rejected": rejected}
 
@@ -1568,6 +1688,11 @@ def print_plan(plan):
               + f", weight = panel_pct - {r['zero_weight_pct']}, cap "
               f"{plan['sizing'].get('max_position_pct_of_equity')}% a name, budget "
               f"${r['budget_usd']:,.0f} (held ${r['held_gross_usd']:,.0f})")
+        mf = r.get("margin_fit")
+        if mf:
+            print(f"margin: need ${mf['margin_needed_usd']:,.0f} against free "
+                  f"${mf['free_margin_usd']:,.0f}"
+                  + (f" -> book scaled x{mf['scale']}" if mf["scale"] < 1 else " (fits)"))
         tu = r.get("top_up") or {}
         if tu.get("candidates"):
             print(f"top-up: {'APPLIED' if tu.get('applied') else 'not applied'}, "
@@ -1750,6 +1875,21 @@ def cmd_open(a, api, ex):
         cid = client_id(a.run, c["ticker"],
                         "panel-entry" if plan.get("book") == "panel" else "entry")
         rec = send(api, body, cid, a.submit, reason)
+        # One retry after a buying-power refusal (operator, 2026-11-17): re-read
+        # the account and resend the share count that fits now.
+        if (not rec["submitted"] and "insufficient buying power"
+                in str(rec.get("reason") or "").lower()):
+            q2, why = fit_qty_after_refusal(api, body, ex, margin_cfg(ex))
+            px2 = float(body.get("limit_price") or c.get("price_used_usd") or 0)
+            min_usd = float(ex["sizing"].get("min_position_usd", 200))
+            print(f"  {c['ticker']:8s}refused for buying power; refit {q2} of "
+                  f"{body['qty']} shares ({why})")
+            if q2 >= 1 and q2 * px2 >= min_usd:
+                rec2 = send(api, {**body, "qty": str(q2)}, cid + "-fit", a.submit, None)
+                rec2["first_attempt"] = {"qty": body["qty"], "reason": rec.get("reason")}
+                rec = rec2
+            else:
+                rec["refit"] = f"{q2} shares fit ({why}); below the minimum, not resent"
         rec.update({"leg": "entry", "entry_date": c["entry_date"],
                     "exit_date": c["exit_date"], "event_date": c["event_date"],
                     "session": c["session"], "key": c["key"], "value": c["value"],
