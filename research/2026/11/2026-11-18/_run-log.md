@@ -87,3 +87,11 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-17 15:09 UTC
 - 20 of 20 hunted; 18 ranked, ENH and TISG not ranked (no event on 18 Nov: ENH Q3 is 27 Nov per issuer calendar; TISG suspended under concordato). No name above the 2.8 floor; top ITH +0.90, bottom MSLH -1.40. 18 packs, four judges launching.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-17 15:17 UTC
+- ibkr-handoff.json written (no broker call): SELL PFS0 (de, pct 97.5, 66 sh @ 60.5 EUR, 39.9%), SELL MSLH (uk, 95.6, 1857 sh @ 1.7063 GBP, 38.0%), SELL SDY (uk, 85.4, 13219 sh @ 0.138 GBP, 21.9%) on a 10,000 EUR offline plan. Not taken: ARR (turnover $0.13m < $0.20m floor), ELON ($0.16m < floor), CTEC (65.8), ITH (66.9).
+
+## Stage EU — DONE
+- Logged at 2026-11-17 15:17 UTC
+- 20 hunted, 18 ranked (ENH phantom: issuer dates Q3 27 Nov; TISG suspended, no event). No name above the 2.8 floor; key top ITH +0.90, bottom MSLH -1.40. Panel (4 of 4 members, no fallback) selects PFS0, ARR, MSLH, SDY short. Handoff: PFS0, MSLH, SDY short. Published to origin/main (EARNINGS_DATA_BRANCH=main; publish.sh's rebase raced hunters writing eu-short-cache.json, so most pushes were plain git rebase + push HEAD:main). Ran 6-7 hunters concurrently rather than strict waves of 5 to reach the handoff before the close. CLN/CPS/KGH hunters set session amc against the vendor's bmo default.
