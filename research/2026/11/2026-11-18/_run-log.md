@@ -55,3 +55,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:03 UTC
 - PEN banked: impact_sum -0.1, abs 4.0, p_up 50; bmo 07:00 CET (NewsWeb 686174). SSE and SVT launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:03 UTC
+- BLND banked: impact_sum +0.3, abs 2.6, p_up 50; bmo 07:00, H1 pre-released in 15 Oct trading statement. WKP launched (last name).
