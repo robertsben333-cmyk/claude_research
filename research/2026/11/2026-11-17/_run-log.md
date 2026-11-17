@@ -78,3 +78,7 @@
 ## Edge hunt (panel v3b) — DONE
 - Logged at 2026-11-17 19:12 UTC
 - Judges: all four v3b judges on pinned models, 20/20 coverage. Panel (own history) selects BRBR short (89); E-P scale also BRBR (88). Stage E-P selected FEAM, ICCM, JMIA: no overlap; Spearman rho of panel_pct_signed v3b vs E-P = +0.06 on 18 shared names; 6 side disagreements. V2 grounded written before the first print. No orders, no alpaca_trade.py call, no shadow ledger. panel-history-v3b.json +80 sizes; stage E-P's history untouched.
+
+## Holistic research — 2026-11-17 — STARTED
+- Logged at 2026-11-17 19:17 UTC
+- 19:18 UTC (14:18 ET). Stage H: pick up to 12 names from E-P's sweep, evolving hp.v2 + frozen control hp.v1 on every name, collect before 15:45 ET, then the learning step. No orders.
