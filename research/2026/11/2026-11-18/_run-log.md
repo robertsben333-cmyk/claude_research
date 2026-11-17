@@ -51,3 +51,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 15:03 UTC
 - VOW banked: impact_sum -0.9, abs 8.0, p_up 46; bmo confirmed (NewsWeb 686196). SDY launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 15:03 UTC
+- PEN banked: impact_sum -0.1, abs 4.0, p_up 50; bmo 07:00 CET (NewsWeb 686174). SSE and SVT launched.
