@@ -19,3 +19,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 14:54 UTC
 - CLN banked: impact_sum -0.2, abs 5.5, p_up 46. Hunter set session_check amc (6 of last 7 periodic reports released after the 17:00 Warsaw close). SVEAF_B launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 14:56 UTC
+- PFS0 banked: impact_sum -1.3, abs 9.0, p_up 46; Q3 confirmed (EQS 2026-11-11), bmo 08:00 CET from issuer timestamps. ARR launched.
