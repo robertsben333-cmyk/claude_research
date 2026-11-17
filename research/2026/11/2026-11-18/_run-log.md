@@ -27,3 +27,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-17 14:56 UTC
 - ELON banked: impact_sum +0.7, abs 10, p_up 52; Q3 confirmed (issuer calendar, MFN est. 08:30 CET). ENH launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-17 14:57 UTC
+- CPS banked: impact_sum +0.1, abs 6.0, p_up 53; session_check amc (files after Warsaw close; H1 stamped 17:47) so the bmo window likely holds no release. HAFNI launched.
