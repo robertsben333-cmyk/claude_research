@@ -36,3 +36,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:49 UTC
 - BAB banked: impact_sum -0.3, abs 5.0, p_up 48; HY27 confirmed (16 Sep AGM update), bmo by precedent. PAY launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:52 UTC
+- SUBC banked: impact_sum +0.2, abs 4.5, p_up 51; Q3 08:00 CET confirmed (NewsWeb 684179); merger-arb name pegged to Saipem, whose Q3/2027 guide also lands in window. SGE launched.
