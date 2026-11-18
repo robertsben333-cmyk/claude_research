@@ -96,3 +96,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-18 15:02 UTC
 - 20 of 20 hunted; 18 ranked, AQ and CMCX not ranked (phantoms: AQ next report 2027-02-11, CMCX interims moved to 26 Nov). No name above the 2.8 floor; top SGE +0.95, bottom ELIOR -1.20. 18 packs, four judges launching.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-18 15:09 UTC
+- ibkr-handoff.json written (no broker call): SELL ELIOR (fr, pct 99.1, 2166 sh @ 1.962 EUR, 42.5%), BUY MBR (pl, 85.5, 28 sh @ 422.5 PLN, 26.8%), BUY HLMA (uk, 74.6, 38 sh @ 34.28 GBP, 15.6%), BUY SGE (uk, 72.8, 102 sh @ 11.28 GBP, 13.8%) on a 10,000 EUR offline plan. Not taken: AUROORA (turnover $0.16m < $0.20m floor).
