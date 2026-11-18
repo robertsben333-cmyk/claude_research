@@ -20,3 +20,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:45 UTC
 - CMCX banked: phantom — interims moved to 26 Nov per company Q&A (7 Oct) and financial calendar; vendor row still 19 Nov. Findings empty. HAUTO launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:47 UTC
+- GPE banked: impact_sum +0.35, abs 3.0, p_up 53; interims bmo confirmed (14 Oct update). AGO launched.
