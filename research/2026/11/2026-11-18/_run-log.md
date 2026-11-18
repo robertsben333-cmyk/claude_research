@@ -110,3 +110,7 @@
 ## Edge hunt (panel v3b) — 2026-11-18 amc + 2026-11-19 bmo — STARTED
 - Logged at 2026-11-18 18:16 UTC
 - 38 names in window (17 amc 11-18, 21 bmo 11-19), 38 baselines sealed in edge-panel-v3b/baselines before any agent. Plan: 1 edge-sweep, up to 20 unpriced-searcher-v3b (<=6 per turn, amc first), 4 panel-judge-v3b judges. No orders. Fired 18:11 UTC.
+
+## Edge hunt (panel v3b) — sweep and waves
+- Logged at 2026-11-18 18:25 UTC
+- 18:27Z sweep: 36 confirmed of 38 (unconfirmed WMG, BEEM); session unsettled WMG EVAX BEEM. Cap 20 by hunt_priority: hunted BORR UTI RRGB FUTU BBWI KLIC HP P MMS SBLK WSM RERE LQDT JOYY MAGN TEN VVV DAO BABA WWD; shed YMM SNEX PDD CPA PCYO UGI MANU ROAD PANW ARBE NTES EVAX NJR EVGN WMT CCIF WMG BEEM. Wave 1 (amc): BORR UTI RRGB KLIC HP P.
