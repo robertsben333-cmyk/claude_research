@@ -103,3 +103,7 @@
 ## Edge hunt (panel) — 2026-11-18 amc + 2026-11-19 bmo — STARTED
 - Logged at 2026-11-18 18:08 UTC
 - Fired 18:07 UTC (13:07 ET). Universe 38 names (17 amc 11-18, 21 bmo 11-19); 38 baselines sealed in edge-panel/baselines. Plan: one edge-sweep, up to 20 unpriced-searchers by hunt_priority amc first, four judges.
+
+## Edge hunt (panel) — sweep and waves
+- Logged at 2026-11-18 18:14 UTC
+- 18:15Z: Sweep: 34 confirmed of 38 (unconfirmed BEEM, LQDT, WMG, BORR; sweep file's top-level count says 35, the agent reports 34 correct); session unsettled WMT HP MMS CCIF EVAX WMG. Cap 20 by hunt_priority: hunted RRGB ARBE PCYO EVAX MAGN KLIC FUTU RERE SNEX DAO YMM BBWI P JOYY WWD UTI CPA MMS PDD VVV; shed (lowest priority) WSM SBLK NTES HP BABA EVGN TEN PANW MANU UGI WMT NJR ROAD CCIF. Only RRGB's baseline carries a live option chain. CPA baseline_history_trustworthy=false. Wave 1 (amc): RRGB PCYO KLIC SNEX P JOYY WWD UTI.
