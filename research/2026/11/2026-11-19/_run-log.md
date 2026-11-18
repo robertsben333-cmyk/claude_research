@@ -84,3 +84,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:59 UTC
 - ATT banked: impact_sum -0.8, abs 5.0, p_up 48; Q3 report 19 Nov confirmed (ESPI 74/2026); hunter set session amc (periodic reports filed ~22:00) against the assumed bmo; headline Q3 pre-released 5 Nov.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 15:00 UTC
+- MBR banked: impact_sum +0.3, abs 6.5, p_up 54; Q3 19 Nov confirmed (Strefa Inwestorów, Parkiet), bmo by 2026 precedent but Q3 2025 came amc.
