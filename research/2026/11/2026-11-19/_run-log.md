@@ -32,3 +32,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:49 UTC
 - GRI banked: impact_sum -0.3, abs 4.5, p_up 51; FY bmo 07:00 confirmed (Notice of Results 22 Sep). MHA launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:49 UTC
+- BAB banked: impact_sum -0.3, abs 5.0, p_up 48; HY27 confirmed (16 Sep AGM update), bmo by precedent. PAY launched.
