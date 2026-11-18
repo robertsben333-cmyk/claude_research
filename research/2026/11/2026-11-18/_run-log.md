@@ -152,3 +152,7 @@
 ## Edge hunt (panel v3b) — panel STARTED
 - Logged at 2026-11-18 18:52 UTC
 - 18:52Z 20 of 20 searchers returned, all search_complete true, all 20 carry expectations, next_guide and evidence_type. HP, RRGB, MMS baselines amended suspect->unknown from the sweep's company sources AFTER the hunts (the pre-hunt amend step was missed; event-existence flag only, recorded in each baseline). edge_score: 20 rankable, 0 clear 2.8. V2 written. 20 packs, four judges.
+
+## Edge hunt (panel v3b) — done
+- Logged at 2026-11-18 19:01 UTC
+- 19:01Z four judges ran on pinned agents, 20/20 coverage each. Scored --dry-run on E-P scale (edge-scores-panel-epscale.json) then on panel-history-v3b.json (80 sizes appended). Selected: none (max RERE 74 short). vs E-P: 13 shared names, rho +0.555, selected overlap none (E-P: RRGB, ARBE). No orders placed.
