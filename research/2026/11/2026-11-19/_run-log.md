@@ -100,3 +100,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-18 15:09 UTC
 - ibkr-handoff.json written (no broker call): SELL ELIOR (fr, pct 99.1, 2166 sh @ 1.962 EUR, 42.5%), BUY MBR (pl, 85.5, 28 sh @ 422.5 PLN, 26.8%), BUY HLMA (uk, 74.6, 38 sh @ 34.28 GBP, 15.6%), BUY SGE (uk, 72.8, 102 sh @ 11.28 GBP, 13.8%) on a 10,000 EUR offline plan. Not taken: AUROORA (turnover $0.16m < $0.20m floor).
+
+## Stage EU — DONE
+- Logged at 2026-11-18 15:09 UTC
+- 20 hunted, 18 ranked (AQ and CMCX phantoms). No name above the 2.8 floor; key top SGE +0.95, bottom ELIOR -1.20. Panel (4 of 4 members, no fallback) selects ELIOR short, AUROORA and MBR long. Handoff at 15:09 UTC: ELIOR short, MBR, HLMA, SGE long (AUROORA under the turnover floor). Published to origin/main (EARNINGS_DATA_BRANCH=main), confirmed by git log origin/main. Ran up to 8 hunters concurrently (platform cap) instead of waves of 5. UBI and ATT hunters set session amc against the baseline's bmo.
