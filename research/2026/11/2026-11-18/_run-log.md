@@ -133,3 +133,7 @@
 ## Edge hunt (panel v3b) — sweep and waves
 - Logged at 2026-11-18 18:35 UTC
 - 18:45Z BORR, UTI returned (v3b fields present, complete). Wave 3: BBWI MMS.
+
+## Edge hunt (panel v3b) — sweep and waves
+- Logged at 2026-11-18 18:43 UTC
+- 18:43Z all 20 searchers launched (last BABA). Returned so far, all with v3b fields and search_complete true: HP P BORR UTI RRGB KLIC JOYY FUTU SBLK WWD BBWI MMS.
