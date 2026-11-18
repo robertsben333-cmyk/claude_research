@@ -80,3 +80,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:57 UTC
 - AUROORA banked: impact_sum +0.9, abs 6.0, p_up 55; Q3 09:00 EET confirmed (issuer notice 11 Nov), bmo.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:59 UTC
+- ATT banked: impact_sum -0.8, abs 5.0, p_up 48; Q3 report 19 Nov confirmed (ESPI 74/2026); hunter set session amc (periodic reports filed ~22:00) against the assumed bmo; headline Q3 pre-released 5 Nov.
