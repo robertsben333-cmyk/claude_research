@@ -44,3 +44,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:52 UTC
 - HAUTO banked: impact_sum -1.0, abs 6.5, p_up 46; Q3 07:30 CET confirmed (NewsWeb 686440). XPS launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:52 UTC
+- MHA banked: impact_sum 0.0, abs 3.0, p_up 52; interims bmo confirmed (30 Oct TU). AQ launched.
