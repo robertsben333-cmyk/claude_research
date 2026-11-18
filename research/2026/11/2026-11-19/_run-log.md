@@ -60,3 +60,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:54 UTC
 - LIO banked: impact_sum +0.8, abs 5.0, p_up 53; HY confirmed (21 Oct TU), bmo by precedent. MBR launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:54 UTC
+- AQ banked: phantom — Q3 published 2026-10-15, next report 2027-02-11 per issuer's Q3 PDF; inderes-added row is wrong. Findings empty. NEU launched (last name).
