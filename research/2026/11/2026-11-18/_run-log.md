@@ -156,3 +156,7 @@
 ## Edge hunt (panel v3b) — done
 - Logged at 2026-11-18 19:01 UTC
 - 19:01Z four judges ran on pinned agents, 20/20 coverage each. Scored --dry-run on E-P scale (edge-scores-panel-epscale.json) then on panel-history-v3b.json (80 sizes appended). Selected: none (max RERE 74 short). vs E-P: 13 shared names, rho +0.555, selected overlap none (E-P: RRGB, ARBE). No orders placed.
+
+## Holistic research — 2026-11-18 — STARTED
+- Logged at 2026-11-18 19:16 UTC
+- Fired 19:16 UTC (14:16 ET). E-P sweep on main; pick up to 12 names, evolving hp.v3 + control hp.v1 on every name; no orders.
