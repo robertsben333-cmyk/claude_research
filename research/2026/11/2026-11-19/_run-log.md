@@ -48,3 +48,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:52 UTC
 - MHA banked: impact_sum 0.0, abs 3.0, p_up 52; interims bmo confirmed (30 Oct TU). AQ launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:52 UTC
+- UBI banked: impact_sum 0.0, abs 9.0, p_up 49; H1 19 Nov confirmed, hunter set session amc (AMF timestamps: every scheduled release since 2024 after the Paris close) against the baseline's assumed bmo. AUROORA launched.
