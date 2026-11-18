@@ -118,3 +118,11 @@
 ## Edge hunt (panel) — baselines amended
 - Logged at 2026-11-18 18:32 UTC
 - 18:32Z: 19 of 20 searchers returned, 0 unfinished (hunt_status). Amended RRGB and MMS suspect -> unknown from company sources (RRGB rescheduled release; MMS's 10-20 8-K was an acquisition, not a print). HP and ROAD also read suspect but were not hunted. VVV still running.
+
+## Edge hunt (panel) — step 3s flatten
+- Logged at 2026-11-18 18:32 UTC
+- 18:33Z: all 20 searchers returned, hunt_status 0 unfinished of 20. LIVE: held JMIA -295 sh (short, +38.1% unrealised as reported), closed at market. PAPER: held JMIA -2187 sh (short), closed at market. FEAM (amc) was already sold by the 09:00 ET amc-exit Routine on both accounts; no amc leg was still held here. Both accounts report closed.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-18 18:33 UTC
+- 20 packs, four judges
