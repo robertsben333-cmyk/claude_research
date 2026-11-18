@@ -140,3 +140,11 @@
 ## Edge hunt (panel) — panel and note
 - Logged at 2026-11-18 18:43 UTC
 - 18:43Z: 4/4 judges ran (opus5, opus55, sonnet55, fable51, all pinned, full coverage 20/20). Selected (panel_pct>=80): RRGB 88 L, ARBE 85 S. No stage E dir today. Note published; step 6b next.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-18 18:45 UTC
+- 18:45Z, 135 min to close. Selected RRGB 88 L and ARBE 85 S; ARBE not shortable at Alpaca, so one strong tradable name and the top-up APPLIED (MMS 78 S, SNEX 78 L, EVAX 75 S). LIVE (equity $3,400): RRGB long 204 @ 8.33 (49.9%), MMS short 8 @ 65.33, SNEX long 10 @ 54.90, EVAX short 219 @ 2.61; all filled. PAPER (equity $24,910): RRGB long 1496 @ 8.37 (50%), MMS short 79 @ 65.33, SNEX long 95 @ 54.94, EVAX short 789 @ 2.60 (capacity-capped at 1% ADV, 8.2%); all filled. Same names on both accounts.
+
+## Edge hunt (panel) — DONE
+- Logged at 2026-11-18 18:45 UTC
+- 20 hunted, 20 ranked, 0 unfinished; 4/4 judges; selected RRGB L, ARBE S (ARBE unshortable); book RRGB+MMS+SNEX+EVAX on live and paper. No stage E files today.
