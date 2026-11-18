@@ -73,16 +73,21 @@ from pathlib import Path
 # is where they can actually affect a number. Rewriting this table to {} rather than
 # leaving the 2026-09-10 entries in place is the point of the staleness guard below.
 AMENDMENTS: dict[str, tuple[str, str, str]] = {
-    # 2026-11-16, stage E-P (edge-panel). Applied after wave 1 launched, before scoring.
-    # Symmetry: of the 20 hunted names only STEM reads 'suspect'; INFQ, RCAT, OPRA,
-    # KLAR, ELTK and GLAS carry cadence_implausible with verdict 'unknown' and are left
-    # alone (CMCM/LUXE reasoning). HUYA reads 'suspect' but was not hunted.
-    "STEM": ("unknown",
-             "Off 'suspect' to 'unknown', not to fits_cadence. The matcher missed the Q2 "
-             "print of 2026-08-12 (8-K and 10-Q on EDGAR, per the searcher); the company "
-             "itself rescheduled its Q3 2026 results from Nov 5 to Nov 16, release about "
-             "16:05 ET, call 17:00 ET.",
-             "https://finviz.com/news/415367/stem-reschedules-third-quarter-2026-earnings-results-conference-call-to-monday-november-16-2026"),
+    # 2026-11-18, stage E-P (edge-panel). Applied after the searchers, before scoring.
+    # Symmetry: of the 20 hunted names only RRGB and MMS read 'suspect'; HP and ROAD
+    # read 'suspect' but were not hunted (shed on hunt_priority) and are left alone.
+    # Both go to 'unknown', not fits_cadence.
+    "RRGB": ("unknown",
+             "Off 'suspect' to 'unknown'. The matcher read the 2026-11-02 preliminary "
+             "comparable-sales release as a print; the company itself moved the full Q3 "
+             "release and call from Nov 4 to Nov 18, call 16:30 ET.",
+             "https://finviz.com/news/413576/red-robin-announces-preliminary-third-quarter-comparable-restaurant-revenue-reschedules-earnings-call-to-november-18-2026"),
+    "MMS": ("unknown",
+            "Off 'suspect' to 'unknown'. The matcher read the 2026-10-20 8-K (Agile Defense "
+            "acquisition and preliminary leverage ratios, no results) as a print; the last "
+            "real print was 2026-08-06 and the company's IR page lists the Q4 FY26 call for "
+            "2026-11-19 09:00 ET.",
+            "https://investor.maximus.com/"),
 }
 
 # SYMMETRY, 2026-09-22: one upgrade and no downgrades, which needs stating rather

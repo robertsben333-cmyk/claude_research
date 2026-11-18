@@ -114,3 +114,7 @@
 ## Edge hunt (panel v3b) — sweep and waves
 - Logged at 2026-11-18 18:25 UTC
 - 18:27Z sweep: 36 confirmed of 38 (unconfirmed WMG, BEEM); session unsettled WMG EVAX BEEM. Cap 20 by hunt_priority: hunted BORR UTI RRGB FUTU BBWI KLIC HP P MMS SBLK WSM RERE LQDT JOYY MAGN TEN VVV DAO BABA WWD; shed YMM SNEX PDD CPA PCYO UGI MANU ROAD PANW ARBE NTES EVAX NJR EVGN WMT CCIF WMG BEEM. Wave 1 (amc): BORR UTI RRGB KLIC HP P.
+
+## Edge hunt (panel) — baselines amended
+- Logged at 2026-11-18 18:32 UTC
+- 18:32Z: 19 of 20 searchers returned, 0 unfinished (hunt_status). Amended RRGB and MMS suspect -> unknown from company sources (RRGB rescheduled release; MMS's 10-20 8-K was an acquisition, not a print). HP and ROAD also read suspect but were not hunted. VVV still running.
