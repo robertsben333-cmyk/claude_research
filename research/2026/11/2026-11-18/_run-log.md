@@ -148,3 +148,7 @@
 ## Edge hunt (panel) — DONE
 - Logged at 2026-11-18 18:45 UTC
 - 20 hunted, 20 ranked, 0 unfinished; 4/4 judges; selected RRGB L, ARBE S (ARBE unshortable); book RRGB+MMS+SNEX+EVAX on live and paper. No stage E files today.
+
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-18 18:52 UTC
+- 18:52Z 20 of 20 searchers returned, all search_complete true, all 20 carry expectations, next_guide and evidence_type. HP, RRGB, MMS baselines amended suspect->unknown from the sweep's company sources AFTER the hunts (the pre-hunt amend step was missed; event-existence flag only, recorded in each baseline). edge_score: 20 rankable, 0 clear 2.8. V2 written. 20 packs, four judges.
