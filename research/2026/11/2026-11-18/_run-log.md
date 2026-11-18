@@ -129,3 +129,7 @@
 ## Edge hunt (panel v3b) — sweep and waves
 - Logged at 2026-11-18 18:33 UTC
 - 18:34Z HP, P returned (v3b fields present, search complete). Wave 2 launched: SBLK JOYY WWD FUTU.
+
+## Edge hunt (panel v3b) — sweep and waves
+- Logged at 2026-11-18 18:35 UTC
+- 18:45Z BORR, UTI returned (v3b fields present, complete). Wave 3: BBWI MMS.
