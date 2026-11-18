@@ -160,3 +160,11 @@
 ## Holistic research — 2026-11-18 — STARTED
 - Logged at 2026-11-18 19:16 UTC
 - Fired 19:16 UTC (14:16 ET). E-P sweep on main; pick up to 12 names, evolving hp.v3 + control hp.v1 on every name; no orders.
+
+## Holistic research — 2026-11-18 — recommendations
+- Logged at 2026-11-18 19:36 UTC
+- 24/24 hunts ok (12 names x evolving hp.v3 + control hp.v1), all holistic-researcher agent type; 0 recommendations. Collected 19:36 UTC. Notes: several researchers wrote emitted_utc a few minutes after the actual write time (collect uses file mtime, all well before 16:00 ET). Both MAGN arms report the sealed baseline's reaction history misdates the amc prints by one session ('7 of 7 up' is wrong; real median ~7%) — upstream E-P baseline issue. E-P comparison appended to note.md; sign disagreements RRGB, MAGN, RERE.
+
+## Holistic research — learning step
+- Logged at 2026-11-18 19:36 UTC
+- resolve: 22 new name-arms, 2 pending, 149 in outcomes. gate closed: 0/30 names, 0/3 days on hp.v3; drift alarm off (55 pairs, diff -0.002, t -0.42). Reflector not launched. Tomorrow's version: hp.v3.
