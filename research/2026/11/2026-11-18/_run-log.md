@@ -99,3 +99,7 @@
 ## Stage E-P amc exit — 2026-11-18
 - Logged at 2026-11-18 14:09 UTC
 - 09:09 ET. Guards: live exit 0, paper exit 0 (amc -> open as day). verify: live STEM/OMER ok, paper CURI/CTVA/STEM/OMER ok, nothing UNFILLED, no rescue. close --today-only: LIVE FEAM amc SELL market DAY queued for open, order efdf3245-d2dc-4103-ad36-81daababd0d9; PAPER FEAM amc SELL market DAY, order 9fa3d307-b1b9-487f-a62c-cde1e8ebbc72. Refused on both: JMIA bmo (market placement, market closed; left for stage E-P's own run).
+
+## Edge hunt (panel) — 2026-11-18 amc + 2026-11-19 bmo — STARTED
+- Logged at 2026-11-18 18:08 UTC
+- Fired 18:07 UTC (13:07 ET). Universe 38 names (17 amc 11-18, 21 bmo 11-19); 38 baselines sealed in edge-panel/baselines. Plan: one edge-sweep, up to 20 unpriced-searchers by hunt_priority amc first, four judges.
