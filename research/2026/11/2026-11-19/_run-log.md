@@ -24,3 +24,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:47 UTC
 - GPE banked: impact_sum +0.35, abs 3.0, p_up 53; interims bmo confirmed (14 Oct update). AGO launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:48 UTC
+- HLMA banked: impact_sum +0.6, abs 6.5, p_up 55; H1 bmo confirmed (24 Sep update). LIO launched.
