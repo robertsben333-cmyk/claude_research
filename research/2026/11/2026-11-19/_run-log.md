@@ -68,3 +68,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:55 UTC
 - AGO banked: impact_sum 0.0, abs 5.5, p_up 50; Q3 confirmed (RB 2/2026), bmo by filing timestamps.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:56 UTC
+- XPS banked: impact_sum +0.6, abs 3.5, p_up 50; HY bmo confirmed (5 Oct and 10 Nov RNS).
