@@ -40,3 +40,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:52 UTC
 - SUBC banked: impact_sum +0.2, abs 4.5, p_up 51; Q3 08:00 CET confirmed (NewsWeb 684179); merger-arb name pegged to Saipem, whose Q3/2027 guide also lands in window. SGE launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:52 UTC
+- HAUTO banked: impact_sum -1.0, abs 6.5, p_up 46; Q3 07:30 CET confirmed (NewsWeb 686440). XPS launched.
