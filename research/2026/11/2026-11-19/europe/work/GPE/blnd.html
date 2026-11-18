@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="71d3773bb6464155be9af2b294dc7ddb-760212ea501d4667-1"/><meta name="baggage" content="sentry-trace_id=71d3773bb6464155be9af2b294dc7ddb,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=4cd1a2769f8c338df1a232047445d202fe25cf86,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.667955"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "4cd1a2769f8c338df1a232047445d202fe25cf86",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from Half-year Financial Report" />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "Half-year Financial Report | Company Announcement | Investegate",
+            "description":"Investegate announcements from Half-year Financial Report",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-11-18 07:00:09",
+            "dateModified": "2026-11-18 07:01:13",
+            "url": "https://www.investegate.co.uk/announcement/rns/british-land-company--blnd/half-year-financial-report/9880519"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Half-year Financial Report | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/british-land-company--blnd/half-year-financial-report/9880519' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>Half-year Financial Report | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">Half-year Financial Report</h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    British Land delivered a strong H1: Underlying profit £166m (+7%), underlying EPS 16.1p (+5%) and interim dividend 12.88p (+5%); like‑for‑like net rental growth +12% (Campuses +25%), portfolio occupancy 96.4% and total property return +3.9%; portfolio valuation rose 1.5% to £10,471m and EPRA NTA rose to 599p (+2%). Balance sheet metrics include LTV 39.6%, Group net debt/EBITDA 7.0x (improved), £2.9bn of financing activity including a £775m RCF, and £2.0bn of undrawn facilities and cash with no refinancing requirement until 2030. FY27 underlying EPS guidance upgraded to 31.0p (+7% YoY).
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head><style type="text/css">
+/*<![CDATA[*/
+/**/
+
+			@page Section_1 { size: 595.35pt 842pt margin-top: 80.8pt margin-right: 41.1pt margin-bottom: 49.65pt margin-left: 41.1pt -aw-footer-distance: 22.7pt -aw-header-distance: 35.45pt }
+			.aspose-root div.Section_1 { margin: 80.8pt 41.1pt 49.65pt; page: Section_1 }
+			.aspose-root { line-height: 108%; font-family: Calibri; font-size: 11pt; max-width: 600.35pt; width: 600.35pt; margin: 1pt auto; position: relative; display: block }
+			.aspose-root h1, .aspose-root h2, .aspose-root h3, .aspose-root h4, .aspose-root h5, .aspose-root h6, .aspose-root p { margin: 0 0 8pt }
+			.aspose-root li, .aspose-root table { margin-top: 0; margin-bottom: 8pt }
+			.aspose-root h1 { margin-bottom: 2.85pt; page-break-inside: auto; page-break-after: avoid; line-height: 16pt; font-family: "ITC Caslon 224 Std Book"; font-size: 14pt; font-weight: normal; letter-spacing: -0.2pt; color: rgba(0, 127, 170, 1) }
+			.aspose-root h2 { margin-bottom: 1.3pt; page-break-inside: auto; page-break-after: avoid; line-height: 11pt; font-family: DINPro-Medium; font-size: 9pt; font-weight: normal; letter-spacing: -0.2pt; color: rgba(0, 127, 170, 1); -aw-style-parent: heading1 }
+			.aspose-root h3 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; color: rgba(31, 55, 99, 1) }
+			.aspose-root h4 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 11pt; font-weight: normal; font-style: italic; color: rgba(47, 84, 150, 1) }
+			.aspose-root h5 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 11pt; font-weight: normal; color: rgba(47, 84, 150, 1) }
+			.aspose-root h6 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 11pt; font-weight: normal; color: rgba(31, 55, 99, 1) }
+			.aspose-root .Heading7 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 11pt; font-weight: normal; font-style: italic; color: rgba(31, 55, 99, 1); -aw-style-name: heading7 }
+			.aspose-root .Heading8 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 10.5pt; font-weight: normal; color: rgba(39, 39, 39, 1); -aw-style-name: heading8 }
+			.aspose-root .Heading9 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 10.5pt; font-weight: normal; font-style: italic; color: rgba(39, 39, 39, 1); -aw-style-name: heading9 }
+			.aspose-root .BalloonText { margin-bottom: 0; line-height: normal; font-family: "Segoe UI"; font-size: 9pt; -aw-style-name: balloon-text }
+			.aspose-root .Bodycopy0 { margin-bottom: 8pt; line-height: 125%; font-size: 9pt; -aw-style-name: 'Body copy' }
+			.aspose-root .BodyCopy { margin-top: 0; margin-bottom: 5.5pt; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Body_Copy' }
+			.aspose-root .BodyCopyAfterTabe { margin-top: 4pt; margin-bottom: 5.5pt; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Body_Copy_AfterTabe' }
+			.aspose-root .BodyCopyIndent { margin-top: 0; margin-left: 14.2pt; margin-bottom: 5.5pt; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Body_Copy_Indent' }
+			.aspose-root .BulletLevel1 { margin-top: 0; margin-left: 18pt; margin-bottom: 5.5pt; text-indent: -18pt; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Bullet_Level_1' }
+			.aspose-root .Bulletlevel2 { margin-top: 0; margin-left: 18pt; margin-bottom: 5.5pt; text-indent: -18pt; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Bullet_level_2' }
+			.aspose-root .Caption { margin-bottom: 10pt; line-height: normal; font-size: 9pt; font-style: italic; color: rgba(68, 84, 106, 1); -aw-style-name: caption }
+			.aspose-root .CommentSubject { margin-bottom: 8pt; line-height: normal; font-size: 10pt; font-weight: bold; -aw-style-name: comment-subject; -aw-style-parent: comment-text }
+			.aspose-root .CommentText { margin-bottom: 8pt; line-height: normal; font-size: 10pt; -aw-style-name: comment-text }
+			.aspose-root .Default { margin-bottom: 0; line-height: normal; font-family: Arial; font-size: 12pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .EndnoteText { margin-bottom: 0; line-height: normal; font-size: 10pt; -aw-style-name: endnote-text }
+			.aspose-root .Footer { margin-bottom: 0; line-height: normal; font-size: 11pt; -aw-style-name: footer }
+			.aspose-root .FootnoteText { margin-bottom: 0; line-height: normal; font-size: 10pt; -aw-style-name: footnote-text }
+			.aspose-root .Footnotes { margin-top: 8pt; margin-left: 8.5pt; margin-bottom: 0; text-indent: -8.5pt; line-height: 9.5pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 7.5pt }
+			.aspose-root .Header { margin-bottom: 0; line-height: normal; font-size: 11pt; -aw-style-name: header }
+			.aspose-root .HeadingLeve3SpaceBeforeAfter { margin-top: 8pt; margin-left: 19.85pt; margin-bottom: 6pt; text-indent: -19.85pt; line-height: 11pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Leve_3_Space_BeforeAfter' }
+			.aspose-root .HeadingLevel1 { margin-bottom: 8pt; line-height: 22pt; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 16pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_1' }
+			.aspose-root .HeadingLevel2 { margin-bottom: 6pt; line-height: 14pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 10pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_2' }
+			.aspose-root .HeadingLevel2Space { margin-top: 8pt; margin-bottom: 6pt; line-height: 14pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 10pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_2_Space' }
+			.aspose-root .HeadingLevel3 { margin-top: 0; margin-left: 19.85pt; margin-bottom: 0; text-indent: -19.85pt; line-height: 11pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_3' }
+			.aspose-root .HeadingLevel3Space { margin-top: 8pt; margin-left: 19.85pt; margin-bottom: 0; text-indent: -19.85pt; line-height: 11pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_3_Space' }
+			.aspose-root .HeadingLevel3SpaceBefore { margin-top: 8pt; margin-left: 19.85pt; margin-bottom: 0; text-indent: -19.85pt; line-height: 11pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_3_Space+Before' }
+			.aspose-root .HeadingLevel3SpaceAfter { margin-top: 0; margin-left: 19.85pt; margin-bottom: 6pt; text-indent: -19.85pt; line-height: 11pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_3_Space_After' }
+			.aspose-root .HeadingLevel3SpaceBeforeAfter { margin-top: 8pt; margin-left: 19.85pt; margin-bottom: 6pt; text-indent: -19.85pt; line-height: 11pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_3_Space_BeforeAfter' }
+			.aspose-root .HeadingLevel4 { margin-top: 0; margin-bottom: 0; line-height: 12pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 10pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_4' }
+			.aspose-root .HeadingLevel4SpaceAfter { margin-top: 0; margin-bottom: 6pt; line-height: 12pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 10pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_4_Space_After' }
+			.aspose-root .HeadingLevel4SpaceBefore { margin-top: 8pt; margin-bottom: 0; line-height: 12pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 10pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Heading_Level_4_Space_Before' }
+			.aspose-root .HeadingLevel5 { margin-top: 0; margin-bottom: 0; line-height: 12pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 10pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Heading_Level_5' }
+			.aspose-root .IntenseQuote { margin: 18pt 43.2pt; text-align: center; line-height: 108%; border-top: 0.75pt solid rgba(68, 114, 196, 1); border-bottom: 0.75pt solid rgba(68, 114, 196, 1); padding-top: 10pt; padding-bottom: 10pt; font-size: 11pt; font-style: italic; color: rgba(68, 114, 196, 1); -aw-border-bottom: 0.5pt single #4472c4; -aw-border-top: 0.5pt single #4472c4; -aw-style-name: intense-quote }
+			.aspose-root .IntroParaLevel1 { margin-top: 5.65pt; margin-bottom: 5.65pt; line-height: 20pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 16pt; font-weight: bold; text-transform: none; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Intro_Para_Level_1' }
+			.aspose-root .IntroParaLevel2 { margin-bottom: 8pt; line-height: 14pt; font-family: "Avenir LT Pro 55 Roman Bold"; font-size: 12pt; letter-spacing: 0.5pt; -aw-style-name: 'Intro_Para_Level_2' }
+			.aspose-root .ListBullet { margin-left: 8.5pt; margin-bottom: 2.85pt; text-indent: -8.5pt; line-height: 10.5pt; font-family: "Gotham Book"; font-size: 8.5pt; letter-spacing: -0.2pt; -aw-style-name: list-bullet }
+			.aspose-root .ListParagraph { margin-left: 36pt; margin-bottom: 8pt; line-height: 108%; font-size: 11pt; -aw-style-name: list-paragraph }
+			.aspose-root .NoSpacing { margin-bottom: 0; line-height: normal; font-size: 11pt; -aw-style-name: no-spacing }
+			.aspose-root .NormalWeb { margin-bottom: 8pt; line-height: 108%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: normal-web }
+			.aspose-root .NumberedLevel1 { margin-top: 0; margin-left: 14.2pt; margin-bottom: 5.5pt; text-indent: -14.2pt; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Numbered_Level_1' }
+			.aspose-root .NumberedLevel2 { margin-top: 0; margin-left: 28.4pt; margin-bottom: 5.5pt; text-indent: -14.2pt; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Numbered_Level_2' }
+			.aspose-root .PageDriver { margin-bottom: 5.65pt; line-height: 11pt; font-family: Gotham-Book; font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.75pt; color: rgba(0, 127, 170, 1) }
+			.aspose-root .PageTitleSpaceAfter { margin-bottom: 30pt; line-height: 20pt; font-family: "ITC Caslon 224 Std Book"; font-size: 18pt; color: rgba(0, 127, 170, 1); -aw-style-name: 'PageTitle SpaceAfter' }
+			.aspose-root .PageDriver0 { margin-top: 0; margin-bottom: 0; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 7.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Page_Driver' }
+			.aspose-root .PullQuoteLevel1 { margin-top: 0; margin-bottom: 5.65pt; line-height: 20pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 16pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Pull_Quote_Level_1' }
+			.aspose-root .Quote { margin: 10pt 43.2pt 8pt; text-align: center; line-height: 108%; font-size: 11pt; font-style: italic; color: rgba(64, 64, 64, 1); -aw-style-name: quote }
+			.aspose-root .QuoteMakerName { margin-top: 0; margin-bottom: 0; line-height: 12pt; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 10pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Quote_Maker_Name' }
+			.aspose-root .QuoteMakerTitle { margin-top: 0; margin-bottom: 0; line-height: 11pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-style-name: 'Quote_Maker_Title' }
+			.aspose-root .Revision { margin-bottom: 0; line-height: normal; font-size: 11pt; -aw-style-name: revision }
+			.aspose-root .RunningFooter { margin-bottom: 0; text-align: center; line-height: normal; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 8pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Running Footer'; -aw-style-parent: footer }
+			.aspose-root .RunningHead { margin-bottom: 0; text-align: center; line-height: normal; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 8pt; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Running Head'; -aw-style-parent: header }
+			.aspose-root .SectionTitle { margin-bottom: 0; text-align: center; line-height: normal; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 8pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(25, 50, 101, 1); -aw-style-name: 'Section_Title' }
+			.aspose-root .Sign-offName { margin-top: 1.85pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 11pt; widows: 0; orphans: 0; font-family: "Gotham Bold"; font-size: 8.5pt; letter-spacing: -0.15pt; color: rgba(0, 127, 170, 1); -aw-style-name: 'Sign-off Name' }
+			.aspose-root .Subtitle { margin-bottom: 8pt; line-height: 108%; font-size: 11pt; letter-spacing: 0.75pt; color: rgba(90, 90, 90, 1); -aw-style-name: subtitle }
+			.aspose-root .TOCHeading { margin-top: 12pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 108%; font-family: "Calibri Light"; font-size: 16pt; letter-spacing: 0; color: rgba(47, 84, 150, 1); -aw-style-name: toc-heading; -aw-style-parent: heading1 }
+			.aspose-root .TableBullet { margin-top: 1pt; margin-left: 14.2pt; margin-bottom: 1pt; text-indent: -14.2pt; line-height: normal; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 8.5pt; -aw-style-name: 'Table_Bullet' }
+			.aspose-root .TableFigsNeg { margin-top: 1pt; margin-right: 0.55pt; margin-bottom: 1pt; text-align: right; line-height: normal; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 8.5pt; -aw-style-name: 'Table_Figs_Neg' }
+			.aspose-root .TableFigsNegBlue { margin-top: 1pt; margin-right: 0.55pt; margin-bottom: 1pt; text-align: right; line-height: normal; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 8.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Table_Figs_Neg_Blue' }
+			.aspose-root .TableFigsPos { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: right; line-height: normal; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 8.5pt; -aw-style-name: 'Table_Figs_Pos' }
+			.aspose-root .TableFigsPosBlue { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: right; line-height: normal; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 8.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Table_Figs_Pos_Blue' }
+			.aspose-root .TableHeaderCentre { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: center; line-height: 9pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 7pt; -aw-style-name: 'Table_Header_Centre' }
+			.aspose-root .TableHeaderCentreBlue { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: center; line-height: 9pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 7pt; font-weight: bold; color: rgba(0, 126, 170, 1); -aw-style-name: 'Table_Header_Centre_Blue' }
+			.aspose-root .TableHeaderLeft { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: left; line-height: 9pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 7pt; -aw-style-name: 'Table_Header_Left' }
+			.aspose-root .TableHeaderRight { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: right; line-height: 9pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 7pt; -aw-style-name: 'Table_Header_Right' }
+			.aspose-root .TableHeaderRightBlue { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: right; line-height: 9pt; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 7pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Table_Header_Right_Blue' }
+			.aspose-root .TableText { margin-top: 1pt; margin-bottom: 1pt; line-height: normal; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 8.5pt; -aw-style-name: 'Table_Text' }
+			.aspose-root .TableTextBold { margin-top: 1pt; margin-bottom: 1pt; line-height: normal; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 8.5pt; -aw-style-name: 'Table_Text_Bold' }
+			.aspose-root .TableTextBoldBlue { margin-top: 1pt; margin-bottom: 1pt; line-height: normal; font-family: "Avenir LT Pro 65 Medium Bold"; font-size: 8.5pt; color: rgba(0, 126, 170, 1); -aw-style-name: 'Table_Text_Bold_Blue' }
+			.aspose-root .TableTextIndent { margin-top: 1pt; margin-left: 19.85pt; margin-bottom: 1pt; text-indent: -7.1pt; line-height: normal; font-family: "Avenir LT Pro 45 Book Bold"; font-size: 8.5pt; -aw-style-name: 'Table_Text_Indent' }
+			.aspose-root .Title { margin-bottom: 0; line-height: normal; font-family: "Calibri Light"; font-size: 28pt; letter-spacing: -0.5pt; -aw-style-name: title }
+			.aspose-root .ap { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .xmsonormal { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'x_msonormal' }
+			.aspose-root span.BalloonTextChar { font-family: "Segoe UI"; font-size: 9pt }
+			.aspose-root span.Blue { color: rgba(0, 127, 170, 1) }
+			.aspose-root span.BodycopyChar { font-size: 9pt; -aw-style-name: 'Body copy Char' }
+			.aspose-root span.BodyCopyBold { font-family: "Avenir LT Pro 65 Medium Bold"; -aw-style-name: 'Body_Copy_Bold' }
+			.aspose-root span.Bold { font-family: "Gotham Bold"; font-weight: normal }
+			.aspose-root span.BookTitle { font-weight: bold; font-style: italic; letter-spacing: 0.25pt; -aw-style-name: book-title }
+			.aspose-root span.CommentReference { font-size: 8pt; -aw-style-name: comment-reference }
+			.aspose-root span.CommentSubjectChar { font-size: 10pt; font-weight: bold }
+			.aspose-root span.CommentTextChar { font-size: 10pt }
+			.aspose-root span.Emphasis { font-style: italic; -aw-style-name: emphasis }
+			.aspose-root span.EndnoteReference { vertical-align: super; -aw-style-name: endnote-reference }
+			.aspose-root span.EndnoteTextChar { font-size: 10pt }
+			.aspose-root span.FollowedHyperlink { text-decoration: underline; color: rgba(149, 79, 114, 1); -aw-style-name: followed-hyperlink }
+			.aspose-root span.FootnoteReference { vertical-align: super; -aw-style-name: footnote-reference }
+			.aspose-root span.FootnoteTextChar { font-size: 10pt }
+			.aspose-root span.Heading1Char { font-family: "ITC Caslon 224 Std Book"; font-size: 14pt; letter-spacing: -0.2pt; color: rgba(0, 127, 170, 1) }
+			.aspose-root span.Heading2Char { font-family: DINPro-Medium; font-size: 9pt; letter-spacing: -0.2pt; color: rgba(0, 127, 170, 1) }
+			.aspose-root span.Heading3Char { font-family: "Calibri Light"; font-size: 12pt; color: rgba(31, 55, 99, 1) }
+			.aspose-root span.Heading4Char { font-family: "Calibri Light"; font-style: italic; color: rgba(47, 84, 150, 1) }
+			.aspose-root span.Heading5Char { font-family: "Calibri Light"; color: rgba(47, 84, 150, 1) }
+			.aspose-root span.Heading6Char { font-family: "Calibri Light"; color: rgba(31, 55, 99, 1) }
+			.aspose-root span.Heading7Char { font-family: "Calibri Light"; font-style: italic; color: rgba(31, 55, 99, 1) }
+			.aspose-root span.Heading8Char { font-family: "Calibri Light"; font-size: 10.5pt; color: rgba(39, 39, 39, 1) }
+			.aspose-root span.Heading9Char { font-family: "Calibri Light"; font-size: 10.5pt; font-style: italic; color: rgba(39, 39, 39, 1) }
+			.aspose-root span.Hyperlink { text-decoration: underline; color: rgba(0, 0, 255, 1); -aw-style-name: hyperlink }
+			.aspose-root span.HyperlinkBody { text-decoration: underline; color: rgba(0, 126, 170, 1); -aw-style-name: 'Hyperlink_Body' }
+			.aspose-root span.IntenseEmphasis { font-style: italic; color: rgba(68, 114, 196, 1); -aw-style-name: intense-emphasis }
+			.aspose-root span.IntenseQuoteChar { font-style: italic; color: rgba(68, 114, 196, 1) }
+			.aspose-root span.IntenseReference { font-weight: bold; font-variant: small-caps; letter-spacing: 0.25pt; color: rgba(68, 114, 196, 1); -aw-style-name: intense-reference }
+			.aspose-root span.Mention { color: rgba(43, 87, 154, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: mention }
+			.aspose-root span.PageDriverArrow { font-family: ABCArizonaFlareUnlicensedTrial-; font-size: 9pt; letter-spacing: 0.9pt; vertical-align: 0.5pt; color: rgba(0, 127, 170, 1) }
+			.aspose-root span.QuoteChar { font-style: italic; color: rgba(64, 64, 64, 1) }
+			.aspose-root span.SectionTitleContinued { font-family: "Avenir LT Pro 35 Light Bold"; -aw-style-name: 'Section_Title_Continued' }
+			.aspose-root span.Strong { font-weight: bold; -aw-style-name: strong }
+			.aspose-root span.SubtitleChar { letter-spacing: 0.75pt; color: rgba(90, 90, 90, 1) }
+			.aspose-root span.SubtleEmphasis { font-style: italic; color: rgba(64, 64, 64, 1); -aw-style-name: subtle-emphasis }
+			.aspose-root span.SubtleReference { font-variant: small-caps; color: rgba(90, 90, 90, 1); -aw-style-name: subtle-reference }
+			.aspose-root span.TitleChar { font-family: "Calibri Light"; font-size: 28pt; letter-spacing: -0.5pt }
+			.aspose-root span.UnresolvedMention { color: rgba(96, 94, 92, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: unresolved-mention }
+			.aspose-root span.UnresolvedMention1 { color: rgba(96, 94, 92, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: 'Unresolved Mention1' }
+			.aspose-root span.cf01 { font-family: "Segoe UI"; font-size: 9pt }
+			.aspose-root .BLTable1 { }
+			.aspose-root .BLTable2 { }
+			.aspose-root .BLTable21 { }
+			.aspose-root .BLTable22 { }
+			.aspose-root .GridTableLight { }
+			.aspose-root .TableGrid { }
+			.aspose-root .TableGrid1 { }
+			.aspose-root .rn-1 { margin-bottom: 0; line-height: 11pt }
+			.aspose-root .rn-2 { font-family: Arial; font-size: 10pt; font-weight: bold; color: rgba(76, 76, 76, 1) }
+			.aspose-root .rn-3 { font-family: Arial; font-size: 9pt; color: rgba(76, 76, 76, 1); -aw-import: ignore }
+			.aspose-root .rn-4 { font-family: Arial; font-size: 9pt; color: rgba(76, 76, 76, 1) }
+			.aspose-root .rn-5 { font-family: Arial; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-6 { font-family: Arial; -aw-import: ignore }
+			.aspose-root .rn-7 { margin-bottom: 5.5pt; line-height: 11pt }
+			.aspose-root .rn-8 { font-family: Arial; font-size: 10pt; color: rgba(76, 76, 76, 1) }
+			.aspose-root .rn-9 { margin-top: 6pt; margin-bottom: 0; line-height: 11pt }
+			.aspose-root .rn-10 { font-family: Arial; font-size: 10pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-11 { margin-left: 14.2pt; margin-bottom: 0; text-indent: -14.2pt; line-height: 11pt; -aw-import: list-item; -aw-list-level-number: 0; -aw-list-number-format: '\2022 '; -aw-list-number-styles: 'bullet'; -aw-list-padding-sml: 10.64pt }
+			.aspose-root .rn-12 { -aw-import: ignore }
+			.aspose-root .rn-13 { font-family: "Museo Sans 300"; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-14 { width: 10.64pt; font: 7pt "Times New Roman"; display: inline-block; -aw-import: spaces }
+			.aspose-root .rn-15 { text-decoration: none }
+			.aspose-root .rn-16.FootnoteReference { font-family: Arial; font-size: 6.67pt; color: rgba(76, 76, 76, 1) }
+			.aspose-root .rn-17.FootnoteReference { font-family: Arial; font-size: 7.5pt; vertical-align: baseline }
+			.aspose-root .rn-18 { line-height: 108%; font-size: 10pt }
+			.aspose-root .rn-19 { font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-20 { border-top: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-bottom: 0.25pt single #000000; -aw-border-top: 0.25pt single #000000 }
+			.aspose-root .rn-21 { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; line-height: 9pt }
+			.aspose-root .rn-22 { font-family: Arial; font-size: 7pt }
+			.aspose-root .rn-23 { width: 54.4pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-bottom: 0.25pt single #000000; -aw-border-top: 0.25pt single #000000 }
+			.aspose-root .rn-24 { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: right; line-height: 9pt }
+			.aspose-root .rn-25 { font-family: Arial; font-size: 7pt; font-weight: bold; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-26 { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 0; text-align: right; line-height: 9pt }
+			.aspose-root .rn-27 { width: 76.6pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-bottom: 0.25pt single #000000; -aw-border-top: 0.25pt single #000000 }
+			.aspose-root .rn-28 { border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-top: 0.25pt single #000000 }
+			.aspose-root .rn-29 { margin-top: 1pt; margin-bottom: 1pt; line-height: normal; font-size: 8.5pt }
+			.aspose-root .rn-30 { font-family: Arial; font-weight: bold; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-31 { width: 54.4pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-top: 0.25pt single #000000 }
+			.aspose-root .rn-32 { margin-top: 1pt; margin-right: 3.95pt; margin-bottom: 1pt; text-align: right; line-height: normal; font-size: 8.5pt }
+			.aspose-root .rn-33 { font-family: Arial; font-weight: bold; color: rgba(0, 126, 170, 1); -aw-import: ignore }
+			.aspose-root .rn-34 { width: 76.6pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-top: 0.25pt single #000000 }
+			.aspose-root .rn-35 { padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom }
+			.aspose-root .rn-36 { font-family: Arial }
+			.aspose-root .rn-37 { font-family: Arial; font-size: 5.67pt; vertical-align: super }
+			.aspose-root .rn-38 { width: 54.4pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom }
+			.aspose-root .rn-39 { width: 76.6pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom }
+			.aspose-root .rn-40 { border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-bottom: 0.25pt single #000000 }
+			.aspose-root .rn-41 { width: 54.4pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-bottom: 0.25pt single #000000 }
+			.aspose-root .rn-42 { width: 76.6pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-bottom: 0.25pt single #000000 }
+			.aspose-root .rn-43 { width: 0.3pt; border-top: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-top: 0.25pt single #000000 }
+			.aspose-root .rn-44 { width: 54.4pt; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top }
+			.aspose-root .rn-45 { width: 54.4pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; -aw-border-bottom: 0.25pt single #000000 }
+			.aspose-root .rn-46 { width: 54.4pt; border-bottom: 1pt solid rgba(0, 0, 0, 1); padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: bottom; -aw-border-bottom: 1pt single #000000 }
+			.aspose-root .rn-47 { width: 65.2pt }
+			.aspose-root .rn-48 { width: 11.1pt }
+			.aspose-root .rn-49 { margin-left: 8.5pt; margin-bottom: 0; text-indent: -8.5pt; line-height: 9.5pt }
+			.aspose-root .rn-50 { font-family: Arial; font-size: 7.5pt }
+			.aspose-root .rn-51 { width: 3.09pt; text-indent: 0; font-family: Arial; font-size: 7.5pt; display: inline-block }
+			.aspose-root .rn-52 { font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1); -aw-import: ignore }
+			.aspose-root .rn-53.Hyperlink { font-family: Arial; font-size: 9pt }
+			.aspose-root .rn-54 { font-family: Arial; font-size: 9pt }
+			.aspose-root .rn-55 { margin-bottom: 6pt; line-height: 14pt }
+			.aspose-root .rn-56 { width: 36pt; font-family: Arial; font-size: 9pt; display: inline-block }
+			.aspose-root .rn-57 { font-family: Arial; font-size: 9pt; text-decoration: underline; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-58 { margin-left: 19.85pt; margin-bottom: 0; text-indent: -19.85pt; line-height: 11pt }
+			.aspose-root .rn-59 { font-family: Arial; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5pt; color: rgba(0, 126, 170, 1) }
+			.aspose-root .rn-60 { font-family: "Avenir LT Pro 45 Book Bold"; font-size: 9pt; color: rgba(0, 126, 170, 1); -aw-import: ignore }
+			.aspose-root .rn-61 { -aw-footnote-isauto: 1 }
+		
+/**/
+/*]]>*/
+</style>
+
+</head><body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6383307_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>British Land Co PLC</div>  <div>18 November 2026</div>  <div>&#160;</div></div><div class="aspose-root">
+<div class="Section_1">
+<p class="rn-1">
+<span class="rn-2">The British Land Company PLC (&#8220;British Land&#8221;)</span>
+</p>
+<p class="rn-1">
+<span class="rn-3">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">18 November 2026</span>
+</p>
+<p style="margin-bottom:0pt; line-height:normal; font-size:5pt;">
+<span style="font-family:Arial; font-weight:bold; text-transform:uppercase; letter-spacing:1.5pt; color:#007eaa; -aw-import:ignore;">&#160;</span>
+</p>
+<p style="margin-bottom:0pt; line-height:normal; font-size:13pt;">
+<span class="rn-5">Strong first half, upgraded FY27 earnings Guidance</span>
+</p>
+<p style="margin-bottom:0pt; line-height:normal; font-size:6pt;">
+<span class="rn-6">&#160;</span>
+</p>
+<p class="rn-7">
+<span class="rn-2">Jo McNamara, Chief Executive, said:</span><span class="rn-8"> </span>
+</p>
+<p class="rn-9">
+<span class="rn-8">&#8220;British Land delivered a strong first half, with 12% like-for-like net rental growth, investment activity and cost control driving a 5% increase in Underlying EPS. Reflecting this performance and our continued momentum as we enter the second half, we have upgraded our FY27 Underlying EPS guidance to 31.0p, representing growth of 7% year on year.</span>
+</p>
+<p class="rn-9">
+<span class="rn-8">My first two months have reinforced my confidence in the quality of our assets, people and customer relationships. Our core markets represent 90% of our business and offer attractive opportunities, with strong occupational demand and constrained supply supporting further rental growth.</span>
+</p>
+<p class="rn-9">
+<span class="rn-8">The ambition is simple: exceptionally talented and driven people, working in the right structure, empowered to execute a clear strategy at pace to deliver sustainable earnings growth, attractive returns and growing dividends for shareholders.&#8221;</span>
+</p>
+<p class="rn-9">
+<span class="rn-10">Financial</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Underlying Profit &#163;166m, up 7% (HY26: &#163;155m)</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Underlying earnings per share (EPS) 16.1p, up 5% (HY26: 15.4p)</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Dividend per share 12.88p, up 5% (HY26: 12.32p)</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span style="font-family:Arial; font-size:10pt; color:#ff0000;"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">EPRA cost ratio 12.5% (HY26: 17.4%)</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Total property return +3.9% and total accounting return +3.4%</span>
+</p>
+<p class="BulletLevel1" style="margin-top:6pt; margin-left:0pt; margin-bottom:0pt; text-indent:0pt;">
+<span class="rn-10">operational metrics </span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160; &#160; &#160; &#160;</span></span><span class="rn-8">Portfolio occupancy 96.4%</span><span style="font-family:Arial; font-size:6.67pt; vertical-align:super; color:#4c4c4c;">1</span><span class="rn-8">: Campuses 95.2%</span><a href="#_ftn1" class="rn-15"><span class="FootnoteReference rn-16">1</span></a><span class="rn-8">, Retail &amp; London Urban Logistics 97.8%</span><span class="FootnoteReference rn-16">1</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Leased 1.4m sq ft, 7.9% ahead of previous passing rent and 10.4% ahead of ERV with 1.1m sq ft under offer, 11.6% ahead of ERV</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Campus leasing: 689k sq ft, 14.8% ahead of ERV. 396k sq ft under offer, 11.2% ahead of ERV, with a further 109k sq ft let or under offer in the six weeks post period end</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Retail &amp; London Urban Logistics leasing: 739k sq ft, 7.3% ahead of ERV and 674k sq ft under offer, 12.1% ahead of ERV</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Retail park leasing 9.6% ahead of previous passing rent</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160; &#160; &#160; &#160;</span></span><span class="rn-8">Like-for-like net rental growth +12%: Campuses +25%</span><a href="#_ftn2" class="rn-15"><span class="FootnoteReference rn-16">2</span></a><span class="rn-8">, Retail &amp; London Urban Logistics +2%&#160;</span>
+</p>
+<p class="BulletLevel1" style="margin-bottom:0pt; text-indent:0pt;">
+<span style="font-family:Arial; font-size:5pt;" id="isPasted"><sup>1</sup></span><span class="FootnoteReference rn-17">Occupancy excludes developments completed in the previous 12 months</span>
+</p>
+<p class="BulletLevel1" style="text-indent:0pt;">
+<span class="FootnoteReference" style="font-family:Arial; font-size:5pt;">2</span><span class="FootnoteReference" style="font-family:Arial; font-size:6pt;"> </span><span class="FootnoteReference rn-17">Excluding Storey. Including Storey, Campus like-for-like net rental growth is +26%</span>
+</p>
+<p class="rn-9">
+<span class="rn-10">Balance sheet</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">EPRA Net Tangible Assets per share 599p, up 2%</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">LTV 39.6% (FY26: 39.2%)</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Group Net Debt to EBITDA 7.0x (FY26: 7.7x)</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">&#163;2.9bn of financing activity, including a &#163;775m syndicated RCF at an initial margin of 90bps, with 13 banks</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">&#163;2.0bn undrawn facilities and cash, with no requirement to refinance until 2030</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Fitch Senior Unsecured credit rating at &#8216;A&#8217; with stable outlook (affirmed July 2026)</span>
+</p>
+<p class="rn-9">
+<span class="rn-10">CAPITAL ACTIVITY</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">&#163;765m of capital activity, including &#163;247m of assets disposed at a net initial yield of 4.7%, broadly in line with book value</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Exchanged or under offer on a further &#163;328m of asset disposals, including deals agreed post period end</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Acquisition of Telford Bridge Retail Park for &#163;30m at a topped-up NIY of 8.3%</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Acquisition of Life Science REIT completed on 20 April 2026</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Progressing 1.7m sq ft committed development pipeline on a de-risked, capital light basis</span>
+</p>
+<p class="rn-9">
+<span class="rn-10">Portfolio VALUATION</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Values up 1.5%: Campuses +1.6%, Retail &amp; London Urban Logistics +1.2%</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">ERV growth +3.0%: Campuses +3.9%, Retail &amp; London Urban Logistics +2.0%, with retail parks +2.7%</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Net equivalent yield +3 bps to 6.1%: Campuses +6 bps to 5.7%, Retail &amp; London Urban Logistics -1 bps to 6.6%</span>
+</p>
+<p class="rn-9">
+<span class="rn-10">Sustainability </span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">GRESB rating of 5* for both standing investments and developments</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-10"><span style="font-family:'Museo Sans 300';">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">76% of the portfolio rated EPC A or B</span>
+</p>
+<p class="rn-9">
+<span class="rn-10">Outlook</span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Upgraded FY27 Underlying EPS guidance to 31.0p, representing growth of 7% year on year </span>
+</p>
+<p class="rn-11">
+<span class="rn-12"><span class="rn-8"><span class="rn-13">&#8226;</span></span><span class="rn-14">&#160;&#160;&#160;&#160;&#160;&#160; </span></span><span class="rn-8">Continue to expect 3-6% p.a. Underlying EPS growth over the medium term</span>
+</p>
+<p class="rn-18">
+<span style="font-family:Arial; color:#4c4c4c; -aw-import:ignore;">&#160;</span>
+</p>
+<p class="rn-1">
+<span class="rn-19">Summary performance </span>
+</p>
+<p class="rn-1">
+<span style="font-family:Arial; font-size:10pt; color:#4c4c4c; -aw-import:ignore;">&#160;</span>
+</p>
+<table cellspacing="0" cellpadding="0" class="GridTableLight" style="width:476.55pt; margin-bottom:0pt; border-collapse:collapse;"><tbody><tr><td class="rn-20">
+<p class="rn-21">
+<span class="rn-22">Six months to</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-24">
+<span class="rn-25">30 September</span><br /><span class="rn-25">2026</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-26">
+<span class="rn-22">30 September</span>
+</p>
+<p class="rn-26">
+<span class="rn-22">2025</span>
+</p>
+</td>
+<td colspan="3" class="rn-27">
+<p class="rn-24">
+<span class="rn-22">% Change</span>
+</p>
+</td></tr>
+<tr><td class="rn-28">
+<p class="rn-29">
+<span class="rn-30">INCOME STATEMENT</span>
+</p>
+</td>
+<td class="rn-31">
+<p class="rn-32">
+<span class="rn-33">&#160;</span>
+</p>
+</td>
+<td class="rn-31">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td>
+<td colspan="3" class="rn-34">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Underlying Profit</span><span class="rn-37">1</span><span class="rn-36"> </span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">&#163;166m</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">&#163;155m</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-36">7%</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Underlying earnings per share</span><span class="rn-37">1</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">16.1p</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">15.4p</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-36">5%</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">IFRS profit after tax</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">&#163;274m</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">&#163;218m</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">IFRS basic earnings per share</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">26.8p</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">21.9p</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Dividend per share</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">12.88p</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">12.32p</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-36">5%</span>
+</p>
+</td></tr>
+<tr><td class="rn-40">
+<p class="rn-29">
+<span class="rn-36">Total accounting return</span><span class="rn-37">1</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="rn-32">
+<span class="rn-30">3.4%</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="rn-32">
+<span class="rn-36">4.0%</span>
+</p>
+</td>
+<td colspan="3" class="rn-42">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td style="border-top:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; -aw-border-bottom:0.25pt single #000000; -aw-border-top:0.25pt single #000000;">
+<p class="rn-29">
+<span class="rn-6">&#160;</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-24">
+<span style="font-family:Arial; font-size:7pt; font-weight:bold; color:#007eaa; -aw-import:ignore;">&#160;</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-24">
+<span style="font-family:Arial; font-size:7pt; -aw-import:ignore;">&#160;</span>
+</p>
+</td>
+<td colspan="3" class="rn-27">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-20">
+<p style="margin-top:1pt; margin-bottom:1pt; line-height:normal; font-size:7pt;">
+<span class="rn-36">As at</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-24">
+<span class="rn-25">30 September</span><br /><span class="rn-25">2026</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-24">
+<span class="rn-22">31 March </span>
+</p>
+<p class="rn-24">
+<span class="rn-22">2026</span>
+</p>
+</td>
+<td colspan="3" class="rn-27">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td colspan="3" class="rn-28">
+<p class="rn-29">
+<span class="rn-30">BALANCE SHEET</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="rn-32">
+<span class="rn-33">&#160;</span>
+</p>
+</td>
+<td class="rn-43">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td>
+<td class="rn-31">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Portfolio at valuation (proportionally consolidated)</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">&#163;10,471m</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="rn-32">
+<span class="rn-36">&#163;10,062m</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-36">1.5%</span><span class="rn-37"> 2</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">EPRA Net Tangible Assets per share</span><span class="rn-37">1</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">599p</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="rn-32">
+<span class="rn-36">590p</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-36">2%</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">IFRS net assets</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">&#163;6,190m</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="rn-32">
+<span class="rn-36">&#163;5,932m</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Net Debt to EBITDA (Group)</span><span class="rn-37">3, 4</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">7.0x</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="rn-32">
+<span class="rn-36">7.7x</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Loan to value (proportionally consolidated)</span><span class="rn-37">4, 5</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">39.6%</span>
+</p>
+</td>
+<td class="rn-44">
+<p class="rn-32">
+<span class="rn-36">39.2%</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-40">
+<p class="rn-29">
+<span class="rn-36">Fitch Senior Unsecured credit rating </span>
+</p>
+</td>
+<td class="rn-41">
+<p class="rn-32">
+<span class="rn-30">A</span>
+</p>
+</td>
+<td class="rn-45">
+<p class="rn-32">
+<span class="rn-36">A</span>
+</p>
+</td>
+<td colspan="3" class="rn-42">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-40">
+<p class="rn-29">
+<span class="rn-6">&#160;</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="rn-32">
+<span class="rn-33">&#160;</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td>
+<td colspan="3" class="rn-42">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-20">
+<p class="rn-21">
+<span class="rn-22">Six months to</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-24">
+<span class="rn-25">30 September</span><br /><span class="rn-25">2026</span>
+</p>
+</td>
+<td class="rn-23">
+<p class="rn-26">
+<span class="rn-22">30 September</span>
+</p>
+<p class="rn-24">
+<span class="rn-22">2025</span>
+</p>
+</td>
+<td colspan="3" class="rn-27">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td colspan="5" class="rn-28">
+<p class="rn-29">
+<span class="rn-30">OPERATIONAL</span><span style="font-family:Arial; color:#007eaa;"> </span><span class="rn-30">STATISTICS</span>
+</p>
+</td>
+<td class="rn-31">
+<p class="rn-32">
+<span class="rn-33">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Lettings and renewals over 1 year</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">1.2m sq ft</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">1.2m sq ft</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">Total lettings and renewals </span>
+</p>
+</td>
+<td class="rn-44">
+<p class="rn-32">
+<span class="rn-30">1.4m sq ft</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">1.4m sq ft</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-40">
+<p class="rn-29">
+<span class="rn-36">Committed and recently completed developments</span>
+</p>
+</td>
+<td class="rn-45">
+<p class="rn-32">
+<span class="rn-30">2.2m sq ft</span>
+</p>
+</td>
+<td class="rn-41">
+<p class="rn-32">
+<span class="rn-36">2.8m sq ft</span>
+</p>
+</td>
+<td colspan="3" class="rn-42">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-28">
+<p class="rn-29">
+<span class="rn-30">SUSTAINABILITY PERFORMANCE</span>
+</p>
+</td>
+<td class="rn-31">
+<p class="rn-32">
+<span class="rn-33">&#160;</span>
+</p>
+</td>
+<td class="rn-31">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td>
+<td colspan="3" class="rn-34">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td class="rn-35">
+<p class="rn-29">
+<span class="rn-36">MSCI ESG</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-30">AAA rating</span>
+</p>
+</td>
+<td class="rn-38">
+<p class="rn-32">
+<span class="rn-36">AAA rating</span>
+</p>
+</td>
+<td colspan="3" class="rn-39">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr><td style="border-bottom:1pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:bottom; -aw-border-bottom:1pt single #000000;">
+<p class="rn-29">
+<span class="rn-36">GRESB (standing investments / developments)</span>
+</p>
+</td>
+<td class="rn-46">
+<p class="rn-32">
+<span class="rn-30">5* / 5*</span>
+</p>
+</td>
+<td class="rn-46">
+<p class="rn-32">
+<span class="rn-36">5* / 5*</span>
+</p>
+</td>
+<td colspan="3" style="width:76.6pt; border-bottom:1pt solid #000000; padding-right:5.4pt; padding-left:5.4pt; vertical-align:bottom; -aw-border-bottom:1pt single #000000;">
+<p class="rn-32">
+<span class="rn-6">&#160;</span>
+</p>
+</td></tr>
+<tr style="height:0pt;"><td style="width:258.75pt;">
+<br /></td>
+<td class="rn-47">
+<br /></td>
+<td class="rn-47">
+<br /></td>
+<td class="rn-48">
+<br /></td>
+<td class="rn-48">
+<br /></td>
+<td class="rn-47">
+<br /></td></tr></tbody></table>
+<p style="margin-top:8pt; margin-bottom:0pt; line-height:9.5pt;">
+<span style="font-family:Arial; font-size:7.5pt; -aw-import:ignore;">&#160;</span>
+</p>
+<p class="rn-49">
+<span class="rn-50">1. See Note 2 to the condensed interim financial statements for definition and calculation.</span>
+</p>
+<p class="rn-49">
+<span class="rn-50">2. Valuation movement during the period (after taking account of capex) of properties held at the balance sheet date including developments (classified by end use), purchases (including Life Science REIT) and sales.</span>
+</p>
+<p class="rn-49">
+<span class="rn-50">3. Net Debt to EBITDA on a Group basis excludes joint venture borrowings and includes distributions and other receivables from joint ventures.</span>
+</p>
+<p class="rn-49">
+<span class="rn-50">4.</span><span class="rn-51">&#160;</span><span class="rn-50">See Note 8 to the condensed interim financial statements for definition, calculation and reference to IFRS metrics.</span>
+</p>
+<p class="rn-49">
+<span class="rn-50">5.</span><span class="rn-51">&#160;</span><span class="rn-50">EPRA Loan to value is disclosed in Table B of the condensed interim financial statements.</span>
+</p>
+<p class="rn-7">
+<span class="rn-52">&#160;</span>
+</p>
+<p class="rn-7">
+<span class="rn-19">Dividends</span>
+</p>
+<p class="rn-7">
+<span class="rn-4">Our dividend is semi-annual, and in line with our dividend policy, is calculated at 80% of Underlying EPS based on the most recently completed six-month period. Applying this policy, the Board have declared an interim dividend for the period ended 30 September 2026 of 12.88p per share. 11.22p will be payable as a Property Income Distribution and 1.66p will be payable as a non-Property Income Distribution. Payment will be made on Friday 15 January 2027 to shareholders on the register at close of business on Friday 4 December 2026. A Dividend Reinvestment Plan (DRIP) is provided by Equiniti Financial Services Limited, which enables the Company&#8217;s shareholders to elect to have their cash dividend payments used to purchase the Company&#8217;s shares. More information can be found at britishland.com/investors/shareholder-information/dividend-information.</span><span style="font-family:Arial; font-size:9pt; color:#4c4c4c; -aw-import:spaces;">&#160; </span>
+</p>
+<p class="rn-7">
+<span class="rn-3">&#160;</span>
+</p>
+<p class="rn-18">
+<span class="rn-5">Full unedited text</span>
+</p>
+<p class="ap" style="margin-top:0pt; margin-bottom:5.5pt; line-height:12pt;">
+<span class="rn-4">In accordance with DTR 6.3.5 (1A), the full unedited Half Year results for the period ended 30 September 2026 will shortly be available to download from the National Storage Mechanism. A copy is also available on the Company's website: </span><a href="https://www.britishland.com/news/half-year-results-2027" class="rn-15"><span class="Hyperlink rn-53">https://www.britishland.com/news/half-year-results-2027</span></a><span class="rn-54"> </span><span class="rn-4">and here:</span><span class="rn-54">&#160;</span><a href="http://www.rns-pdf.londonstockexchange.com/rns/5771D_1-2026-11-17.pdf" id="isPasted"><span style="font-size: 12px;">http://www.rns-pdf.londonstockexchange.com/rns/5771D_1-2026-11-17.pdf</span></a>
+</p>
+<p class="rn-55">
+<span class="rn-52">&#160;</span>
+</p>
+<p class="rn-55">
+<span class="rn-52">&#160;</span>
+</p>
+<p class="rn-55">
+<span class="rn-19">Results Presentation and Investor WEBCAST </span>
+</p>
+<p class="rn-7">
+<span class="rn-4">A presentation of the results will take place at 9am on Wednesday 18 November 2026 at British Land, 20 Triton Street, Regent&#8217;s Place, London, NW1 3BF and will be broadcast live via webcast which can be accessed via the following link:</span>
+</p>
+<p class="rn-7">
+<span class="rn-4">Click for access:</span><span style="width:16.73pt; font-family:Arial; font-size:9pt; display:inline-block;">&#160;</span><span class="rn-56">&#160;</span><a href="https://stream.brrmedia.co.uk/broadcast/6aa7f2fecdc4ad0013af1aa1" class="rn-15"><span class="Hyperlink rn-53">Webcast link </span></a><span class="rn-57"> </span>
+</p>
+<p class="rn-7">
+<span class="rn-4">A replay and accompanying slides will be made available at </span><span class="rn-57">Britishland.com</span><span class="rn-4"> </span>
+</p>
+<p style="margin-top:8pt; margin-bottom:6pt; line-height:14pt;">
+<span class="rn-19">For Information Contact</span>
+</p>
+<p class="rn-58">
+<span class="rn-59">Investors</span>
+</p>
+<p class="rn-1">
+<span class="rn-4">Max Nimmo, British Land</span><span style="width:16.7pt; font-family:Arial; font-size:9pt; display:inline-block;">&#160;</span><span class="rn-56">&#160;</span><span class="rn-56">&#160;</span><span class="rn-4">07989 480 025</span>
+</p>
+<p class="rn-58">
+<span class="rn-3">&#160;</span>
+</p>
+<p class="rn-58">
+<span class="rn-59">Media</span>
+</p>
+<p class="rn-7">
+<span class="rn-4">Charlotte Whitley, British Land </span><span style="width:31.87pt; font-family:Arial; font-size:9pt; display:inline-block;">&#160;</span><span class="rn-56">&#160;</span><span class="rn-4">07887 802 535</span><br /><span class="rn-60">&#160;</span>
+</p>
+<p class="rn-7">
+<span class="rn-60">&#160;</span>
+</p>
+<p class="rn-7">
+<span class="rn-60">&#160;</span>
+</p>
+<p class="rn-7">
+<span style="font-family:'Avenir LT Pro 45 Book Bold'; font-size:9pt; color:#4c4c4c; -aw-import:ignore;">&#160;</span>
+</p>
+</div>
+<div id="_ftn1" class="rn-61"><p class="Footnotes" style="margin-left:0pt; text-indent:0pt;">
+<br /></p>
+</div>
+<div id="_ftn2" class="rn-61">
+<p class="Footnotes" style="margin-top:0pt;">
+<span class="rn-12">&#160;</span>
+</p>
+</div>
+
+</div><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/BLND" style="font-size:14px;">British Land Company
+                    (BLND)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>4 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/hellenic-telecommunications-organization-s-a---otes/liable-person-s-transaction-notification-/9882348">HELLENIC TELECOMMUNICATIONS ORGANIZATION S.A.</a>
+            </li>
+                        <li>
+                <span>44 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/ibstock--ibst/director-pdmr-shareholding/9882293">Ibstock</a>
+            </li>
+                        <li>
+                <span>53 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/smith-nephew--sn./director-pdmr-shareholding/9882286">Smith &amp; Nephew</a>
+            </li>
+                        <li>
+                <span>2 hours ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/anglo-american--aal/director-pdmr-shareholding/9882068">Anglo American</a>
+            </li>
+                        <li>
+                <span>2 hours ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/british-land-company--blnd/director-pdmr-shareholding/9882062">British Land Company</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>

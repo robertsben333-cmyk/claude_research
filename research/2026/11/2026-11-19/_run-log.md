@@ -16,3 +16,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:43 UTC
 - Platform concurrency cap is 8 subagents. Wave 1 running: BAB CMCX GPE GRI HLMA (uk), UBI ELIOR (fr), SUBC (no). Queue: HAUTO AGO + 10 more, launched as slots free.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:45 UTC
+- CMCX banked: phantom — interims moved to 26 Nov per company Q&A (7 Oct) and financial calendar; vendor row still 19 Nov. Findings empty. HAUTO launched.
