@@ -137,3 +137,6 @@
 ## Edge hunt (panel v3b) — sweep and waves
 - Logged at 2026-11-18 18:43 UTC
 - 18:43Z all 20 searchers launched (last BABA). Returned so far, all with v3b fields and search_complete true: HP P BORR UTI RRGB KLIC JOYY FUTU SBLK WWD BBWI MMS.
+## Edge hunt (panel) — panel and note
+- Logged at 2026-11-18 18:43 UTC
+- 18:43Z: 4/4 judges ran (opus5, opus55, sonnet55, fable51, all pinned, full coverage 20/20). Selected (panel_pct>=80): RRGB 88 L, ARBE 85 S. No stage E dir today. Note published; step 6b next.
