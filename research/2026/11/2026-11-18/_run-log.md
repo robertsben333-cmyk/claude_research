@@ -95,3 +95,7 @@
 ## Stage EU — DONE
 - Logged at 2026-11-17 15:17 UTC
 - 20 hunted, 18 ranked (ENH phantom: issuer dates Q3 27 Nov; TISG suspended, no event). No name above the 2.8 floor; key top ITH +0.90, bottom MSLH -1.40. Panel (4 of 4 members, no fallback) selects PFS0, ARR, MSLH, SDY short. Handoff: PFS0, MSLH, SDY short. Published to origin/main (EARNINGS_DATA_BRANCH=main; publish.sh's rebase raced hunters writing eu-short-cache.json, so most pushes were plain git rebase + push HEAD:main). Ran 6-7 hunters concurrently rather than strict waves of 5 to reach the handoff before the close. CLN/CPS/KGH hunters set session amc against the vendor's bmo default.
+
+## Stage E-P amc exit — 2026-11-18
+- Logged at 2026-11-18 14:09 UTC
+- 09:09 ET. Guards: live exit 0, paper exit 0 (amc -> open as day). verify: live STEM/OMER ok, paper CURI/CTVA/STEM/OMER ok, nothing UNFILLED, no rescue. close --today-only: LIVE FEAM amc SELL market DAY queued for open, order efdf3245-d2dc-4103-ad36-81daababd0d9; PAPER FEAM amc SELL market DAY, order 9fa3d307-b1b9-487f-a62c-cde1e8ebbc72. Refused on both: JMIA bmo (market placement, market closed; left for stage E-P's own run).
