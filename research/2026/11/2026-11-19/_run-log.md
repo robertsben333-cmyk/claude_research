@@ -56,3 +56,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:53 UTC
 - ELIOR banked: impact_sum -1.2, abs 13.0, p_up 44; FY25-26 amc confirmed (issuer calendar 'post-market'). ATT launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:54 UTC
+- LIO banked: impact_sum +0.8, abs 5.0, p_up 53; HY confirmed (21 Oct TU), bmo by precedent. MBR launched.
