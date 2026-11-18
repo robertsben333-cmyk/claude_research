@@ -92,3 +92,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 15:01 UTC
 - SGE banked: impact_sum +0.95, abs 6.5, p_up 56; FY26 bmo (sage.com/investors snippet, 07:00 precedent). Remaining: NEU.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-18 15:02 UTC
+- 20 of 20 hunted; 18 ranked, AQ and CMCX not ranked (phantoms: AQ next report 2027-02-11, CMCX interims moved to 26 Nov). No name above the 2.8 floor; top SGE +0.95, bottom ELIOR -1.20. 18 packs, four judges launching.
