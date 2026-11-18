@@ -28,3 +28,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:48 UTC
 - HLMA banked: impact_sum +0.6, abs 6.5, p_up 55; H1 bmo confirmed (24 Sep update). LIO launched.
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:49 UTC
+- GRI banked: impact_sum -0.3, abs 4.5, p_up 51; FY bmo 07:00 confirmed (Notice of Results 22 Sep). MHA launched.
