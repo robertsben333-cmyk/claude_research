@@ -76,3 +76,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-18 14:56 UTC
 - PAY banked: impact_sum 0.0, abs 5.5, p_up 48; H1 19 Nov 07:00 UTC per Quartr (no Notice of Results; precedent 20 Nov 2025).
+
+## Stage EU — hunts
+- Logged at 2026-11-18 14:57 UTC
+- AUROORA banked: impact_sum +0.9, abs 6.0, p_up 55; Q3 09:00 EET confirmed (issuer notice 11 Nov), bmo.
