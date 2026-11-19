@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="ee1190d83a32407fb81072aa4e7408ed-0c995711b56b4519-1"/><meta name="baggage" content="sentry-trace_id=ee1190d83a32407fb81072aa4e7408ed,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=fae08c18650cec9b87bc99860493fafda1225ec3,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.382242"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "fae08c18650cec9b87bc99860493fafda1225ec3",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from Trading Update" />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "Trading Update | Company Announcement | Investegate",
+            "description":"Investegate announcements from Trading Update",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-10-20 06:01:09",
+            "dateModified": "2026-10-20 06:02:15",
+            "url": "https://www.investegate.co.uk/announcement/rns/trifast--tri/trading-update/9830612"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Trading Update | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/trifast--tri/trading-update/9830612' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>Trading Update | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">Trading Update</h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">AI Summary<span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Trifast plc announced that trading for the six months ended 30 September 2026 is in line with market expectations, with revenue declining by approximately 4.2% year-on-year, a moderation from the previous period. Gross margin remained stable at 28.7%, while underlying EBIT margin improved by 80 basis points to 7.4% due to operational efficiencies. The company maintains a robust balance sheet with leverage below 1x and is investing £4.6m in a new distribution platform in Mexico, expected to be operational in FY28, and has opened a new distribution centre in Chennai. Trifast remains confident in delivering further margin improvement in the second half of FY27, targeting double-digit EBIT margins.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<meta name="generator" content="Aspose.Words for .NET 26.6.0" />
+		<title>
+		</title>
+		<style type="text/css">
+/*<![CDATA[*/
+/**/
+
+			@page Section_1 { size: 595.3pt 841.9pt margin-top: 56.7pt margin-right: 56.7pt margin-bottom: 56.7pt margin-left: 56.7pt -aw-footer-distance: 36pt -aw-header-distance: 36pt }
+			.aspose-root div.Section_1 { margin: 56.7pt; page: Section_1 }
+			.aspose-root { font-family: "Times New Roman"; font-size: 12pt; max-width: 600.3pt; width: 600.3pt; margin: 1pt auto; position: relative; display: block }
+			.aspose-root p { margin: 0 }
+			.aspose-root li, .aspose-root table { margin-top: 0; margin-bottom: 0 }
+			.aspose-root .BalloonText { line-height: normal; font-family: "Segoe UI"; font-size: 9pt; -aw-style-name: balloon-text }
+			.aspose-root .CommentSubject { font-size: 10pt; font-weight: bold; -aw-style-name: comment-subject; -aw-style-parent: comment-text }
+			.aspose-root .CommentText { line-height: normal; font-size: 12pt; -aw-style-name: comment-text }
+			.aspose-root .HTMLPreformatted { line-height: normal; font-family: "Courier New"; font-size: 10pt; -aw-style-name: html-preformatted }
+			.aspose-root .ListParagraph { margin-left: 36pt; margin-bottom: 8pt; line-height: 108%; font-family: Calibri; font-size: 11pt; -aw-style-name: list-paragraph }
+			.aspose-root .NoSpacing { line-height: normal; font-family: Calibri; font-size: 11pt; -aw-style-name: no-spacing }
+			.aspose-root .Revision { font-size: 12pt; -aw-style-name: revision }
+			.aspose-root .ad { margin-top: 5pt; margin-bottom: 5pt; font-size: 12pt }
+			.aspose-root .al { margin: 3pt 5.65pt; line-height: 13pt; font-family: Calibri; font-size: 11pt }
+			.aspose-root .aq { font-family: Calibri; font-size: 11pt }
+			.aspose-root .cs { margin-top: 5pt; margin-bottom: 5pt; font-size: 12pt }
+			.aspose-root .eg { margin-right: -30.65pt; margin-left: -35.45pt; text-align: justify; font-size: 12pt; font-weight: bold; background-color: rgba(255, 255, 255, 1) }
+			.aspose-root .eh { margin-right: -30.65pt; margin-left: -35.45pt; text-align: justify; font-size: 12pt; background-color: rgba(255, 255, 255, 1) }
+			.aspose-root .v { margin-top: 5pt; margin-bottom: 5pt; font-size: 12pt }
+			.aspose-root span.BalloonTextChar { font-family: "Segoe UI"; font-size: 9pt }
+			.aspose-root span.CommentReference { font-size: 9pt; -aw-style-name: comment-reference }
+			.aspose-root span.CommentSubjectChar { font-size: 12pt; font-weight: bold }
+			.aspose-root span.CommentTextChar { font-size: 12pt }
+			.aspose-root span.FootnoteReference { vertical-align: super; -aw-style-name: footnote-reference }
+			.aspose-root span.Hyperlink { text-decoration: underline; color: rgba(0, 0, 255, 1); -aw-style-name: hyperlink }
+			.aspose-root span.UnresolvedMention { color: rgba(96, 94, 92, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: unresolved-mention }
+			.aspose-root span.ac { font-family: Arial }
+			.aspose-root span.af { font-family: Arial }
+			.aspose-root span.as { font-family: Arial; color: rgba(0, 0, 0, 1) }
+			.aspose-root span.at { color: rgba(0, 0, 0, 1) }
+			.aspose-root span.bc { font-family: Calibri; font-size: 10pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root span.co { font-size: 10pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root span.cy { font-family: Calibri; font-size: 10pt }
+			.aspose-root span.dt { font-size: 10pt; color: rgba(0, 32, 96, 1) }
+			.aspose-root span.dx { font-size: 10pt }
+			.aspose-root span.ee { font-family: Calibri; font-size: 10pt }
+			.aspose-root span.z { font-family: Arial; font-size: 10pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .TableGrid { }
+			.aspose-root .rn-1 { text-align: center; font-size: 10pt }
+			.aspose-root .rn-2 { font-size: 10pt }
+			.aspose-root .rn-3 { font-family: Calibri; -aw-import: ignore }
+			.aspose-root .rn-4 { font-family: Calibri }
+			.aspose-root .rn-5 { font-family: Calibri; font-weight: bold; -aw-import: ignore }
+			.aspose-root .rn-6 { font-family: Calibri; font-weight: bold }
+			.aspose-root .rn-7 { font-family: Calibri; font-weight: bold; font-style: italic }
+			.aspose-root .rn-8 { font-family: Calibri; font-style: italic }
+			.aspose-root .rn-9 { text-align: justify; font-size: 10pt }
+			.aspose-root .rn-10 { font-family: Calibri; font-size: 6.67pt; vertical-align: super }
+			.aspose-root .rn-11 { text-align: justify }
+			.aspose-root .rn-12 { font-family: Calibri; font-size: 10pt }
+			.aspose-root .rn-13.Hyperlink { font-family: Calibri; font-size: 10pt }
+			.aspose-root .rn-14 { text-decoration: none }
+			.aspose-root .rn-15 { text-align: justify; font-size: 9pt }
+			.aspose-root .rn-16 { font-family: Calibri; font-style: italic; -aw-import: ignore }
+			.aspose-root .rn-17 { font-family: Calibri; font-size: 6pt; font-style: italic; vertical-align: super }
+			.aspose-root .rn-18.cs { margin-top: 0; margin-bottom: 0; text-align: justify; font-size: 10pt }
+			.aspose-root .rn-19 { width: 226.55pt; vertical-align: top }
+			.aspose-root .rn-20 { width: 223.95pt; vertical-align: top }
+			.aspose-root .rn-21 { margin-right: 85.3pt; text-align: justify; font-size: 10pt; -aw-outline-level: 2 }
+			.aspose-root .rn-22 { text-align: justify; font-size: 10pt; -aw-outline-level: 2 }
+			.aspose-root .rn-23 { font-family: Calibri; font-size: 10pt; font-weight: bold }
+		
+/**/
+/*]]>*/
+</style>
+	</head>
+	<body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6343227_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Trifast PLC</div>  <div>20 October 2026</div>  <div>&#160;</div></div><div class="aspose-root">
+		<div class="Section_1">
+			<p class="rn-1">
+				<img src="https://dw6uz0omxro53.cloudfront.net/3851772/6c22e1bb-e7a9-4068-afa0-2f4f2215d7c5.jpeg" width="140" height="62" alt="Trifast_col_blue" style="-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:topbottom" /><br />
+			</p>
+			<p class="rn-2">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-2">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-2">
+				<span class="rn-4">20 October 2026</span>
+			</p>
+			<p class="rn-2">
+				<span class="rn-5">&#160;</span>
+			</p>
+			<p class="rn-1">
+				<span class="rn-6">TRIFAST</span><span class="rn-7"> </span><span class="rn-6">PLC</span>
+			</p>
+			<p class="rn-1">
+				<span class="rn-4">(&#8220;Trifast&#8221; or the &#8220;Company&#8221;)</span>
+			</p>
+			<p class="rn-1">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-1">
+				<span class="rn-6">Trading Update</span>
+			</p>
+			<p class="rn-1">
+				<span class="rn-8">Trading in line with market expectations</span>
+			</p>
+			<p class="rn-1">
+				<span class="rn-5">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="ch" style="font-family:Calibri">Trifast plc ("Trifast" or the "Group", LSE: TRI.L), the international specialist in the design, engineering, manufacture, and distribution of high-quality engineered fastenings, </span><span class="rn-4">provides a trading update for the six months ended 30 September 2026 (&#8216;H1 FY27&#8217; or the &#8216;period&#8217;) ahead of the publication of its half-year results on 17 November 2026.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-6">Trading update</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-5">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">Trading in the current financial year to date is in line with market expectations</span><span class="rn-10">1</span><span class="rn-4">.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">Revenue decline in the period moderated to approximately 4.2% year-on-year (H1 FY26: 7.1%), as anticipated, reflecting the strategic decision to focus on the quality of revenue over volume.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">This was primarily driven by a return to growth in the UK and increased stability in Europe, partly offset by softer demand in the Automotive industry in North America and Asia, with revenue from our planned operations in Saudi Arabia also being impacted by the continued disruption in the Middle East.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">Gross margin remained in line with H1 FY26 at 28.7% and encouragingly underlying EBIT margin improved further by approximately 80 basis points year-on-year to 7.4%</span><span class="rn-10">2</span><span class="rn-4">, reflecting operational efficiencies, cost discipline and the benefits of transformation initiatives.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">The Group&#8217;s balance sheet remains robust and leverage remains below 1x</span><span class="rn-10">3</span><span class="rn-4">.</span><span style="font-family:Calibri; -aw-import:spaces">&#160; </span><span class="rn-4">Our transformation projects continue to be funded by working capital improvements including Project Ignite which is expected to successfully conclude in H2 FY27.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-6">Investing for growth</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-5">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">In response to customer demand for local inventory, shorter lead times and domestic delivery, the Group is investing in establishing a distribution platform in Mexico. Building this capability in Mexico will help enhance existing customer relationships, improve responsiveness and competitiveness, and open new opportunities across our Automotive, Smart Infrastructure and Medical end markets. The Group expects to invest approximately &#163;4.6m in H2 FY27/H1 FY28 in the development of its Mexico distribution platform, which is expected to become operational during FY28.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">Furthermore, the Group is delighted to open our new distribution centre in Chennai on 21 October, expanding capacity and strengthening service resilience in South India. The facility supports the continued growth of the Group&#8217;s Indian business, where demand is being driven predominantly by Smart Infrastructure, and provides a scalable platform to capture further growth in this attractive market.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-6">Outlook</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-5">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">The Board remains confident in delivering further margin improvement in H2 FY27, targeting double-digit EBIT margins in the period, ahead of our stated timeframe. Our commitment to delivering high-quality revenue growth, continued margin improvement and cash generation is unchanged, notwithstanding the continued macroeconomic challenges, supported by our strongest ever commercial pipeline, and increasing customer demand for supply chain and engineered solutions in our key sectors.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">The Board remains confident in the Group's medium-term prospects and in the continued progress being made under the Recover, Rebuild, Resilience strategy.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-5">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-6">Notice of Half-year results</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-5">&#160;</span>
+			</p>
+			<p class="rn-11">
+				<span class="rn-12">The Group&#8217;s Half-year report for the six months ended 30 September 2026 is scheduled to be published on Tuesday, 17 November 2026 via the Regulatory News Service (RNS). The report will also be available on the Group website at </span><a href="http://www.trifast.com" class="rn-14"><span class="Hyperlink rn-13">www.trifast.com</span></a><span class="rn-12">.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-4">An in-person and virtual presentation will be held at OSiT, 46 New Broad Street, London EC2M 1JH on Tuesday, 17 November 2026 at 10:00 am.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-11">
+				<span class="rn-12">Shareholders who wish to view the presentation remotely should register for the event in advance via the following link: </span><a href="https://brrmedia.news/TRI_HY26" class="rn-14"><span class="Hyperlink rn-13">https://brrmedia.news/TRI_HY26</span></a><span class="rn-12">. A relay will be made available on the Trifast plc website.</span>
+			</p>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-8">Notes:</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-16">&#160;</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-17">1</span><span class="rn-8"> In so far as the Company is aware, as at October 2026, consensus market expectations for the year ending 31 March 2027 were for revenue of &#163;214m, and adjusted EBIT of &#163;18.2m. The consensus is based on the company-compiled consensus of analyst estimates. These estimates are analysts' forecasts and are not produced or endorsed by Trifast.</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-16">&#160;</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-17">2</span><span class="rn-8"> with H1 FY26 underlying EBIT margin of 6.6%, restated from 6.3% following the reclassification of Project Ignite from capital expenditure to separately disclosed items at the end of last year.</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-16">&#160;</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-17">3</span><span class="rn-8"> The leverage ratio is calculated using adjusted underlying EBITDA and adjusted net interest, excluding the impact of IFRS 16 lease accounting and other adjustments specified within the facility agreement.</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-16">&#160;</span>
+			</p>
+			<p class="rn-15">
+				<span class="rn-8">Unless stated otherwise, amounts and comparisons with the prior period are calculated at constant currency (Constant Exchange Rate (CER)).</span><span style="font-family:Calibri; font-style:italic; -aw-import:spaces">&#160; </span><span class="rn-8">Where reference is made to &#8216;underlying&#8217; this is defined as being before separately disclosed items.</span>
+			</p>
+			<p class="cs rn-18">
+				<span class="ct" style="font-family:Calibri; -aw-import:ignore">&#160;</span>
+			</p>
+			<p class="cs rn-18">
+				<span class="ct" style="font-family:Calibri; color:#1e1f1b; -aw-import:ignore">&#160;</span>
+			</p>
+			<p class="rn-2">
+				<span class="rn-6">Enquiries:</span>
+			</p>
+			<p>
+				<a href="http://www.trifast.com" class="rn-14"></a>
+			</p>
+			<table cellspacing="0" cellpadding="0" class="TableGrid" style="border-collapse:collapse">
+				<tbody><tr>
+					<td class="rn-19">
+						<p class="rn-9">
+							<span class="rn-6">Trifast plc</span>
+						</p>
+						<p class="rn-2">
+							<span class="rn-4">Iain Percival, Chief Executive Officer</span>
+						</p>
+						<p class="rn-2">
+							<span class="rn-4">Kate Ferguson, Chief Financial Officer</span>
+						</p>
+						<p class="rn-2">
+							<span class="rn-4">Christopher Morgan FCG, Company Secretary</span>
+						</p>
+						<p class="rn-2">
+							<span class="rn-5">&#160;</span>
+						</p>
+					</td>
+					<td class="rn-20">
+						<p class="rn-9">
+							<span class="rn-4">Office: +44 (0) 1825 747630</span>
+						</p>
+						<p class="rn-11">
+							<span class="rn-12">Email: </span><a href="mailto:corporate.enquiries@trifast.com" class="rn-14"><span class="Hyperlink rn-13">corporate.enquiries@trifast.com</span></a>
+						</p>
+						<p class="rn-11">
+							<span class="rn-12">Shareholders: </span><a href="mailto:companysecretariat@trifast.com" class="rn-14"><span class="Hyperlink rn-13">companysecretariat@trifast.com</span></a>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="rn-19">
+						<p class="rn-9">
+							<span class="rn-6">Singer Capital Markets </span><span class="rn-7">(Joint Broker)</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Sara Hale</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Graham Hertrich</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Dan Ingram</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-5">&#160;</span>
+						</p>
+					</td>
+					<td class="rn-20">
+						<p class="rn-9">
+							<span class="rn-4">Tel: +44 (0) 207 496 3000</span>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="rn-19">
+						<p class="rn-9">
+							<span class="rn-6">Berenberg </span><span class="rn-7">(Joint Broker)</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Harry Nicholas</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Ciaran Walsh</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Christopher Whitaker</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-5">&#160;</span>
+						</p>
+					</td>
+					<td class="rn-20">
+						<p class="rn-9">
+							<span class="rn-4">Tel: +44 (0) 203 207 7800</span>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="rn-19">
+						<p class="rn-9">
+							<span class="rn-6">IFC Advisory </span><span class="rn-7">(Financial PR &amp; IR)</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Graham Herring</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Tim Metcalfe</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Zach Cohen</span>
+						</p>
+					</td>
+					<td class="rn-20">
+						<p class="rn-9">
+							<span class="rn-4">Tel: +44 (0) 203 934 6632</span>
+						</p>
+					</td>
+				</tr>
+			</tbody></table>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+			<table cellspacing="0" cellpadding="0" style="width:481.9pt; border-collapse:collapse">
+				<tbody><tr>
+					<td style="width:481.9pt; border-bottom:0.75pt solid #000000; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top-style:nil">
+						<p class="rn-21">
+							<span class="rn-6">Editors' notes</span>
+						</p>
+						<p class="rn-21">
+							<span class="rn-5">&#160;</span>
+						</p>
+					</td>
+				</tr>
+				<tr style="height:113.15pt">
+					<td style="width:481.9pt; border-top:0.75pt solid #000000; vertical-align:top; -aw-border-bottom-style:nil; -aw-border-left-style:nil; -aw-border-right-style:nil; -aw-border-top:0.5pt single #000000">
+						<p class="rn-22">
+							<span class="rn-6">About Trifast plc (LSE Main listing: symbol: TRI)</span>
+						</p>
+						<p class="rn-22">
+							<span class="rn-5">&#160;</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">In 2023, TR celebrated 50 years of business with a proud heritage of serving customers with engineered fastening supply chain solutions. Specialising in the design, engineering, manufacture, and distribution of high-quality engineered fastenings and Category 'C' components principally for major global assembly industries. As an international business we can provide customer support from across key regions in the UK &amp; Ireland, Asia, Europe, and North America. In addition to our service locations, we operate manufacturing facilities focused on high volume cold forged fasteners and special parts. We have also established Engineering &amp; innovation centres to support R&amp;D and customer collaboration across the world. The Group supplies to customers in c.65 countries across a wide range of industries, including Automotive, Smart Infrastructure and Medical Equipment. As a full-service provider to multinational OEMs and Tier 1 companies spanning several sectors, we deliver comprehensive support to our customers across every requirement, from concept design through to technical engineering consultancy, manufacturing, supply management, and global logistics.</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-3">&#160;</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-6">We have defined a clear purpose and vision:</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">To sustainably drive our customers&#8217; success by simplifying their fastener supply chain and supporting them in their technical requirements through our world-class engineering and manufacturing capabilities.</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-3">&#160;</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-6">For more information, visit:</span>
+						</p>
+						<p class="rn-11">
+							<a href="https://www.londonstockexchange.com/stock/TRI/trifast-plc/company-page" class="rn-14"><span class="Hyperlink rn-13">TRIFAST PLC TRI Stock | London Stock Exchange</span></a>
+						</p>
+						<p class="rn-11">
+							<span class="rn-23">website: </span><a href="http://www.trifast.com" class="rn-14"><span class="Hyperlink rn-13">www.trifast.com</span></a>
+						</p>
+						<p class="rn-11">
+							<span class="rn-23">LinkedIn </span><a href="http://www.linkedin.com/company/tr-fastenings" class="rn-14"><span class="Hyperlink rn-13">www.linkedin.com/company/tr-fastenings</span></a>
+						</p>
+						<p class="rn-9">
+							<span class="rn-3">&#160;</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-4">Trifast, TR and TR Fastenings are registered trademarks of the Company</span>
+						</p>
+						<p class="rn-9">
+							<span class="rn-6">LEI number: </span><span class="rn-4">213800WFIVE6RWK3CR22</span>
+						</p>
+					</td>
+				</tr>
+			</tbody></table>
+			<p class="rn-9">
+				<span class="rn-3">&#160;</span>
+			</p>
+		</div>
+	
+</div><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            <script>
+    // IMC reader tools: font size buttons, links in a new tab and read progress (posted to the
+    // parent when embedded in IMC). Only touches the announcement's shadow root, not the page.
+    // Runs straight away rather than on window load: this is included right after the announcement's
+    // shadow root, so it already exists, and waiting for every image and ad to load made the content
+    // visibly jump when the styles and buttons were finally applied.
+    (function () {
+        const host = document.querySelector('.announcement-shadow-wrapper');
+        const root = host && host.shadowRoot;
+        if (!root) {
+            return;
+        }
+
+        let percentagesArr = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
+        let showed = {};
+        let timeout;
+        let previousPercentage;
+        let initialScroll = false;
+        const minFont = 6;
+        const maxFont = 24;
+        let fontSize = 12;
+
+        // How much of the announcement has been scrolled into view, as a percentage
+        const readPercentage = () => {
+            const rect = host.getBoundingClientRect();
+            if (rect.height <= 0) {
+                return 0;
+            }
+
+            return Math.max(0, Math.min(100, Math.round((window.innerHeight - rect.top) / rect.height * 100)));
+        };
+
+        // Get font size from session
+        if (sessionStorage.getItem('fontSize')) {
+            fontSize = Number(sessionStorage.getItem('fontSize'));
+        }
+
+        // Remove negative side margins (Word style hanging indents), which push text past the edges of
+        // the announcement. Only negative margins are touched, so others keep their units and scale.
+        root.querySelectorAll('p').forEach(function (p) {
+            const computed = getComputedStyle(p);
+            if (parseFloat(computed.marginLeft) < 0) {
+                p.style.marginLeft = '0px';
+            }
+            if (parseFloat(computed.marginRight) < 0) {
+                p.style.marginRight = '0px';
+            }
+        });
+
+        // Styles with fontSize from variable. Inside the shadow root, so they only apply to the announcement.
+        const style = () => {
+            return `
+                .fr-view-element {
+                    width: auto !important;
+                    overflow-x: auto !important;
+                    padding: 0 !important;
+                    line-height: normal !important;
+                }
+                :host {
+                    /* Lets the rules below respond to the announcement's width rather than the window's */
+                    container-type: inline-size;
+                }
+                div {
+                    font-size: ` + fontSize + `pt !important;
+                }
+                /* Feeds indent content with side margins, which wastes too much space on narrow screens */
+                @container (max-width: 580px) {
+                    div,
+                    table {
+                        margin-left: 0 !important;
+                        margin-right: 0 !important;
+                    }
+                }
+                p{
+                    line-height: normal !important;
+                }
+                p, span, li {
+                    font-size: ` + fontSize + `pt !important;
+                    text-indent: 0 !important;
+                }
+                table {
+                    display: block;
+                    width: 100% !important;
+                    max-width: 100%;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+                td {
+                    padding: 4px !important;
+                    text-indent: 0 !important;
+                    text-align: start !important;
+                    font-size: ` + fontSize + `pt !important
+                }
+                .scale-buttons-container {
+                    float: left;
+                    position: sticky;
+                    width: 100%;
+                    top: 8px;
+                    left: 8px;
+                    margin-bottom: 10px;
+                    z-index: 1;
+                }
+                .scale-button {
+                    color: white;
+                    background-color: #132346;
+                    border: none;
+                    border-radius: 0.5rem;
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 0.2rem !important;
+                    opacity: 0.6;
+                    cursor: pointer;
+                    float: left;
+                    position: relative;
+                }
+                .scale-button:hover {
+                    opacity: 0.8 !important;
+                }
+                .scale-button-disabled {
+                    opacity: 0.4 !important;
+                }
+                .icon {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    color: white;
+                    left: 8px;
+                    top: 8px;
+                    position: absolute;
+                }
+                .aspose-root {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    overflow-x: hidden !important;
+                }
+            `;
+        };
+
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = style();
+        root.appendChild(styleSheet);
+
+        // Create font resize buttons
+        const increaseButton = document.createElement('div');
+        fontSize === maxFont
+            ? increaseButton.className = 'scale-button scale-button-disabled'
+            : increaseButton.className = 'scale-button';
+
+        const decreaseButton = document.createElement('div');
+        fontSize === minFont
+            ? decreaseButton.className = 'scale-button scale-button-disabled'
+            : decreaseButton.className = 'scale-button';
+
+        // Create SVGs
+        const plusSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        plusSvg.classList.add('icon');
+        plusSvg.setAttribute('aria-hidden', 'true');
+        plusSvg.setAttribute('focusable', 'false');
+        plusSvg.setAttribute('viewBox', '0 0 24 24');
+
+        const minusSvg = plusSvg.cloneNode();
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('fill', 'currentColor');
+
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+        const pathOne = path.cloneNode();
+        const pathTwo = path.cloneNode();
+        const pathThree = path.cloneNode();
+        const pathFour = path.cloneNode();
+
+        pathOne.setAttribute('d',
+            'M10.77,18.3a7.53,7.53,0,1,1,7.53-7.53A7.53,7.53,0,0,1,10.77,18.3Zm0-13.55a6,6,0,1,0,6,6A6,6,0,0,0,10.77,4.75Z');
+        pathTwo.setAttribute('d',
+            'M20,20.75a.74.74,0,0,1-.53-.22L15.34,16.4a.75.75,0,0,1,1.06-1.06l4.13,4.13a.75.75,0,0,1,0,1.06A.74.74,0,0,1,20,20.75Z');
+        pathThree.setAttribute('d',
+            'M13.25,11.5h-5a.75.75,0,0,1,0-1.5h5a.75.75,0,0,1,0,1.5Z');
+        pathFour.setAttribute('d',
+            'M10.75,14a.76.76,0,0,1-.75-.75v-5a.75.75,0,0,1,1.5,0v5A.76.76,0,0,1,10.75,14Z');
+
+        group.append(pathOne, pathTwo, pathThree);
+        minusSvg.appendChild(group);
+
+        const plusGroup = group.cloneNode(true);
+        plusGroup.append(pathFour);
+        plusSvg.appendChild(plusGroup);
+
+        // Change font sizes, keeping the choice for the session
+        const incrementFont = (change) => {
+            if (fontSize + change >= minFont && fontSize + change <= maxFont) {
+                fontSize += change;
+
+                // Reset the content of the stylesheet with the new font-size
+                styleSheet.textContent = style();
+
+                // Change class to disabled if font min/max is reached
+                if (fontSize === maxFont) {
+                    increaseButton.classList.add('scale-button-disabled');
+                } else if (fontSize === minFont) {
+                    decreaseButton.classList.add('scale-button-disabled');
+                } else if ([...increaseButton.classList].includes('scale-button-disabled')) {
+                    increaseButton.classList.remove('scale-button-disabled');
+                } else if ([...decreaseButton.classList].includes('scale-button-disabled')) {
+                    decreaseButton.classList.remove('scale-button-disabled');
+                }
+
+                sessionStorage.setItem('fontSize', fontSize);
+            }
+        };
+
+        // Set appearance and function of increment and decrement button
+        increaseButton.append(plusSvg);
+        increaseButton.onclick = () => incrementFont(2);
+
+        decreaseButton.append(minusSvg);
+        decreaseButton.onclick = () => incrementFont(-2);
+
+        // Create div and append resize buttons
+        const buttonDiv = document.createElement('div');
+        buttonDiv.className = 'scale-buttons-container';
+
+        buttonDiv.append(decreaseButton);
+        buttonDiv.append(increaseButton);
+
+        // Add the buttons above the announcement content
+        root.prepend(buttonDiv);
+
+        // Add target _blank to all links in the announcement
+        root.querySelectorAll('a').forEach(link => link.setAttribute('target', '_blank'));
+
+        // Report initial read progress once images have loaded, so the announcement's height is final
+        window.addEventListener('load', function () {
+            window.parent.postMessage({currentPercentage: readPercentage()}, '*');
+        });
+
+        window.addEventListener('scroll', function () {
+            let scrollPercentage = readPercentage();
+            let currentPercentage = 0;
+            let i = 0;
+
+            if (!initialScroll) {
+                window.parent.postMessage({initialScroll: true}, '*');
+                initialScroll = true;
+            }
+
+            while (percentagesArr[i] <= scrollPercentage) {
+                currentPercentage = percentagesArr[i++];
+            }
+
+            if (previousPercentage !== currentPercentage) {
+                clearTimeout(timeout);
+                timeout = currentPercentage !== 0 && !showed[currentPercentage]
+                    ? setTimeout(() => {
+                        showed[currentPercentage] = true;
+
+                        window.parent.postMessage({currentPercentage: currentPercentage}, '*');
+                    }, 500)
+                    : null;
+                previousPercentage = currentPercentage;
+            }
+        });
+    })();
+</script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/TRI" style="font-size:14px;">Trifast
+                    (TRI)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investormeetcompany.com/meetings?utm_source=investegate&amp;utm_medium=display&amp;utm_campaign=imc-meetings&amp;utm_id=imc-2026-001&amp;utm_content=meet-and-engage&quot; title=&quot;Investor Meet Company View Meetings" title="View meetings on investormeetcompany.com" target="_blank" rel="noopener">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>18 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/rentokil-initial--rto/director-pdmr-shareholding/9884795">Rentokil Initial</a>
+            </li>
+                        <li>
+                <span>18 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/ninety-one--n91/director-pdmr-shareholding/9884793">Ninety One</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/ninety-one--n91/director-pdmr-shareholding/9884668">Ninety One</a>
+            </li>
+                        <li>
+                <span>2 hours ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/marks-spencer-group--mks/director-pdmr-shareholding/9884382">Marks &amp; Spencer Group</a>
+            </li>
+                        <li>
+                <span>2 hours ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/c-c-group-cdi---ccr/director-pdmr-shareholding/9884378">C&amp;C Group (CDI)</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+    <div>
+        <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+    </div>
+    <div>
+        <span class="copywrite text-center">
+            © 2026 Investor Meet Company Ltd
+        </span>
+        <span class="link">
+            <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+            <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+            <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+        </span>
+        <br/>
+        <span class="link">
+            <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+        </span>
+    </div>
+    <div class="mx-auto mx-xl-0 mt-2 mt-xl-0">
+        <span class="link text-center d-block" style="color:white">
+            Our other sites
+        </span>
+        <div class="footer-links">
+            <ul class="d-flex">
+                <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                <li><a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</footer>
+    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>
