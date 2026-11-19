@@ -48,3 +48,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-19 15:02 UTC
 - ibkr-handoff.json written 15:02Z: 1 name, PRS long (no, panel_pct 72.6, all four judges), offline plan 12,770 sh @ 4.175 NOK ≈ 50% cap. No broker call from this session.
+
+## Stage EU — DONE
+- Logged at 2026-11-19 15:03 UTC
+- 4 of 7 ranked, 0 above floor, panel selects none; PRS handed off at pct 72.6. Everything pushed to origin/main (EARNINGS_DATA_BRANCH=main), last commit 8a1bde6 confirmed with git log origin/main.
