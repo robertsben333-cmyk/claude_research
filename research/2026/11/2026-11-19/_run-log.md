@@ -167,3 +167,7 @@
 ## Holistic research — 2026-11-19 — STARTED
 - Logged at 2026-11-19 19:16 UTC
 - 19:17 UTC (14:17 ET). Pick up to 12 names from E-P's sweep, two arms each (hp.v3 evolving + hp.v1 control), waves of 8, collect before 15:45 ET, then learning step. No orders.
+
+## Holistic research — learning step
+- Logged at 2026-11-19 19:31 UTC
+- resolve: 26 new name-arms, 0 pending. Gate closed: hp.v3 12/30 names, 1/3 days. Drift alarm off (60 pairs, diff -0.004, t -0.68). Reflector not launched; tomorrow runs hp.v3.
