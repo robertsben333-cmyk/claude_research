@@ -28,3 +28,15 @@
 ## Stage EU — hunts
 - Logged at 2026-11-19 14:51 UTC
 - PNOR: confirmed bmo (06:30 CET, NewsWeb 13 Nov). impact_sum +0.1, scaled -0.4 (abs 3.3, p_up 44). Baseline history row 2026-05-29 (-27.5%) is mostly an ex-distribution, not a results reaction.
+
+## Stage EU — hunts
+- Logged at 2026-11-19 14:55 UTC
+- PRS: confirmed bmo (07:00 CET). impact_sum +0.1 (guide +0.6, cash +0.2, recontracting -0.4, Caius selling -0.3), abs 6.5, p_up 52. Unexplained -9.9% on 7x volume 17 Nov.
+
+## Stage EU — hunts
+- Logged at 2026-11-19 14:56 UTC
+- PAX: confirmed bmo (07:00 CET, MFN). impact_sum +0.2, abs 7.5, p_up 51. Bar: DNB Carnegie commissioned preview (sales SEK105m).
+
+## Stage EU — hunts
+- Logged at 2026-11-19 14:58 UTC
+- CMP: event confirmed (RB 1/2026). Hunter says session is AMC (H1 at 20:15, FY at 17:12), not the sealed bmo. impact_sum +0.2, abs 5.0, p_up 52. Two scraped PAX scratch pages (cmsreg.html, fc.html) removed: GitHub push protection flagged an embedded third-party Mapbox token.
