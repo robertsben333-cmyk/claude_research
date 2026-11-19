@@ -136,3 +136,7 @@
 ## Edge hunt (panel) — waves
 - Logged at 2026-11-19 18:30 UTC
 - All 20 searchers launched by 18:30 UTC (8 concurrent cap, relaunched as slots freed). 12 of 20 returned so far, all search_complete true.
+
+## Edge hunt (panel) — 3u/3s
+- Logged at 2026-11-19 18:36 UTC
+- 18:36 UTC: all 20 searchers returned, hunt_status check: 0 unfinished of 20, none retried. Flatten LIVE: held EVAX -219 (+8.81% unrealised) and MMS -8 (+3.80%), both bmo legs of the 2026-11-18 book; closed, account flat. Flatten PAPER: held EVAX -789 (+10.77%) and MMS -79 (+3.80%); closed, account flat. No amc leg still held on either account (RRGB, SNEX went at the open via E-PX).
