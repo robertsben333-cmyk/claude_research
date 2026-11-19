@@ -40,3 +40,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-19 14:58 UTC
 - CMP: event confirmed (RB 1/2026). Hunter says session is AMC (H1 at 20:15, FY at 17:12), not the sealed bmo. impact_sum +0.2, abs 5.0, p_up 52. Two scraped PAX scratch pages (cmsreg.html, fc.html) removed: GitHub push protection flagged an embedded third-party Mapbox token.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-19 14:59 UTC
+- 4 packs (CMP PAX PNOR PRS), four judges. Scored: 4 of 7 rankable, 0 above floor 2.8; BMC JACK TRI not ranked (no event).
