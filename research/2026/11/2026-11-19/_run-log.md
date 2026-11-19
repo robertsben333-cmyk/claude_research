@@ -120,3 +120,7 @@
 ## Edge hunt (panel) — waves
 - Logged at 2026-11-19 18:15 UTC
 - Sweep: 23 swept, 20 confirmed, 0 phantom, 3 unconfirmed (IESC, BJ, GEOS) shed first per edge_degrade_order; 20 hunted = cap. 7 sessions unsettled per sweep (INTU, KEYS, MOG.A, BKE hours inferred from call times). Wave 1 (amc, 18:16 UTC): GRRR BULL GLOB ESTC GRSD NGVC MATW GAP.
+
+## Edge hunt (panel v3b) — wave 1
+- Logged at 2026-11-19 18:19 UTC
+- Sweep: 19 of 23 confirmed (company-sourced date), IESC/GEOS probable phantoms, INTU/BJ aggregator-only. Hunting 20: 19 confirmed + BJ (highest-priority unconfirmed, 40); shed INTU (38), IESC (6), GEOS (9) per degrade order (unconfirmed, lowest priority). Wave 1 (turn 1, 6 amc): GRRR BULL NGVC GAP GRSD ESTC, agent unpriced-searcher-v3b (not the fallback).
