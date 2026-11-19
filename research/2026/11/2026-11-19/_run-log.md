@@ -144,3 +144,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-19 18:36 UTC
 - 20 packs, four judges
+
+## Edge hunt (panel v3b) — all 20 launched
+- Logged at 2026-11-19 18:37 UTC
+- Returned complete: ESTC NGVC GRRR GRSD BULL GAP GLOB MATW POST KEYS EARN ESE (12). Running: ROST BSP WRD MOG.A RLX FRO BKE BJ. All launched as unpriced-searcher-v3b, no fallback. POST once refused at the 8-concurrent cap and relaunched.
