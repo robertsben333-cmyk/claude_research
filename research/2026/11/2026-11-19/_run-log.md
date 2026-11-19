@@ -140,3 +140,7 @@
 ## Edge hunt (panel) — 3u/3s
 - Logged at 2026-11-19 18:36 UTC
 - 18:36 UTC: all 20 searchers returned, hunt_status check: 0 unfinished of 20, none retried. Flatten LIVE: held EVAX -219 (+8.81% unrealised) and MMS -8 (+3.80%), both bmo legs of the 2026-11-18 book; closed, account flat. Flatten PAPER: held EVAX -789 (+10.77%) and MMS -79 (+3.80%); closed, account flat. No amc leg still held on either account (RRGB, SNEX went at the open via E-PX).
+
+## Edge hunt (panel v3b) — all 20 launched
+- Logged at 2026-11-19 18:37 UTC
+- Returned complete: ESTC NGVC GRRR GRSD BULL GAP GLOB MATW POST KEYS EARN ESE (12). Running: ROST BSP WRD MOG.A RLX FRO BKE BJ. All launched as unpriced-searcher-v3b, no fallback. POST once refused at the 8-concurrent cap and relaunched.
