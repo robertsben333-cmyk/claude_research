@@ -44,3 +44,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-19 14:59 UTC
 - 4 packs (CMP PAX PNOR PRS), four judges. Scored: 4 of 7 rankable, 0 above floor 2.8; BMC JACK TRI not ranked (no event).
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-19 15:02 UTC
+- ibkr-handoff.json written 15:02Z: 1 name, PRS long (no, panel_pct 72.6, all four judges), offline plan 12,770 sh @ 4.175 NOK ≈ 50% cap. No broker call from this session.
