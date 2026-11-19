@@ -599,15 +599,25 @@ def panel_book(tradable, equity, sizing, pcfg, budget, held_usd):
             "candidates": [c["ticker"] for c in fills], "applied": False}
     if not fills:
         return keep, undersized, info
-    if len(strong) != 1 or not keep:
-        why = (f"top-up only on a day with exactly one strong name in the book "
+    # Since 2026-11-19 (operator's instruction) the top-up also runs on a day with NO
+    # strong name in the book: the 70-79 names then take the whole budget, each capped
+    # at top_up.max_position_pct_of_equity_no_strong (33). One strong name: cap 25 as
+    # before. Two or more: no top-up.
+    if keep and len(keep) == 1 and len(strong) == 1:
+        cap = float(tu.get("max_position_pct_of_equity", 25))
+        info["mode"] = "one_strong"
+    elif not keep:
+        cap = float(tu.get("max_position_pct_of_equity_no_strong",
+                           tu.get("max_position_pct_of_equity", 25)))
+        info["mode"] = "no_strong"
+    else:
+        why = (f"top-up only on a day with one or no strong name in the book "
                f"({len(keep)} sized of {len(strong)} tradable)")
         undersized += [{**c, "reason": why} for c in fills]
         return keep, undersized, info
     used = sum(r.get("notional_usd") or 0 for r in keep)
     left = max(0.0, float(budget) - used)
-    fsz = {**sizing, "max_position_pct_of_equity":
-           float(tu.get("max_position_pct_of_equity", 25))}
+    fsz = {**sizing, "max_position_pct_of_equity": cap}
     fk, fu = size(fills, equity, fsz, budget=left, held_usd=held_usd,
                   redistribute=redist)
     info.update(applied=bool(fk), budget_usd=round(left, 2))

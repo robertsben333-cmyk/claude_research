@@ -517,6 +517,16 @@ def main():
     check("top-up: two strong names stay 50 / 50 and the candidate is rejected",
           _w == {"S": 50.0, "T": 50.0} and not _i["applied"]
           and [r["ticker"] for r in _u] == ["F1"], f"{_w}")
+    _pc33 = {**_pc, "top_up": {**_pc["top_up"], "max_position_pct_of_equity_no_strong": 33}}
+    _k, _u, _i = at.panel_book([_c("F1", 75, True)], 10000.0, _sz, _pc33, 10000.0, {})
+    _w = {r["ticker"]: r["pct_of_equity"] for r in _k}
+    check("top-up: no strong name, one 70-79 name takes 33% (2026-11-19)",
+          _w == {"F1": 33.0} and _i["applied"] and _i.get("mode") == "no_strong", f"{_w}")
+    _k, _u, _i = at.panel_book([_c("F1", 75, True), _c("F2", 72, True), _c("F3", 71, True),
+                                _c("F4", 70, True)], 10000.0, _sz, _pc33, 10000.0, {})
+    _w = {r["ticker"]: r["pct_of_equity"] for r in _k}
+    check("top-up: no strong name, four 70-79 names split equally under the 33% cap",
+          _w == {"F1": 25.0, "F2": 25.0, "F3": 25.0, "F4": 25.0}, f"{_w}")
     _sel, _rej = at.select_panel(
         {"ranking": [{"ticker": "A", "panel_pct": 85, "side": 1},
                      {"ticker": "B", "panel_pct": 75, "side": -1},
@@ -535,7 +545,8 @@ def main():
     check("top-up is configured as the operator chose (70, 25% a name)",
           (ex["panel"].get("top_up") or {}).get("enabled") is True
           and ex["panel"]["top_up"].get("min_panel_pct") == 70
-          and ex["panel"]["top_up"].get("max_position_pct_of_equity") == 25)
+          and ex["panel"]["top_up"].get("max_position_pct_of_equity") == 25
+          and ex["panel"]["top_up"].get("max_position_pct_of_equity_no_strong") == 33)
 
     # -- the price the budget is divided by (added 2026-09-10)
     #

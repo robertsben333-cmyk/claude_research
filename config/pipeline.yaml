@@ -1116,10 +1116,19 @@ execution:
     # day (t 0.38), live us-searcher.v2 -0.35 (t -1.00), v3 +0.89 (t 1.45). Noise
     # either way: it puts idle cash to work, it is not a finding. Off under --top
     # and --min-pct. alpaca_trade.panel_book() is the whole rule.
+    #
+    # NO STRONG NAME (2026-11-19, operator's instruction: "top up also applies with no
+    # stocks, so then up to 33% per name"). On a day with NO strong name in the book
+    # (none at >= 80, or every one dropped as untradable before the split), the 70-79
+    # names take the whole budget, equal weight, at most
+    # `max_position_pct_of_equity_no_strong` (33) of equity each. Unmeasured, like the
+    # rest of the top-up. Days with one strong name keep the 25% cap; two or more,
+    # unchanged.
     top_up:
       enabled: true
       min_panel_pct: 70
       max_position_pct_of_equity: 25
+      max_position_pct_of_equity_no_strong: 33
 
   sizing:
     # EQUAL WEIGHT, WHOLE BUDGET. Every name that clears the benchmark gets the same
