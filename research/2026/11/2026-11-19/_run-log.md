@@ -152,3 +152,6 @@
 ## Edge hunt (panel) — panel and note
 - Logged at 2026-11-19 18:47 UTC
 - Four judges ran on pinned models, 20/20 coverage each. panel_pct >= 80: GRSD short (81), not shortable at Alpaca and /bin/bash.19m turnover, so dropped; BSP (79) is the only 70-79 name, but top-up needs one strong name in the book, so the book is empty. Searcher floor-clearer: GRSD -2.80. No stage E run today (Routine stopped). Note published.
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-19 18:46 UTC
+- 20 of 20 hunts complete (search_complete true, all carry expectations/next_guide/evidence_type; BJ confirmed by its own 2026-10-29 release). edge_score: 20 rankable; INTU/IESC/GEOS shed (no hunt). V2 grounded written before the first print. 20 packs, four v3b judges.
