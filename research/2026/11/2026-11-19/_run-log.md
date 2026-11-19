@@ -108,3 +108,7 @@
 ## Stage E-P amc exit — 2026-11-19
 - Logged at 2026-11-19 14:09 UTC
 - Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). Verify: live STEM/OMER/FEAM ok, paper CURI/CTVA/STEM/OMER/FEAM ok; nothing UNFILLED, no rescues. Close (--today-only, 2026-11-18 edge-panel run): LIVE RRGB amc day SENT a0105744-3b63-4bb8-ace0-bf06bd2728b9, SNEX amc day SENT a6530b52-5634-443a-b394-b21cf04974b3; PAPER RRGB amc day SENT 3defc920-5a1d-40bb-82f3-f3ced6e6f6ce, SNEX amc day SENT 5047e11f-22bd-4366-a49f-cae9df7a84e1. Refused on both accounts (correct): MMS bmo, EVAX bmo — market placement, market closed; left for stage E-P's own run.
+
+## Edge hunt (panel) — 2026-11-19 amc + 2026-11-20 bmo — STARTED
+- Logged at 2026-11-19 18:09 UTC
+- Fired 18:07 UTC (13:07 ET). Universe 24 rows (15 amc 11-19, 9 bmo 11-20); MOG.B not folded by share_class.py, dropped by hand (one issuer = MOG.A), so 23 baselines sealed in edge-panel/baselines/ (BJ, BSP retried after bars HTTPError). Plan: one edge-sweep, then up to 20 unpriced-searchers, amc first, max 8 a turn; flatten at 3s, panel, buy at 6b.
