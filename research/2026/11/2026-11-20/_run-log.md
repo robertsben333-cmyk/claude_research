@@ -20,3 +20,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-19 14:50 UTC
 - JACK: phantom (event_confirmed false). Issuer calendar (NewsWeb 2026-05-03) and MFN put Q3 on 2026-11-25; the vendor's 11-20 is an estimate. Findings empty.
+
+## Stage EU — hunts
+- Logged at 2026-11-19 14:50 UTC
+- BMC: no event in window. ESPI 68/2026 (2026-11-17) moved the Q3/9M report to 2026-11-30; findings empty. Third phantom of three hunts so far.
