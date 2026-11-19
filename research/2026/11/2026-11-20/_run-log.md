@@ -24,3 +24,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-19 14:50 UTC
 - BMC: no event in window. ESPI 68/2026 (2026-11-17) moved the Q3/9M report to 2026-11-30; findings empty. Third phantom of three hunts so far.
+
+## Stage EU — hunts
+- Logged at 2026-11-19 14:51 UTC
+- PNOR: confirmed bmo (06:30 CET, NewsWeb 13 Nov). impact_sum +0.1, scaled -0.4 (abs 3.3, p_up 44). Baseline history row 2026-05-29 (-27.5%) is mostly an ex-distribution, not a results reaction.
