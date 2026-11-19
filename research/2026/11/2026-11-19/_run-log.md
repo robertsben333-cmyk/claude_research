@@ -112,3 +112,7 @@
 ## Edge hunt (panel) — 2026-11-19 amc + 2026-11-20 bmo — STARTED
 - Logged at 2026-11-19 18:09 UTC
 - Fired 18:07 UTC (13:07 ET). Universe 24 rows (15 amc 11-19, 9 bmo 11-20); MOG.B not folded by share_class.py, dropped by hand (one issuer = MOG.A), so 23 baselines sealed in edge-panel/baselines/ (BJ, BSP retried after bars HTTPError). Plan: one edge-sweep, then up to 20 unpriced-searchers, amc first, max 8 a turn; flatten at 3s, panel, buy at 6b.
+
+## Edge hunt (panel v3b) — 2026-11-19 amc + 2026-11-20 bmo — STARTED
+- Logged at 2026-11-19 18:15 UTC
+- Fired 18:12 UTC (13:12 ET). Universe 24 rows (15 amc 11-19, 9 bmo 11-20); MOG.B dropped by hand into MOG.A (share_class.py did not fold it), 23 baselines sealed in edge-panel-v3b/baselines/. Plan: one edge-sweep, up to 20 unpriced-searcher-v3b (amc first, max 6 a turn), four panel-judge-v3b judges, two panel_score calls. No orders.
