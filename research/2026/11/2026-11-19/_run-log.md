@@ -163,3 +163,7 @@
 ## Edge hunt (panel v3b) — DONE
 - Logged at 2026-11-19 18:54 UTC
 - 4 of 4 judges (pinned, no fallback). Own history: selected GRSD short 91, BSP long 82, ESTC long 82, GRRR short 81. E-P scale (dry-run): GRSD 89, BSP 80, ESTC 78, GRRR 78. vs stage E-P (selected GRSD only): overlap GRSD; Spearman rho of panel_pct_signed +0.47 on 19 shared names. panel-history-v3b.json appended (80 sizes); stage E-P's history untouched. No orders, no alpaca_trade.py call.
+
+## Holistic research — 2026-11-19 — STARTED
+- Logged at 2026-11-19 19:16 UTC
+- 19:17 UTC (14:17 ET). Pick up to 12 names from E-P's sweep, two arms each (hp.v3 evolving + hp.v1 control), waves of 8, collect before 15:45 ET, then learning step. No orders.
