@@ -128,3 +128,7 @@
 ## Edge hunt (panel v3b) — wave 2
 - Logged at 2026-11-19 18:26 UTC
 - ESTC returned complete with v3b fields. Turn 2: GLOB MATW KEYS launched.
+
+## Edge hunt (panel v3b) — wave 3
+- Logged at 2026-11-19 18:27 UTC
+- Returned complete: ESTC, NGVC, GRRR. Launched ESE, ROST (POST refused at the 8-concurrent cap, relaunch next).
