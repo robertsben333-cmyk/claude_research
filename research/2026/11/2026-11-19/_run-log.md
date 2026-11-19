@@ -159,3 +159,7 @@
 ## Edge hunt (panel) — 6b buy
 - Logged at 2026-11-19 18:49 UTC
 - 18:49 UTC: plan and open on both accounts, live first. No name meets the book: GRSD (81) not shortable at Alpaca; BSP (79) top-up needs one strong name in the book. Nothing sent, nothing filled. Both accounts flat: live equity $3,113.11 cash, paper $21,225.48 cash.
+
+## Edge hunt (panel v3b) — DONE
+- Logged at 2026-11-19 18:54 UTC
+- 4 of 4 judges (pinned, no fallback). Own history: selected GRSD short 91, BSP long 82, ESTC long 82, GRRR short 81. E-P scale (dry-run): GRSD 89, BSP 80, ESTC 78, GRRR 78. vs stage E-P (selected GRSD only): overlap GRSD; Spearman rho of panel_pct_signed +0.47 on 19 shared names. panel-history-v3b.json appended (80 sizes); stage E-P's history untouched. No orders, no alpaca_trade.py call.
