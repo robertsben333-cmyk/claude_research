@@ -12,3 +12,7 @@
 - Logged at 2026-11-19 14:48 UTC
 - 28 scheduled, 7 eligible above $100k, 7 hunted (all, under cap 20): no 3 (JACK, PNOR, PRS), pl 2 (BMC, CMP), se 1 (PAX), uk 1 (TRI). Largest market no 43%. Registers: no/se/uk read, pl none. session_unresolved: JACK, BMC, CMP, TRI. provenance stamped (nordic.v5, pl.v5, uk; orchestrator claude-opus-5-5).
 - Wave 1 launched: JACK PNOR PRS PAX TRI. Wave 2: BMC CMP.
+
+## Stage EU — hunts
+- Logged at 2026-11-19 14:50 UTC
+- TRI: hunter reports NO event on 2026-11-20 (event_confirmed false). Half-year report was 2026-11-17 07:00 RNS (-19.82%), the date the 20 Oct trading update named; the RNS-calendar row is stale. Findings empty.
