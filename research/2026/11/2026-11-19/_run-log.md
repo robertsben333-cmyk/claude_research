@@ -148,3 +148,7 @@
 ## Edge hunt (panel v3b) — all 20 launched
 - Logged at 2026-11-19 18:37 UTC
 - Returned complete: ESTC NGVC GRRR GRSD BULL GAP GLOB MATW POST KEYS EARN ESE (12). Running: ROST BSP WRD MOG.A RLX FRO BKE BJ. All launched as unpriced-searcher-v3b, no fallback. POST once refused at the 8-concurrent cap and relaunched.
+
+## Edge hunt (panel) — panel and note
+- Logged at 2026-11-19 18:47 UTC
+- Four judges ran on pinned models, 20/20 coverage each. panel_pct >= 80: GRSD short (81), not shortable at Alpaca and /bin/bash.19m turnover, so dropped; BSP (79) is the only 70-79 name, but top-up needs one strong name in the book, so the book is empty. Searcher floor-clearer: GRSD -2.80. No stage E run today (Routine stopped). Note published.
