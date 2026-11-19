@@ -16,3 +16,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-19 14:50 UTC
 - TRI: hunter reports NO event on 2026-11-20 (event_confirmed false). Half-year report was 2026-11-17 07:00 RNS (-19.82%), the date the 20 Oct trading update named; the RNS-calendar row is stale. Findings empty.
+
+## Stage EU — hunts
+- Logged at 2026-11-19 14:50 UTC
+- JACK: phantom (event_confirmed false). Issuer calendar (NewsWeb 2026-05-03) and MFN put Q3 on 2026-11-25; the vendor's 11-20 is an estimate. Findings empty.
