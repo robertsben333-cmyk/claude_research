@@ -116,3 +116,7 @@
 ## Edge hunt (panel v3b) — 2026-11-19 amc + 2026-11-20 bmo — STARTED
 - Logged at 2026-11-19 18:15 UTC
 - Fired 18:12 UTC (13:12 ET). Universe 24 rows (15 amc 11-19, 9 bmo 11-20); MOG.B dropped by hand into MOG.A (share_class.py did not fold it), 23 baselines sealed in edge-panel-v3b/baselines/. Plan: one edge-sweep, up to 20 unpriced-searcher-v3b (amc first, max 6 a turn), four panel-judge-v3b judges, two panel_score calls. No orders.
+
+## Edge hunt (panel) — waves
+- Logged at 2026-11-19 18:15 UTC
+- Sweep: 23 swept, 20 confirmed, 0 phantom, 3 unconfirmed (IESC, BJ, GEOS) shed first per edge_degrade_order; 20 hunted = cap. 7 sessions unsettled per sweep (INTU, KEYS, MOG.A, BKE hours inferred from call times). Wave 1 (amc, 18:16 UTC): GRRR BULL GLOB ESTC GRSD NGVC MATW GAP.
