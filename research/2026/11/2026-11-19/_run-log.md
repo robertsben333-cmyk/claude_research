@@ -132,3 +132,7 @@
 ## Edge hunt (panel v3b) — wave 3
 - Logged at 2026-11-19 18:27 UTC
 - Returned complete: ESTC, NGVC, GRRR. Launched ESE, ROST (POST refused at the 8-concurrent cap, relaunch next).
+
+## Edge hunt (panel) — waves
+- Logged at 2026-11-19 18:30 UTC
+- All 20 searchers launched by 18:30 UTC (8 concurrent cap, relaunched as slots freed). 12 of 20 returned so far, all search_complete true.
