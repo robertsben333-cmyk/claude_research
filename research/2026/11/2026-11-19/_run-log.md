@@ -124,3 +124,7 @@
 ## Edge hunt (panel v3b) — wave 1
 - Logged at 2026-11-19 18:19 UTC
 - Sweep: 19 of 23 confirmed (company-sourced date), IESC/GEOS probable phantoms, INTU/BJ aggregator-only. Hunting 20: 19 confirmed + BJ (highest-priority unconfirmed, 40); shed INTU (38), IESC (6), GEOS (9) per degrade order (unconfirmed, lowest priority). Wave 1 (turn 1, 6 amc): GRRR BULL NGVC GAP GRSD ESTC, agent unpriced-searcher-v3b (not the fallback).
+
+## Edge hunt (panel v3b) — wave 2
+- Logged at 2026-11-19 18:26 UTC
+- ESTC returned complete with v3b fields. Turn 2: GLOB MATW KEYS launched.
