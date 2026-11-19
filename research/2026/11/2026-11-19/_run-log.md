@@ -104,3 +104,7 @@
 ## Stage EU — DONE
 - Logged at 2026-11-18 15:09 UTC
 - 20 hunted, 18 ranked (AQ and CMCX phantoms). No name above the 2.8 floor; key top SGE +0.95, bottom ELIOR -1.20. Panel (4 of 4 members, no fallback) selects ELIOR short, AUROORA and MBR long. Handoff at 15:09 UTC: ELIOR short, MBR, HLMA, SGE long (AUROORA under the turnover floor). Published to origin/main (EARNINGS_DATA_BRANCH=main), confirmed by git log origin/main. Ran up to 8 hunters concurrently (platform cap) instead of waves of 5. UBI and ATT hunters set session amc against the baseline's bmo.
+
+## Stage E-P amc exit — 2026-11-19
+- Logged at 2026-11-19 14:09 UTC
+- Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). Verify: live STEM/OMER/FEAM ok, paper CURI/CTVA/STEM/OMER/FEAM ok; nothing UNFILLED, no rescues. Close (--today-only, 2026-11-18 edge-panel run): LIVE RRGB amc day SENT a0105744-3b63-4bb8-ace0-bf06bd2728b9, SNEX amc day SENT a6530b52-5634-443a-b394-b21cf04974b3; PAPER RRGB amc day SENT 3defc920-5a1d-40bb-82f3-f3ced6e6f6ce, SNEX amc day SENT 5047e11f-22bd-4366-a49f-cae9df7a84e1. Refused on both accounts (correct): MMS bmo, EVAX bmo — market placement, market closed; left for stage E-P's own run.
