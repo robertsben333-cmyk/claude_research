@@ -171,3 +171,7 @@
 ## Holistic research — learning step
 - Logged at 2026-11-19 19:31 UTC
 - resolve: 26 new name-arms, 0 pending. Gate closed: hp.v3 12/30 names, 1/3 days. Drift alarm off (60 pairs, diff -0.004, t -0.68). Reflector not launched; tomorrow runs hp.v3.
+
+## Holistic research — DONE
+- Logged at 2026-11-19 19:37 UTC
+- 24/24 hunts ok (all holistic-researcher, no fallback), collected 19:37 UTC (14:37 ET). 0 recommendations. E-P comparison appended to note.md (E-P selected GRSD short; H evolving leans the same way, p_up 42). One control file (MOG.A) records emitted_utc 19:52, later than the actual time; collect accepted it. No orders.
