@@ -80,3 +80,7 @@
 ## Holistic research — 2026-11-20 — STARTED
 - Logged at 2026-11-20 19:16 UTC
 - Fired 19:16 UTC (14:16 ET). Names from E-P's sweep (5 confirmed); evolving hp.v3 + control hp.v1 on every name; recommendations to publish before 15:45 ET.
+
+## Holistic research — learning step
+- Logged at 2026-11-20 19:26 UTC
+- 10 of 10 hunts ok, 0 recommendations (published 19:25 UTC). Resolved 22 new name-arms (12 pending). Gate closed: 23/30 names, 2/3 days on hp.v3; drift alarm off (60 pairs, Brier diff +0.001, t 0.16). Reflector not launched. Next run uses hp.v3.
