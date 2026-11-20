@@ -11,3 +11,7 @@
 ## Stage EU — universe + baselines
 - Logged at 2026-11-20 14:40 UTC
 - 10 scheduled, 3 eligible above $100k, 3 hunted (all, under cap 20): no 1 (NYKD), se 1 (VER), uk 1 (CER). Largest market uk 33% (3 markets, one name each). Registers no/se/uk read. session_unresolved: all three (bmo assumed). bankier (pl issuer calendar) HTTP 403. provenance stamped (orchestrator claude-opus-5-5). One wave: NYKD VER CER.
+
+## Stage EU — hunts
+- Logged at 2026-11-20 14:44 UTC
+- NYKD: confirmed bmo (company invitation NewsWeb 686560, 'before the opening'). impact_sum +0.3, abs 5.5, p_up 50. No bar sourceable; runway restatement after placement + tax ruling is the only new line, sign uncallable.
