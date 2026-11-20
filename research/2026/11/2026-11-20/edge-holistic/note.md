@@ -24,3 +24,19 @@ None today: no name cleared the playbook's bar.
 | BLRX | control | ok | 46.0 | none | 54.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the recommendations were published)
+
+| ticker | H evolving p_up / action | H control p_up / action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- |
+| VNET | 47 / none | 47 / none | -5.6 | no |
+| CRGO | 54 / none | 55 / none | -34.1 | no |
+| THCH | 42 / none | 38 / none | -58.6 | no |
+| DLNG | 56 / none | 57 / none | +35.2 | no |
+| BLRX | 45 / none | 46 / none | +52.9 | no |
+
+Sign disagreements (H p_up vs 50 against E-P's side):
+- CRGO: H leans up (54/55), E-P leans down (-34.1).
+- BLRX: H leans down (45/46), E-P leans up (+52.9).
+
+Neither stage selected anything; every disagreement is between sub-threshold leans.
