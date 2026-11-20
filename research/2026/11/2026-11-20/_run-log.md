@@ -56,3 +56,7 @@
 ## Stage E-P amc exit — 2026-11-20
 - Logged at 2026-11-20 14:08 UTC
 - 14:08 UTC (09:08 ET). Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). Verify: live STEM/OMER/FEAM/RRGB/SNEX ok, paper CURI/CTVA/STEM/OMER/FEAM/RRGB/SNEX ok; nothing UNFILLED, no rescues. Close (--today-only): nothing due on either account, nothing sent, nothing refused. Expected: the 2026-11-19 edge-panel book was empty on both accounts (GRSD not shortable; the no-strong-name top-up landed on main at 18:59 UTC, after that run's 18:49 plan).
+
+## Edge hunt (panel) — 2026-11-20 amc + 2026-11-23 bmo — STARTED
+- Logged at 2026-11-20 18:09 UTC
+- Fired 18:07 UTC (13:07 ET). Window: 6 confirmed-session names (DLNG amc 11-20; VNET CRGO THCH ADXN BLRX bmo 11-23). Thin day: 40 time-not-supplied rows checked with session_resolve.py (1 killed, 39 carried, 0 announced); the 17 largest carried rows go to the sweep to settle date and session, baselines for any it confirms are sealed before any searcher launches. SEC_USER_AGENT is NOT set in this environment, so www.sec.gov answered 403 and the EDGAR filing checks in session_resolve/priced_in are degraded. Plan: 1 sweep, up to 20 searchers, 4 judges; sell at 3s, buy at 6b, live then paper.
