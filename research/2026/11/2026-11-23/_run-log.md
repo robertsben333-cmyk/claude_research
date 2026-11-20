@@ -19,3 +19,11 @@
 ## Stage EU — hunts
 - Logged at 2026-11-20 14:44 UTC
 - CER: confirmed bmo (07:00 RNS pattern; issuer notice 9875780). impact_sum +0.2, abs 7.0, p_up 49. FY26 already pre-released 14 Sep (warning, -12.5%); move is FY27 outlook + order book; one broker bar (Canaccord ~+10% rev).
+
+## Stage EU — hunts
+- Logged at 2026-11-20 14:48 UTC
+- VER: event confirmed (company calendar 23 Nov); bmo by pattern (06:00 CET every prior report). impact_sum -2.6, abs 12.0, p_up 44. Lead: FY26 revenue guide (EUR 680-720m) needs Q4 +14% y/y on 3.5% organic growth; new CFO since 3 Nov; securitisation unannounced; offset by CEO buys and peer beats.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-20 14:48 UTC
+- 3 packs, four judges

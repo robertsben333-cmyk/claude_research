@@ -1,0 +1,463 @@
+{
+ "generated_utc": "2026-11-20T14:48:12+00:00",
+ "run": "research/2026/11/2026-11-23/europe",
+ "legacy_rescore": false,
+ "names": 3,
+ "rankable": 3,
+ "ranking_key": "impact_sum",
+ "conviction_floor": 2.8,
+ "lessons_control": {
+  "names_with_pre_lessons": 3,
+  "names_moved_by_lessons": 3,
+  "note": "pre_lessons is each hunter's own sum before it read researcher_us/LESSONS.md. edge_resolve.py ranks it against the same realised move as the key, which is the only thing that can tell the guidance file apart from a habit."
+ },
+ "language_control": {
+  "names_with_pre_local": 0,
+  "names_moved_by_local_pass": 0,
+  "note": "RETIRED 2026-09-22: the European and Canadian hunters now run one bilingual pass and emit no freeze, so this is 0/0 on every run sealed after that date. On earlier runs pre_local is each hunter's own sum after the ENGLISH pass and before the local pass; eu_resolve.py ranks it against the same realised move as the key, per market, and does not pool the UK (where the second pass varied source locality) with Germany and France (where it varied language)."
+ },
+ "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added up, in points of spot. No call and no threshold -- cut wherever you like afterwards, which is what keeps the ranking question answerable at every k. `conviction` (abs of the key) is where the direction skill lives: over all events the sign is a coin flip, above the median conviction it is 74%. conviction_floor is a floor on emphasis in the note, never a filter on this file. Everything under `diagnostics` was measured as neutral or subtractive and decides nothing -- see researcher_us/EDGE_ANALYSIS.md.",
+ "ranking": [
+  {
+   "ticker": "NYKD",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.3,
+   "conviction": 0.3,
+   "priced_lean_pct": 0.738,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "unsourced: no consensus exists (baseline analyst_count null, Yahoo earningsHistory empty); for a pre-revenue biotech the only bar is the company's own runway statement in the Q2 report (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=680771) and the placement release (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=681076). Every size is capped small.",
+    "positioning_check": "Finanstilsynet SSR register read 2026-11-19 (https://ssr.finanstilsynet.no/api/v2/instruments): 0.0% disclosed, last position date 2025-11-18, change 0.0 over 10 days. This is the 0.5% truncation floor, not a measurement (anchor_covered false), so there is no positioning anchor and priced_lean_pct (+0.74) is the run-up. Tape: 2.685 NOK against a 4.40 placement price three months ago (-39%), 20d -14.8%, 60d -37.6%, a steady bleed on 0.3-1.5m shares a day since the placement.",
+    "baseline_tension": "No tension to speak of: the baseline leans mildly positive (+0.74, all run-up, no short anchor) after a 38% 60-day slide, and what I found is near-neutral, so neither the lean nor the run-up is contradicted."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "3 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "NYKD",
+     "key": "NYKD#0",
+     "finding": "Q3 is the first runway statement after both the NOK 286m placement and the adverse tax ruling; on the company's own numbers it should land around 'into 2029' without the refund, which is roughly what the placement release implied net of the tax refund, so the statement is new but its sign against expectations cannot be called.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=681076",
+     "source_date": "2026-08-27",
+     "expected_impact_pct": 0.2,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "guidance",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "Runway restatements have come with prints that moved -9.8% (Q2 2025, strategy reset), +3.6% (Q3 2025) and -0.9% (Q2 2026); never isolated from other news.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    },
+    {
+     "hunter": "NYKD",
+     "key": "NYKD#1",
+     "finding": "The Q3 accounts must reflect the 25 Sep Tax Appeal Board ruling against Nykode on the NOK 325m (~USD 34m) tax already paid and carried as 'Other non-current receivables' (USD 33.4m at 30 June), so a large non-cash charge or a disclosed decision to keep the receivable pending reconsideration is due.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683106",
+     "source_date": "2026-09-25",
+     "expected_impact_pct": -0.1,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "one_off",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "The ruling itself moved the stock -7.6% on the next session (3.905 to 3.61, 25 to 28 Sep, Yahoo tape); the accounting echo has no precedent on this name.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.035,
+     "_legacy_residual_pct": -0.035
+    },
+    {
+     "hunter": "NYKD",
+     "key": "NYKD#2",
+     "finding": "Nykode's own release boilerplate changed between 23 Oct and 5 Nov from 'dedicated to the discovery and development of novel immunotherapies' to 'dedicated to the discovery and development of cancer vaccines', which may foreshadow a refocus (and lower spend on the tolerance platform) announced with Q3.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685712",
+     "source_date": "2026-11-05",
+     "expected_impact_pct": 0.2,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "other",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "The August 2025 strategy reset came with the Q2 2025 report, which moved -9.8%; a cost refocus at this cash level would more likely read as runway-positive.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "CEO and CSO present and hold a fireside chat at the DNB Carnegie Nordic Healthcare Conference in Oslo on 24 Nov, 14:45 CET, the day after the window",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-24",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687065"
+    },
+    {
+     "finding": "Request for reconsideration of the tax ruling, then possible court action; a refund of NOK 325m plus interest would add roughly a year of runway",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-06-30",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683106"
+    },
+    {
+     "finding": "Abili-T first interim readout guided for 2027",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-12-31",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684675"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/3",
+    "edge_score_legacy": 0.6,
+    "baseline_quality": 0.612,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 14,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "api3.oslo.oslobors.no"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.1,
+    "lessons_delta": 0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A finding about a number the market has already been told is worth 0': the tax-receivable write-down finding moved from -0.3 to -0.1, because the ruling and amount were inside information on 25 Sep.",
+     "'You were right about the number and too small about the move' and 'the move is in the guide': abs_move_pct raised from 4.5 to 5.5, because the runway restatement is a guidance-type line on a thin ($210k/day) name; p_up kept at 50 because the sign of that line cannot be called; the runway finding's range was widened to +/-3 to the guidance scale without moving its +0.2 centre.",
+     "'A truncated zero is not a disclosure': positioning_check states that the 0.0% is the 0.5% floor and that there is no anchor."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 1
+  },
+  {
+   "ticker": "CER",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.2,
+   "conviction": 0.2,
+   "priced_lean_pct": 0.076,
+   "hunter_view": {
+    "expected_move_pct": -0.14,
+    "print_vs_bar_pct": 0.0,
+    "bar": "FY26: the company's own 14 Sep range (revenue GBP46-48m, adj. EBITDA margin 43-45%), https://www.investegate.co.uk/announcement/rns/cerillion--cer/full-year-trading-update/9769035. FY27: only one broker's view is sourced (Canaccord, ~10% revenue growth, https://www.hl.co.uk/shares/stock-market-news/share-tips/stockbroker-tips/canaccord-genuity-lowers-target-price-on-cerillion). With no second agreeing source, the FY27 bar is single-sourced and every outlook-dependent finding is capped small.",
+    "positioning_check": "The FCA aggregated register shows 1.73% net short on 2026-11-18, down from 1.83%: modestly covering, not crowded (https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv, per baseline). The per-holder xlsx did not parse as a zip from this container, so the holder identity is not known.",
+    "baseline_tension": "The lean is flat (+0.08), and the 20d run-up (+23%) argues against the stock as a free control. My findings agree with neither side strongly: the insider buy and the finished seller lean up, the retrace leans down, and the net is about zero."
+   },
+   "flags": [
+    "hunter's own expected_move_pct (-0.14) has the opposite sign to the sum of its findings (+0.20)",
+    "1 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 4 positive / 2 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "CER",
+     "key": "CER#0",
+     "finding": "Non-executive director Guy O'Connor bought 20,000 shares (GBP138k) at 690p on 21 Oct 2026. That is three weeks after the 30 Sep year-end, when the board knew the FY26 outturn and early FY27 order flow, and just before the MAR closed period ahead of the 23 Nov results.",
+     "source": "https://www.investegate.co.uk/announcement/rns/cerillion--cer/director-share-purchase/9835259",
+     "source_date": "2026-10-22",
+     "expected_impact_pct": 0.5,
+     "cluster": "investegate.co.uk",
+     "lands_on": "guidance",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "No prior insider-buy reaction measured. Outlook lines on results days moved the stock +7.0% (FY25 finals, 24 Nov 2025) and +1.3% (FY24 finals).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    },
+    {
+     "hunter": "CER",
+     "key": "CER#1",
+     "finding": "The stock has retraced almost all of the September warning with no company news between: 885p before the warning, 774p on the day, a 660p low on 20 Oct, a run to 936p on 4-12 Nov, and 860p on 20 Nov. The only RNS in that window are the results-date notice and TR-1s. The outlook therefore has to deliver reassurance that is already partly paid for.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/CER.L?range=6mo&interval=1d",
+     "source_date": "2026-11-20",
+     "expected_impact_pct": -0.8,
+     "cluster": "query1.finance.yahoo.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "The two most recent outlook-sensitive releases were both sold: H1 trading update -5.6% (22 Apr 2026) and FY trading update -12.5% (14 Sep 2026). Interims fell -3.6% and -7.4% in 2026 and 2025.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.28,
+     "_legacy_residual_pct": -0.28
+    },
+    {
+     "hunter": "CER",
+     "key": "CER#2",
+     "finding": "JPMorgan Asset Management cut its stake from 7.53% to 5.30% (9 Oct) and then below 5% (23 Oct 2026). The overhang seller after the warning finished just before the November rally, so less supply hangs over the results day.",
+     "source": "https://www.investegate.co.uk/announcement/rns/cerillion--cer/tr-1-notification/9844124",
+     "source_date": "2026-10-27",
+     "expected_impact_pct": 0.3,
+     "cluster": "investegate.co.uk",
+     "lands_on": "positioning",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "No prior measurement on this name.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "CER",
+     "key": "CER#3",
+     "finding": "No contract-win RNS has been issued since the 8 Jan 2026 Omantel award, so between the 14 Sep warning and 20 Nov no single large deferred order (of the GBP17.3m Sep-2025 follow-on kind, which was RNS'd) has been announced as signed after the year-end.",
+     "source": "https://www.investegate.co.uk/company/CER",
+     "source_date": "2026-11-20",
+     "expected_impact_pct": -0.2,
+     "cluster": "investegate.co.uk",
+     "lands_on": "guidance",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "Large contract RNSs moved the stock up sharply (Omantel +12% intraday on 8 Jan 2026, per AJ Bell).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    },
+    {
+     "hunter": "CER",
+     "key": "CER#4",
+     "finding": "The board raised the interim dividend 15% to 5.5p while H1 adjusted PBT fell 41%. That signals a progressive dividend held through the earnings dip, so a raised final dividend (last year 10.6p) is the likely line on the day.",
+     "source": "https://www.investegate.co.uk/announcement/rns/cerillion--cer/interim-results/9593199",
+     "source_date": "2026-06-01",
+     "expected_impact_pct": 0.3,
+     "cluster": "investegate.co.uk",
+     "lands_on": "capital_return",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "The FY25 finals with a +17% total dividend rose 7.0%; the dividend's own share of that move is not separable.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "CER",
+     "key": "CER#5",
+     "finding": "Delivery milestones since the warning support FY27 revenue recognition. Telesur's upgrade to Cerillion 26.1 went live on 28 Sep 2026, with a further Self Service phase to follow. The September update had already said Omantel software installation is complete and the UCom transformation is nearing completion.",
+     "source": "https://www.investegate.co.uk/announcement/rns/cerillion--cer/telesur-upgrade-goes-live/9792830",
+     "source_date": "2026-09-28",
+     "expected_impact_pct": 0.1,
+     "cluster": "investegate.co.uk",
+     "lands_on": "guidance",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "Operational go-live RNSs have not been measured as movers on this name.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "The online investor presentation with Q&A on 1 Dec 2026 is after the one-session window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-01",
+     "source": "https://www.investegate.co.uk/announcement/rns/cerillion--cer/notice-of-final-results-and-investor-presentation/9875780"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/6",
+    "edge_score_legacy": -1.2,
+    "baseline_quality": 0.688,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 14,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 2,
+    "cluster_names": [
+     "investegate.co.uk",
+     "query1.finance.yahoo.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.1,
+    "lessons_delta": 0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'The move is in the guide' (a first outlook for a new fiscal year is a scheduled guidance event): abs_move_pct raised from 6.0 to 7.0, because the FY27 outlook against a single-broker bar is the line on the day.",
+     "'A finding about a number the market has already been told is worth 0': the delivery-milestones finding cut from +0.3 to +0.1, since Omantel and UCom status were already in the 14 Sep RNS.",
+     "'The drawdown has no cause in the filings is worth 0; in a small cap the filing record is not the information set': the no-contract-RNS absence finding cut from -0.5 to -0.2.",
+     "p_up unchanged at 49: pre-released period, no sourced unseen number."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 2
+  },
+  {
+   "ticker": "VER",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -2.6,
+   "conviction": 2.6,
+   "priced_lean_pct": 1.244,
+   "hunter_view": {
+    "expected_move_pct": -1.44,
+    "print_vs_bar_pct": -2.0,
+    "bar": "Q3: Bloomberg consensus revenue EUR 169m and adj. EBITDA EUR 33.0m (range 29.4-36.7); Inderes 165 / 33.4. FY: the company guide 680-730 / 145-175 against Inderes 667 / 149. Source: https://www.inderes.dk/analyst-comments/verve-q326-preview-forste-test-af-den-lovede-h2-acceleration (17.11.2026). Two estimate sources agree within about 2%, so the bar is sourced.",
+    "positioning_check": "Finansinspektionen aggregate register, read 2026-11-20 (https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/): no disclosed position. This is the 0.5% truncation floor, not a measurement (anchor_covered false), so there is no positioning anchor and priced_lean_pct (+1.24) is essentially the run-up term. Run-up is -24.9% over 20 days, -5.2% over 5 and -26.0% over 60. No crowded short is visible to squeeze. The credit market is the visible positioning: the 2025/2029 FRN printed 82 on Frankfurt on 2026-11-18.",
+    "baseline_tension": "The findings lean negative, the same way as the -25% 20-day run-up and the falling bond, and against priced_lean_pct (+1.24, a mean-reversion term). That agreement is why each negative is shrunk and p_up sits at 44, not lower: much of the guide-cut risk is visibly in the price."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 2 positive / 3 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "VER",
+     "key": "VER#0",
+     "finding": "The revenue guide is arithmetically out of reach. H1 reported revenue of EUR 289.5m plus Bloomberg consensus Q3 of EUR 169m means Q4 must reach about EUR 221m, +14% on Q4'25's EUR 193.8m, for even the EUR 680m low end. The acquisitions (Captify and Acardo, Sept 2025) are fully in the base and organic growth ran 3.5% in Q2, so a revenue cut or narrowing to below the low end is the likely guidance outcome. The EBITDA range (Q4 needs about 53.6m against 48.3m in Q4'25) is the swing.",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b60a60801b527feb510e022e654d2d5a8&lang=en&src=listed",
+     "source_date": "2026-08-27",
+     "expected_impact_pct": -2.5,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "guidance",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "Guidance cut on 14 Aug 2025: -23.4% the next session. Guidance bands narrowed at the Q3 2025 report on 18 Nov 2025: -17.1%. Guide reaffirmed but organic growth missed on 27 Aug 2026: -17.7%. The guide line has moved this stock 17-23% each time, always down.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.875,
+     "_legacy_residual_pct": -0.875
+    },
+    {
+     "hunter": "VER",
+     "key": "VER#1",
+     "finding": "The securitisation expansion that management said in August would be signed 'within the next few weeks' has not been announced three months later. The existing EUR 100m programme was fully drawn at end-Q2. The EUR 500m+50m 2025/2029 FRN printed 82 on Frankfurt on 2026-11-18, down from a ~99 quote. Its terms carry a quarterly maintenance test of NIBD/EBITDA <= 4.50x, with exceptional add-backs capped at 10% of EBITDA, against reported leverage of 4.1x at Q2.",
+     "source": "https://www.inderes.dk/analyst-comments/verve-q326-preview-forste-test-af-den-lovede-h2-acceleration",
+     "source_date": "2026-11-17",
+     "expected_impact_pct": -1.0,
+     "cluster": "inderes.dk",
+     "lands_on": "financing",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "Cash flow has been the line the stock punished. Q3 2025 operating cash flow fell 91% and the stock dropped 17.1% on the day (with the guide narrowing). No clean isolated financing reaction exists on record.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    },
+    {
+     "hunter": "VER",
+     "key": "VER#2",
+     "finding": "Peer read-through for Q3/Q4 open-internet ad spend is positive. PubMatic posted Q3 2026 revenue +17.1% YoY ($79.6m vs $76.1m consensus) and Magnite beat with political ads near 3x its forecast. Verve's own Q3 2025 release blamed a 'substantial reduction in political ad spending' for the soft base it now laps.",
+     "source": "https://stockstory.org/us/stocks/nasdaq/pubm/news/earnings/pubmatic-nasdaqpubm-reports-bullish-q3-2026-full-year-outlook-slightly-exceeds-expectations",
+     "source_date": "2026-11",
+     "expected_impact_pct": 0.8,
+     "cluster": "stockstory.org",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "Q4 2025 prelim, which showed an organic rebound: -4.0% (an intraday release, so the move is mixed). Q1 2026 'solid organic growth': +2.5%. Good reported-quarter lines have earned only small gains here.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.28,
+     "_legacy_residual_pct": 0.28
+    },
+    {
+     "hunter": "VER",
+     "key": "VER#3",
+     "finding": "CEO Remco Westermann (via Bodhivas GmbH) bought roughly 360k shares (~EUR 0.4m) on 19-23 Oct 2026. Q3 had closed by then, and the window ended just before the 30-day MAR closed period. Under MAR he could not trade while holding inside information, so as of 23 Oct management did not consider a guidance change disclosable.",
+     "source": "https://view.news.eu.nasdaq.com/view?id=be7116c13d94be9dd72f1a8b4e283f78b&lang=en&src=listed",
+     "source_date": "2026-10-26",
+     "expected_impact_pct": 0.7,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "No measured reaction to insider buying for this name. The stock fell 27% after these purchases.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.245,
+     "_legacy_residual_pct": 0.245
+    },
+    {
+     "hunter": "VER",
+     "key": "VER#4",
+     "finding": "The CFO was replaced with immediate effect on 3 Nov 2026, three weeks before the report, after the CRO left following about six months. Q3 is the new CFO's first report, which raises the chance of a conservative guidance reset. The stock fell 7% on 3 Nov before the 17:16 announcement.",
+     "source": "https://www.inderes.dk/releases/verve-appoints-bryan-jennings-as-chief-financial-officer",
+     "source_date": "2026-11-03",
+     "expected_impact_pct": -0.6,
+     "cluster": "inderes.dk",
+     "lands_on": "guidance",
+     "resolves_by": "2026-11-23",
+     "reaction_history_on_this_line": "No prior CFO change on record for this name in the window searched.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.21,
+     "_legacy_residual_pct": -0.21
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Q4 2026 is the decisive proof point (bulk of the seasonal lift, M&A support gone) and lands with the 24 Feb 2027 year-end report",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-02-24",
+     "source": "https://investors.verve.com/investor-relations/financial-calendar/"
+    },
+    {
+     "finding": "Potential US listing / USD reporting (PCAOB preparation stated at Q2); no date set",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-12-31",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b60a60801b527feb510e022e654d2d5a8&lang=en&src=listed"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": -7.8,
+    "baseline_quality": 0.56,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 12,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 3,
+    "cluster_names": [
+     "inderes.dk",
+     "stockstory.org",
+     "view.news.eu.nasdaq.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -2.1,
+    "lessons_delta": -0.5,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'The move is in the guide' (guidance findings 11 of 17 on sign, median 9% on a change): guidance-arithmetic finding raised from -2.0 to -2.5.",
+     "'Understatement is the systematic error' / size the move on what is new: abs_move_pct raised from 11 to 12, in line with the name's real print moves (median about 10.5%, three of six at 17% or more).",
+     "'A narrow proxy loses to a broad series': peer read-through cut from +1.0 to +0.8, because Verve lagged peers in Q2 and the sell side expects it to lag again.",
+     "'Your own caveat has to reach the number': CFO-reset finding is an inference largely in the 3 Nov price, cut from -0.8 to -0.6.",
+     "'Financing is a question' and 'cash can outweigh a guide': securitisation/bond finding kept at -1.0 with a range that includes a positive outcome if the facility is signed; covenant breach labelled a tail risk."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 3
+  }
+ ]
+}
