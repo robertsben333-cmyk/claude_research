@@ -60,3 +60,7 @@
 ## Edge hunt (panel) — 2026-11-20 amc + 2026-11-23 bmo — STARTED
 - Logged at 2026-11-20 18:09 UTC
 - Fired 18:07 UTC (13:07 ET). Window: 6 confirmed-session names (DLNG amc 11-20; VNET CRGO THCH ADXN BLRX bmo 11-23). Thin day: 40 time-not-supplied rows checked with session_resolve.py (1 killed, 39 carried, 0 announced); the 17 largest carried rows go to the sweep to settle date and session, baselines for any it confirms are sealed before any searcher launches. SEC_USER_AGENT is NOT set in this environment, so www.sec.gov answered 403 and the EDGAR filing checks in session_resolve/priced_in are degraded. Plan: 1 sweep, up to 20 searchers, 4 judges; sell at 3s, buy at 6b, live then paper.
+
+## Edge hunt (panel) — sweep
+- Logged at 2026-11-20 18:13 UTC
+- Sweep confirmed 5 of 23 (DLNG amc 11-20; VNET CRGO THCH BLRX bmo 11-23). ADXN not confirmed (no company notice; calendar row only). 17 time-not-supplied rows: 0 confirmed (11 positively killed: TCOM 1 Dec, KT/TRON/GDEV already reported, HTT/LOT semi-annual, AIV liquidation, AREC/FSI delayed filings, SOWG, PVL; 6 with no company date). Wave: 5 searchers, all hunted, none shed.
