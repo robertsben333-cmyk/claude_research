@@ -52,3 +52,7 @@
 ## Stage EU — DONE
 - Logged at 2026-11-19 15:03 UTC
 - 4 of 7 ranked, 0 above floor, panel selects none; PRS handed off at pct 72.6. Everything pushed to origin/main (EARNINGS_DATA_BRANCH=main), last commit 8a1bde6 confirmed with git log origin/main.
+
+## Stage E-P amc exit — 2026-11-20
+- Logged at 2026-11-20 14:08 UTC
+- 14:08 UTC (09:08 ET). Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). Verify: live STEM/OMER/FEAM/RRGB/SNEX ok, paper CURI/CTVA/STEM/OMER/FEAM/RRGB/SNEX ok; nothing UNFILLED, no rescues. Close (--today-only): nothing due on either account, nothing sent, nothing refused. Expected: the 2026-11-19 edge-panel book was empty on both accounts (GRSD not shortable; the no-strong-name top-up landed on main at 18:59 UTC, after that run's 18:49 plan).
