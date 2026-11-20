@@ -27,3 +27,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-20 14:48 UTC
 - 3 packs, four judges
+
+## Stage EU — panel
+- Logged at 2026-11-20 14:51 UTC
+- 4/4 judges, no fallback. VER selected 4/4, panel_pct 100 short. NYKD 3, CER 4.
