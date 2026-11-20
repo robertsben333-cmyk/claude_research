@@ -2,7 +2,7 @@
 
 Sealed on Friday 2026-11-20, about 14:40 UTC, while the European markets were still open. The sealed spots are intraday prices, not closes. The event date is Monday 2026-11-23, the next European session.
 
-**Answer first: a three-name day with one strong call.** VER (Verve Group, Stockholm) is the hunter's only sizeable number, at **impact_sum −2.60**. That is below the 2.8 conviction floor. **All four judges put VER short in their own top 20%** (panel_pct 100, sd 0), so the panel selects it. NYKD and CER are near-nulls. The IBKR handoff names VER short at panel_pct 100. VER's 20-day median turnover is about $188k, below the executor's `min_turnover_usd` of $200k, so the executor's own rules decide whether it is bought.
+**Answer first: a three-name day with one strong call.** VER (Verve Group, Stockholm) is the hunter's only sizeable number, at **impact_sum −2.60**. That is below the 2.8 conviction floor. **All four judges put VER short in their own top 20%** (panel_pct 100, sd 0), so the panel selects it. NYKD and CER are near-nulls. The IBKR handoff names VER short at panel_pct 100. VER's 20-day median turnover is about $188k, below the executor's `min_turnover_usd` of $200k, and the handoff therefore carries no name: the executor buys nothing today.
 
 ## Ranked on `impact_sum` (the key, per `edge-scores.json`)
 

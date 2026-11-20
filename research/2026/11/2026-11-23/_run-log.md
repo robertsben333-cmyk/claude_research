@@ -31,3 +31,7 @@
 ## Stage EU — panel
 - Logged at 2026-11-20 14:51 UTC
 - 4/4 judges, no fallback. VER selected 4/4, panel_pct 100 short. NYKD 3, CER 4.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-20 14:52 UTC
+- handoff written: 0 names. VER (panel_pct 100 short, 4/4) not taken: median turnover $0.19m below execution_eu.selection.min_turnover_usd $0.20m. Server will buy nothing. Published to main.
