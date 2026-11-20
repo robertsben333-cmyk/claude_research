@@ -15,3 +15,7 @@
 ## Stage EU — hunts
 - Logged at 2026-11-20 14:44 UTC
 - NYKD: confirmed bmo (company invitation NewsWeb 686560, 'before the opening'). impact_sum +0.3, abs 5.5, p_up 50. No bar sourceable; runway restatement after placement + tax ruling is the only new line, sign uncallable.
+
+## Stage EU — hunts
+- Logged at 2026-11-20 14:44 UTC
+- CER: confirmed bmo (07:00 RNS pattern; issuer notice 9875780). impact_sum +0.2, abs 7.0, p_up 49. FY26 already pre-released 14 Sep (warning, -12.5%); move is FY27 outlook + order book; one broker bar (Canaccord ~+10% rev).
