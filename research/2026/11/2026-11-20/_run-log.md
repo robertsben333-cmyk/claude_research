@@ -64,3 +64,11 @@
 ## Edge hunt (panel) — sweep
 - Logged at 2026-11-20 18:13 UTC
 - Sweep confirmed 5 of 23 (DLNG amc 11-20; VNET CRGO THCH BLRX bmo 11-23). ADXN not confirmed (no company notice; calendar row only). 17 time-not-supplied rows: 0 confirmed (11 positively killed: TCOM 1 Dec, KT/TRON/GDEV already reported, HTT/LOT semi-annual, AIV liquidation, AREC/FSI delayed filings, SOWG, PVL; 6 with no company date). Wave: 5 searchers, all hunted, none shed.
+
+## Edge hunt (panel) — 3s sell
+- Logged at 2026-11-20 18:22 UTC
+- 18:22 UTC: all 5 searchers finished (hunt_status: 0 unfinished of 5). Live: mode ok (live enabled, kill switch off); flatten: 0 positions held, nothing to sell. Paper: flatten: 0 positions held, nothing to sell. No amc leg was still held.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-20 18:22 UTC
+- 5 packs, four judges
