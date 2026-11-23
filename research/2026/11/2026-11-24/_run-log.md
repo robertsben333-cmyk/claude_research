@@ -13,3 +13,7 @@
 - Logged at 2026-11-23 14:48 UTC
 - 42 scheduled, 25 eligible (>= $100k), 20 drawn (seed eu-2026-11-24): uk 13, pl 4, se 2, no 1. Concentration: UK 65%. Yahoo calendar unavailable on every market; bankier (PL) 403. 20 baselines sealed. Provenance stamped (orchestrator claude-opus-5-5).
 - Hunters: 4 waves of 5. Wave 1: BWLPG(no) CDR ELT PGE VOT(pl).
+
+## Stage EU — wave 2 launched
+- Logged at 2026-11-23 14:56 UTC
+- KEOC SBB_B (se) ATG BRCK CWK (uk), launched while wave 1 still had BWLPG CDR VOT running, to keep the handoff ahead of the European close. Wave 1 done: ELT, PGE (hunter reports PGE is amc: past reports 17:55-21:33 Warsaw).
