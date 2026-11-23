@@ -37,3 +37,7 @@
 ## Stage EU — panel
 - Logged at 2026-11-23 15:15 UTC
 - 4/4 judges, no fallback. Selected (3 of 4 in own top 20%): ELT 96 short (4/4), KEOC 89 short (4/4), ATG 89 long (4/4), IGP 84 long (3/4). VOT 79 long (2/4).
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-23 15:17 UTC
+- handoff written: 4 names (offline plan, sealed spots, EUR 10,000 equity): SELL ELT 26.5%, BUY ATG 30.5%, SELL KEOC 30.4%, BUY BRCK 12.5%. Not taken: IGP and VOT (turnover $0.12m < $0.20m floor), GROW (pct 68.9 < 70). Published to main; the executor server buys.
