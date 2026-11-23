@@ -33,3 +33,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-23 15:09 UTC
 - 20 packs, four judges
+
+## Stage EU — panel
+- Logged at 2026-11-23 15:15 UTC
+- 4/4 judges, no fallback. Selected (3 of 4 in own top 20%): ELT 96 short (4/4), KEOC 89 short (4/4), ATG 89 long (4/4), IGP 84 long (3/4). VOT 79 long (2/4).
