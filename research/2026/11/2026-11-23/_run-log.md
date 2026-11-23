@@ -63,3 +63,7 @@
 ## Edge hunt (panel) — 6b buy
 - Logged at 2026-11-23 18:52 UTC
 - 18:52 UTC (13:52 ET): all four judges (opus5, opus55, sonnet55, fable51) on 20/20 packs. 0 names at panel_pct >= 80; no-strong-name top-up APPLIED on both accounts with SYM 74 long and DKS 71 long (equal weight, cap 33%). Live (equity ~$3.1k): SYM 28 @ 35.9893, DKS 7 @ 133.765, both filled, gross $1,944 (62% of equity; whole shares). Paper (equity $21,225): SYM 194 @ 36.01, DKS 52 @ 133.80, both filled, ~66% gross. Exits: SYM (amc) at tomorrow's open via E-PX, DKS (bmo) at E-P's step 3s tomorrow. Stage E wrote no edge/ today. V2 grounded written before the first print.
+
+## Holistic research — 2026-11-23 — STARTED
+- Logged at 2026-11-23 19:17 UTC
+- 19:18 UTC (14:18 ET): pick from E-P's sweep, evolving hp.v3 + control hp.v1 on every name, waves of 8, then collect, compare, learning step.
