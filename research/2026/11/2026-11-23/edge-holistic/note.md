@@ -38,3 +38,29 @@ None today: no name cleared the playbook's bar.
 | DLTR | control | ok | 60.0 | none | 60.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the recommendations were published)
+
+| ticker | H evolving p_up / action | H control p_up / action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- |
+| SYM | 45 / none | 46 / none | 73.8 | False |
+| SMTC | 56 / none | 57 / none | -12.4 | False |
+| ANF | 49 / none | 53 / none | 37.6 | False |
+| DY | 56 / none | 52 / none | -0.6 | False |
+| KC | 58 / none | 56 / none | 2.8 | False |
+| CMP | 49 / none | 47 / none | -42.6 | False |
+| MMED | 57 / none | 59 / none | 67.8 | False |
+| HPE | 55 / none | 53 / none | 56.8 | False |
+| DKS | 57 / none | 55 / none | 70.8 | False |
+| TUYA | 50 / none | 48 / none | 19.5 | False |
+| TIGR | 47 / none | 46 / none | -50.0 | False |
+| DLTR | 57 / none | 60 / none | -6.8 | False |
+
+Sign disagreements (H evolving vs E-P):
+- SYM: H evolving p_up 45 against E-P panel_pct_signed 73.8 (opposite sign).
+- SMTC: H evolving p_up 56 against E-P panel_pct_signed -12.4 (opposite sign).
+- ANF: H evolving p_up 49 against E-P panel_pct_signed 37.6 (opposite sign).
+- DY: H evolving p_up 56 against E-P panel_pct_signed -0.6 (opposite sign).
+- DLTR: H evolving p_up 57 against E-P panel_pct_signed -6.8 (opposite sign).
+
+E-P's book today was the top-up SYM (74, long) and DKS (71, long); stage H recommended neither (SYM p_up 45, DKS 57).
