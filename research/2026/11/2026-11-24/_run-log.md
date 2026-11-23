@@ -17,3 +17,7 @@
 ## Stage EU — wave 2 launched
 - Logged at 2026-11-23 14:56 UTC
 - KEOC SBB_B (se) ATG BRCK CWK (uk), launched while wave 1 still had BWLPG CDR VOT running, to keep the handoff ahead of the European close. Wave 1 done: ELT, PGE (hunter reports PGE is amc: past reports 17:55-21:33 Warsaw).
+
+## Stage EU — wave 1 banked
+- Logged at 2026-11-23 14:57 UTC
+- 5/5 returned: BWLPG ELT PGE CDR VOT. CDR and PGE hunters settle session as amc (issuer timestamps); VOT session unsettled. Running: KEOC SBB_B ATG BRCK CWK GROW IGP KGF (8-subagent concurrency limit). Queued: LMP MARS POLR RNWH SFR SUP TEP.
