@@ -51,3 +51,11 @@
 ## Edge hunt (panel) — search budget
 - Logged at 2026-11-23 18:21 UTC
 - 18:22 UTC: CMP, TUYA, ZM searchers hit the shared 200-WebSearch-per-turn budget at ~13:35 ET (wave 1 all launched in one turn); marked unfinished, moved to hunts/_unfinished/, relaunched in later turns.
+
+## Edge hunt (panel) — 3s sell
+- Logged at 2026-11-23 18:39 UTC
+- 18:39 UTC: all 20 searchers finished (hunt_status: 0 unfinished of 20; CMP, TUYA, ZM, SYM, SMTC and AMTM had hit the 200-per-turn WebSearch budget in wave 1 and were retried to completion in later turns). Live: mode ok (enabled, kill switch off); flatten: 0 positions held, nothing to sell. Paper: flatten: 0 positions held, nothing to sell. No amc leg was still held. EMBC's searcher wrote a stray scratch-note.txt ('placeholder'); deleted.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-23 18:39 UTC
+- 20 packs, four judges (opus5, opus55, sonnet55, fable51). V2 grounded written before the first print.
