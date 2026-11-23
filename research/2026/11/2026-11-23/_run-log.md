@@ -43,3 +43,7 @@
 ## Edge hunt (panel) — 2026-11-23 amc + 2026-11-24 bmo — STARTED
 - Logged at 2026-11-23 18:09 UTC
 - Fired 18:07 UTC (13:07 ET). Universe 43 (18 amc 11-23, 25 bmo 11-24); CENT/CENTA not folded by share_class.py, CENTA will not be hunted. Baselines sealed for all 43. Plan: one edge-sweep, up to 20 unpriced-searchers (<=8 per turn), four judges, then 3s flatten and 6b buy (live then paper).
+
+## Edge hunt (panel) — sweep
+- Logged at 2026-11-23 18:15 UTC
+- Sweep confirmed 40 of 43 (CENTA folded into CENT, not hunted); unconfirmed FLNC, KSS, BBY (calendar only); 0 phantoms. Session unsettled: HPE (amc very likely), AMTM (after today's close either way), MOV. Wave plan: 20 hunted by hunt_priority — SYM SMTC ANF DY KC CMP MMED HPE DKS TUYA TIGR DLTR EMBC ZM TITN BURL CENT BZUN AMTM VALN; shed (below cap): EPSN CMBT MOV ALCO SJM J BILI A DAC ITRN BWLP ADI VIPS FLX ZH PFLT PNNT MDT FSCO + the 3 unconfirmed. Option-chain names among the shed (SJM, J, A, ADI, MDT, BILI, VIPS) were not kept back in: the hunted 20 are mostly optioned already. Wave 1 (amc first): SYM SMTC CMP HPE TUYA ZM CENT AMTM. SEC_USER_AGENT unset: FPI histories empty.
