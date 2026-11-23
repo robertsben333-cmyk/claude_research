@@ -35,3 +35,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-20 14:52 UTC
 - handoff written: 0 names. VER (panel_pct 100 short, 4/4) not taken: median turnover $0.19m below execution_eu.selection.min_turnover_usd $0.20m. Server will buy nothing. Published to main.
+
+## Stage E-P amc exit — 2026-11-23
+- Logged at 2026-11-23 14:10 UTC
+- Fired 14:09 UTC (09:09 ET). Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). verify --fix: live 5 legs all ok, paper 7 legs all ok, nothing UNFILLED, no rescue sent. close --today-only: live 6 runs and paper 25 runs scanned, NO leg due today on either account, nothing sent, nothing refused. Reason: the 2026-11-20 E-P run entered no positions (alpaca-orders.json and alpaca-orders-live.json: entries [], positions 0).
