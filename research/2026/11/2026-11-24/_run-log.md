@@ -41,3 +41,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-23 15:17 UTC
 - handoff written: 4 names (offline plan, sealed spots, EUR 10,000 equity): SELL ELT 26.5%, BUY ATG 30.5%, SELL KEOC 30.4%, BUY BRCK 12.5%. Not taken: IGP and VOT (turnover $0.12m < $0.20m floor), GROW (pct 68.9 < 70). Published to main; the executor server buys.
+
+## Stage EU — done
+- Logged at 2026-11-23 15:17 UTC
+- Published to main, verified: origin/main at c4be35bbe carries ibkr-handoff.json. Work done on a local branch off origin/main because local main had diverged after a force-push; local main left untouched.
