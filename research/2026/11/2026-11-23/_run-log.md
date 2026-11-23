@@ -39,3 +39,7 @@
 ## Stage E-P amc exit — 2026-11-23
 - Logged at 2026-11-23 14:10 UTC
 - Fired 14:09 UTC (09:09 ET). Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). verify --fix: live 5 legs all ok, paper 7 legs all ok, nothing UNFILLED, no rescue sent. close --today-only: live 6 runs and paper 25 runs scanned, NO leg due today on either account, nothing sent, nothing refused. Reason: the 2026-11-20 E-P run entered no positions (alpaca-orders.json and alpaca-orders-live.json: entries [], positions 0).
+
+## Edge hunt (panel) — 2026-11-23 amc + 2026-11-24 bmo — STARTED
+- Logged at 2026-11-23 18:09 UTC
+- Fired 18:07 UTC (13:07 ET). Universe 43 (18 amc 11-23, 25 bmo 11-24); CENT/CENTA not folded by share_class.py, CENTA will not be hunted. Baselines sealed for all 43. Plan: one edge-sweep, up to 20 unpriced-searchers (<=8 per turn), four judges, then 3s flatten and 6b buy (live then paper).
