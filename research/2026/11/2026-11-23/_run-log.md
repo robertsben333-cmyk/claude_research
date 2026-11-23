@@ -47,3 +47,7 @@
 ## Edge hunt (panel) — sweep
 - Logged at 2026-11-23 18:15 UTC
 - Sweep confirmed 40 of 43 (CENTA folded into CENT, not hunted); unconfirmed FLNC, KSS, BBY (calendar only); 0 phantoms. Session unsettled: HPE (amc very likely), AMTM (after today's close either way), MOV. Wave plan: 20 hunted by hunt_priority — SYM SMTC ANF DY KC CMP MMED HPE DKS TUYA TIGR DLTR EMBC ZM TITN BURL CENT BZUN AMTM VALN; shed (below cap): EPSN CMBT MOV ALCO SJM J BILI A DAC ITRN BWLP ADI VIPS FLX ZH PFLT PNNT MDT FSCO + the 3 unconfirmed. Option-chain names among the shed (SJM, J, A, ADI, MDT, BILI, VIPS) were not kept back in: the hunted 20 are mostly optioned already. Wave 1 (amc first): SYM SMTC CMP HPE TUYA ZM CENT AMTM. SEC_USER_AGENT unset: FPI histories empty.
+
+## Edge hunt (panel) — search budget
+- Logged at 2026-11-23 18:21 UTC
+- 18:22 UTC: CMP, TUYA, ZM searchers hit the shared 200-WebSearch-per-turn budget at ~13:35 ET (wave 1 all launched in one turn); marked unfinished, moved to hunts/_unfinished/, relaunched in later turns.
