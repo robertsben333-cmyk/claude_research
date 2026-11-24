@@ -41,4 +41,27 @@ This is a forecasting exercise over public information, not investment advice.
 
 ## Comparison with stage E-P
 
-Not available at 19:42 UTC (14:42 ET): stage E-P's `edge-scores-panel.json` for 2026-11-24 is not on main. Its run log shows the panel STARTED at 18:51 UTC with no DONE line. Stage H made no recommendation today, so no stage H call can disagree with an E-P selection. `holistic.py evaluate` will price E-P on these names once its file lands.
+Read after the recommendations were published (E-P's panel landed at about 19:43 UTC, after a usage-limit stall on its judges).
+
+| ticker | H evolving p_up / action | H control p_up / action | E-P panel_pct_signed | E-P side | E-P selected |
+| --- | --- | --- | --- | --- | --- |
+| QFIN | 45.0 / none | 48.0 / none | -95.6 | -1 | True |
+| AMBA | 42.0 / none | 43.0 / none | -82.8 | -1 | True |
+| HDL | 58.0 / none | 57.0 / none | 4.8 | 1 | False |
+| CLSK | 53.0 / none | 53.0 / none | 11.6 | 1 | False |
+| GOTU | 54.0 / none | 47.0 / none | -35.6 | -1 | False |
+| GDS | 54.0 / none | 56.0 / none | 60.8 | 1 | False |
+| LI | 54.0 / none | 50.0 / none | 35.1 | 1 | False |
+| BZ | 56.0 / none | 55.0 / none | -20.6 | -1 | False |
+| NTNX | 57.0 / none | 51.0 / none | 68.8 | 1 | False |
+| DSX | 55.0 / none | 51.0 / none | 2.0 | 1 | False |
+| NOAH | 48.0 / none | 52.0 / none | -11.2 | -1 | False |
+| HPQ | 42.0 / none | 44.0 / none | -44.8 | -1 | False |
+
+Sign disagreements (stage H evolving lean against E-P's panel side):
+
+- GOTU: stage H evolving p_up 54.0 vs E-P panel_pct_signed -35.6.
+- BZ: stage H evolving p_up 56.0 vs E-P panel_pct_signed -20.6.
+
+
+This is a forecasting exercise over public information, not investment advice.
