@@ -19,3 +19,7 @@
 ## Stage EU — hunts banked (partial)
 - Logged at 2026-11-24 14:53 UTC
 - Returned so far: TXT (hunter settles session as amc from issuer IR notice: H1 after the WSE close on 25 Nov, so the sealed bmo window holds no release), AT1, EZJ. HLCL launched.
+
+## Stage EU — hunts banked (2)
+- Logged at 2026-11-24 14:56 UTC
+- Back: TXT AT1 EZJ MPCC PETS SECT_B LOUP (+NORSE file). LOUP hunter settles session amc (AMF flux timestamps 17:45 Paris on the last two results), so like TXT its print is outside the sealed bmo window. EZJ: under a 715p Apollo cash offer, event_confirmed false. Running: GRE HLCL IPX NRR BWO NORSE BIOA_B ROCK_A. Queued: JACK SOFTX CANTA HBX MUR.

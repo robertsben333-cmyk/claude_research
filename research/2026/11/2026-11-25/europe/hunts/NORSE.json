@@ -1,0 +1,55 @@
+{
+  "ticker": "NORSE",
+  "market": "NO",
+  "expected_move_pct": 0.0,
+  "conviction_note": "The event is not in the window: Norse's own financial-calendar notice on Oslo Bors NewsWeb (2026-11-20 16:01 UTC) moved the Q3 2026 quarterly report from the originally calendared 25.11.2026 to 30.11.2026, so the vendor date is stale, event_confirmed is false and the expected move is 0; abs_move_pct is an ordinary session for an 82%-vol penny stock, not an earnings move.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 4.0,
+  "p_up": 50,
+  "already_public": [
+    {"what": "Original financial calendar listing 25.11.2026 - Quarterly Report - Q3 (the date the vendor carries)", "date": "2025-12-30", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=662942"},
+    {"what": "Revised financial calendar: 30.11.2026 - Quarterly Report - Q3 (moves the print out of this window)", "date": "2026-11-20", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687104"},
+    {"what": "Q3 traffic pre-released monthly: September TRASK +35% y/y to 5.8 USc, 96.9% load factor, own-network flights 211 vs 459, passengers -32% y/y", "date": "2026-10-07", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683667"},
+    {"what": "October traffic: TRASK +19% y/y to 5.1 USc, 94.9% load factor; PIA ACMI transition under way", "date": "2026-11-06", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685845"},
+    {"what": "PIA ACMI agreement for two 787-9s from November 2026", "date": "2026-10-09", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683851"},
+    {"what": "IndiGo ACMI discontinued from 1 Nov 2026; board moves strategic review to a formal process that may result in a sale, merger or partnership", "date": "2026-07-31", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=678907"}
+  ],
+  "new_in_release": [
+    {"line": "reported_quarter", "expect": "not in window: Q3 2026 report is now 2026-11-30"},
+    {"line": "other", "expect": "not in window: any strategic-review update would most plausibly come with or after the 30 Nov report"}
+  ],
+  "bar": "unsourced: no consensus (analyst_count null, Yahoo quarters empty); moot because the print is not in the window",
+  "event_confirmed": false,
+  "session_check": "bmo is moot: no results release falls in the 2026-11-24 close -> 2026-11-25 close window. The issuer's financial calendar notice of 2026-11-20 (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687104) dates the Q3 report 30.11.2026; NewsWeb issuer list through 2026-11-25 shows no later calendar change.",
+  "positioning_check": "Finanstilsynet SSR register read 2026-11-23: 0.0% disclosed net short, 0 disclosed sellers, unchanged over 10 days (0.0 pts). anchor_covered false: this is the 0.5% truncation floor, not evidence that nobody is short, so there is no positioning anchor and priced_lean_pct (+0.315) is the run-up term alone.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Q3 2026 quarterly report moved from 25.11.2026 to 30.11.2026 by the issuer's own financial-calendar notice; traffic for the quarter is pre-released (TRASK up 25% YTD, capacity cut), so the release's new lines are the Q3 P&L/liquidity against a USD 52m 15% secured facility maturing May 2027 and any update on the formal sale/merger process. No directional size: unsourced bar and a resolution date outside this stage's window.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-30", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687104"}
+  ],
+  "searched_and_found_nothing": [
+    "Event check: Oslo Bors NewsWeb issuer=NORSE 2026-05-01..2026-11-25 -- latest item is the 2026-11-20 financial calendar moving Q3 to 30.11.2026 (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687104); original calendar 25.11.2026 at https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=662942",
+    "No resultatvarsel / profit warning, no invitation to a 25 Nov presentation, no strategic-review announcement on NewsWeb since 2026-11-06",
+    "Norwegian-language web search 'Norse Atlantic kvartalsrapport utsatt 30. november strategisk prosess' -- no press coverage of the date change",
+    "English web search for Q3 2026 / strategic review news -- nothing newer than the August Q2 coverage (e.g. https://www.ch-aviation.com/news/170388-norse-atlantic-formally-starts-search-for-buyer-or-investor)",
+    "ir.flynorse.com financial calendar -- proxy 502 (connect_unreachable); MFN.se list page returned only chrome"
+  ],
+  "rejected_candidates": [
+    {"candidate": "September/October TRASK growth (+35% / +19% y/y) and record load factors as a positive Q3 read", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683667", "reason": "outside_window", "detail": "the Q3 report that would reprice on these is dated 2026-11-30, after the 2026-11-25 exit; the monthly figures are themselves already public"},
+    {"candidate": "Formal sale/merger/partnership process (JP Morgan, indicative proposals 2H2026)", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=678907", "reason": "outside_window", "detail": "no dated mechanism inside 2026-11-25; first natural update point is the 30 Nov report"}
+  ],
+  "baseline_tension": "Nothing found to agree or disagree with the small positive lean (+0.315, run-up term only, 20d -6.3%, 60d -28%); the event itself is outside the window.",
+  "language_note": [
+    "nothing the English sources did not already carry: the date change is in Norse's English-language NewsWeb calendar notice, and Norwegian press searches returned no coverage of it"
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 4.0,
+    "p_up": 50,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
