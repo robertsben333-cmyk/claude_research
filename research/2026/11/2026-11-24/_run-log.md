@@ -91,3 +91,6 @@
 ## Edge hunt (panel v3b) — all 20 launched
 - Logged at 2026-11-24 18:40 UTC
 - Returned complete: ADSK AMBA NTNX CLSK WDAY QFIN HPQ DELL BBAR LI PSNY GDS (12). Running: NOAH BZ GOTU NNOX DE YSG DSX GASS. All as unpriced-searcher-v3b, no fallback.
+## Edge hunt (panel) — searchers
+- Logged at 2026-11-24 18:41 UTC
+- All 20 searchers launched (last: GASS). Done, search complete: NTNX WDAY ADSK AMBA HPQ QFIN DELL CLSK URBN BBAR NOAH HDL. Running: GOTU GDS LI BZ DSX DE NNOX GASS.
