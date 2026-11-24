@@ -75,3 +75,7 @@
 ## Edge hunt (panel v3b) — wave 2
 - Logged at 2026-11-24 18:29 UTC
 - ADSK, AMBA returned complete with v3b fields. Turn 2: HPQ DELL BBAR launched.
+
+## Edge hunt (panel v3b) — wave 3
+- Logged at 2026-11-24 18:31 UTC
+- Returned complete: ADSK AMBA NTNX CLSK. Launched NOAH GDS PSNY. Running: QFIN WDAY HPQ DELL BBAR NOAH GDS PSNY.
