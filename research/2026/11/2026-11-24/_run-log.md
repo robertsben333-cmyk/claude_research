@@ -94,3 +94,7 @@
 ## Edge hunt (panel) — searchers
 - Logged at 2026-11-24 18:41 UTC
 - All 20 searchers launched (last: GASS). Done, search complete: NTNX WDAY ADSK AMBA HPQ QFIN DELL CLSK URBN BBAR NOAH HDL. Running: GOTU GDS LI BZ DSX DE NNOX GASS.
+
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-24 18:47 UTC
+- 20 of 20 hunts complete (search_complete true, all carry expectations/next_guide/evidence_type; all agent unpriced-searcher-v3b, no fallback). edge_score: 20 rankable; URBN ADXN HDL OMSE shed (no hunt). V2 grounded run before the first print. 20 packs, four v3b judges.
