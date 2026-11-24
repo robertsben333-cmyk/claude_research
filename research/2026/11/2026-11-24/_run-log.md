@@ -114,3 +114,7 @@
 ## Holistic research — 2026-11-24 — STARTED
 - Logged at 2026-11-24 19:16 UTC
 - Stage H fired 19:15 UTC (14:15 ET). Plan: pick from E-P sweep, evolving (hp.v3) + control (hp.v1) per name, collect before 15:45 ET, then learning step. No orders.
+
+## Holistic research — wave 1
+- Logged at 2026-11-24 19:16 UTC
+- 19:20 UTC: launched 8 holistic-researcher (agent type found): QFIN, AMBA, CLSK, NTNX, both arms. Waves 2-3 (NOAH HPQ HDL GOTU; GDS LI BZ DSX) follow.
