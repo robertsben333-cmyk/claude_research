@@ -35,3 +35,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-24 15:05 UTC
 - 18 packs, four judges
+
+## Stage EU — panel
+- Logged at 2026-11-24 15:11 UTC
+- 4/4 judges, no fallback. Selected (3 of 4 in own top 20%): HBX 89 short (4/4), MPCC 85 long (3/4), SOFTX 77 short (3/4). GRE 77 long (2/4).
