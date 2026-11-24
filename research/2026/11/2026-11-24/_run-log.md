@@ -110,3 +110,7 @@
 ## Edge hunt (panel v3b) — DONE
 - Logged at 2026-11-24 18:56 UTC
 - 4 of 4 judges (pinned, no fallback), 20 of 20 ids each. Own history: selected PSNY short 96, NNOX short 92, DELL long 80. E-P scale (dry-run): PSNY 97, NNOX 93, DELL 79 (not selected on that scale). Stage E-P's panel file did not exist at note time; comparison deferred to v3b_compare.py. panel-history-v3b.json appended (80 sizes); stage E-P's history untouched. No orders, no alpaca_trade.py call. V2 grounded written before the first print.
+
+## Holistic research — 2026-11-24 — STARTED
+- Logged at 2026-11-24 19:16 UTC
+- Stage H fired 19:15 UTC (14:15 ET). Plan: pick from E-P sweep, evolving (hp.v3) + control (hp.v1) per name, collect before 15:45 ET, then learning step. No orders.
