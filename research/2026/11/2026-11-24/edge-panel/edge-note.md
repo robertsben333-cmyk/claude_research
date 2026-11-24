@@ -69,4 +69,10 @@ Stage E's `<RUN>/edge/edge-scores.json` does not exist for this date (stage E's 
 
 See `edge-context.json` (run with --no-search for time; search spike not run). Context only.
 
+## Book placed (step 6b)
 
+Live ($3,228 equity): QFIN short 271 @ 4.6801, DELL long 3 @ 295.777, AMBA short 17 @ 47.25; gross $2,958 (91.6%). Paper ($22,135): QFIN short 1,864 @ 4.68, DELL long 26 @ 295.73, AMBA short 118 @ 47.08; gross $21,985 (99.3%). NNOX dropped (not shortable at Alpaca); top-up not applied (3 strong names). DELL is 27.5% live against 34.8% paper because of whole shares.
+
+---
+
+This is research, not financial advice. Earnings reactions are highly uncertain and can be driven by market positioning, guidance, macro conditions, and management commentary rather than reported results alone.

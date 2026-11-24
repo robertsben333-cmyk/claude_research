@@ -125,3 +125,7 @@
 ## Edge hunt (panel) — judges rate-limited
 - Logged at 2026-11-24 19:35 UTC
 - All four judges were launched ~18:53 UTC and failed at once on the account's 5-hour usage limit (HTTP 429, reset 19:00 UTC); the session worker then restarted. Resumed all four at 19:35 UTC (14:35 ET). The buy (6b) must finish before 16:00 ET.
+
+## Edge hunt (panel) — panel and step 6b buy
+- Logged at 2026-11-24 19:43 UTC
+- Panel 4/4 members (pinned agents; all rate-limited once, resumed). Selected (panel_pct>=80): NNOX 99 S, QFIN 96 S, DELL 92 L, AMBA 83 S. NNOX not shortable at Alpaca -> dropped. LIVE 19:45 UTC: QFIN -271 @4.6801, DELL +3 @295.777, AMBA -17 @47.25, all filled, gross $2,958 (91.6% of $3,228). PAPER: QFIN -1864 @4.68, DELL +26 @295.73, AMBA -118 @47.08, all filled, gross $21,985 (99.3% of $22,135). No unfilled entries. Stage E files absent for this date (no comparison). Searcher-vs-panel rho +0.88 over 20.
