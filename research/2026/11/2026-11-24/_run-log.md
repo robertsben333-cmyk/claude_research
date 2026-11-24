@@ -129,3 +129,7 @@
 ## Edge hunt (panel) — panel and step 6b buy
 - Logged at 2026-11-24 19:43 UTC
 - Panel 4/4 members (pinned agents; all rate-limited once, resumed). Selected (panel_pct>=80): NNOX 99 S, QFIN 96 S, DELL 92 L, AMBA 83 S. NNOX not shortable at Alpaca -> dropped. LIVE 19:45 UTC: QFIN -271 @4.6801, DELL +3 @295.777, AMBA -17 @47.25, all filled, gross $2,958 (91.6% of $3,228). PAPER: QFIN -1864 @4.68, DELL +26 @295.73, AMBA -118 @47.08, all filled, gross $21,985 (99.3% of $22,135). No unfilled entries. Stage E files absent for this date (no comparison). Searcher-vs-panel rho +0.88 over 20.
+
+## Holistic research — learning step
+- Logged at 2026-11-24 19:42 UTC
+- Gate OPEN (hp.v3: 38 resolved names / 4 run days; drift alarm off, 60 recent pairs diff +0.006 t 1.0). Reflector proposed 2 ops (P7: state evidenced leans at full size, unevidenced tilts as 50; P9: 'both cases real' is not a tie, a critique that names a stronger side must move the number). revise APPLIED hp.v3 -> hp.v4; tomorrow uses hp.v4. 24/24 hunts ok, 0 recommendations. E-P panel file absent at 19:42 UTC, comparison not made.

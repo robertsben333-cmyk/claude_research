@@ -1,0 +1,68 @@
+{
+  "decision": "revise",
+  "diagnosis": "hp.v3 has 38 resolved names over 4 run days (11-18, 11-19, 11-20, 11-23). The gate is open and there is no drift alarm (60 recent pairs, diff +0.006, t 1.0). Brier is 0.2397 (skill 0.041) and direction 20/37, with 0 recommendations. Against the frozen control on the same 38 names the paired Brier difference is +0.001 (t 0.09), and the whole lineage against the control is -0.001 over 94 pairs (t -0.3). Three versions in, self-revision has not beaten the frozen approach. The two revisions aimed at widening p_up did not widen it: under hp.v3, 3 of 38 views (8%) sit 10 or more points from 50, against 14% under hp.v2 and a predicted 20%. Mean |p_up-50| is 5.0, against 4.4 for the control on the same names. This window was not a one-sided tape (19 names up, 19 down). The calibration data, pooled over every arm and version, are the strongest signal the stage has, and no revision has used them directly. Views 7 or more points from 50 were right 40 of 51 times (78%) while stating about 60. Under hp.v3 alone the figure is 8 of 9. Views 5-6 points out were right 39 of 70 (56%), and views within 5 points 41 of 95 (43%). So the information sits in the leans the researchers commit to, and those leans are understated, while the soft 53-56 band is a coin. The hunts show how the leans get shaded. Self-critiques set a case for each side beside the other and call it a tie: 'these roughly cancel', 'neither outweighs the other', 'each case carries similar weight, so 50 stands', 'neither side clears 65'. That happens on at least 7 of 38 (ANF, SMTC, HPE, DY, FUTU, RERE, TUYA). Two of those (FUTU, RERE) wrote that the case for up was stronger than their own number and still left the number unchanged. hp.v3's P9 edit was meant to stop exactly that, and both stocks rose. The tape-driven run-in split (P6) is the most-cited helpful step, on about 25 hunts, and is kept. The large misses (three AI-hardware names that fell on the print, two retail names that rose) clustered on one day and one tape, so they are not used as evidence of direction. The proposal makes two edits, both to calibration and none to what to search. P7 now tells the researcher what the stage's own record says about its leans: commit to a lean that has named evidence, and say 50 where there is none. P9 stops a two-sided critique from being read as a tie.",
+  "past_changes_review": [
+    {
+      "version": "hp.v2 (edit P6: take the run-in apart; positioning is size)",
+      "predicted": "Run-in split into own news, peers and tape on qualifying hunts; approach_notes stop naming it as missing; no pulls toward 50 for squeeze risk alone; paired Brier no worse than the control.",
+      "happened": "yes",
+      "evidence": "The split is routine. approach_notes name it the most useful step on about 25 of 38 hp.v3 hunts (FUTU, KLIC, SNEX, BULL, GLOB, DLNG, ANF, DY, SMTC, KC, MMED and others), and none says it is missing. Revert condition: on the roughly 24 hp.v3 names whose hunt attributes the run-in to peers or the tape, the paired Brier against the control averages about +0.004, under the +0.01 trigger. Not fired. Kept."
+    },
+    {
+      "version": "hp.v2 (edit P7: estimate the hidden line from its inputs)",
+      "predicted": "Share of views with |p_up-50| >= 10 rises to at least 20%; at least 3 recommendations per 30 names; Brier skill above the control on pairs.",
+      "happened": "no",
+      "evidence": "The method holds: own arithmetic and counterparty rebuilds appear in most hunts (PCYO, DAO, DKS, ANF, RERE, FUTU). The spread did not follow: 14% under hp.v2 and 8% under hp.v3. Recommendations were 1 and then 0, and the paired Brier is a tie. No revert condition fired (no paired worsening, skill above 0, fewer than 10 recommendations). The new P7 edit keeps all of this text and adds the calibration paragraph, because the earlier lever (reasons not to shade) did not move the numbers."
+    },
+    {
+      "version": "hp.v3 (edit P4: a price move proves only what it can be tied to)",
+      "predicted": "On names with |20d run-up| >= 15%, mean |p_up-50| no smaller than on the rest; approach_notes stop saying P4 'cuts both ways'; with P9, at least 20% of views 10 or more from 50.",
+      "happened": "no",
+      "evidence": "Part (1) roughly held: HPE, SMTC, FUTU, BULL, DLNG, KC and ARBE sit at |p-50| of 3 to 12, near or above the version mean of 5.0. Part (2) mostly held: 'cuts both ways' or 'no way to prove it was not priced' appears on 2 hunts (THCH, RLX), against 4 under hp.v2. Part (3) failed: 8%. Revert (a): the paired Brier on those run-up names is near +0.01 on about 8 names, borderline and too few to act on. Revert (b): 1 view 10 or more from 50 on such names, against the 10 needed. Too early to revert. Kept unchanged."
+    },
+    {
+      "version": "hp.v3 (edit P9: the self-critique may move p_up away from 50)",
+      "predicted": "No hunt's self_critique says the view is understated while p_up stays put; mean |p_up-50| rises from about 5.5.",
+      "happened": "no",
+      "evidence": "FUTU ('the case for up is stronger than 53 says', kept 53, +6.9%) and RERE ('the upside case is stronger than my number shows', kept 47, +1.3%) did exactly that. Mean |p_up-50| fell to 5.0. I found no move away from 50 by the critique, and several moves toward it (NGVC 35 to 38, DKS 59 to 57, both right). The researchers read P9 as 'write both cases and see if they cancel'. Revert (a) did not fire (paired +0.001). Revert (b) cannot be read, because no view was moved away. The edit below keeps the symmetric step and targets the cancelling habit, which the text did not address."
+    }
+  ],
+  "ops": [
+    {
+      "op": "edit",
+      "id": "P7",
+      "title": "Calibration and when to recommend",
+      "text": "`p_up` is your honest probability that the stock is higher at the end of the window. 50 means you judge the two outcomes equally likely. Move away from 50 as far as the evidence takes you, and no less.\n\nThe line a print turns on (the next-period guide, the margin, bookings) is almost never visible before the release. That is the normal case and not, by itself, a reason to stay at 50. What you can see are its inputs: the company's record of guiding against what it then reported, counterparties' and peers' disclosures since it last spoke, your own arithmetic of what the line needs, and what consensus and the price assume about it. Estimate which way the line is likely to land against what the price holds, and let that estimate set p_up. Not being able to see the line is not the same as having shown that the price holds it (P8).\n\nRead your own lean the way this stage's resolved record reads it. Across every arm, views that leaned 7 or more points from 50 have been right about three times in four while stating about 60. Views 5 or 6 points out have been a little better than a coin, and views within 5 points no better than one. So the information is in a lean you commit to, and it has been understated. If, after the search, you can name dated evidence that tilts the deciding line one way against what the price holds, give that lean its full size. Do not shade it back toward 50 because the line itself is unseen or because the recommendation bar below is not reached: those are why it is a lean and not a recommendation, and they are not reasons to shrink it. If you cannot name such evidence, write 50, not 53 or 47. A small tilt with nothing named behind it costs the score and says nothing.\n\nRecommend (`action` long or short) only when all three hold:\n- your probability that the direction is right is 65 or more;\n- you can name the mechanism: the dated evidence that makes one side of the deciding line more likely than the price assumes, the reason the price does not hold it, and why this release will show it inside the window;\n- your strongest case against it (`self_critique`) does not change your mind.\n\nThere is no quota. Zero recommendations on a day is fine; so are several.",
+      "rationale": "Two revisions have tried to widen p_up by removing reasons to shade (P7 in hp.v2, P4 and P9 in hp.v3), and the spread has not moved (14%, then 8%, of views 10 or more from 50). The researchers keep shading because nothing tells them their leans are understated. The record does say so, and it rests on far more than one week's returns. Over 51 views 7 or more from 50, pooled across the control and every evolving version, 78% were right at a stated confidence near 60 (hp.v3: 8 of 9, in a window with 19 names up and 19 down). The soft band is a coin: 56% at 5-6 points, 43% within 5. The edit keeps every sentence of the old P7 and the 65 bar, and adds the stage's own calibration as a fact for the researcher to use. That pushes views two ways: a named lean is stated fully, and an unnamed tilt goes to 50. It does not say which side to lean. Counter-cases in the evidence: HPE, SMTC and DY leaned 55-56 and fell. They sit in the 5-6 band the paragraph calls barely better than a coin, so the edit asks those researchers either to name what tilts the line or to write 50. It does not tell them to push further.",
+      "evidence_names": [
+        "2026-11-19/NGVC",
+        "2026-11-23/DKS",
+        "2026-11-23/MMED",
+        "2026-11-23/DLTR",
+        "2026-11-19/BSP",
+        "2026-11-18/ARBE",
+        "2026-11-18/SNEX",
+        "2026-11-20/CRGO",
+        "2026-11-23/HPE"
+      ],
+      "predicted_effect": "Over the first 30 resolved hp.v4 names: (1) the share of views 7 or more points from 50 rises from 24% (9/38 under hp.v3) to at least 35%; (2) the share in the soft band (|p_up-50| from 1 to 6) falls from about 74% to at most 50%, with more views at exactly 50; (3) views 7 or more from 50 stay right at least 65% of the time; (4) the paired Brier against the control is no worse than +0.005 and the Brier skill against a coin rises above the control's on the same names.",
+      "revert_if": "Over at least 30 resolved hp.v4 names, revert if either (a) views 7 or more points from 50 are right on fewer than 60% of at least 12 such views, which would mean the record's under-confidence was an artefact the researchers cannot exploit, or (b) the paired Brier against the control is worse by more than +0.01 with t above 1."
+    },
+    {
+      "op": "edit",
+      "id": "P9",
+      "title": "Before you emit",
+      "text": "Write the strongest case against your view and what in the release would flip it. Then weigh it against your own case; do not set the two side by side and call it a tie. Before every print both directions have a story, so 'both cases are real' is not a finding and does not by itself mean 50. 50 says the two outcomes are equally likely, and it needs as much showing as any other number: say which evidence on each side is dated and tied to the deciding line, and which is a story that would fit any quarter. If the case against is stronger than you allowed, move `p_up` toward 50 once. If writing it shows your own side is stronger than your number says, move `p_up` away from 50 by as much, once. Do either one there and nowhere else. If your critique says one side is stronger than your number, the number changes: never emit a number your own critique calls wrong. In `approach_notes`, say in a line or two which parts of this playbook helped on this name and which got in the way: the stage reads those notes when it revises its approach.",
+      "rationale": "hp.v3 made the P9 step symmetric, and its prediction failed in the very way it was meant to prevent. FUTU and RERE each wrote that the case for up was stronger than their number, and each kept the number. Both stocks rose. The researchers did not read P9 as 'test my view against its strongest rival'. They read it as 'write the case for each side and see whether they cancel'. At least 7 of 38 hp.v3 self-critiques end that way ('these roughly cancel', 'neither outweighs the other', 'each case carries similar weight, so 50 stands': ANF, SMTC, HPE, DY, FUTU, RERE, TUYA). Two plausible stories always exist around a 10% event, so this template pulls views to 50 whatever the evidence weighs, and that matches the coin-like soft band in the calibration data. The edit keeps the once-only symmetric step. It adds that a tie must be shown rather than assumed, and that a critique which calls the number wrong must change it. It names no side. ANF, SMTC and TUYA are cited as instances of the template, not as cases where weighing would have known the answer.",
+      "evidence_names": [
+        "2026-11-18/FUTU",
+        "2026-11-18/RERE",
+        "2026-11-23/TUYA",
+        "2026-11-23/ANF",
+        "2026-11-23/SMTC"
+      ],
+      "predicted_effect": "In hp.v4 hunts: (1) no self_critique says one side is stronger than the emitted number while the number stays where it was (2 of 38 under hp.v3, 3 of 36 under hp.v2); (2) self_critiques that conclude 'the cases cancel, so near 50' fall from at least 7 of 38 to at most 3 of 30, and a view emitted at 50 states why the two outcomes are equally likely; (3) at least 3 hunts per 30 record a move away from 50 made by the critique (0 under hp.v3).",
+      "revert_if": "Over at least 30 resolved hp.v4 names, revert if either (a) the views the self-critique moved away from 50 (shown by the self_critique wording) are right fewer than half the time once 8 or more have resolved, or (b) the paired Brier against the control is worse by more than +0.01 with t above 1."
+    }
+  ]
+}

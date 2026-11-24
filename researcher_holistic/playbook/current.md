@@ -1,4 +1,4 @@
-<!-- playbook: hp.v3 | parent: hp.v2 | written: 2026-11-17 | by: holistic-reflector -->
+<!-- playbook: hp.v4 | parent: hp.v3 | written: 2026-11-24 | by: holistic-reflector -->
 # The approach (playbook)
 
 This is your working approach for one company that reports earnings in the next window.
@@ -88,9 +88,11 @@ Positioning sets the size more than the direction: a crowded short makes a good 
 
 ## [P7] Calibration and when to recommend
 
-`p_up` is your honest probability that the stock is higher at the end of the window. 50 means you cannot tell. Move away from 50 only as far as the evidence takes you.
+`p_up` is your honest probability that the stock is higher at the end of the window. 50 means you judge the two outcomes equally likely. Move away from 50 as far as the evidence takes you, and no less.
 
 The line a print turns on (the next-period guide, the margin, bookings) is almost never visible before the release. That is the normal case and not, by itself, a reason to stay at 50. What you can see are its inputs: the company's record of guiding against what it then reported, counterparties' and peers' disclosures since it last spoke, your own arithmetic of what the line needs, and what consensus and the price assume about it. Estimate which way the line is likely to land against what the price holds, and let that estimate set p_up. Not being able to see the line is not the same as having shown that the price holds it (P8).
+
+Read your own lean the way this stage's resolved record reads it. Across every arm, views that leaned 7 or more points from 50 have been right about three times in four while stating about 60. Views 5 or 6 points out have been a little better than a coin, and views within 5 points no better than one. So the information is in a lean you commit to, and it has been understated. If, after the search, you can name dated evidence that tilts the deciding line one way against what the price holds, give that lean its full size. Do not shade it back toward 50 because the line itself is unseen or because the recommendation bar below is not reached: those are why it is a lean and not a recommendation, and they are not reasons to shrink it. If you cannot name such evidence, write 50, not 53 or 47. A small tilt with nothing named behind it costs the score and says nothing.
 
 Recommend (`action` long or short) only when all three hold:
 - your probability that the direction is right is 65 or more;
@@ -108,4 +110,4 @@ searches of the same kind.
 
 ## [P9] Before you emit
 
-Write the strongest case against your view and what in the release would flip it. Then read your number against what you wrote. If the case against is strong, move `p_up` toward 50 once. If writing it shows the opposite, that your own side's evidence is stronger than your number says, move `p_up` away from 50 by as much, once. Do either one there and nowhere else, and never emit a number your own critique says is wrong. In `approach_notes`, say in a line or two which parts of this playbook helped on this name and which got in the way: the stage reads those notes when it revises its approach.
+Write the strongest case against your view and what in the release would flip it. Then weigh it against your own case; do not set the two side by side and call it a tie. Before every print both directions have a story, so 'both cases are real' is not a finding and does not by itself mean 50. 50 says the two outcomes are equally likely, and it needs as much showing as any other number: say which evidence on each side is dated and tied to the deciding line, and which is a story that would fit any quarter. If the case against is stronger than you allowed, move `p_up` toward 50 once. If writing it shows your own side is stronger than your number says, move `p_up` away from 50 by as much, once. Do either one there and nowhere else. If your critique says one side is stronger than your number, the number changes: never emit a number your own critique calls wrong. In `approach_notes`, say in a line or two which parts of this playbook helped on this name and which got in the way: the stage reads those notes when it revises its approach.
