@@ -38,3 +38,7 @@ None today: no name cleared the playbook's bar.
 | HPQ | control | ok | 44.0 | none | 56.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P
+
+Not available at 19:42 UTC (14:42 ET): stage E-P's `edge-scores-panel.json` for 2026-11-24 is not on main. Its run log shows the panel STARTED at 18:51 UTC with no DONE line. Stage H made no recommendation today, so no stage H call can disagree with an E-P selection. `holistic.py evaluate` will price E-P on these names once its file lands.

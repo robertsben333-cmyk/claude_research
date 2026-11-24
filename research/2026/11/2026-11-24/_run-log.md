@@ -122,3 +122,7 @@
 ## Holistic research — launches
 - Logged at 2026-11-24 19:31 UTC
 - All 24 researchers launched by ~19:32 UTC (holistic-researcher type, both arms per name in the same launch pair; 8-concurrency cap made waves rolling pairs). GOTU control hit one Yahoo 429 on curl, recovered via WebFetch, kept search_complete true.
+
+## Holistic research — learning step
+- Logged at 2026-11-24 19:42 UTC
+- Gate OPEN (hp.v3: 38 resolved names / 4 run days; drift alarm off, 60 recent pairs diff +0.006 t 1.0). Reflector proposed 2 ops (P7: state evidenced leans at full size, unevidenced tilts as 50; P9: 'both cases real' is not a tie, a critique that names a stronger side must move the number). revise APPLIED hp.v3 -> hp.v4; tomorrow uses hp.v4. 24/24 hunts ok, 0 recommendations. E-P panel file absent at 19:42 UTC, comparison not made.
