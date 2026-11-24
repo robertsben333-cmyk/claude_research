@@ -23,3 +23,7 @@
 ## Stage EU — hunts banked (2)
 - Logged at 2026-11-24 14:56 UTC
 - Back: TXT AT1 EZJ MPCC PETS SECT_B LOUP (+NORSE file). LOUP hunter settles session amc (AMF flux timestamps 17:45 Paris on the last two results), so like TXT its print is outside the sealed bmo window. EZJ: under a 715p Apollo cash offer, event_confirmed false. Running: GRE HLCL IPX NRR BWO NORSE BIOA_B ROCK_A. Queued: JACK SOFTX CANTA HBX MUR.
+
+## Stage EU — hunts banked (3)
+- Logged at 2026-11-24 14:59 UTC
+- 12/20 back (+BWO GRE NRR HLCL NORSE). NORSE: issuer moved Q3 to 2026-11-30 (NewsWeb 687104, 2026-11-20), event_confirmed false. All 20 launched; running IPX ROCK_A BIOA_B JACK SOFTX CANTA HBX MUR.
