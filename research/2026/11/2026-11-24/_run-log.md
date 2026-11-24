@@ -67,3 +67,7 @@
 ## Edge hunt (panel) — unfinished search
 - Logged at 2026-11-24 18:23 UTC
 - ADSK searcher hit the turn's shared WebSearch budget (200) ~18:30 UTC: search_complete false. hunt_status retry moved it to hunts/_unfinished/; relaunched in a later turn. Further launches capped below 8 per turn.
+
+## Edge hunt (panel) — unfinished searches, wave 1
+- Logged at 2026-11-24 18:24 UTC
+- Wave 1 (8 searchers in one turn) exhausted the 200-call per-turn WebSearch budget: QFIN, AMBA, HPQ, DELL, CLSK came back search_complete false (ADSK already relaunched). All moved to hunts/_unfinished/ by hunt_status retry. Relaunched QFIN AMBA HPQ DELL in a fresh turn (4 per turn, each asked to stay near 45 searches); CLSK, URBN, BBAR and the 9 bmo names follow in later turns.
