@@ -79,3 +79,7 @@
 ## Edge hunt (panel v3b) — wave 3
 - Logged at 2026-11-24 18:31 UTC
 - Returned complete: ADSK AMBA NTNX CLSK. Launched NOAH GDS PSNY. Running: QFIN WDAY HPQ DELL BBAR NOAH GDS PSNY.
+
+## Edge hunt (panel v3b) — wave 4
+- Logged at 2026-11-24 18:36 UTC
+- Returned complete: WDAY QFIN HPQ. Launched LI BZ GOTU. Queued: NNOX DE YSG DSX GASS.
