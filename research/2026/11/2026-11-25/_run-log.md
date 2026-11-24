@@ -39,3 +39,7 @@
 ## Stage EU — panel
 - Logged at 2026-11-24 15:11 UTC
 - 4/4 judges, no fallback. Selected (3 of 4 in own top 20%): HBX 89 short (4/4), MPCC 85 long (3/4), SOFTX 77 short (3/4). GRE 77 long (2/4).
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-24 15:11 UTC
+- handoff written (before the note, to beat the 16:25 Oslo close): 3 names, offline plan at sealed spots on EUR 10,000: SELL HBX 40.9%, BUY MPCC 35.4%, BUY GRE 23.2%. Not taken: SOFTX (turnover $0.10m < $0.20m floor), ROCK_A 64.6 and LOUP 67.2 (< 70). Published to main; the executor server buys.
