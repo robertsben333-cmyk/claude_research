@@ -53,3 +53,7 @@
 ## Edge hunt (panel) — 2026-11-24 amc + 2026-11-25 bmo — STARTED
 - Logged at 2026-11-24 18:13 UTC
 - Fired 18:06 UTC (13:06 ET). 24 names in window (11 amc, 13 bmo), baselines sealed to edge-panel/baselines/. Plan: 1 edge-sweep, up to 20 unpriced-searchers (amc first), sell at 3s, four judges, buy at 6b.
+
+## Edge hunt (panel) — sweep
+- Logged at 2026-11-24 18:16 UTC
+- Sweep: 16 confirmed, 1 phantom (PSNY, Q3 postponed 11-03), 7 unconfirmed. Hunting 20 (cap): the 16 confirmed + DELL, URBN, BBAR, GASS (unconfirmed, highest hunt_priority; searchers check the event). Shed: OMSE, YSG, ADXN, PSNY. SEC_USER_AGENT is unset in this environment, so FPI 6-K histories are empty (baseline_history_trustworthy false for every FPI). Waves: 8 amc now, then 3 amc + 5 bmo, then 4 bmo.
