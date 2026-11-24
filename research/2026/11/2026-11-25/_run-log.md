@@ -11,3 +11,11 @@
 ## Stage EU — universe and baselines
 - Logged at 2026-11-24 14:47 UTC
 - 39 scheduled, 25 eligible (>= $100k), 20 drawn (seed eu-2026-11-25): uk 5, no 5, se 3, es 2, pl 2, de 1, fr 1, dk 1. Concentration: UK 25%, 8 markets. 20 baselines sealed (intraday spots, ~15:00 UTC). Hunters in waves of 5.
+
+## Stage EU — hunters launched
+- Logged at 2026-11-24 14:48 UTC
+- First 8 (concurrency limit): EZJ PETS (uk) AT1 (de) MPCC (no) SECT_B (se) GRE (es) LOUP (fr) TXT (pl). Queued: HLCL IPX NRR BWO JACK NORSE SOFTX ROCK_A BIOA_B CANTA HBX MUR.
+
+## Stage EU — hunts banked (partial)
+- Logged at 2026-11-24 14:53 UTC
+- Returned so far: TXT (hunter settles session as amc from issuer IR notice: H1 after the WSE close on 25 Nov, so the sealed bmo window holds no release), AT1, EZJ. HLCL launched.
