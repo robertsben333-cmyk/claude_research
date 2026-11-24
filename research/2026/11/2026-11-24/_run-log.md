@@ -64,3 +64,6 @@
 ## Edge hunt (panel v3b) — wave 1
 - Logged at 2026-11-24 18:22 UTC
 - Sweep: 22 of 24 confirmed, 0 phantom; URBN and ADXN unconfirmed (vendor-only; URBN likely 11-25 amc, outside the window), YSG session unsettled (bmo likely). Hunting 20: shed URBN, ADXN (unconfirmed) and HDL (12), OMSE (22) (lowest hunt_priority). Wave 1 (turn 1, 6 amc): CLSK AMBA NTNX QFIN WDAY ADSK, agent unpriced-searcher-v3b (not the fallback). Queued: HPQ DELL BBAR NOAH (amc), GDS PSNY LI BZ GOTU NNOX DE YSG DSX GASS (bmo).
+## Edge hunt (panel) — unfinished search
+- Logged at 2026-11-24 18:23 UTC
+- ADSK searcher hit the turn's shared WebSearch budget (200) ~18:30 UTC: search_complete false. hunt_status retry moved it to hunts/_unfinished/; relaunched in a later turn. Further launches capped below 8 per turn.
