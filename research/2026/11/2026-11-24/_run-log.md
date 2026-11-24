@@ -87,3 +87,7 @@
 ## Edge hunt (panel v3b) — wave 5
 - Logged at 2026-11-24 18:39 UTC
 - Returned complete: DELL BBAR LI. Launched NNOX DE YSG. Queued: DSX GASS.
+
+## Edge hunt (panel v3b) — all 20 launched
+- Logged at 2026-11-24 18:40 UTC
+- Returned complete: ADSK AMBA NTNX CLSK WDAY QFIN HPQ DELL BBAR LI PSNY GDS (12). Running: NOAH BZ GOTU NNOX DE YSG DSX GASS. All as unpriced-searcher-v3b, no fallback.
