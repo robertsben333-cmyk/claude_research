@@ -49,3 +49,7 @@
 ## Stage E-P amc exit — 2026-11-24
 - Logged at 2026-11-24 14:09 UTC
 - Fired 14:07 UTC (09:09 ET). Guards: live and paper both exit 0 (amc_open, amc -> open as day, matched on placement). Verify --fix: live 5 legs all filled (STEM OMER FEAM RRGB SNEX), paper 7 legs all filled (CURI CTVA STEM OMER FEAM RRGB SNEX); nothing UNFILLED, no rescue. Close --today-only: LIVE SYM amc (2026-11-23 run) market DAY queued for open, order c1c6ea6f-0b4e-4410-8449-aa2ca633da8d; PAPER SYM amc market DAY, order 8e859408-0108-4765-86ab-11f53f022b99. DKS bmo not sent on either account (market placement, market closed): left for stage E-P's own run.
+
+## Edge hunt (panel) — 2026-11-24 amc + 2026-11-25 bmo — STARTED
+- Logged at 2026-11-24 18:13 UTC
+- Fired 18:06 UTC (13:06 ET). 24 names in window (11 amc, 13 bmo), baselines sealed to edge-panel/baselines/. Plan: 1 edge-sweep, up to 20 unpriced-searchers (amc first), sell at 3s, four judges, buy at 6b.
