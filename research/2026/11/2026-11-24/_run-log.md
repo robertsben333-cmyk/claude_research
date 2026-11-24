@@ -60,3 +60,7 @@
 ## Edge hunt (panel v3b) — 2026-11-24 amc + 2026-11-25 bmo — STARTED
 - Logged at 2026-11-24 18:15 UTC
 - Fired 18:12 UTC (13:12 ET). Universe 24 rows (11 amc 11-24, 13 bmo 11-25), no share classes folded; 24 baselines sealed in edge-panel-v3b/baselines/. Plan: one edge-sweep, up to 20 unpriced-searcher-v3b (amc first, max 6 a turn), four panel-judge-v3b judges, two panel_score calls. No orders.
+
+## Edge hunt (panel) — unfinished search
+- Logged at 2026-11-24 18:23 UTC
+- ADSK searcher hit the turn's shared WebSearch budget (200) ~18:30 UTC: search_complete false. hunt_status retry moved it to hunts/_unfinished/; relaunched in a later turn. Further launches capped below 8 per turn.
