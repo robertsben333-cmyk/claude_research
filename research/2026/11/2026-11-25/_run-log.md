@@ -43,3 +43,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-24 15:11 UTC
 - handoff written (before the note, to beat the 16:25 Oslo close): 3 names, offline plan at sealed spots on EUR 10,000: SELL HBX 40.9%, BUY MPCC 35.4%, BUY GRE 23.2%. Not taken: SOFTX (turnover $0.10m < $0.20m floor), ROCK_A 64.6 and LOUP 67.2 (< 70). Published to main; the executor server buys.
+
+## Stage EU — done
+- Logged at 2026-11-24 15:13 UTC
+- Note published. Handoff went out before the note (15:12 UTC) to reach the server before the Oslo close. Defect for a dev session: ROCK_A baseline short 0.0 vs Finanstilsynet 2.49% (name-join miss on share-class suffix; join on ISIN). Pushed to main (EARNINGS_DATA_BRANCH=main).
