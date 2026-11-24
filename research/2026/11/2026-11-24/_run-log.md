@@ -122,3 +122,6 @@
 ## Holistic research — launches
 - Logged at 2026-11-24 19:31 UTC
 - All 24 researchers launched by ~19:32 UTC (holistic-researcher type, both arms per name in the same launch pair; 8-concurrency cap made waves rolling pairs). GOTU control hit one Yahoo 429 on curl, recovered via WebFetch, kept search_complete true.
+## Edge hunt (panel) — judges rate-limited
+- Logged at 2026-11-24 19:35 UTC
+- All four judges were launched ~18:53 UTC and failed at once on the account's 5-hour usage limit (HTTP 429, reset 19:00 UTC); the session worker then restarted. Resumed all four at 19:35 UTC (14:35 ET). The buy (6b) must finish before 16:00 ET.
