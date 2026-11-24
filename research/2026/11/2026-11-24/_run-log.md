@@ -98,3 +98,7 @@
 ## Edge hunt (panel v3b) — panel STARTED
 - Logged at 2026-11-24 18:47 UTC
 - 20 of 20 hunts complete (search_complete true, all carry expectations/next_guide/evidence_type; all agent unpriced-searcher-v3b, no fallback). edge_score: 20 rankable; URBN ADXN HDL OMSE shed (no hunt). V2 grounded run before the first print. 20 packs, four v3b judges.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-24 18:51 UTC
+- 18:51 UTC: 20/20 searchers finished, 0 unfinished (hunt_status). LIVE: mode ok (enabled, keys present, kill off); flatten held 1 position, DKS 7 sh (bmo leg of 11-23, +16.91% unrealised), closed; account flat. PAPER: flatten held 1, DKS 52 sh (+16.88%), closed; flat. No amc leg was still held (SYM went at the open via E-PX).
