@@ -118,3 +118,7 @@
 ## Holistic research — wave 1
 - Logged at 2026-11-24 19:16 UTC
 - 19:20 UTC: launched 8 holistic-researcher (agent type found): QFIN, AMBA, CLSK, NTNX, both arms. Waves 2-3 (NOAH HPQ HDL GOTU; GDS LI BZ DSX) follow.
+
+## Holistic research — launches
+- Logged at 2026-11-24 19:31 UTC
+- All 24 researchers launched by ~19:32 UTC (holistic-researcher type, both arms per name in the same launch pair; 8-concurrency cap made waves rolling pairs). GOTU control hit one Yahoo 429 on curl, recovered via WebFetch, kept search_complete true.
