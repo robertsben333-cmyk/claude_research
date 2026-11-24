@@ -83,3 +83,7 @@
 ## Edge hunt (panel v3b) — wave 4
 - Logged at 2026-11-24 18:36 UTC
 - Returned complete: WDAY QFIN HPQ. Launched LI BZ GOTU. Queued: NNOX DE YSG DSX GASS.
+
+## Edge hunt (panel v3b) — wave 5
+- Logged at 2026-11-24 18:39 UTC
+- Returned complete: DELL BBAR LI. Launched NNOX DE YSG. Queued: DSX GASS.
