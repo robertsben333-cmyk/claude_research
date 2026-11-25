@@ -51,3 +51,7 @@
 ## Stage E-P amc exit — 2026-11-25
 - Logged at 2026-11-25 14:08 UTC
 - Fired 14:07 UTC (09:07 ET). Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). Verify: live 6 earlier exit legs ok, paper 8 ok, nothing UNFILLED, no rescues. LIVE close (2026-11-24 edge-panel): QFIN amc day 34ebc8c1-d3fe-4e17-9f48-4bdd8a9bea16, DELL amc day 1ca34bd1-1ec7-47ff-b850-9fa4498346b2, AMBA amc day 18f1823e-82fb-4e6e-bd14-21d47f2559a5. PAPER close: QFIN amc day b6fd79f5-5a70-40c7-94d7-d76df317ec1a, DELL amc day a6528f41-8174-4a83-99ee-0b4fc48d4706, AMBA amc day cfb0eb22-d271-44d5-84f0-121241521235. All queued for the 09:30 open. No refusals; no bmo legs due today.
+
+## Edge hunt (panel) — 2026-11-25 amc + 2026-11-27 bmo — STARTED
+- Logged at 2026-11-25 18:09 UTC
+- Fired 18:07 UTC (13:07 ET). Thanksgiving week: window is 11-25 amc + 11-27 bmo (Friday half day). Only 2 confirmed-session names (FINV amc 11-25, XYF bmo 11-27); baselines sealed. Thin day: 33 time-not-supplied rows checked with session_resolve.py (1 killed: PVL already reported; 32 carried, 0 announced). SEC_USER_AGENT unset, www.sec.gov 403, EDGAR checks degraded. The 32 carried rows go to the sweep to settle date and session; baselines for any it confirms are sealed before any searcher launches. Plan: 1 sweep, up to 20 searchers, 4 judges; sell at 3s, buy at 6b, live then paper.
