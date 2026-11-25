@@ -96,3 +96,7 @@
 ## Holistic research — wave 1
 - Logged at 2026-11-25 19:17 UTC
 - 19:19 UTC: 6 holistic-researcher launched (FINV, BMA amc; XYF bmo 11-27; evolving hp.v4 + control hp.v1 each), named agent form.
+
+## Holistic research — learning step
+- Logged at 2026-11-25 19:24 UTC
+- Collected 6 of 6 hunts ok, 0 recommendations (evolving p_up FINV 42, BMA 41, XYF 42; control 46/50/46). Resolve: 22 new name-arms, 14 pending. Gate closed: 0/30 names, 0/3 days on hp.v4; drift alarm off (60 pairs, diff +0.002, t 0.4). Reflector not launched; tomorrow runs hp.v4.
