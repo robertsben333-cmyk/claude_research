@@ -92,3 +92,7 @@
 ## Holistic research — 2026-11-25 — STARTED
 - Logged at 2026-11-25 19:16 UTC
 - 19:17 UTC (14:17 ET). Pick from E-P's sweep (3 confirmed: FINV, BMA amc; XYF bmo 11-27), evolving hp.v4 + control hp.v1 on every name, one wave. No orders.
+
+## Holistic research — wave 1
+- Logged at 2026-11-25 19:17 UTC
+- 19:19 UTC: 6 holistic-researcher launched (FINV, BMA amc; XYF bmo 11-27; evolving hp.v4 + control hp.v1 each), named agent form.
