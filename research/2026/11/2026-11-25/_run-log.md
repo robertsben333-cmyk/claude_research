@@ -62,3 +62,7 @@
 ## Edge hunt (panel v3b) — 2026-11-25 amc + 2026-11-27 bmo — STARTED
 - Logged at 2026-11-25 18:19 UTC
 - Strict window: 2 names (FINV amc 11-25, XYF bmo 11-27). Thin day, so the 33 time-not-supplied rows were checked with session_resolve.py: 3 killed by EDGAR (NWCL, PVL, ENLV), 30 carried, none announced. 11 carried rows at/above $200k turnover plus BMA/UCFI (no bars at first seal) go to the sweep with the 2 confirmed: 13 names. 19 below-floor unknown rows not hunted. Searcher unpriced-searcher-v3b, judges panel-judge-v3b-*, no orders.
+
+## Edge hunt (panel v3b) — sweep
+- Logged at 2026-11-25 18:26 UTC
+- Sweep: 13 names, 3 confirmed from company sources (FINV amc 11-25, BMA amc 11-25, XYF bmo 11-27), 4 phantoms (KT, NAT, UCFI, AEXA), 6 unconfirmed with no company date (EH, LEE, OPHI, SIDU, AREC, SRTM). BMA re-sealed with its confirmed amc session and XYF re-sealed after a Yahoo bars failure, both before any searcher. Launching 3 unpriced-searcher-v3b, amc first.
