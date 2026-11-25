@@ -47,3 +47,7 @@
 ## Stage EU — done
 - Logged at 2026-11-24 15:13 UTC
 - Note published. Handoff went out before the note (15:12 UTC) to reach the server before the Oslo close. Defect for a dev session: ROCK_A baseline short 0.0 vs Finanstilsynet 2.49% (name-join miss on share-class suffix; join on ISIN). Pushed to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage E-P amc exit — 2026-11-25
+- Logged at 2026-11-25 14:08 UTC
+- Fired 14:07 UTC (09:07 ET). Guards: live and paper both exit 0 (amc -> open as market DAY, matched on placement). Verify: live 6 earlier exit legs ok, paper 8 ok, nothing UNFILLED, no rescues. LIVE close (2026-11-24 edge-panel): QFIN amc day 34ebc8c1-d3fe-4e17-9f48-4bdd8a9bea16, DELL amc day 1ca34bd1-1ec7-47ff-b850-9fa4498346b2, AMBA amc day 18f1823e-82fb-4e6e-bd14-21d47f2559a5. PAPER close: QFIN amc day b6fd79f5-5a70-40c7-94d7-d76df317ec1a, DELL amc day a6528f41-8174-4a83-99ee-0b4fc48d4706, AMBA amc day cfb0eb22-d271-44d5-84f0-121241521235. All queued for the 09:30 open. No refusals; no bmo legs due today.
