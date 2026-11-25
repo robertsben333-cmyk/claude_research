@@ -77,3 +77,7 @@
 ## Edge hunt (panel v3b) — wave 1
 - Logged at 2026-11-25 18:27 UTC
 - 3 confirmed, 3 searchers launched in one turn (FINV, BMA amc; XYF bmo), none shed. FINV brief initially carried a placeholder for its sweep row; sent the row file by message.
+
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-25 18:35 UTC
+- 3 hunts finished (search_complete true, v3b fields present on all 3). edge_score: FINV -2.80, BMA -0.40, XYF +0.40. 29 unhunted baselines moved to baselines/_not_hunted/ (default bmo label, not an established session) before V2, which then grounded 3 of 3. 3 packs, four v3b judges.
