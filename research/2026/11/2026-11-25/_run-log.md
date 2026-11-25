@@ -77,3 +77,7 @@
 ## Edge hunt (panel v3b) — wave 1
 - Logged at 2026-11-25 18:27 UTC
 - 3 confirmed, 3 searchers launched in one turn (FINV, BMA amc; XYF bmo), none shed. FINV brief initially carried a placeholder for its sweep row; sent the row file by message.
+
+## Edge hunt (panel) — 6b buy
+- Logged at 2026-11-25 18:35 UTC
+- 18:36 UTC (13:36 ET): all four judges (opus5, opus55, sonnet55, fable51) on 3/3 packs, no fallback. 0 names at panel_pct >= 80 (FINV 79.2 short, 3 of 4 in own top 20%; BMA 61 S; XYF 57 S). No-strong-name top-up APPLIED on both accounts with FINV short (cap 33%). Live (equity $3,479): FINV short 484 @ 2.3625, filled, $1,147 (33.0%). Paper (equity $24,135): FINV short 3,360, order read partially_filled 2,778 @ 2.36 at status time while the position showed -3,360 @ 2.36. Exit: FINV is amc, so E-PX sells at the 11-27 open (half day). BMA/XYF not traded (below 70). V2 grounded written before the first print. Stage E wrote no edge/ today (Routine stopped).
