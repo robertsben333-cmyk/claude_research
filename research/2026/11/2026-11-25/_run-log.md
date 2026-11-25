@@ -84,3 +84,7 @@
 ## Edge hunt (panel v3b) — panel STARTED
 - Logged at 2026-11-25 18:35 UTC
 - 3 hunts finished (search_complete true, v3b fields present on all 3). edge_score: FINV -2.80, BMA -0.40, XYF +0.40. 29 unhunted baselines moved to baselines/_not_hunted/ (default bmo label, not an established session) before V2, which then grounded 3 of 3. 3 packs, four v3b judges.
+
+## Edge hunt (panel v3b) — done
+- Logged at 2026-11-25 18:39 UTC
+- Four v3b judges ran on their named agents, 3/3 coverage. Own history: FINV selected short at 94 (4/4 in own top 20%), BMA 10 short, XYF 3 long; E-P scale 94/9/3. Stage E-P: no selection (FINV 79.2); rho of panel_pct_signed +1.00 on n=3; XYF side differs. No orders, no shadow ledger.
