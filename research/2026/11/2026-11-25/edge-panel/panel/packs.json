@@ -1,0 +1,698 @@
+[
+ {
+  "id": "us/2026-11-25/BMA",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "BMA",
+   "event_date": "2026-11-25",
+   "session": "amc",
+   "as_of_utc": "2026-11-25T18:17:41+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-25",
+    "spot": 49.94,
+    "run_up_5d_pct": -7.36,
+    "run_up_20d_pct": -17.06,
+    "pct_from_52w_high": -52.3,
+    "pct_from_52w_low": 0.16,
+    "realised_vol_20d_annualised_pct": 38.3,
+    "avg_volume_20d": 315464
+   },
+   "cik": "0001347426",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "foreign private issuer: its 6-K exhibits are on www.sec.gov and SEC_USER_AGENT is not set to a User-Agent with a contact address, and www.sec.gov refuses requests without one (403), so its earnings dates were not looked for",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-12-18",
+    "days_to_expiry": 23,
+    "atm_strike": 50.0,
+    "atm_iv_pct": 65.1,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.62,
+    "total_open_interest": 112,
+    "atm_spread_frac_of_mid": 1.125,
+    "warnings": [
+     "ATM bid-ask spread 112% of mid; too wide to mean anything"
+    ]
+   },
+   "deadband_pct": 2.41,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": null,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Disputed. Bloomberg consensus Q3 2026 net income ARS219.521bn against Citi ARS188.511bn, both per iProfesional 2026-11-13 (https://www.iprofesional.com/finanzas/468851-wall-street-recomienda-una-sola-accion-entre-los-bancos-argentinos). Goldman (same article): Q3 ROE 11.2%, recurring profit -19% real QoQ, NIM 17.6% to 16.3%, NII -6%, delinquency 6.1%. Q2 2026 reported ARS206.8bn, about ARS219bn restated for Q3 inflation (~5.8%); ARS221bn adjusted for ARS21.9bn restructuring (https://pulse2.com/banco-macro-npl-ratio-more-than-triples-yoy-to-6-25-even-as-net-income-rises-39-sequentially/). So the Bloomberg consensus is roughly flat real QoQ while the two named brokers sit 14-18% below it. Company guide: 2026 adjusted ROE about 12%, reported 9-10%; NPL 5.5-6% by year end from 6.25%; cost of risk 6.5-7% (https://quartr.com/events/banco-macro-s-a-bma-q2-2026_F36oi3NT). Because two sources disagree, findings that depend on the bar are capped small. print_vs_bar_pct is measured against the ARS219.5bn Bloomberg figure.",
+   "positioning_check": "Short interest is low and not crowded: about 672k shares short, 2.4 days to cover, settlement 2026-09-30 (https://stockmarketwatch.com/stock/BMA/short-interest); 3.1% of float and rising per Benzinga, updated 2026-10-26 (https://www.benzinga.com/quote/BMA/sentiment). No squeeze mechanism. Baseline: skew_25d null and the option chain unusable (ATM spread 112% of mid, total OI 112, put/call OI 0.62, ATM IV 65.1% for 18 Dec). Tape: -7.36% in 5d, -17.06% in 20d, -52.3% from the 52-week high, 0.16% above the 52-week low. YTD to 2026-10-29: -33.3% in USD (https://eleconomista.com.ar/finanzas/para-olvido-acciones-argentinas-desploman-42-dolares-ano-n99317/amp). Company buyback active (6 tranches, ~3.0m Class B shares bought through 2026-11-24). The run-up already leans negative, so a negative finding agrees with the price and is partly priced.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "The BCRA's Informe sobre Bancos for September 2026, published 2026-11-20, puts the whole system's Q3 2026 ROA at 0.8% annualised (ROE 3.4%), against 2.5% in Q2 (June report, published 2026-08-21). Chart 17 shows private domestic banks (EFB priv. nac., the group that holds Macro, Galicia and Supervielle) at about 0.5% 3m ROA to September, against about 1.75% for Q2 in the June report's Chart 15. The BCRA attributes the decline mainly to a lower 'margen financiero integral', partly offset by lower loan-loss charges, admin expenses and taxes. The Bloomberg consensus of ARS219.5bn implies Macro's real profit flat QoQ.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.bcra.gob.ar/archivos/Pdfs/PublicacionesEstadisticas/informes/informe-bancos-2026-09.pdf",
+    "source_date": "2026-11-20",
+    "reaction_history_on_this_line": "Q4 2025 (released 2026-02-25 amc): headline net income ARS100.1bn against a ARS164.3bn Bloomberg consensus (-39%, one-offs ARS82.9bn). The ADR fell 7.3% the next day with GGAL -4.8% and SUPV -6.8%, so about -2.5 points of excess (https://www.bloomberglinea.com/latinoamerica/argentina/banco-macro-vuelve-al-verde-pero-no-alcanza-estimaciones-de-wall-street-en-el-cuarto-trimestre/ ; https://www.riotimesonline.com/argentinas-merval-sinks-1-6-to-3-month-low-as-banks-crash-up-to-7). Q2 2026 beat (released 2026-08-19 amc, +5% vs BofA, +22% vs JPM): local share -2.2% on 08-20 and +1.8% on 08-21 (https://www.rava.com/cotizaciones/historico/bma/2026/08).",
+    "why_not_priced": "The only dated consensus (ARS219.5bn, as of 2026-11-13) predates this release, and implies Macro held its real Q2 profit while the system lost about two-thirds of its ROA. The numbers sit in a Spanish PDF chart and drew no wire coverage I could find. If the market had fully priced it, the consensus would sit near or below Citi's ARS188.5bn and previews would flag a sharp QoQ drop. Partial pricing is visible: the ADR is -7.4% over the five sessions since publication and at a 52-week low, though country risk and the sector moved too. Sized small because it is a system aggregate (a proxy for Macro), Macro earned about twice the private-domestic group ROA in Q2 (3.3% vs ~1.75%), and the bar is disputed.",
+    "independence": "Supervielle's Q3 print (separate finding, separate document) shows the same margin compression: NIM -430bp, NFI -22.4% QoQ (https://grafa.com/en/news/united-states/grupo-supervielle-q3-2026-results-net-income-falls). Goldman's Macro preview also expects NIM 17.6% to 16.3% and recurring profit -19% real (iProfesional 2026-11-13). Supervielle is inside the BCRA aggregate, so the two overlap; they are sized separately and smaller for that reason.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "Grupo Supervielle, the first of the four Argentine bank ADRs to report Q3 2026 (story dated 2026-11-17), printed net income of ARS6.8bn, about half of Q2's ARS13.6bn, ROAE 2.2%. Net financial income fell 22.4% QoQ and NIM fell 430bp to 16%. EPS was $0.08 against a $0.16 consensus, and 2026 ROE guidance was cut for the fourth straight quarter, to 1-2% reported and 5-6% adjusted. Offsets in the same print: NPL improved to 5.4%, loan-loss provisions fell 14.5% QoQ, and opex fell 26.5%.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://grafa.com/en/news/united-states/grupo-supervielle-q3-2026-results-net-income-falls",
+    "source_date": "2026-11-17",
+    "reaction_history_on_this_line": "No dated record of BMA's reaction to a peer's print. On Macro's own prints the margin line drove the Q4 2025 miss (-7.3% ADR with the sector) and the Q2 2026 beat (muted).",
+    "why_not_priced": "Public for about a week, so largely priced in the sector; BMA has fallen since. Supervielle is a weaker, more retail-funded bank (Q2 ROE 4.4% vs Macro 13.4%), so its margin hit transmits only partly. If it had moved Macro's bar, Bloomberg's ARS219.5bn would have been revised; I found no later figure.",
+    "independence": "Overlaps the BCRA aggregate (finding 1), which includes Supervielle. Margin-guidance detail from the earnings-whispers transcript (https://www.earningswhispers.com/transcript/SUPV/Q32026).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "Asset quality is turning in the system data Macro's Q3 will mirror. BCRA September 2026: private-sector NPL fell 0.25pp to 7.50%; household NPL fell 0.61pp to 12.20%, its second monthly decline; the irregular balance fell 2.58% real, the first negative since April 2024; estimated PD fell a fourth month to 2.04%; provision coverage rose to 88.2%. Macro guided NPL to 5.5-6% by year end from 6.25% in Q2, and its book is consumer-heavy (consumer NPL 8.42% in Q2), where the improvement is concentrated. The system figure is helped by write-offs and refinancing (households refinanced 3.9% of the book; 24.1% of irregular balances refinanced).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.bcra.gob.ar/archivos/Pdfs/PublicacionesEstadisticas/informes/informe-bancos-2026-09.pdf",
+    "source_date": "2026-11-20",
+    "reaction_history_on_this_line": "NPL was the line analysts flagged after Q2 2026 (SBS: 'monitoring delinquency will be essential'; NPL 6.25% from 5.4%) when the local share went -2.2% then +1.8% (https://www.iprofesional.com/finanzas/462851-que-hacer-con-las-acciones-de-banco-macro-tras-su-balance). In Q2 2026 Galicia printed lower loan-loss charges and its ADR still fell (https://www.bloomberglinea.com/latinoamerica/argentina/galicia-sale-del-rojo-y-destaca-menor-cargo-por-incobrabilidad-pero-acciones-ceden-en-wall-street/).",
+    "why_not_priced": "Goldman's preview still carries Macro delinquency at 6.1%, roughly flat, and the 52-week-low price shows no credit-turn optimism. A first QoQ NPL decline with lower cost of risk would be the quality-of-earnings offset to a margin miss. If it were priced, the sector would have bounced on the Nov 20 report; it fell instead. Partly an inference from system to company, and some of the improvement is write-offs, so sized modestly.",
+    "independence": "Supervielle's Q3: NPL improved to 5.4% and provisions fell 14.5% QoQ (https://grafa.com/en/news/united-states/grupo-supervielle-q3-2026-results-net-income-falls). Forbes Argentina 2026-10-29 on household NPL declining from August (https://www.forbesargentina.com/money/la-mora-bancaria-empieza-bajar-banco-central-ya-habla-fin-ciclo-atrasos-n101351). Shares the BCRA document with finding 1, but reads a different line (credit cost vs margin).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "Macro is buying back its own stock into the print. The program was announced 2026-10-29: up to ARS160bn and 20m Class B shares, max price ARS10,700, 45 days. Six disclosed tranches had bought about 3.0m shares for about ARS28.6bn (about 15% of the share cap) by 2026-11-24; the latest was 430,000 shares at about ARS9,251. The local share closed at ARS9,100 on 11-24, well under the ARS10,700 cap. The company said the price does not reflect fundamentals.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.panabee.com/news/macro-bank-repurchases-294-thousand-shares-for-ps-2-8-billion",
+    "source_date": "2026-11-24",
+    "reaction_history_on_this_line": "No prior buyback-into-print episode found for BMA.",
+    "why_not_priced": "The program is public (6-Ks), so the level is priced. What is not priced is the support it gives the local Thursday session (BYMA trades on US Thanksgiving) and hence the ADR's Friday half-day. It is capped at 25% of 90-day average volume, so the support is small.",
+    "independence": "Program terms per El Economista 2026-10-29 (https://eleconomista.com.ar/finanzas/uno-bancos-mas-grandes-pais-anuncia-una-millonaria-recompra-acciones-n99320); daily tranche filings listed on Rava (https://www.rava.com/noticias?ticker=BMA_US). Panabee's cumulative totals are its own arithmetic over the 6-Ks.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "More restructuring charges are likely in the headline. Q2 2026 carried ARS21.9bn pre-tax (ARS14.2bn after tax) of early-retirement and severance costs. Management's reported 2026 ROE guide of 9-10% sits below the 12% adjusted guide, implying more charges in H2. Q4 2025 shows such charges can turn the headline into a large 'miss' (-39% vs consensus on ARS82.9bn of one-offs).",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://quartr.com/events/banco-macro-s-a-bma-q2-2026_F36oi3NT",
+    "source_date": "2026-08-20",
+    "reaction_history_on_this_line": "Q4 2025: one-offs drove a -39% headline miss; the ADR was +0.1% after hours, then -7.3% the next day in a sector-wide selloff (GGAL -4.8%).",
+    "why_not_priced": "The guide gap is public, but it is unclear whether the Bloomberg consensus is on a reported or adjusted basis. A headline-vs-consensus gap from charges sets the first after-hours read. Below the line with no path to the guide, so [sizing note removed].",
+    "independence": "Q2 restructuring amount per Pulse2 2026-08-22 (https://pulse2.com/banco-macro-npl-ratio-more-than-triples-yoy-to-6-25-even-as-net-income-rises-39-sequentially/).",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "A cut to the 2026 adjusted-ROE guide (about 12%, raised from 8% in Q2) is likely given the system's Q3 ROA collapse, mirroring Supervielle's fourth straight cut. Macro gives guidance on the call, not in the press release, and the call is 2026-11-30 11:00 NY, after the reaction session closes on 2026-11-27.",
+    "resolves_by": "2026-11-30",
+    "source": "https://www.macro.com.ar/relaciones-inversores/en/home-page",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "Broker dispersion as its own finding: Citi ARS188.5bn and Goldman -19% real recurring profit vs the ARS219.5bn Bloomberg consensus, so a headline 'miss vs consensus' is likely",
+    "source": "https://www.iprofesional.com/finanzas/468851-wall-street-recomienda-una-sola-accion-entre-los-bancos-argentinos",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "Country risk and the political/macro selloff: country risk 787bp on 2026-10-30, the 2026 high; Merval -6-7% in October; Milei reelection doubts; Lula reelection spillover",
+    "source": "https://www.riotimesonline.com/?p=772607",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "LatinFinance named Banco Macro 'Bank of the Year' in Argentina (2026-11-20 to 23 coverage)",
+    "source": "https://www.rava.com/noticias?ticker=BMA_US",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BMA.json",
+    "text": "UBS cut its ADR target from $130 to $90 but kept Buy and named Macro its favourite of four banks (report dated 12 Oct)",
+    "source": "https://www.forbesargentina.com/money/ubs-analizo-cuatro-bancos-grandes-argentinos-recomienda-comprar-o-vender-n100664/amp",
+    "first_hunter_reason": "no_source",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "Macro's 3Q26 release or CNV/BYMA interim statements: not yet out at search time; no leak found",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "Grupo Galicia and BBVA Argentina 3Q26 results: no 2026 results indexed (Galicia estimated 2026-11-24 amc by one aggregator, unconfirmed); every hit was 3Q25",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "Santander Argentina, Banco Patagonia and Hipotecario 3Q26: only 2025 material found",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "BCRA per-entity monthly P&L for Macro (Informacion de Entidades Financieras), July-September 2026: not reachable via search",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "Q2 2026 monthly CPI, to compare the Q3 monetary-position loss (Q3: Jul 2.1%, Aug 1.7%, Sep 1.9%, from https://chequeado.com/el-explicador/la-inflacion-de-septiembre-fue-del-19-y-acumula-236-en-lo-que-va-del-ano/): not found, so no finding",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "Banco Saenz acquisition: no BCRA approval or closing found after the 2026-06-04 6-K; immaterial to the quarter",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "Any sell-side preview dated after the 2026-11-20 BCRA release: none found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMA.json",
+    "text": "A dated ADR reaction for 3Q25 (released 2025-11-26 amc; US Thanksgiving 11-27): local +3.1% on 11-27 and -0.7% on 11-28 (https://www.rava.com/cotizaciones/historico/bma/2025/11); ADR move not found",
+    "i": 17
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-25/FINV",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "FINV",
+   "event_date": "2026-11-25",
+   "session": "amc",
+   "as_of_utc": "2026-11-25T18:09:21+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-25",
+    "spot": 2.331,
+    "run_up_5d_pct": -10.69,
+    "run_up_20d_pct": -17.63,
+    "pct_from_52w_high": -62.28,
+    "pct_from_52w_low": 0.0,
+    "realised_vol_20d_annualised_pct": 52.6,
+    "avg_volume_20d": 953380
+   },
+   "cik": "0001691445",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "foreign private issuer: its 6-K exhibits are on www.sec.gov and SEC_USER_AGENT is not set to a User-Agent with a contact address, and www.sec.gov refuses requests without one (403), so its earnings dates were not looked for",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-12-18",
+    "days_to_expiry": 23,
+    "atm_strike": 2.5,
+    "atm_iv_pct": 76.2,
+    "straddle_implied_move_pct": 17.16,
+    "event_implied_move_pct": 13.4,
+    "event_implied_move_basis": "17.16% straddle over 23 calendar days less 13.43% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.17,
+    "total_open_interest": 9611,
+    "atm_spread_frac_of_mid": 0.8,
+    "warnings": [
+     "ATM bid-ask spread 80% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 3.31,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 13.4,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "There is no sourced Q3 consensus. Search found only a pre-August FY revenue consensus of $1.85bn on Seeking Alpha (https://seekingalpha.com/symbol/FINV/earnings/estimates, page dated 2026-03-27, now stale) and Investing.com saying the Q2 forecast was not shown. The bar used is the company's own FY2026 revenue guide of RMB11.5-12.9bn, reiterated 2026-08-27 with management steering to 'the lower part of the range unless the operating environment substantially changes' (https://www.financialcontent.com/article/gnwcq-2026-8-27-finvolution-group-reports-second-quarter-2026-unaudited-financial-results ; call: https://www.webull.com/news/15496818263843840). H1 revenue was about RMB6.61bn (Q1 about 3.21bn plus Q2 3.403bn), so the low end implies H2 of about RMB4.89bn, about 2.44bn a quarter, against Q2's 3.40bn. print_vs_bar_pct is my read that FY revenue implied by the new commentary lands about 1% below the RMB11.5bn low end. Quarter-level findings are capped small because the Q3 bar is unsourced.",
+   "positioning_check": "Short interest: about 4.1m ADS at the FINRA 2026-09-30 settlement, 3.5 days to cover, down from 5.0m and 3.9 days two weeks earlier (https://curvedtrading.com/stocks/finv/short-interest/). Fintel shows 4.87m and 16.07 days, undated (https://fintel.io/ss/us/finv). Both are a low share of a roughly 245m+ ADS float, so this is not a crowded short and gives no squeeze mechanism of note. Options: skew_25d is null in the baseline, so the option market gives no stated direction. Put/call open interest is 0.17 (call-heavy) on 9,611 contracts, and the ATM spread is 80% of mid, so the implied move is indicative only. Tape: spot $2.331 is at the 52-week low, -62% from the high, -17.6% over 20 days and -10.7% over 5 days. It fell 5.4% intraday on 2026-11-25, the session after Qfin's release (https://www.aaii.com/investingideas/article/538816-why-finvolution-group8217s-finv-stock-is-down-538). Analysts: Citi cut to Hold/Neutral with a $4.10 target on 2026-08-28; Jefferies kept Buy at $4.70. The reaction session is Friday 2026-11-27, a 13:00 ET half day after Thanksgiving, so liquidity will be thin.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "Qfin is the largest US-listed peer, with the same funding and collection exposure. It reported Q3 2026 on 2026-11-24, after FINV last spoke on 08-27. Q3 loan volume was RMB49.5bn, -40.6% YoY. Revenue was RMB3.09bn, -13.4% QoQ. It guided Q4 non-GAAP net income to RMB250-350m (-67% to -77% YoY) and Q4 volume to about -20% QoQ. Management said liquidity will tighten further over the next one or two quarters as ABS issuance costs rise. It said regulatory uncertainty persists into 2027, the 30-day collection rate of 86% is near historic lows and will not return to 88%, and 'a 3% take rate is impossible to maintain' (FINV's own China take rate was about 3.2% in Q2). The read-through is that FINV's FY revenue guide (low end RMB11.5bn) and its Q4/2027 commentary are more likely to be cut or softened than reaffirmed.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://uk.investing.com/news/stock-market-news/earnings-call-transcript-qfin-holdings-posts-weak-q3-2026-results-as-growth-slows-93CH-5002961",
+    "source_date": "2026-11-25",
+    "reaction_history_on_this_line": "FINV trades on the guide. Q2 2026 (2026-08-27): the FY guide was steered to the low end and the stock fell about 15-19% (https://www.quiverquant.com/news/FinVolution+Group+Reports+Second+Quarter+2026+Financial+Results+and+Reaffirms+Full Year+Revenue+Guidance ; sweep row cites ainvest -15%). Q1 2026: the outlook was reaffirmed with a new US$150m buyback and the stock rose about 15% (sweep row, secondary). Q3 2025 (2025-11-20): -11% intraday, the largest fall since March 2023 (https://www.itiger.com/hant/news/2585151253).",
+    "why_not_priced": "Partly priced. FINV fell 5.4% intraday on 11-25 and 10.7% over five sessions, and QFIN's own reaction is reported between -2% and -12% depending on the snapshot. What would look different if this were fully priced: FINV would have fallen about as far as QFIN on the day, rather than half as far, and sell-side FY numbers would already sit below the RMB11.5bn low end. No post-Qfin FINV estimate revision was found, and Citi's $4.10 target from August is still the latest cut found.",
+    "independence": "Qfin's release itself: https://www.manilatimes.net/2026/11/25/tmt-newswire/globenewswire/qfin-holdings-announces-third-quarter-2026-unaudited-financial-results/2477629 (same company, same event: one finding). A different counterparty pointing the same way: LexinFintech's Q2 release of 2026-08-31 guided Q3 originations to fall significantly QoQ with a possible net loss, and blamed the late-June peer risk event that tightened sector funding (https://www.sec.gov/Archives/edgar/data/0001708259/000119312526375383/lx-ex99_1.htm).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "From FINV's own Q2 call: China transaction volume was 'down around 50% in July'. China funding cost rose 30bp QoQ to 3.7% with another 30bp in July. Collection capacity 'took a bit of a hit' after the late-July regulatory action on collection, and early risk indicators were up about 20% versus Q2. The release said 'we anticipate a considerable contraction in transaction volume in China' for Q3. So the reported Q3 will show a deep China volume drop, rising funding costs and worse early credit. All of this sits inside what the company already told the market.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-25",
+    "source": "https://www.webull.com/news/15496818263843840",
+    "source_date": "2026-08-27",
+    "reaction_history_on_this_line": "The reported-quarter lines have not decided FINV's last prints; the guide has (see the first finding). In Q2 2026, revenue up 6% QoQ and net profit up 1% QoQ did not stop a 15-19% fall on the guide.",
+    "why_not_priced": "Mostly priced. The company guided to it three months ago and the stock is down 62% from its high. It is filed because the size of the credit deterioration (C-M2, 90+ DPD, provisions) relative to the guided contraction is not public. Qfin's C-M2 rose from 0.66% to 0.81% and its provisions rose QoQ. A similar step at FINV would be the only part not already in the price.",
+    "independence": "Qfin's Q3 credit data shows the same direction: day-1 delinquency 5.6% to 5.8%, C-M2 0.66% to 0.81%, collection rate 88.1% to 86% (https://uk.investing.com/news/stock-market-news/earnings-call-transcript-qfin-holdings-posts-weak-q3-2026-results-as-growth-slows-93CH-5002961). It shares that document with the first finding but makes a different point (credit, not the guide).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "FINV's FY guide low end already builds in a severe H2. H1 revenue was about RMB6.61bn (Q2 RMB3,403m, Q1 about 3,210m), so the RMB11.5bn low end needs only about RMB4.89bn in H2, about 2.44bn a quarter, or -28% against Q2. Qfin's revenue fell only 13.4% QoQ on a roughly 22% QoQ volume drop (Q2 63.4bn to Q3 49.5bn), because facilitation revenue lags volume. On that basis FINV can plausibly hold or narrowly touch the low end even after a 50% July China volume drop, so a reaffirmed low end is a live outcome, not a remote one.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-25",
+    "source": "https://www.financialcontent.com/article/gnwcq-2026-8-27-finvolution-group-reports-second-quarter-2026-unaudited-financial-results",
+    "source_date": "2026-08-27",
+    "reaction_history_on_this_line": "The last time the guide was reaffirmed outright (Q1 2026, with a buyback), the stock rose about 15% (sweep row). Steering to the low end (Q2) fell 15-19%. A hold of the low end from a 52-week low after a peer's shock guide is untested.",
+    "why_not_priced": "The market appears to have extrapolated Qfin's Q4 profit guide (-67 to -77%) onto FINV (-5.4% on 11-25). FINV's guide is a revenue range whose low end already implies a step down of more than a quarter. If the market had done this arithmetic, FINV would not have sold off on a peer read when its own guide already sits at a level that a Qfin-like revenue path roughly meets.",
+    "independence": "Qfin Q2 2026 volume of RMB63.4bn and revenue of RMB3.57bn, for the QoQ comparison (search summary of Qfin's Q2 release; Q3 from https://www.manilatimes.net/2026/11/25/tmt-newswire/globenewswire/qfin-holdings-announces-third-quarter-2026-unaudited-financial-results/2477629). It uses the same Qfin documents as the first finding but argues the opposite question (can FINV meet its own range), so it is a counterweight, not a duplicate. My own estimate (inference): FINV Q3 revenue of about RMB2.75-2.9bn leaves about RMB2.0-2.1bn needed in Q4.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "Capital return headroom: FINV held cash of RMB3.26bn plus short-term investments of RMB3.16bn (about US$946m) at 2026-06-30, with leverage of 2.1x 'around historic lows'. Its fifth buyback program, up to US$150m, runs 2026-05-30 to 2028-05-29, and only US$27.4m was repurchased in Q2. The dividend policy pays 20-30% of prior-year net income. With the ADS at a 52-week low of $2.33, Q3 repurchase pace or a step-up/new authorisation at the print is a lever. The counterweight is that Qfin said on 11-24 it will take a 'more prudent approach to capital deployment', so FINV may slow buybacks rather than speed them up. The size is net of that.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-25",
+    "source": "https://finviz.com/news/356760/finvolution-group-announces-new-share-repurchase-program-of-up-to-us150-million",
+    "source_date": "2026-05-25",
+    "reaction_history_on_this_line": "Q1 2026: the new US$150m buyback with a reaffirmed guide gave about +15% (sweep row, secondary), with the buyback and the guide not separable.",
+    "why_not_priced": "A stock trading at a 52-week low, 62% off its high, with US$946m of cash and short-term investments on its June balance sheet, is not being valued on capital return. If the market expected an accelerated buyback, the call-heavy open interest (put/call 0.17) would have shown up in the price rather than leaving the stock at its low.",
+    "independence": "Q2 release cash and leverage figures: https://www.financialcontent.com/article/gnwcq-2026-8-27-finvolution-group-reports-second-quarter-2026-unaudited-financial-results. Dividend policy: https://finvolution.gcs-web.com/stock/dividend-and-shares-repurchase-history. Against it: Qfin's capital-prudence remark (https://www.manilatimes.net/2026/11/25/tmt-newswire/globenewswire/qfin-holdings-announces-third-quarter-2026-unaudited-financial-results/2477629).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "Indonesia (more than 50% of FINV overseas volume and revenue; overseas was 27% of group revenue in Q2) worsened in Q3. OJK data put industry fintech-lending TWP90 at 5.36% in September 2026, against 4.32% in July and 2.82% a year earlier. Industry outstanding slipped from Rp106.94tn (August) to Rp106.48tn (September). Net of the company: AdaKami self-reports a 0% TWP90 and loan rejections as its top complaint, and part of the industry spike is attributed to two fraud-hit platforms. The 30% debt-to-income cap also limits growth.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-25",
+    "source": "https://finansial.bisnis.com/read/20261105/563/2018798/kredit-pinjol-capai-rp10648-triliun-per-september-2026-twp90-tembus-536",
+    "source_date": "2026-11-05",
+    "reaction_history_on_this_line": "Overseas growth was the positive leg in the Q2 release (overseas operating profit more than doubled, unique borrowers +130%) and did not offset the guide-driven fall.",
+    "why_not_priced": "Indonesian-language OJK statistics are not in US wire copy on FINV. It is small because it is an industry proxy, and the company's own platform reports far better credit.",
+    "independence": "https://finansial.bisnis.com/read/20261109/563/2019628/twp90-pindar-tembus-536-lampaui-ambang-batas-aman-dan-jadi-alarm-bagi-industri (same OJK series). AdaKami's counter-evidence: https://keuangan.kontan.co.id/news/ini-strategi-adakami-jaga-angka-twp90-tetap-terkendali",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "Relative position in the sector: smaller peers were already loss-making or guiding to losses. Jiayin posted a Q2 2026 net loss of RMB183.6m on RMB9.5bn of volume, and LexinFintech guided Q3 to a possible net loss. FINV earned RMB427m in Q2 with 90+ DPD of 2.10% and leverage of 2.1x. Qfin also said it expects smaller, lower-compliance platforms to exit and competition for customers to ease. So FINV printing a profitable Q3 in a contracting market is a relative-strength point that a shakeout could support.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-25",
+    "source": "https://finviz.com/news/386523/jiayin-group-inc-reports-second-quarter-2026-unaudited-financial-results",
+    "source_date": "2026-08",
+    "reaction_history_on_this_line": "Not observed separately. Relative resilience did not protect the stock in Q2 2026.",
+    "why_not_priced": "Largely public since August. It is filed because the consolidation argument (weaker platforms exit, funding concentrates) was restated by Qfin only on 11-24 and has not been applied to FINV, whose price trades as if it faces the same damage as the sector.",
+    "independence": "LexinFintech Q2 2026 release: https://www.sec.gov/Archives/edgar/data/0001708259/000119312526375383/lx-ex99_1.htm ; Qfin shakeout remark: https://uk.investing.com/news/stock-market-news/earnings-call-transcript-qfin-holdings-posts-weak-q3-2026-results-as-growth-slows-93CH-5002961",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "LexinFintech reports Q3 2026 after the US close on 2026-12-03, a further sector read that is too late for this window.",
+    "resolves_by": "2026-12-03",
+    "source": "https://ir.lexinfintech.com/news-releases/news-release-details/lexinfintech-holdings-ltd-report-third-quarter-2026-unaudited-0",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "Regulatory path: on-balance-sheet lending must be priced at 4x LPR by end-2027, and further rules on market entry, partnership models and funding supply are under consideration (Qfin call). This weighs on the 2027 take rate beyond this window, except as far as FINV's own call commentary reflects it.",
+    "resolves_by": "2027-12-31",
+    "source": "https://uk.investing.com/news/stock-market-news/earnings-call-transcript-qfin-holdings-posts-weak-q3-2026-results-as-growth-slows-93CH-5002961",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "Citi downgrade to Hold/Neutral, target cut to $4.10, and Jefferies Buy at $4.70, both on 2026-08-28",
+    "source": "https://www.investing.com/equities/ppdai",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "QFIN's own share reaction on 11-25 (reported variously as -2.12% close and -10.95%/-12%)",
+    "source": "https://www.gurufocus.com/news/9220555/qfin-holdings-qfin-shares-drop-12-amid-cfos-cautious-outlook-for-2026",
+    "first_hunter_reason": "duplicate",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FINV.json",
+    "text": "Caixin 2026-09-10: FINV H1 revenue -6%, net profit -43%, overseas 'scaled profitability'",
+    "source": "https://www.caixinglobal.com/2026-09-10/chinas-online-lenders-see-profits-plunge-as-new-rules-bite-102483449.html",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FINV.json",
+    "text": "Q3 2026 consensus revenue/EPS for FINV: none found (Seeking Alpha page stale, dated March 2026; Investing.com shows no forecast)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FINV.json",
+    "text": "FINV company announcements between 2026-08-27 and 2026-11-13 (buyback updates, preliminary results, management changes): none found. The IR site returned 503 and GlobeNewswire returned 403.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FINV.json",
+    "text": "Analyst actions in November 2026: none found after Citi's 2026-08-28 downgrade",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FINV.json",
+    "text": "Jiayin and Xinye (XYF) Q3 2026 results: not indexed or not yet out (XYF due 11-27, per the sweep)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FINV.json",
+    "text": "Chinese-language search (信也科技 2026三季度): nothing new past the Q2 release",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FINV.json",
+    "text": "November 2026 FINRA short-interest settlement for FINV: not found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FINV.json",
+    "text": "Indonesian AdaKami Q3 disbursement figures: none dated Q3 2026 beyond the self-reported 0% TWP90 snapshot (August)",
+    "i": 17
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-25/XYF",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "XYF",
+   "event_date": "2026-11-27",
+   "session": "bmo",
+   "as_of_utc": "2026-11-25T18:09:24+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-25",
+    "spot": 5.17,
+    "run_up_5d_pct": -2.08,
+    "run_up_20d_pct": 6.6,
+    "pct_from_52w_high": -29.95,
+    "pct_from_52w_low": 51.61,
+    "realised_vol_20d_annualised_pct": 86.3,
+    "avg_volume_20d": 100007
+   },
+   "cik": "0001725033",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "foreign private issuer: its 6-K exhibits are on www.sec.gov and SEC_USER_AGENT is not set to a User-Agent with a contact address, and www.sec.gov refuses requests without one (403), so its earnings dates were not looked for",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 5.44,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": null,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Unsourced. No consensus for Q3 2026 revenue or EPS was found: Seeking Alpha and Digrin are paywalled and Chartmill shows no estimates (https://www.chartmill.com/stock/quote/XYF/estimates). The company gave no quantitative Q3 guidance (Q2 call, 'not providing quantitative guidance for the third quarter': https://www.webull.com/news/15460662063678464, 2026-08-24). The only reference is the Q2 2026 level: net revenue RMB993.6m, facilitation RMB11.63bn, net income RMB47.0m (https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results). print_vs_bar_pct = -10 is a guess at Q3 revenue against that Q2 level, given Qfin's -13.4% QoQ revenue in Q3. All finding sizes are capped small because no bar is sourced.",
+   "positioning_check": "No option market (baseline options.status no_options_market), so no skew. Short interest is small. FINRA settlement 2026-09-15: 84,602 shares, about 1.0 days to cover (https://equibles.com/stocks/xyf/short-interest). Fintel shows 86,510 shares and 1.85 days, undated (https://fintel.io/ss/us/XYF). MarketBeat for 2026-05-29: 219,436 shares, 0.82% of float. Not a crowded short. Tape: spot 5.17, 20-day run-up +6.6%, 5-day -2.08%, 30% off the 52-week high and 52% off the low, 20-day average volume about 100k ADS. Yahoo daily bars show 11-24 at 5.23 and 11-25 at 5.20 intraday on only 32.9k shares, the same day QFIN fell about 15%, FINV about 11%, LX 11.7% and YRD about 8%. On valuation: about 37m ADS at $5.17 is about $190m against total equity of RMB7.76bn (about $1.09bn) and cash of $167m at 2026-06-30. The dividend is $0.28 per ADS semi-annual.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Peer read-through from Qfin's Q3 2026 release (11-24 after close; Qfin is the largest US-listed peer). Volume fell 21.9% QoQ to RMB49.5bn. The 30-day collection rate fell to 86.0% from 88.1% in Q2 2026, and Day-1 delinquency rose to 5.8% from 5.6%. Management cited a nationwide regulatory campaign that disrupted the collections industry, more cautious funding partners after a late-June industry event, and Q4 volume down about 20% QoQ, with caution into 1H27. XYF's Q2 delinquency improvement (31-60d 2.61% to 1.73%) was credited on its call to 'additional resources deployed in collections'. That is exactly the channel Qfin says worsened in Q3. XYF's Q3 volume and its next guide face the same funding squeeze.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://uk.investing.com/news/stock-market-news/qfin-q3-2026-slides-profit-plunges-72-as-china-credit-stress-deepens-93CH-5002977",
+    "source_date": "2026-11-25",
+    "reaction_history_on_this_line": "XYF's largest reaction in the four prints sourced was on a guide. The Q3 2025 release (2025-11-20, 4:50pm ET) guided Q4 2025 originations to RMB21-23bn, about -32% QoQ, and the stock fell from 9.11 to 7.68 (-15.7%) on 11-21. The Q2 2026 release (bmo 2026-08-24) gave no guide, showed improving delinquency and drew +2.0% (5.39 to 5.50). Yahoo daily bars: https://query1.finance.yahoo.com/v8/finance/chart/XYF?range=2y&interval=1d",
+    "why_not_priced": "On 11-25 the peers re-priced on this release: QFIN about -15%, FINV about -11%, LX -11.7%, YRD about -8% (https://tickeron.com/blogs/why-is-lexinfintech-holdings-lx-stock-down-11-69-today-47156/). XYF traded 5.23 to 5.20 on 32.9k shares. Had its holders priced the read-through, XYF would show a sympathy gap like the others. The counter-reading is that XYF already de-rated a year ago (-70% volume YoY) and now trades on book value and yield, not volume. That argument is why this is [sizing note removed].5 and not at the peers' -10.",
+    "independence": "Qfin Q2 2026 release for the 88.1% collection-rate and 5.6% Day-1 comparison: https://finviz.com/news/385508/qfin-holdings-announces-second-quarter-and-interim-2026-unaudited-financial-results-and-declares-semi-annual-dividend (2026-08-25). Qfin's Q4 guide and stock reaction: https://longbridge.com/en/news/306731245 (2026-11-25). Lexin's Q2 call expected Q3 originations down significantly and risk indicators rising sequentially: https://ng.investing.com/news/stock-market-news/earnings-call-transcript-lexin-q2-2026-profit-falls-as-q3-loss-looms-93CH-2680370. All are proxies; none is an XYF number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "XYF's $100m buyback expires 2026-11-30, three days after this release, with about $35.5m unused at 2026-08-14. That is roughly 18% of a market cap near $190m. The Q3 release is the last scheduled communication before expiry, so it is the natural place to extend or replace the program. On the Q2 call the CFO gave no new plan ('doing all we can under the normal buyback circumstances and rules').",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results",
+    "source_date": "2026-08-24",
+    "reaction_history_on_this_line": "The current $100m program was announced with the Q1 2025 results (May 2025). XYF closed 15.00 to 15.84 (+5.6%) that day and +9.8% the next (Yahoo bars; announcement: https://www.itiger.com/news/2536630066). XYF also bought 6.35m ADS from a major holder in December 2024 (https://www.nasdaq.com/articles/x-financial-repurchase-487-mln-shares-its-main-shareholder).",
+    "why_not_priced": "The stock has held 5.2-5.5 since August with no buyback news. A market expecting renewal would show the stock firm into the date, and it did hold while peers fell on 11-25. So part of this may already be in the price, and the outcome is binary and unknown. Sized small and positive, with a downside tail if the program is allowed to lapse.",
+    "independence": "Q2 call transcript, CFO on returns and the Nov 30 expiry: https://www.webull.com/news/15460662063678464 (2026-08-24). Q1 2026 release showing $39.8m remaining: https://www.barchart.com/story/news/2161520/x-financial-reports-first-quarter-2026-unaudited-financial-results. Both are company documents of the same program.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Q2 2026 net income of RMB47.0m carried two items that will not repeat. One was a reversal of earlier guarantee reserves, which the CFO said is not 'a new lower run rate for the provision'. The other was a RMB95.3m provision for credit losses on deposits, against RMB0.7m a year earlier, which writes off guarantee money one funding institution has not returned; management said it may still come back. So Q3 net income against Q2 depends on two below-the-line items. A recovery of the guarantee money would reverse up to RMB95m; a normal guarantee provision would cut Q3 profit.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.webull.com/news/15460662063678464",
+    "source_date": "2026-08-24",
+    "reaction_history_on_this_line": "There is no separate history for these items. In Q2 2026 net income rose 23.8% QoQ with both items in it, and the stock moved +2.0%.",
+    "why_not_priced": "The release reports only the line items. The non-recurring nature of each sits in the call transcript, and no consensus exists to absorb it. The two items push in opposite directions, so the net size is near zero with a wide band.",
+    "independence": "The RMB95.3m line appears in the Q2 release income statement: https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results. That is the same company disclosure, not independent.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "FinVolution (FINV), the closest-sized US-listed peer, reports Q3 2026 after the US close on 2026-11-25, inside this window and before XYF's bmo release. Its options imply about 11.8%, and in August it guided a 'considerable contraction' in Q3 China volume. Its print and Q4 commentary will be the last sector read before XYF reports; the direction is unknown now.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-26",
+    "source": "https://unusualwhales.com/news/finvolution-earnings-preview-implied-move-2026-11-25",
+    "source_date": "2026-11-25",
+    "reaction_history_on_this_line": "XYF did not follow the 11-25 sector selloff on the Qfin print (-0.6% against peers -8% to -15%). Its sensitivity to peer prints looks low.",
+    "why_not_priced": "The release is not out yet. [sizing note removed]; it is filed so the judges see a second sector catalyst inside the window.",
+    "independence": "FINV's date notice: https://www.quiverquant.com/news/FinVolution+Group+to+Report+Third+Quarter+2026+Financial+Results+on+November+25,+2026",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Industry structure is still worsening for mid-tier facilitators. Bank partner lists shrank: Jilin Yillion Bank went from 56 acquisition partners in November 2024 to 10 in July 2026. Small and mid-sized platforms are described as likely to be acquired or exit. Online-marketing curbs took effect 2026-09-30, inside XYF's Q4. This bears on XYF's funding capacity and any Q4 guide.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.chinadailyhk.com/article/641518",
+    "source_date": "2026-10-22",
+    "reaction_history_on_this_line": "XYF's regulatory warnings have repeated in every 2026 release (Q4 2025, Q1 2026, Q2 2026), and the stock has drawn +2% to +10% on those prints. The market has looked through the generic regulatory language.",
+    "why_not_priced": "Mostly priced: this is public macro and regulatory context, and XYF names no partner. Filed small as a proxy.",
+    "independence": "Caixin, 2026-09-10, names X Financial among the lenders hit by the rules: https://www.caixinglobal.com/2026-09-10/chinas-online-lenders-see-profits-plunge-as-new-rules-bite-102483449.html",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Lexin (LX) reports Q3 2026 on 2026-12-03 US time. Its Q2 call warned of a possible Q3 net loss and rising risk indicators. That is a sector read after the exit window.",
+    "resolves_by": "2026-12-03",
+    "source": "https://ir.lexinfintech.com/news-releases/news-release-details/lexinfintech-holdings-ltd-report-third-quarter-2026-unaudited-0",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "XYF AGM in Shenzhen on 2026-12-24 (record date 11-27, no proposals to be voted on).",
+    "resolves_by": "2026-12-24",
+    "source": "https://finviz.com/news/423600/x-financial-to-hold-annual-general-meeting-on-december-24-2026",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "The semi-annual dividend could be declared with this release.",
+    "source": "https://www.barchart.com/story/news/955039/x-financial-reports-fourth-quarter-and-fiscal-year-2025-unaudited-financial-results",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Deep value: about 0.18x book and cash about 86% of market cap, as a reason the stock rises.",
+    "source": "https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Q3 2026 consensus for XYF: none in free sources (Chartmill, Digrin, Seeking Alpha paywalled).",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "XYF October and November 2026 news beyond the results-date notice, the AGM notice and an unlabelled 6-K dated 2026-11-06 whose contents were not retrieved: nothing on volumes, funding partners or a new buyback.",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "FinVolution Q3 2026 results: not yet released at search time (due after close 11-25).",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Jiayin Q3 2026 results: not found in the index.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "The 'late-June industry event' Qfin cited: not identified in any searchable source.",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "A November 2026 short-interest settlement for XYF: not published in sources reached; latest is 2026-09-15.",
+    "i": 14
+   }
+  ]
+ }
+]

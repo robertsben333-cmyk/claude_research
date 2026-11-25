@@ -62,3 +62,11 @@
 ## Edge hunt (panel v3b) — 2026-11-25 amc + 2026-11-27 bmo — STARTED
 - Logged at 2026-11-25 18:19 UTC
 - Strict window: 2 names (FINV amc 11-25, XYF bmo 11-27). Thin day, so the 33 time-not-supplied rows were checked with session_resolve.py: 3 killed by EDGAR (NWCL, PVL, ENLV), 30 carried, none announced. 11 carried rows at/above $200k turnover plus BMA/UCFI (no bars at first seal) go to the sweep with the 2 confirmed: 13 names. 19 below-floor unknown rows not hunted. Searcher unpriced-searcher-v3b, judges panel-judge-v3b-*, no orders.
+
+## Edge hunt (panel) — 3s sell
+- Logged at 2026-11-25 18:28 UTC
+- 18:28 UTC: all 3 searchers finished (hunt_status: 0 unfinished of 3). Live: mode ok (enabled, kill switch off); flatten: 0 positions held, nothing to sell. Paper: flatten: 0 positions held, nothing to sell. No amc leg was still held (E-PX sold QFIN/DELL/AMBA at the open).
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-25 18:28 UTC
+- 3 packs, four judges
