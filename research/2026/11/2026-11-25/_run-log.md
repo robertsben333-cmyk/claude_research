@@ -88,3 +88,7 @@
 ## Edge hunt (panel v3b) — done
 - Logged at 2026-11-25 18:39 UTC
 - Four v3b judges ran on their named agents, 3/3 coverage. Own history: FINV selected short at 94 (4/4 in own top 20%), BMA 10 short, XYF 3 long; E-P scale 94/9/3. Stage E-P: no selection (FINV 79.2); rho of panel_pct_signed +1.00 on n=3; XYF side differs. No orders, no shadow ledger.
+
+## Holistic research — 2026-11-25 — STARTED
+- Logged at 2026-11-25 19:16 UTC
+- 19:17 UTC (14:17 ET). Pick from E-P's sweep (3 confirmed: FINV, BMA amc; XYF bmo 11-27), evolving hp.v4 + control hp.v1 on every name, one wave. No orders.
