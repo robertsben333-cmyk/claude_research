@@ -66,3 +66,7 @@
 ## Edge hunt (panel v3b) — sweep
 - Logged at 2026-11-25 18:26 UTC
 - Sweep: 13 names, 3 confirmed from company sources (FINV amc 11-25, BMA amc 11-25, XYF bmo 11-27), 4 phantoms (KT, NAT, UCFI, AEXA), 6 unconfirmed with no company date (EH, LEE, OPHI, SIDU, AREC, SRTM). BMA re-sealed with its confirmed amc session and XYF re-sealed after a Yahoo bars failure, both before any searcher. Launching 3 unpriced-searcher-v3b, amc first.
+
+## Edge hunt (panel v3b) — wave 1
+- Logged at 2026-11-25 18:27 UTC
+- 3 confirmed, 3 searchers launched in one turn (FINV, BMA amc; XYF bmo), none shed. FINV brief initially carried a placeholder for its sweep row; sent the row file by message.
