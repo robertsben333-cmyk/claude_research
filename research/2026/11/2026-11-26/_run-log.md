@@ -13,3 +13,11 @@
 ## Stage EU — hunts banked (1)
 - Logged at 2026-11-25 14:47 UTC
 - Back: HUNT (phantom: Q3 out 11-20, event_confirmed false), DFENS, ACP (hunter settles amc), CIG, DIA (amc), ENT (amc), VOX (date moved to 11-25 after close: window-equivalent bmo), MDG (amc likely), CBOX (released 11-25 07:00, a day before the vendor date; event_confirmed false). Running: PARKEN SANION CMCX FSG HFD IGP LTHM MAB. Queued: PCIP SAFE SREI.
+
+## Stage EU — hunts
+- Logged at 2026-11-25 14:54 UTC
+- 20/20 hunted. 4 not ranked (no event in window): CBOX, IGP, PCIP (results released 24-25 Nov; 26 Nov is only an Investor Meet presentation), HUNT (Q3 out 20 Nov). Hunters settle ACP, DIA, ENT, MDG as amc (window close(11-26)->close(11-27)); VOX moved to 11-25 after close (window unchanged). 16 ranked, none above the 2.8 floor; top CMCX +1.20, bottom FSG -1.40.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-25 14:54 UTC
+- 16 packs, four judges
