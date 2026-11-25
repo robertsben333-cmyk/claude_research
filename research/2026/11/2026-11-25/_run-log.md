@@ -59,3 +59,6 @@
 ## Edge hunt (panel) — sweep
 - Logged at 2026-11-25 18:17 UTC
 - Sweep confirmed 3 of 35: FINV amc 11-25, BMA amc 11-25, XYF bmo 11-27 (all react in the 11-27 half-day session). 32 time-not-supplied rows dropped (KT/NWCL/UCFI/AEXA/EDVA/LEXX already reported, NAT 11-30, AREC/AAME/SCLX delinquent, rest unsourced). BMA baseline sealed after the sweep, before any searcher. Wave: 3 searchers, none shed.
+## Edge hunt (panel v3b) — 2026-11-25 amc + 2026-11-27 bmo — STARTED
+- Logged at 2026-11-25 18:19 UTC
+- Strict window: 2 names (FINV amc 11-25, XYF bmo 11-27). Thin day, so the 33 time-not-supplied rows were checked with session_resolve.py: 3 killed by EDGAR (NWCL, PVL, ENLV), 30 carried, none announced. 11 carried rows at/above $200k turnover plus BMA/UCFI (no bars at first seal) go to the sweep with the 2 confirmed: 13 names. 19 below-floor unknown rows not hunted. Searcher unpriced-searcher-v3b, judges panel-judge-v3b-*, no orders.
