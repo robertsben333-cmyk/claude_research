@@ -55,3 +55,7 @@
 ## Edge hunt (panel) — 2026-11-25 amc + 2026-11-27 bmo — STARTED
 - Logged at 2026-11-25 18:09 UTC
 - Fired 18:07 UTC (13:07 ET). Thanksgiving week: window is 11-25 amc + 11-27 bmo (Friday half day). Only 2 confirmed-session names (FINV amc 11-25, XYF bmo 11-27); baselines sealed. Thin day: 33 time-not-supplied rows checked with session_resolve.py (1 killed: PVL already reported; 32 carried, 0 announced). SEC_USER_AGENT unset, www.sec.gov 403, EDGAR checks degraded. The 32 carried rows go to the sweep to settle date and session; baselines for any it confirms are sealed before any searcher launches. Plan: 1 sweep, up to 20 searchers, 4 judges; sell at 3s, buy at 6b, live then paper.
+
+## Edge hunt (panel) — sweep
+- Logged at 2026-11-25 18:17 UTC
+- Sweep confirmed 3 of 35: FINV amc 11-25, BMA amc 11-25, XYF bmo 11-27 (all react in the 11-27 half-day session). 32 time-not-supplied rows dropped (KT/NWCL/UCFI/AEXA/EDVA/LEXX already reported, NAT 11-30, AREC/AAME/SCLX delinquent, rest unsourced). BMA baseline sealed after the sweep, before any searcher. Wave: 3 searchers, none shed.
