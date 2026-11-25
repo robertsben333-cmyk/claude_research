@@ -19,4 +19,14 @@ None today: no name cleared the playbook's bar.
 | BMA | evolving | ok | 41.0 | none | 59.0 |
 | BMA | control | ok | 50.0 | none | 50.0 |
 
+## Comparison with stage E-P (read after the recommendations were published)
+
+| ticker | H evolving p_up / action | H control p_up / action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- |
+| FINV | 42 / none | 46 / none | -79.2 | no (no-strong-name top-up traded it short) |
+| BMA | 41 / none | 50 / none | -61.1 | no |
+| XYF | 42 / none | 46 / none | -57.1 | no |
+
+Sign disagreements: none. Every H lean is down or neutral (BMA control at 50) and E-P is on the short side for all three. Neither stage makes a strong call: E-P selected nothing at 80, and H recommended nothing.
+
 This is a forecasting exercise over public information, not investment advice.
