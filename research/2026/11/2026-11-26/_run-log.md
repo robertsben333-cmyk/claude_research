@@ -21,3 +21,11 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-25 14:54 UTC
 - 16 packs, four judges
+
+## Stage EU — panel
+- Logged at 2026-11-25 14:59 UTC
+- 4/4 judges, no fallback. Selected (3 of 4 in own top 20%): CMCX 98 long (4/4), FSG 80 short (3/4). DIA 74 short (2/4).
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-25 14:59 UTC
+- handoff written (before the note): 3 names, offline plan at sealed spots on EUR 10,000: BUY CMCX 50.0%, SELL FSG 29.2%, SELL DIA 20.8%. Not taken (< 70): ACP 68.0, DFENS 67.2, VOX 60.1. Caveat for the operator: DIA's hunter settles its release as amc on 26 Nov (after the Warsaw close), so a position held only to the 15:35 Amsterdam flatten on 26 Nov exits before the print.
