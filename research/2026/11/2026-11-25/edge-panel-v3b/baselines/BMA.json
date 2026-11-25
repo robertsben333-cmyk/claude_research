@@ -1,22 +1,23 @@
 {
  "ticker": "BMA",
  "event_date": "2026-11-25",
- "session": "bmo",
- "as_of_utc": "2026-11-25T18:18:49+00:00",
- "options_as_of_valid": false,
+ "session": "amc",
+ "as_of_utc": "2026-11-25T18:26:11+00:00",
+ "options_as_of_valid": true,
  "sources": [
   "yahoo chart v8 daily bars",
+  "yahoo options v7 front expiry (cookie+crumb)",
   "sec edgar submissions api, 8-K item 2.02 acceptance times"
  ],
  "tape": {
-  "last_close_date": "2026-11-24",
-  "spot": 50.09,
-  "run_up_5d_pct": -8.06,
-  "run_up_20d_pct": -18.87,
-  "pct_from_52w_high": -52.16,
-  "pct_from_52w_low": 0.46,
-  "realised_vol_20d_annualised_pct": 38.6,
-  "avg_volume_20d": 318765
+  "last_close_date": "2026-11-25",
+  "spot": 49.785,
+  "run_up_5d_pct": -7.65,
+  "run_up_20d_pct": -17.31,
+  "pct_from_52w_high": -52.45,
+  "pct_from_52w_low": 0.0,
+  "realised_vol_20d_annualised_pct": 38.3,
+  "avg_volume_20d": 315627
  },
  "cik": "0001347426",
  "history": {
@@ -24,7 +25,7 @@
    {
     "event_date": "2026-11-24",
     "session": "amc",
-    "move_pct": -0.25
+    "move_pct": -0.61
    },
    {
     "event_date": "2026-11-20",
@@ -79,12 +80,22 @@
   "reason": "inferred cadence of 1 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
  },
  "options": {
-  "status": "not_recoverable_retrospectively",
-  "event_implied_move_pct": null,
+  "status": "unusable_chain",
+  "expiry": "2026-12-18",
+  "days_to_expiry": 23,
+  "atm_strike": 50.0,
+  "atm_iv_pct": 60.5,
   "straddle_implied_move_pct": null,
+  "event_implied_move_pct": null,
+  "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
   "skew_25d_vol_points": null,
-  "atm_spread_frac_of_mid": null,
-  "note": "the event date has passed; Yahoo serves only the current chain, which postdates the print and would be look-ahead"
+  "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+  "put_call_open_interest_ratio": 0.62,
+  "total_open_interest": 112,
+  "atm_spread_frac_of_mid": 1.125,
+  "warnings": [
+   "ATM bid-ask spread 112% of mid; too wide to mean anything"
+  ]
  },
  "deadband_pct": 1.54,
  "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
