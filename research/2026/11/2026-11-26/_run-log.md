@@ -9,3 +9,7 @@
 - 49 scheduled, 20 eligible (>= $100k), all 20 hunted (at the cap, no draw needed): uk 10, pl 6, no 2, se 1, dk 1. Concentration: UK 50%, 5 markets. 20 baselines sealed (intraday spots, ~14:45 UTC). Provenance stamped.
 - IBKR mode: auth tws, executor server trades; cloud has no broker env (expected).
 - Hunters: first 8 launched (concurrency limit 8): ACP CIG DIA ENT MDG VOX (pl) DFENS HUNT (no). Queued: PARKEN SANION CBOX CMCX FSG HFD IGP LTHM MAB PCIP SAFE SREI.
+
+## Stage EU — hunts banked (1)
+- Logged at 2026-11-25 14:47 UTC
+- Back: HUNT (phantom: Q3 out 11-20, event_confirmed false), DFENS, ACP (hunter settles amc), CIG, DIA (amc), ENT (amc), VOX (date moved to 11-25 after close: window-equivalent bmo), MDG (amc likely), CBOX (released 11-25 07:00, a day before the vendor date; event_confirmed false). Running: PARKEN SANION CMCX FSG HFD IGP LTHM MAB. Queued: PCIP SAFE SREI.
