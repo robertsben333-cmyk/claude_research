@@ -65,3 +65,6 @@
 ## Edge hunt (panel v3b) — panel STARTED
 - Logged at 2026-11-26 18:22 UTC
 - Sweep: 1 confirmed (XYF 11-27 bmo, company release), 0 phantom. 1 unpriced-searcher-v3b (native agent), search_complete true, v3b fields present (expectations, next_guide, evidence_type on 10/10 items). impact_sum -0.90, V2 -1.70 (written before the print). 1 pack, four judges.
+## Edge hunt (panel) — done
+- Logged at 2026-11-26 18:24 UTC
+- Duplicate event: the 11-25 E-P run already hunted XYF for this same 11-27 bmo print (its next trading day skipped Thanksgiving): 57.1 short then, 38.6 short now. Both are now in panel-history.json, and edge_resolve --pool would count one print twice. De-duplicate when pooling. panel-history.json was committed separately because publish.sh did not stage it.
