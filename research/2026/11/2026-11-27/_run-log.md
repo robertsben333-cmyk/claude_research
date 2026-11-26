@@ -51,3 +51,7 @@
 ## Stage EU — hunts banked (9)
 - Logged at 2026-11-26 14:52 UTC
 - PLW back: date confirmed (snippet), session likely amc on issuer pattern (no timestamp for this release), impact_sum +0.1. bankier.pl 403 to curl and WebFetch. Running: NTT VGO.
+
+## Stage EU — hunts banked (10)
+- Logged at 2026-11-26 14:53 UTC
+- NTT back: date confirmed (RB 1/2026), session likely amc on pattern (H1 20:46), impact_sum -0.3, impact_scaled +0.72 (sign disagrees). Running: VGO.
