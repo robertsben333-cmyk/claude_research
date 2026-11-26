@@ -15,3 +15,7 @@
 ## Stage EU — hunters launched
 - Logged at 2026-11-26 14:44 UTC
 - 8 running (concurrency limit 8): DDRIL ENH NORAM PLSV VTURA RVRC GXI MDV. Queued: NTT PLW VGO.
+
+## Stage EU — hunts banked (1)
+- Logged at 2026-11-26 14:45 UTC
+- NORAM back: phantom (Q3 released 2026-11-24 17:13 UTC on NewsWeb 687324; 11-27 is only a distribution payment date), event_confirmed false. NTT launched in the freed slot.
