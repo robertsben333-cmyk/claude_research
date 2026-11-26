@@ -33,3 +33,7 @@
 ## Stage EU — done
 - Logged at 2026-11-25 15:02 UTC
 - Note published. Handoff went out before the note (15:01 UTC). Pushed to main (EARNINGS_DATA_BRANCH=main). Calendar defect for a dev session: CBOX, IGP and PCIP were dated on their Investor Meet Company presentation day, not their results day; the baselines' own RNS history already held the release.
+
+## Stage E-P amc exit — 2026-11-26
+- Logged at 2026-11-26 14:08 UTC
+- Fired 14:07 UTC (09:07 ET), Thanksgiving: US market closed. Guards passed on both accounts (live, paper: amc -> open as day). verify --fix: live 9 exit legs all ok, paper 11 exit legs all ok, nothing UNFILLED, no rescue sent. close --today-only: live 9 runs, paper 28 runs, no leg due today, nothing sent, nothing refused.
