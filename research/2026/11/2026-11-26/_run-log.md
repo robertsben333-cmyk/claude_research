@@ -76,3 +76,7 @@
 ## Edge hunt (panel v3b) — done
 - Logged at 2026-11-26 18:28 UTC
 - Duplicate event, same as E-P: the 11-25 v3b run already hunted XYF for this 11-27 bmo print (panel_pct_signed +3.2 then, -41.0 now). Both are now in panel-history-v3b.json. De-duplicate when pooling and in v3b_compare.py.
+
+## Holistic research — 2026-11-26
+- Logged at 2026-11-26 19:17 UTC
+- Fired 19:16 UTC (14:16 ET, Thanksgiving, market closed). E-P's sweep has one name, XYF (11-27 bmo), which stage H already researched on both arms on 2026-11-25 for this same print (research/2026/11/2026-11-25/edge-holistic/). holistic.py has no de-duplication, so a second pair of forecasts would count one print twice in outcomes and in the revise gate. No pick, no researchers today (resume, do not restart). Learning step only. No orders.
