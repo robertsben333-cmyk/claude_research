@@ -71,3 +71,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-26 14:58 UTC
 - handoff written (before the note, 14:58 UTC): 3 names, offline plan at sealed spots on EUR 10,000: SELL DDRIL 27.9%, BUY NTT 40.7%, BUY MDV 31.3%. Not taken (<70): VGO 65.0, ENH 60.4. Caveat for the operator: hunters settle NTT and MDV as amc on 27 Nov (after the Warsaw close; issuer pattern, MDV H1 at ~22:00, NTT H1 at 20:46), so a position held only to the 15:35 Amsterdam flatten on 27 Nov exits BEFORE the print. DDRIL is a confirmed 07:30 CET bmo release.
+
+## Stage EU — done
+- Logged at 2026-11-26 14:59 UTC
+- Note published. Handoff went out before the note. Pushed to main (EARNINGS_DATA_BRANCH=main). Calendar defect again: NORAM and RVRC dated on a distribution/ex-dividend day, not a results day. 4 of 9 ranked names (all Polish) release amc on 11-27, outside the sealed bmo window; two are panel selections.
