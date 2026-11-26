@@ -55,3 +55,11 @@
 ## Stage EU — hunts banked (10)
 - Logged at 2026-11-26 14:53 UTC
 - NTT back: date confirmed (RB 1/2026), session likely amc on pattern (H1 20:46), impact_sum -0.3, impact_scaled +0.72 (sign disagrees). Running: VGO.
+
+## Stage EU — hunts
+- Logged at 2026-11-26 14:54 UTC
+- 11/11 hunted. Phantoms (no event in window): NORAM (Q3 out 11-24), RVRC (Q1 out 11-19; 11-27 ex-div). Hunters settle MDV, NTT, PLW, VGO as amc on 11-27 (window close(11-27)->close(11-30)). VGO impact_sum +0.4.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-26 14:55 UTC
+- 9 packs, four judges
