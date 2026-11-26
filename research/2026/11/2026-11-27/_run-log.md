@@ -31,3 +31,7 @@
 ## Stage EU — hunts banked (4)
 - Logged at 2026-11-26 14:49 UTC
 - GXI back: real (delayed final H1 report, H1 pre-released 30 Sep), impact_sum -0.3.
+
+## Stage EU — hunts banked (5)
+- Logged at 2026-11-26 14:49 UTC
+- PLSV back: confirmed bmo ~07:00 CET, impact_sum +0.4.
