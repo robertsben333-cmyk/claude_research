@@ -39,3 +39,7 @@
 ## Stage EU — hunts banked (6)
 - Logged at 2026-11-26 14:49 UTC
 - DDRIL back: confirmed 07:30 CET bmo, impact_sum -1.5 (Borgland Dolphin still moored Las Palmas vs 'on contract from November' guide). Running: ENH MDV NTT PLW VGO.
+
+## Stage EU — hunts banked (7)
+- Logged at 2026-11-26 14:50 UTC
+- ENH back: confirmed 06:00 CET bmo, impact_sum -0.4. Running: MDV NTT PLW VGO.
