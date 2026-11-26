@@ -68,3 +68,7 @@
 ## Edge hunt (panel) — done
 - Logged at 2026-11-26 18:24 UTC
 - Duplicate event: the 11-25 E-P run already hunted XYF for this same 11-27 bmo print (its next trading day skipped Thanksgiving): 57.1 short then, 38.6 short now. Both are now in panel-history.json, and edge_resolve --pool would count one print twice. De-duplicate when pooling. panel-history.json was committed separately because publish.sh did not stage it.
+
+## Edge hunt (panel v3b) — panel
+- Logged at 2026-11-26 18:27 UTC
+- 4/4 v3b judges on pinned models, no fallback. XYF panel_pct 41 short (own history; 38 on E-P scale; E-P's panel 38.6 short), not selected. 0 selected. 4 sizes appended to panel-history-v3b.json; E-P history untouched. No orders, no alpaca_trade.py call. Note published.
