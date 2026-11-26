@@ -61,3 +61,7 @@
 ## Edge hunt (panel) — step 6b
 - Logged at 2026-11-26 18:24 UTC
 - Plan live and paper: no name at panel_pct >= 80 or 70-79 (XYF 38.6), nothing to trade. open refused on both accounts anyway: market closed (Thanksgiving). Nothing sent. FINV cover still queued on both accounts for Friday's open (live held $1,176, paper $8,165 short). Note for the operator: Friday 11-27 closes 13:00 ET, before E-P's 13:06 fire, so Friday's step 6b will also find the market closed.
+
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-26 18:22 UTC
+- Sweep: 1 confirmed (XYF 11-27 bmo, company release), 0 phantom. 1 unpriced-searcher-v3b (native agent), search_complete true, v3b fields present (expectations, next_guide, evidence_type on 10/10 items). impact_sum -0.90, V2 -1.70 (written before the print). 1 pack, four judges.

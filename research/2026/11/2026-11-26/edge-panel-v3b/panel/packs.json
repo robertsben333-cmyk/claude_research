@@ -1,0 +1,410 @@
+[
+ {
+  "id": "us/2026-11-26/XYF",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "XYF",
+   "event_date": "2026-11-27",
+   "session": "bmo",
+   "as_of_utc": "2026-11-26T18:13:03+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-25",
+    "spot": 5.25,
+    "run_up_5d_pct": -0.57,
+    "run_up_20d_pct": 8.25,
+    "pct_from_52w_high": -28.86,
+    "pct_from_52w_low": 53.96,
+    "realised_vol_20d_annualised_pct": 86.1,
+    "avg_volume_20d": 100645
+   },
+   "cik": "0001725033",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-11-19",
+      "session": "bmo",
+      "move_pct": -0.19
+     },
+     {
+      "event_date": "2026-11-16",
+      "session": "amc",
+      "move_pct": -1.11
+     },
+     {
+      "event_date": "2026-11-06",
+      "session": "bmo",
+      "move_pct": 22.34,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 436600,
+       "next_day_volume": 107200,
+       "median_20d_before": 34950,
+       "move_as_tagged_pct": 22.34,
+       "move_if_bmo_pct": 22.34,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2026-08-24",
+      "session": "bmo",
+      "move_pct": 2.04
+     },
+     {
+      "event_date": "2026-06-17",
+      "session": "bmo",
+      "move_pct": -5.05
+     },
+     {
+      "event_date": "2026-05-27",
+      "session": "amc",
+      "move_pct": -2.87
+     },
+     {
+      "event_date": "2026-03-25",
+      "session": "amc",
+      "move_pct": -26.19
+     },
+     {
+      "event_date": "2025-11-20",
+      "session": "amc",
+      "move_pct": -15.7
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 3.96,
+    "max_abs_move_pct": 26.19,
+    "up_count": 2,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 8,
+    "median_gap_days": 63,
+    "ratio": 0.13,
+    "last_print": "2026-11-19",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 63 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 1.98,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.96,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "unsourced. No Q3 2026 consensus EPS or revenue found (Seeking Alpha and Earnings Whispers are paywalled; Chartmill shows N/A; Digrin's Q3 2026 row is empty: https://www.digrin.com/stocks/detail/XYF/earnings). The company gave no Q3 guidance ('we are not providing quantitative guidance for the third quarter at this time', Q2 call 2026-08-24, https://www.webull.com/news/15460662063678464). The only internal reference is Q2 2026: net revenue RMB993.6m, net income RMB47.0m, loan volume RMB11.63bn (-20.5% QoQ) (https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results). Every finding is capped small for this reason. The practical bar is the US$6.03/ADS proposal (https://www.sec.gov/Archives/edgar/data/1725033/000110465926123916/tm2629217d1_ex99-2.htm), not a consensus.",
+   "positioning_check": "Short interest is low and stale. FINRA: 84,602 shares short at the 2026-09-15 settlement, days to cover 1.00 (https://equibles.com/stocks/xyf/short-interest). Curved Trading: 170,000 at 2026-06-30, DTC 2.48 (https://curvedtrading.com/stocks/xyf/). MarketBeat: 219,436 at 2026-05-29, DTC 1.3 (https://www.marketbeat.com/stocks/NYSE/XYF/short-interest). No November settlement found. Short interest is falling and not crowded, so there is no squeeze mechanism against a negative. No options market (baseline options.status no_options_market), so no skew. Liquidity is thin: 20d average 100,645 ADS, about US$0.5m a day. The exit session on 2026-11-27 is a post-Thanksgiving half day closing 13:00 ET. The controlling holder (Mangrove Coast / Yue Tang) has 47.97% of shares and about 94% of votes (13D 2026-11-06), so the free float is small.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null,
+   "expectations": {
+    "price_path": "Close 5.25 on 2026-11-25. 5d -0.57%, 20d +8.25% (baseline). The 20d figure includes the +22.34% proposal pop on 2026-11-06 (4.70 to 5.75). Since that close XYF has fallen 5.75 to 5.25 (-8.7%), so the offer spread widened from 4.9% to 14.9%. No China-fintech sector ETF; against listed peers from 2026-11-10 to 11-25, XYF moved 5.34 to 5.25 (-1.7%), QFIN 5.37 to 4.26 (-20.7%) and FINV 2.88 to 2.43 (-15.6%). Sources: https://query1.finance.yahoo.com/v8/finance/chart/XYF?range=3mo&interval=1d, https://query1.finance.yahoo.com/v8/finance/chart/QFIN?range=1mo&interval=1d, https://query1.finance.yahoo…",
+    "vs_targets": "not found. No analyst price targets located. Spot 5.25 sits against the US$6.03/ADS take-private proposal (12.9% below it) and against reported book of about US$31/ADS (US$1,143.0m equity at 2026-06-30 / ~36.9m ADS-equivalents), https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results",
+    "whisper_or_buyside_bar": "not found",
+    "last_print": "Q2 2026, released 2026-08-24: net revenue RMB993.6m (-56.3% YoY, -15.5% QoQ), net income RMB47.0m (+23.8% QoQ), loan volume RMB11.63bn (-20.5% QoQ), delinquency improving QoQ, US$0.28 semi-annual dividend. No consensus found. Stock +2.04% (baseline history, 2026-08-24). Earlier confirmed results reactions, rebuilt from the results 6-Ks: Q3 2025 (2025-11-20) -15.7%, Q4 2025 (2026-03-25) -26.19%, Q1 2026 (2026-05-27) -2.87%. https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results",
+    "short_interest_trend": "Falling: 219,436 sh (2026-05-29, DTC 1.3, MarketBeat), then 170,000 (2026-06-30, DTC 2.48, Curved Trading), then 84,602 (2026-09-15, DTC 1.00, FINRA via Equibles). No October or November settlement found. https://equibles.com/stocks/xyf/short-interest",
+    "real_bar": "The release has to leave the US$6.03 bid intact or strengthen it, for example with a deal-progress paragraph (special committee advisers retained, talks under way) and no loss or book write-down big enough to give the buyer cover to lower the price. The quarter's own numbers matter only through that channel.",
+    "real_bar_vs_consensus": "unknown"
+   },
+   "next_guide": {
+    "likely_direction": "no_guide",
+    "street_next_quarter": "not found",
+    "street_full_year": "not found",
+    "company_current_guide": "none. The CFO on the Q2 call (2026-08-24): 'we are not providing quantitative guidance for the third quarter at this time'. Management will 'resume providing guidance when visibility improves'. https://www.webull.com/news/15460662063678464",
+    "basis": "No guide has been given since the regulatory reset. The company is now under a take-private proposal, which discourages forward commentary. The closest peer (Qfin, 2026-11-24) guided Q4 net income down 67-77% YoY and spoke of 'clear erosion in risk performance', so any qualitative outlook XYF gives is more likely cautious than constructive."
+   }
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Peer Qfin Holdings (ex-Qifu) reported Q3 2026 on 2026-11-24 after the close. Loan volume was RMB49.5bn (-40.6% YoY), net income RMB380.5m (low end of its own RMB360-460m Q3 guide), and the CEO cited 'clear erosion in risk performance' on a 'significantly downsized loan book in the third quarter and into recent months'. Q4 net income was guided to RMB210-310m (-67% to -77% YoY). QFIN fell 7.6% on 2026-11-25 (4.61 to 4.26) on about 4x its normal volume. XYF's Q2 trend was the opposite: delinquency improving QoQ, and management saying contraction had 'moderated meaningfully'. That read predates this peer data, which points to further volume decline and credit deterioration across the sector in Q3. No XYF consensus exists to compare against.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.manilatimes.net/2026/11/25/tmt-newswire/globenewswire/qfin-holdings-announces-third-quarter-2026-unaudited-financial-results/2477629",
+    "source_date": "2026-11-24",
+    "reaction_history_on_this_line": "Before the proposal, XYF sold off on weak results: Q3 2025 -15.7% and Q4 2025 -26.19%; Q1 2026 -2.87% and Q2 2026 +2.04% (baseline history; dates match the results 6-Ks). On 2026-11-25, while pinned by the bid, XYF ignored QFIN's print (+0.4%, 5.23 to 5.25).",
+    "why_not_priced": "XYF did not move when QFIN fell 7.6% on 2026-11-25. Its price is set by the US$6.03 proposal, not by the sector, so the sector's Q3 deterioration has not been marked into XYF. If it had, XYF would have fallen with QFIN and FINV (-20.7% and -15.6% since 11-10, against XYF -1.7%). The pin is also why the effect is small: a weak quarter matters only if it makes the buyer lower its price.",
+    "independence": "Same direction: the industry article of 2026-10-16 quotes LexinFintech expecting a sharp QoQ fall in Q3 loan issuance and a possible net loss, and an analyst expecting weaker players to be dropped from funding lists (https://www.itiger.com/news/1166738260). QFIN price data: https://query1.finance.yahoo.com/v8/finance/chart/QFIN?range=1mo&interval=1d",
+    "evidence_type": "peer",
+    "link": "Same business: both facilitate unsecured consumer loans in China funded by bank partners. Both operate under the same NFRA internet-lending notice (effective 2025-10-01) and the 24% all-in APR cap, and draw on the same pool of bank funding partners. XYF is smaller and has weaker credit (91-180 day DPD 9.09% at Q2 against QFIN's 90+ day 2.50%). No shared-customer figure.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Since the proposal day XYF has fallen from 5.75 to 5.25 (-8.7%), so it trades 12.9% below the US$6.03/ADS offer (the offer is 14.9% above spot). The spread already prices meaningful doubt about whether the deal completes. A release that carries any deal-progress language (special committee advisers named, negotiations under way) or confirms the buyer's intent would tighten the spread. A release that simply omits the deal leaves the stock where it is.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/XYF?range=3mo&interval=1d",
+    "source_date": "2026-11-25",
+    "reaction_history_on_this_line": "The only deal-related events so far: proposal 2026-11-06 +22.34%; special committee 6-K 2026-11-19 -0.19%, with the stock drifting lower afterwards (5.27 to 5.18 to 5.25).",
+    "why_not_priced": "The width of the spread is the market's price of deal risk. What is not priced is any progress the release discloses. If the market expected progress, the spread would have narrowed towards 6.03 since the committee formed on 11-18, not widened.",
+    "independence": "Offer terms: 13D exhibit 99.2 (https://www.sec.gov/Archives/edgar/data/1725033/000110465926123916/tm2629217d1_ex99-2.htm). Shares the proposal documents with the next finding.",
+    "evidence_type": "expectations",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "A 6-K of 2026-11-19 shows the board formed a special committee of three independent directors (Zheng Wan, Zheng Xue, Longgen Zhang) on 2026-11-18. It names no advisers and gives no timetable; the company does not commit to updates. The 13D of 2026-11-06 shows Mangrove Coast and Yue Tang hold 47.97% of shares and about 94% of votes. Financing is to be third-party debt plus equity 'in the form of cash and/or rollover equity'. The proposal letter names no majority-of-minority condition, so the controlling holder can carry the vote alone. The Q3 numbers therefore have little path to the outcome, and the bid works as a floor.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.sec.gov/Archives/edgar/data/1725033/000110465926129959/tm2630265d1_6k.htm",
+    "source_date": "2026-11-19",
+    "reaction_history_on_this_line": "Committee 6-K day (2026-11-19): -0.19%.",
+    "why_not_priced": "Both documents are public, and the deal-control structure is in the price as the reason XYF ignored its peers. What is not priced is the Q3 release possibly adding to it, for example naming committee advisers or reiterating the timeline.",
+    "independence": "13D primary document with ownership and Item 3 funding: https://www.sec.gov/Archives/edgar/data/1725033/000110465926123916/xslSCHEDULE_13D_X02/primary_doc.xml. Hogan Lovells Cadwalader confirms it advises Mangrove: https://www.hlc.com/en/news/hogan-lovells-cadwalader-advises-on-two-significant-greater-china-transactions-highlighting-integrated-cross-border-capabilities. Shares the proposal with the finding above.",
+    "evidence_type": "mid_quarter_statement",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "At 2026-06-30, total equity was RMB7,755.4m (US$1,143.0m) on 221.6m ordinary shares (about 36.9m ADS-equivalents at 6 shares per ADS), which is about US$31 of book per ADS. The US$6.03 offer is 0.19x book and spot is 0.17x. Cash and equivalents were US$166.8m (about US$4.5/ADS) plus RMB827.7m restricted cash. The Q3 release will restate book and cash; a large cash balance against a low offer gives minority holders and the committee grounds to push for a higher price.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results",
+    "source_date": "2026-08-24",
+    "reaction_history_on_this_line": "No history of the stock reacting to book value. It traded at deep discounts to book through 2025-26.",
+    "why_not_priced": "The book is public, and Chinese lenders have traded at deep discounts to book for years, so this is mostly priced. The only unpriced part is a Q3 cash or book figure that sharpens the offer-versus-book gap while a committee is negotiating. If the market expected a bump, XYF would trade at or above 6.03, not 13% below.",
+    "independence": "none (single document)",
+    "evidence_type": "own_figures",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "The US$100m buyback runs only until 2026-11-30. About US$35.5m remained as of 2026-08-14, and management said it was 'doing almost the maximum buyback in the normal buybacks'. Buybacks are very likely frozen while a take-private is pending, and the Q3 release may confirm the programme lapses unrenewed. The semi-annual dividend comes with the Q2 and Q4 results, so none is due with Q3.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.webull.com/news/15460662063678464",
+    "source_date": "2026-08-24",
+    "reaction_history_on_this_line": "Not separable. Buybacks ran through 2026 while the stock fell from about 7.4 to 4.7.",
+    "why_not_priced": "The expiry date is public, but nobody has said whether the programme is renewed. Losing a buyer that bought near the maximum in a stock trading about US$0.5m a day matters for a thin tape. If the market expected renewal, the stock would not have drifted from 5.75 to 5.25 without a bid.",
+    "independence": "The buyback figures and expiry are also in the Q2 release (https://finviz.com/news/384651/x-financial-reports-second-quarter-2026-unaudited-financial-results).",
+    "evidence_type": "capital",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "The regulatory squeeze is still running. China Daily (2026-10-22) reports banks cutting platform partnerships by more than 80%, e.g. Jilin Yillion Bank from 56 partners to 10, with small platforms expected to exit or be acquired. In the Q2 call (2026-08-24) XYF disclosed that business with one funding institution 'is already basically gone', that the institution had not returned XYF's guarantee deposit, and booked a RMB95.3m provision on deposits and other financial assets. Q3 carries the risk of further deposit write-downs or lost funding partners.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.chinadailyhk.com/article/641518",
+    "source_date": "2026-10-22",
+    "reaction_history_on_this_line": "The Q2 print that carried the RMB95.3m deposit provision was met with +2.04%.",
+    "why_not_priced": "This is a sector-to-company link, and XYF has not quantified any Q3 exposure. If priced, the offer spread would reflect a lower-price risk; instead the stock is pinned and has not reacted to sector news.",
+    "independence": "The company's own disclosure of the lost funding partner and RMB95.3m provision: https://www.webull.com/news/15460662063678464. The industry article quoting an analyst on weaker players being dropped from funding lists: https://www.itiger.com/news/1166738260",
+    "evidence_type": "regulatory",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Before the proposal, the stock was sold on its results. Rebuilt from the results 6-Ks (not the baseline's mixed list): Q3 2025 -15.7%, Q4 2025 -26.19%, Q1 2026 -2.87%, Q2 2026 +2.04%, a median absolute move of about 9%. Now that the bid pins the price, this reaction function applies only if the release raises doubt about the bid.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001725033&type=6-K&dateb=&owner=include&count=10",
+    "source_date": "2026-11-19",
+    "reaction_history_on_this_line": "As stated: 2 of 4 prints were down double digits, 1 of 4 was up.",
+    "why_not_priced": "This is the name's own history, not new information. It enters only as the downside tail if the market reads the print as undermining the bid.",
+    "independence": "Moves come from the sealed baseline history: /home/user/claude_research/research/2026/11/2026-11-26/edge-panel-v3b/baselines/XYF.json. The 6-K dates on EDGAR identify the results filings; the non-results 6-Ks (CRO change 06-17, proposal 11-06, AGM 11-16, committee 11-19) were excluded.",
+    "evidence_type": "reaction_history",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "No quantitative guidance is expected. Management said it will 'resume providing guidance when visibility improves'. The closest peer guided Q4 net income down 67-77% YoY on 2026-11-24, so any qualitative outlook XYF gives is more likely cautious. The company is also under a take-private proposal, which discourages bullish forward commentary.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.webull.com/news/15460662063678464",
+    "source_date": "2026-08-24",
+    "reaction_history_on_this_line": "No guide was given at Q1 or Q2 2026; those prints moved -2.87% and +2.04%.",
+    "why_not_priced": "Mostly priced: nobody expects a guide. The small residual is a cautious qualitative outlook in the wake of QFIN's.",
+    "independence": "QFIN Q4 guide: https://www.quiverquant.com/news/Qfin+Holdings+Reports+Third+Quarter+2026+Financial+Results+and+Updates+Full-Year+Outlook",
+    "evidence_type": "next_guide",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "The Chief Risk Officer resigned effective 2026-07-01, and President Kan Li became acting CRO. Q3 2026 is the first full quarter of credit decisions under an acting CRO, and it falls in a quarter where the largest peer reports credit erosion.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.sec.gov/Archives/edgar/data/1725033/000110465926074802/tm2617675d1_ex99-1.htm",
+    "source_date": "2026-06-17",
+    "reaction_history_on_this_line": "Announcement day 2026-06-17: -5.05% (baseline).",
+    "why_not_priced": "The resignation itself is priced (-5% that day). Only the Q3 credit metrics will show whether it mattered.",
+    "independence": "none",
+    "evidence_type": "guidance_mgmt",
+    "i": 8
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Special committee member Longgen Zhang received 90,000 Class A shares on an RSU conversion on 2026-08-01 and holds 499,998 shares (about 83k ADS-equivalents) (Form 4). That is a small holding, and it gives him an interest in the minority receiving a better price.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-27",
+    "source": "https://www.sec.gov/Archives/edgar/data/1725033/000110465926089399/xslF345X06/tm2621564-2_4seq1.xml",
+    "source_date": "2026-08-03",
+    "reaction_history_on_this_line": "none",
+    "why_not_priced": "Immaterial. Filed for completeness.",
+    "independence": "none",
+    "evidence_type": "insider",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Definitive merger agreement, revised price or withdrawal of the Mangrove proposal. The committee formed 2026-11-18 with no advisers named and no timetable, so a resolution by the 2026-11-27 close is unlikely.",
+    "resolves_by": "2027-03-31",
+    "source": "https://www.sec.gov/Archives/edgar/data/1725033/000110465926129959/tm2630265d1_6k.htm",
+    "evidence_type": "capital",
+    "i": 10
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "The draft NFRA step-down of the APR cap towards 12% by end-2027, with loans above 12% sharply reduced by end-2026. As of the April reporting this was a draft and could not be confirmed as final.",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.caixinglobal.com/2026-04-23/analysis-chinas-online-lending-crackdown-accelerates-industry-shakeout-102437177.html",
+    "evidence_type": "regulatory",
+    "i": 11
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "The AGM on 2026-12-24 has no proposals on its agenda; the record date is 2026-11-27.",
+    "resolves_by": "2026-12-24",
+    "source": "https://www.plataformamedia.com/en/2026/11/17/x-financial-to-hold-annual-general-meeting-on-december-24-2026/",
+    "evidence_type": "other",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Qifu Technology fell 14.59% after Q3 earnings, missed on EPS and gave a cautious outlook",
+    "source": "https://www.itiger.com/news/1152640137",
+    "first_hunter_reason": "contradicted_by_document",
+    "evidence_type": "peer",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Yahoo Finance profile lists the XYF earnings date as 2026-11-26 13:30 UTC",
+    "source": "https://finance.yahoo.com/quote/XYF/profile",
+    "first_hunter_reason": "contradicted_by_document",
+    "evidence_type": "other",
+    "i": 14
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Earnings tracker page shows QFIN with a post-earnings drift of -42.8% since 2026-08-25",
+    "source": "https://www.earningswhispers.com/stocks/qfin",
+    "first_hunter_reason": "contradicted_by_document",
+    "evidence_type": "peer",
+    "i": 15
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "XYF.json",
+    "text": "Panabee's figure of 93.45% voting power for Mangrove",
+    "source": "https://www.panabee.com/news/x-financial-receives-going-private-proposal-from-controlling-shareholder",
+    "first_hunter_reason": "duplicate",
+    "evidence_type": "capital",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Q3 2026 consensus EPS or revenue for XYF: none found (Seeking Alpha and Earnings Whispers paywalled, Chartmill N/A, Digrin empty)",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Analyst price targets for XYF: none found",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Whisper or buy-side bar: none found",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "mid-quarter statements: none found after 2026-08-24 other than the deal 6-Ks (proposal 11-06, AGM notice 11-16, special committee 11-19); no reaffirmation, pre-release, conference remarks or monthly volume update",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Q3 2026 results from FinVolution, LexinFintech and Jiayin: not indexed as of 2026-11-26 (FINV volume spiked on 11-25 but no release found)",
+    "i": 21
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Special committee advisers or a deal timetable: none disclosed",
+    "i": 22
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Short interest for October or November 2026 settlements: not found",
+    "i": 23
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Insider buys or sells by Tang or Mangrove since the 13D: none on EDGAR (last filings 13D 11-06, 6-Ks 11-16 and 11-19)",
+    "i": 24
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "XYF.json",
+    "text": "Official NFRA text for new November 2026 rules: none found",
+    "i": 25
+   }
+  ]
+ }
+]
