@@ -27,3 +27,7 @@
 ## Stage EU — hunts banked (3)
 - Logged at 2026-11-26 14:49 UTC
 - VTURA back: real release 11-27 before Oslo open; target of ENH all-share bid (5.50 ENH/VTURA, LOI 2026-09-11) — ENH also in today's set, so VTURA and ENH are one correlated exposure. impact_sum +0.1. VGO launched (last).
+
+## Stage EU — hunts banked (4)
+- Logged at 2026-11-26 14:49 UTC
+- GXI back: real (delayed final H1 report, H1 pre-released 30 Sep), impact_sum -0.3.
