@@ -61,3 +61,7 @@
 ## Edge hunt (panel) — step 6b
 - Logged at 2026-11-26 18:24 UTC
 - Plan live and paper: no name at panel_pct >= 80 or 70-79 (XYF 38.6), nothing to trade. open refused on both accounts anyway: market closed (Thanksgiving). Nothing sent. FINV cover still queued on both accounts for Friday's open (live held $1,176, paper $8,165 short). Note for the operator: Friday 11-27 closes 13:00 ET, before E-P's 13:06 fire, so Friday's step 6b will also find the market closed.
+
+## Edge hunt (panel) — done
+- Logged at 2026-11-26 18:24 UTC
+- Duplicate event: the 11-25 E-P run already hunted XYF for this same 11-27 bmo print (its next trading day skipped Thanksgiving): 57.1 short then, 38.6 short now. Both are now in panel-history.json, and edge_resolve --pool would count one print twice. De-duplicate when pooling. panel-history.json was committed separately because publish.sh did not stage it.
