@@ -67,3 +67,7 @@
 ## Stage EU — panel
 - Logged at 2026-11-26 14:58 UTC
 - 4/4 judges, no fallback. Selected (3 of 4 in own top 20%): DDRIL 92 short (4/4), NTT 89 long (4/4), MDV 82 long (3/4). VGO 65 long, ENH 60 short not selected.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-26 14:58 UTC
+- handoff written (before the note, 14:58 UTC): 3 names, offline plan at sealed spots on EUR 10,000: SELL DDRIL 27.9%, BUY NTT 40.7%, BUY MDV 31.3%. Not taken (<70): VGO 65.0, ENH 60.4. Caveat for the operator: hunters settle NTT and MDV as amc on 27 Nov (after the Warsaw close; issuer pattern, MDV H1 at ~22:00, NTT H1 at 20:46), so a position held only to the 15:35 Amsterdam flatten on 27 Nov exits BEFORE the print. DDRIL is a confirmed 07:30 CET bmo release.
