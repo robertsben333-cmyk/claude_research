@@ -11,3 +11,7 @@
 ## Stage EU — universe sealed
 - Logged at 2026-11-26 14:43 UTC
 - 42 scheduled, 11 eligible, 11 hunted (all, under cap 20): no 5 (DDRIL ENH NORAM PLSV VTURA), pl 4 (MDV NTT PLW VGO), de 1 (GXI), se 1 (RVRC). bankier (pl issuer calendar) 403. 11 baselines sealed.
+
+## Stage EU — hunters launched
+- Logged at 2026-11-26 14:44 UTC
+- 8 running (concurrency limit 8): DDRIL ENH NORAM PLSV VTURA RVRC GXI MDV. Queued: NTT PLW VGO.
