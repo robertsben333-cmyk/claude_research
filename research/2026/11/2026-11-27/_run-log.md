@@ -63,3 +63,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-26 14:55 UTC
 - 9 packs, four judges
+
+## Stage EU — panel
+- Logged at 2026-11-26 14:58 UTC
+- 4/4 judges, no fallback. Selected (3 of 4 in own top 20%): DDRIL 92 short (4/4), NTT 89 long (4/4), MDV 82 long (3/4). VGO 65 long, ENH 60 short not selected.
