@@ -53,3 +53,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-26 18:20 UTC
 - 1 packs, four judges
+
+## Edge hunt (panel) — panel
+- Logged at 2026-11-26 18:23 UTC
+- 4/4 judges on pinned models, no fallback. XYF panel_pct 39 short (opus5 49S, opus55 11S, sonnet55 56S, fable51 38S), not selected. 0 selected. Note published.
