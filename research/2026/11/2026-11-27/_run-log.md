@@ -19,3 +19,7 @@
 ## Stage EU — hunts banked (1)
 - Logged at 2026-11-26 14:45 UTC
 - NORAM back: phantom (Q3 released 2026-11-24 17:13 UTC on NewsWeb 687324; 11-27 is only a distribution payment date), event_confirmed false. NTT launched in the freed slot.
+
+## Stage EU — hunts banked (2)
+- Logged at 2026-11-26 14:45 UTC
+- RVRC back: phantom (Q1 released 2026-11-19 07:30 CET; 11-27 is the SEK 1.50 ex-dividend day, ~-2.8% mechanical on unadjusted close — resolver must not score it). PLW launched.

@@ -1,0 +1,54 @@
+{
+  "ticker": "RVRC",
+  "market": "SE",
+  "expected_move_pct": 0.0,
+  "conviction_note": "Phantom event: RVRC's Q1 2026/27 interim report was published 2026-11-19 07:30 CET and the issuer's own revised calendar puts nothing on 2026-11-27 (next report 2027-02-11); the 26 Nov AGM fixed a SEK 1.50 dividend with record date 30 Nov, so 27 Nov is the ex-dividend day and the unadjusted close eu_resolve.py reads will carry a mechanical drop of about 2.8% (1.50/53.30) that is not a reaction to anything -- the resolver should set event_occurred false rather than score this row.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 3.0,
+  "p_up": 50,
+  "already_public": [
+    {"what": "Q1 2026/27 interim report (Jul-Sep 2026): net sales SEK 551m (+40%, +8% organic), adj. EBIT SEK 93m, adj. EPS SEK 0.65 -- the period the vendor calendar appears to be pointing at, already released", "date": "2026-11-19", "source": "https://view.news.eu.nasdaq.com/view?id=b6ce67ae034d1ae607c54745ed4a58807&lang=en&src=listed"},
+    {"what": "AGM resolutions: dividend SEK 1.50/share, record date 30 Nov 2026, payment from 3 Dec; financial year changed to calendar year (current FY runs 18 months)", "date": "2026-11-26", "source": "https://view.news.eu.nasdaq.com/view?id=bb12f4debc1bb83298e17b36948feac0c&lang=en&src=listed"},
+    {"what": "Revised financial calendar 2026/27: Q1 Nov 19 2026, AGM Nov 26 2026, Q2 Feb 11 2027 -- no release on Nov 27", "date": "2026-08-11", "source": "https://view.news.eu.nasdaq.com/view?id=b743deabe2b7443dd3696a87ce312abdf&lang=en&src=listed"}
+  ],
+  "new_in_release": [
+    {"line": "other", "expect": "no release is scheduled for 2026-11-27; nothing new is expected in the window"}
+  ],
+  "bar": "unsourced -- no print in the window, so no bar applies",
+  "event_confirmed": false,
+  "session_check": "no session: there is no release on 2026-11-27. The Q1 report it most likely mirrors went out 2026-11-19 07:30 CET (bmo), per the Nasdaq Nordic feed https://view.news.eu.nasdaq.com/view?id=b6ce67ae034d1ae607c54745ed4a58807&lang=en&src=listed and the calendar https://view.news.eu.nasdaq.com/view?id=b743deabe2b7443dd3696a87ce312abdf&lang=en&src=listed",
+  "positioning_check": "Finansinspektionen aggregate net short 2.18% (prev 2.13%, +0.05 pts), level last changed 2026-11-25, per baseline (https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/); marginal building, not crowded. Irrelevant to a non-event window.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Q2 2026/27 interim report scheduled 2027-02-11 07:30 CET -- the next real print", "expected_impact_pct": 0.0, "resolves_by": "2027-02-11", "source": "https://view.news.eu.nasdaq.com/view?id=b743deabe2b7443dd3696a87ce312abdf&lang=en&src=listed"}
+  ],
+  "searched_and_found_nothing": [
+    "Nasdaq Nordic disclosure feed for RVRC (api.news.eu.nasdaq.com, freeText=RVRC): last 40 releases, none dated 2026-11-27 and no profit warning; latest are the AGM resolutions 2026-11-26 11:35 and the Q1 report 2026-11-19 07:30 -- https://api.news.eu.nasdaq.com/news/query.action?type=json&freeText=RVRC&globalGroup=exchangeNotice&globalName=NordicAllMarkets",
+    "Issuer's revised financial calendar 2026/27 (no release on 2026-11-27): https://view.news.eu.nasdaq.com/view?id=b743deabe2b7443dd3696a87ce312abdf&lang=en&src=listed",
+    "Swedish-language AGM communique (Beslut vid RVRC arsstamma 2026): dividend and record date only, nothing else price-relevant scheduled: https://view.news.eu.nasdaq.com/view?id=bb12f4debc1bb83298e17b36948feac0c&lang=sv&src=listed",
+    "Swedish web search for the dividend/ex-date (RVRC utdelning avstamningsdag x-dag): a September calendar listing 2026-11-27 as X-dag ordinarie utdelning 1.50 SEK, consistent with the AGM release; nothing on earnings"
+  ],
+  "rejected_candidates": [
+    {
+      "candidate": "2026-11-27 is the ex-dividend day for SEK 1.50 (record date 30 Nov), a mechanical ~-2.8% on the unadjusted close the resolver reads",
+      "source": "https://view.news.eu.nasdaq.com/view?id=bb12f4debc1bb83298e17b36948feac0c&lang=sv&src=listed",
+      "reason": "contradicted_by_document",
+      "detail": "Not information about a print: the issuer's calendar (https://view.news.eu.nasdaq.com/view?id=b743deabe2b7443dd3696a87ce312abdf&lang=en&src=listed) shows no release on 2026-11-27, so there is no print for this fact to bear on. Recorded so the resolver does not read the ex-dividend drop as a reaction."
+    }
+  ],
+  "baseline_tension": "None to resolve: the event does not exist, so neither the +1.24 priced lean nor the -0.65% 20-day run-up has a print to be tested against.",
+  "language_note": [
+    "nothing the English sources did not already carry -- RVRC publishes every release in English and Swedish simultaneously, and the Swedish AGM communique ('Avstämningsdagen för rätt till utdelning fastställdes till den 30 november 2026' = the record date was set at 30 November 2026) matches the English text word for word"
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 3.0,
+    "p_up": 50,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 6
+}
