@@ -37,3 +37,7 @@
 ## Stage E-P amc exit — 2026-11-26
 - Logged at 2026-11-26 14:08 UTC
 - Fired 14:07 UTC (09:07 ET), Thanksgiving: US market closed. Guards passed on both accounts (live, paper: amc -> open as day). verify --fix: live 9 exit legs all ok, paper 11 exit legs all ok, nothing UNFILLED, no rescue sent. close --today-only: live 9 runs, paper 28 runs, no leg due today, nothing sent, nothing refused.
+
+## Edge hunt (panel) — 2026-11-26 window — STARTED
+- Logged at 2026-11-26 18:09 UTC
+- Fired 18:07 UTC (13:07 ET), Thanksgiving: NYSE/Nasdaq closed today, Fri 11-27 is a half day (close 13:00 ET). Window 11-26 amc + 11-27 bmo: 1 of 26 calendar rows has a session (XYF 11-27 bmo). Thin-day check with --include-unknown + session_resolve: 25 unresolved rows, 3 killed by EDGAR, 22 carried, 0 confirmed by press release, so not hunted (holiday amc rows). Plan: baseline sealed for XYF, 1 sweep, up to 1 searcher, 4 judges. Step 6b buy will be refused (market closed); step 3s flatten would only queue for Friday's open.
