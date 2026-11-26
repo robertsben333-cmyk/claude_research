@@ -1,0 +1,83 @@
+{
+ "generated_utc": "2026-11-26T18:23:50+00:00",
+ "run": "research/2026/11/2026-11-26/edge-panel",
+ "broker": "alpaca",
+ "endpoint": "https://api.alpaca.markets",
+ "account_kind": "live",
+ "ranking_key": "panel_pct",
+ "benchmark": {
+  "key": "impact_scaled",
+  "min_conviction": 1.76,
+  "require_rankable": true,
+  "min_dollar_volume_usd": 200000,
+  "thin_dollar_volume_usd": 1000000,
+  "max_positions": null
+ },
+ "sizing": {
+  "gross_exposure_pct_of_equity": 100,
+  "max_position_pct_of_equity": 50,
+  "max_position_pct_of_adv": 1.0,
+  "min_position_usd": 200
+ },
+ "orders": {
+  "flatten_before_entry": false,
+  "entry": "market",
+  "exit": "market_on_close",
+  "exit_mode": "amc_open",
+  "auction_orders": false,
+  "time_in_force": "day",
+  "entry_limit_pct": 1.0,
+  "fill_check_seconds": 300,
+  "fill_check_fix": true,
+  "allow_shorts": true
+ },
+ "calendar_source": null,
+ "today": "2026-11-26",
+ "today_source": "alpaca /v2/clock (ET)",
+ "reference_price_error": null,
+ "equity_usd": 3446.42,
+ "equity_source": "alpaca /v2/account",
+ "buying_power_usd": 8945.68,
+ "regt_buying_power_usd": 4481.79,
+ "shorting_enabled": true,
+ "names_in_run": null,
+ "note": "Selection is |impact_scaled| >= 1.76, sign for side, plus a turnover floor and a shortability check. Nothing at this floor has been measured; treat it as a lead. This is research, not investment advice.",
+ "book": "panel",
+ "panel_rule": {
+  "min_panel_pct": 80,
+  "zero_weight_pct": 60,
+  "top": null,
+  "min_pct_override": null,
+  "weight": "panel_pct - zero_weight_pct, linear",
+  "redistribute_cap_excess": true,
+  "top_up": {
+   "enabled": true,
+   "strong_tradable": 0,
+   "candidates": [],
+   "applied": false
+  },
+  "held_gross_usd": 1176.12,
+  "budget_usd": 2270.3,
+  "margin_fit": null
+ },
+ "positions": [],
+ "rejected": [
+  {
+   "ticker": "XYF",
+   "key": "panel_pct",
+   "value": -38.6,
+   "conviction": 38.6,
+   "side": null,
+   "weight_raw": -21.4,
+   "expected_return_pct": 0.29,
+   "event_date": "2026-11-27",
+   "session": "bmo",
+   "spot": 5.25,
+   "spot_as_of": "2026-11-26T18:09:17+00:00",
+   "avg_volume_20d": 100645,
+   "dollar_volume_usd": 528386,
+   "run_up_20d_pct": 8.25,
+   "reason": "panel_pct 38.6 at or below the 60 zero point"
+  }
+ ]
+}
