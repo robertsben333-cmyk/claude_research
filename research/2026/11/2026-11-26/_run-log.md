@@ -80,3 +80,7 @@
 ## Holistic research — 2026-11-26
 - Logged at 2026-11-26 19:17 UTC
 - Fired 19:16 UTC (14:16 ET, Thanksgiving, market closed). E-P's sweep has one name, XYF (11-27 bmo), which stage H already researched on both arms on 2026-11-25 for this same print (research/2026/11/2026-11-25/edge-holistic/). holistic.py has no de-duplication, so a second pair of forecasts would count one print twice in outcomes and in the revise gate. No pick, no researchers today (resume, do not restart). Learning step only. No orders.
+
+## Holistic research — learning step
+- Logged at 2026-11-26 19:17 UTC
+- resolve: 0 new, 14 pending (market shut today), 249 in outcomes. Gate closed: 0/30 names, 0/3 days on hp.v4; drift alarm off (60 recent pairs, Brier diff +0.002, t 0.4). Reflector not launched. Tomorrow runs hp.v4.
