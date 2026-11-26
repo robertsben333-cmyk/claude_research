@@ -72,3 +72,7 @@
 ## Edge hunt (panel v3b) — panel
 - Logged at 2026-11-26 18:27 UTC
 - 4/4 v3b judges on pinned models, no fallback. XYF panel_pct 41 short (own history; 38 on E-P scale; E-P's panel 38.6 short), not selected. 0 selected. 4 sizes appended to panel-history-v3b.json; E-P history untouched. No orders, no alpaca_trade.py call. Note published.
+
+## Edge hunt (panel v3b) — done
+- Logged at 2026-11-26 18:28 UTC
+- Duplicate event, same as E-P: the 11-25 v3b run already hunted XYF for this 11-27 bmo print (panel_pct_signed +3.2 then, -41.0 now). Both are now in panel-history-v3b.json. De-duplicate when pooling and in v3b_compare.py.
