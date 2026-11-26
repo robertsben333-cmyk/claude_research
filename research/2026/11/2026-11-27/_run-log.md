@@ -43,3 +43,7 @@
 ## Stage EU — hunts banked (7)
 - Logged at 2026-11-26 14:50 UTC
 - ENH back: confirmed 06:00 CET bmo, impact_sum -0.4. Running: MDV NTT PLW VGO.
+
+## Stage EU — hunts banked (8)
+- Logged at 2026-11-26 14:50 UTC
+- MDV back: date confirmed 27 Nov but session amc (Modivo publishes after close; Q1 17:55, H1 ~22:00) — real window close(11-27)->close(11-30). impact_sum +0.4. Running: NTT PLW VGO.
