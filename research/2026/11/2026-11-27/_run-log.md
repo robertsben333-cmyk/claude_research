@@ -23,3 +23,7 @@
 ## Stage EU — hunts banked (2)
 - Logged at 2026-11-26 14:45 UTC
 - RVRC back: phantom (Q1 released 2026-11-19 07:30 CET; 11-27 is the SEK 1.50 ex-dividend day, ~-2.8% mechanical on unadjusted close — resolver must not score it). PLW launched.
+
+## Stage EU — hunts banked (3)
+- Logged at 2026-11-26 14:49 UTC
+- VTURA back: real release 11-27 before Oslo open; target of ENH all-share bid (5.50 ENH/VTURA, LOI 2026-09-11) — ENH also in today's set, so VTURA and ENH are one correlated exposure. impact_sum +0.1. VGO launched (last).
