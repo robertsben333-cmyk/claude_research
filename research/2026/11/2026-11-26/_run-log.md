@@ -45,3 +45,7 @@
 ## Edge hunt (panel v3b) — 2026-11-26 window — STARTED
 - Logged at 2026-11-26 18:13 UTC
 - Fired 18:10 UTC (13:10 ET), Thanksgiving: market closed, Fri 11-27 half day. Own universe: 1 of 26 rows with a session (XYF 11-27 bmo). Thin-day check (--include-unknown + session_resolve): 25 unresolved, 4 killed by EDGAR, 21 carried, 0 confirmed by press release, not hunted. Baseline sealed for XYF (spot 5.25, no implied move, hist_n 8). Plan: 1 sweep, 1 unpriced-searcher-v3b, 4 panel-judge-v3b judges. No orders.
+## Edge hunt (panel) — sweep, search, step 3s
+- Logged at 2026-11-26 18:19 UTC
+- Sweep: 1 of 1 confirmed (XYF 11-27 bmo, company release). 1 searcher (unpriced-searcher, Opus 5.5), search_complete true, 0 unfinished. impact_sum -0.40 (pre-lessons -0.50), V2 -0.52. Main finding: going-private bid at US$6.03/ADS (11-06) from the ~93% holder; stock trades the deal spread.
+- Step 3s at ~18:20 UTC with the market CLOSED (Thanksgiving): live held FINV -484 (-2.86%), paper held FINV -3360 (-2.97%). Both close-alls accepted and queued; FINV still held on both, cover executes at Friday 11-27 open. Defect for a dev session: flatten without --submit printed '0 position(s) held' on both accounts minutes earlier, because the guard returns before positions are read, so a dry run cannot be used to see what is held.
