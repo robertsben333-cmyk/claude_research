@@ -41,3 +41,7 @@
 ## Edge hunt (panel) — 2026-11-26 window — STARTED
 - Logged at 2026-11-26 18:09 UTC
 - Fired 18:07 UTC (13:07 ET), Thanksgiving: NYSE/Nasdaq closed today, Fri 11-27 is a half day (close 13:00 ET). Window 11-26 amc + 11-27 bmo: 1 of 26 calendar rows has a session (XYF 11-27 bmo). Thin-day check with --include-unknown + session_resolve: 25 unresolved rows, 3 killed by EDGAR, 22 carried, 0 confirmed by press release, so not hunted (holiday amc rows). Plan: baseline sealed for XYF, 1 sweep, up to 1 searcher, 4 judges. Step 6b buy will be refused (market closed); step 3s flatten would only queue for Friday's open.
+
+## Edge hunt (panel v3b) — 2026-11-26 window — STARTED
+- Logged at 2026-11-26 18:13 UTC
+- Fired 18:10 UTC (13:10 ET), Thanksgiving: market closed, Fri 11-27 half day. Own universe: 1 of 26 rows with a session (XYF 11-27 bmo). Thin-day check (--include-unknown + session_resolve): 25 unresolved, 4 killed by EDGAR, 21 carried, 0 confirmed by press release, not hunted. Baseline sealed for XYF (spot 5.25, no implied move, hist_n 8). Plan: 1 sweep, 1 unpriced-searcher-v3b, 4 panel-judge-v3b judges. No orders.
