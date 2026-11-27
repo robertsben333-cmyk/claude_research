@@ -23,3 +23,7 @@
 ## Stage EU — hunts banked (2)
 - Logged at 2026-11-27 14:43 UTC
 - NORSE back: solvency event, not an ordinary print. Operating subsidiary filed bankruptcy 27 Nov 13:00 UTC, all 12 leases terminated, Recovery Box, ~0.011 NOK after -95%/20d. Q3 still calendared bmo 30 Nov, may be postponed. impact_sum -13.0, abs_move 45, p_up 33. Running: EAH CAPT SIVE.
+
+## Stage EU — hunts banked (3)
+- Logged at 2026-11-27 14:45 UTC
+- EAH back: real interims 30 Nov (date per 6 Nov RNS; 07:00 by convention). H1 pre-released 6 Nov (-12.1%). impact_sum -0.6, abs_move 5.0, p_up 50. Running: CAPT SIVE.
