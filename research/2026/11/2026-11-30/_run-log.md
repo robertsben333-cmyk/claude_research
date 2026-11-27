@@ -27,3 +27,7 @@
 ## Stage EU — hunts banked (3)
 - Logged at 2026-11-27 14:45 UTC
 - EAH back: real interims 30 Nov (date per 6 Nov RNS; 07:00 by convention). H1 pre-released 6 Nov (-12.1%). impact_sum -0.6, abs_move 5.0, p_up 50. Running: CAPT SIVE.
+
+## Stage EU — hunts banked (4)
+- Logged at 2026-11-27 14:45 UTC
+- SIVE back: real Q3, amc (~18:00 CET 30 Nov per issuer's 20 Nov release, moved from 26 Nov). Window close(11-30)->close(12-01). impact_sum +0.8, abs_move 13, p_up 48 (scaled -0.52, sign disagrees). Running: CAPT.
