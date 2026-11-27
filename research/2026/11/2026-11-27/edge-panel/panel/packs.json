@@ -1,0 +1,667 @@
+[
+ {
+  "id": "us/2026-11-27/BOSC",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "BOSC",
+   "event_date": "2026-11-30",
+   "session": "bmo",
+   "as_of_utc": "2026-11-27T18:09:32+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-27",
+    "spot": 4.43,
+    "run_up_5d_pct": 2.55,
+    "run_up_20d_pct": 1.14,
+    "pct_from_52w_high": -13.81,
+    "pct_from_52w_low": 13.3,
+    "realised_vol_20d_annualised_pct": 46.4,
+    "avg_volume_20d": 58357
+   },
+   "cik": "0001005516",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "foreign private issuer: its 6-K exhibits are on www.sec.gov and SEC_USER_AGENT is not set to a User-Agent with a contact address, and www.sec.gov refuses requests without one (403), so its earnings dates were not looked for",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 2.92,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": null,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 EPS $0.06 on revenue $11.4-11.6m. Chartmill: $0.06 / $11.598m (https://www.chartmill.com/stock/quote/BOSC/estimates, via search snippet; the page returns 403 when fetched). Benzinga: $0.06 / $11.4m (https://www.benzinga.com/quote/BOSC/earnings-forecasts, via snippet). Finviz 'EPS next Q' 0.06 (https://finviz.com/quote.ashx?t=BOSC). Three analysts; FY2026 EPS $0.54 as of 2026-11-07. EPS agrees across three sources, revenue is within $0.2m. Company guide: FY2026 revenue >$51m, net income >$3.6m (Q2 release https://finviz.com/news/384037/bos-reports-second-quarter-and-first-half-2026-financial-results), restated on 2026-11-17 as 'exceed 2025 levels' (2025: revenue $50.6m, net income $3.6m). For comparison: Q3 2025 was $11.4m revenue, $0.677m net income, $0.11 EPS (https://finviz.com/news/238315/bos-continues-record-year-performance-in-q3-2025-sales-increase-16-year-over-year), and Q2 2026 was $14.9m and $0.19 against a $0.13 consensus.",
+   "positioning_check": "Short interest is 22,500 shares, 0.7 days to cover (shortsqueeze.com, page dated 2026-10-22, https://shortsqueeze.com/?symbol=BOSC). Finviz shows 0.14% short float and a 0.25 short ratio (https://finviz.com/quote.ashx?t=BOSC, read 2026-11-27). Not crowded, so there is no squeeze mechanism. There is no options market (baseline options.status = no_options_market), so there is no skew. Tape (Yahoo chart): close 4.43 on 2026-11-27, 20-day run-up +1.14%, 5-day +2.55%, 13.8% below the 52-week high; average volume about 58k shares a day, roughly $0.26m a day. On 2026-11-05 the stock fell 7.55% (4.24 to 3.92) on 124k shares, the same day as a $650k order release; I found no cause. Since the 2026-11-13 close of 4.02 it has recovered about 10%, including +2.65% on 1.4x volume on the 2026-11-17 backlog release. Market cap is about $31m, trailing P/E about 8, one Street target at $8.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BOSC.json",
+    "text": "On 2026-11-17, with Q3 already closed and 13 days before the print, BOS restated that full-year 2026 revenue AND net income will 'exceed 2025 levels' (>$50.6m and >$3.6m). H1 net income was $2.1m, so H2 must be above $1.5m. The Q3 consensus of $0.06 EPS (about $0.42m on 7.06m shares) would leave Q4 needing about $1.1m+, above any quarter except Q2 2026's $1.4m. Q4 has only $11m of scheduled backlog deliveries. Reaffirming net income with Q3 already known therefore points to Q3 net income nearer $0.6-0.8m, about $0.08-0.11 EPS, against the $0.06 bar. Operating leverage is high: opex is about $2.3m a quarter and gross margin 23-24%, so each $1m of revenue above $11.5m adds about $0.03 of EPS.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.stocktitan.net/news/BOSC/bos-reports-record-backlog-of-35-million-up-45-from-year-end-3zp2zf7fbb3g.html",
+    "source_date": "2026-11-17",
+    "reaction_history_on_this_line": "EPS against consensus has moved this name in both directions. Q2 2026 (2026-08-20): $0.19 vs $0.13 consensus, +3.5% (4.53 to 4.69). Q1 2026 (2026-05-28): $0.11 vs $0.14 with revenue down y/y, -9.7%. Q3 2025 (2025-11-25): beat plus guide raise, +10.1%. Q1 2025 (2025-05-29): record $15m revenue, +19.8%. Q4 2025 (2026-03-31): 2026 guide flat on 2025, -10.2%. Closes from the Yahoo chart v8 daily bars.",
+    "why_not_priced": "The $0.06 Q3 consensus (Chartmill, Benzinga, finviz) sits below Q3 2025's $0.11 even after the company restated its net-income guide with Q3 known. If the market had done this arithmetic, the three estimate sources would have moved up after 2026-11-17, and Chartmill's latest FY revision is dated 2026-11-07, before the release. The stock rose only +2.65% on the release, which the headline backlog alone could explain. With three analysts and $0.26m of daily turnover, nobody may have redone the H2 split.",
+    "independence": "Shares one document with finding 2 (the backlog release). Separate support: Q2 management said gross margin should rise because prices have been raised since early 2026 (Q2 call transcript, https://www.tradingkey.com/news/transcripts/262122051-tradingkey), and the shekel weakened in Q3 (finding 3). This is an inference from the guide, not a reported Q3 number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BOSC.json",
+    "text": "The Q3-end backlog is a record $35m, up from $31m at Q2 end and $24m at year-end 2025. Its timing has shifted: about $24m is scheduled for 2027 and only about $11m for Q4 2026, against about $11m beyond 2026 and $20m due in H2 2026 at Q2 end. That is roughly $13m of new 2027-dated orders in one quarter, so 2027 starts with deliveries equal to about 47% of 2026's guided revenue already contracted. It also means the Q4 revenue that closes the >$51m guide must partly come from orders booked and shipped within the quarter. The video call will likely be asked about 2027.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.stocktitan.net/news/BOSC/bos-reports-record-backlog-of-35-million-up-45-from-year-end-3zp2zf7fbb3g.html",
+    "source_date": "2026-11-17",
+    "reaction_history_on_this_line": "Backlog headlines have not reliably moved the stock. Backlog was flat at $31m in Q2 2026 and the stock still rose +3.5% on the EPS beat. The Q1 2026 backlog jump to $31m (+29%) came with a -9.7% day because revenue fell. This release itself bought +2.65% on 2026-11-17.",
+    "why_not_priced": "The headline ($35m, +45%) is public and partly priced. What is not in any summary I found is the timing split compared with Q2-end: aggregators carry the headline, and no preview compares $11m for Q4 with the $20m due in H2 at Q2 end. If 2027 visibility were priced, the stock would not sit at about 8x trailing earnings and 13.8% below its 52-week high on a record backlog.",
+    "independence": "Shares one document with finding 1. Q2-end timing from the Q2 call coverage (https://pulse2.com/bos-backlog-holds-at-record-31-million-despite-30-sequential-revenue-growth/) and Q2 release. Q3 order releases with 2027 delivery: $1.2m European defense (2026-09-16, 2027-28 delivery), $380k robotics follow-on (2026-10-01, 2027), $2.3m Israeli defense (2026-09-01, $1.6m in 2027) (https://finviz.com/news/387492/bos-secures-23-million-order-from-a-leading-israeli-defense-customer).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BOSC.json",
+    "text": "The shekel weakened about 2.9% against the US dollar in Q3 2026, after strengthening about 5.9% in Q2 (Bank of Israel Q3 FX market report). The CFO had put the H1 2026 opex hit from dollar weakness at about $0.6m, so Q3 should carry less of that drag than Q2's exit rate. This is a small tailwind for Q3 net income relative to the run rate the consensus was built on.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://boi.org.il/media/pvyhgw1e/foreign-exchange-market-2026-q3.pdf",
+    "source_date": "2026-11-03",
+    "reaction_history_on_this_line": "No isolated reaction to FX. FX was cited as the reason the net-income guide was held, not raised, at Q1 2026 (-9.7% day).",
+    "why_not_priced": "This is a macro-to-company link the company has not confirmed. The Q3 average rate relative to the Q2 average is unknown, since the quarter-on-quarter change is end-of-period. Small by construction; a proxy.",
+    "independence": "Proxy. The CFO quantified the H1 drag in the Q2 release (https://finviz.com/news/384037/bos-reports-second-quarter-and-first-half-2026-financial-results). No company statement on Q3 FX.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BOSC.json",
+    "text": "The 2026-11-17 release, written with Q3 known, kept the full-year guide at 'exceed 2025 levels' rather than raising it. So the print most likely carries a reaffirmation, not the kind of raise that bought +10.1% on 2025-11-25. On this name a flat guide was sold (-10.2% on 2026-03-31).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.stocktitan.net/news/BOSC/bos-reports-record-backlog-of-35-million-up-45-from-year-end-3zp2zf7fbb3g.html",
+    "source_date": "2026-11-17",
+    "reaction_history_on_this_line": "Guide raise on 2025-11-25: +10.1%. Guide flat on 2025 levels on 2026-03-31: -10.2%. Revenue guide raised to 'exceed $51m' but net income held on 2026-05-28: -9.7%. Net-income guide raised on 2026-08-20: +3.5%.",
+    "why_not_priced": "Mostly priced: the language has been public for ten days, and this lands inside what the company already guided, so it is sized toward 0. The residual risk is that the print's headline reads as 'guidance reiterated' on a name whose holders have sold reiterations.",
+    "independence": "Same document as findings 1 and 2. The readings fit together: Q3 decent enough to reaffirm net income (finding 1), but no raise (this finding). The pattern of reactions to raises versus reiterations comes from the Yahoo chart closes cited above.",
+    "i": 3
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BOSC.json",
+    "text": "Q3 order releases: $1.9m air-defense POs (2026-08-04), $1.8m semiconductor connectors (2026-08-10), $2.3m Israeli defense (2026-09-01, $0.7m in 2026), $1.2m European defense (2026-09-16), $990k US (2026-07-23, Q4/Q1 delivery)",
+    "source": "https://finviz.com/quote.ashx?t=BOSC",
+    "first_hunter_reason": "duplicate",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BOSC.json",
+    "text": "Robotics orders after the quarter: $380k follow-on (2026-10-01, 2027 delivery) and $650k munitions packing line (2026-11-05, 2027 delivery)",
+    "source": "https://finviz.com/news/417054/bos-robotics-division-secures-650000-order-for-a-robotic-munitions-packing-line-at-a-new-site-of-a-leading-israeli-defense-customer",
+    "first_hunter_reason": "duplicate",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BOSC.json",
+    "text": "Stock fell 7.55% on 2026-11-05 on 124k shares with no identified cause, then recovered about 10% into the print",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/BOSC?range=6mo&interval=1d",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BOSC.json",
+    "text": "A stock reaction to the 2026-08-20 Q2 print in news coverage: none; computed from Yahoo bars instead (+3.5%)",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BOSC.json",
+    "text": "Statements made inside Q3 at the Sidoti Small-Cap Virtual Conference (2026-09-23/24) and the July investor event: no transcript or coverage found",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BOSC.json",
+    "text": "Q2 2026 call: no Q3-specific or quarterly phasing guidance (tradingkey transcript)",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BOSC.json",
+    "text": "A cause for the -7.55% on 2026-11-05: nothing beyond the $650k robotics order release that day",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BOSC.json",
+    "text": "Analyst revisions after the 2026-11-17 backlog release: none found; Chartmill's latest FY entry is 2026-11-07",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BOSC.json",
+    "text": "Insider or holder filings: the company is a foreign private issuer, so there are no Form 4s; the baseline's EDGAR 6-K history is unreadable without SEC_USER_AGENT",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BOSC.json",
+    "text": "Q3 2026 average USD/ILS level: only the end-of-period change was found (BoI)",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-27/HMR",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "HMR",
+   "event_date": "2026-11-30",
+   "session": "bmo",
+   "as_of_utc": "2026-11-27T18:09:30+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-27",
+    "spot": 1.46,
+    "run_up_5d_pct": 44.55,
+    "run_up_20d_pct": -17.98,
+    "pct_from_52w_high": -23.56,
+    "pct_from_52w_low": 90.1,
+    "realised_vol_20d_annualised_pct": 151.8,
+    "avg_volume_20d": 210675
+   },
+   "cik": "0002029471",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "foreign private issuer: its 6-K exhibits are on www.sec.gov and SEC_USER_AGENT is not set to a User-Agent with a contact address, and www.sec.gov refuses requests without one (403), so its earnings dates were not looked for",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 9.56,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": null,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 EPS $0.04 (Chartmill: $0.04 EPS, $21.53M revenue, https://www.chartmill.com/stock/quote/HMR/estimates; Benzinga: $0.04 EPS, $22.5M revenue, last updated Nov 2, https://www.benzinga.com/quote/HMR/earnings-forecasts). Both are SNIPPET ONLY because both pages return 403 to a fetch. The two agree on EPS and differ slightly on revenue. The prior quarter's bar was disputed: Earnings Whispers had $0.10 and Quiver $0.05 for Q2, against a $0.04 actual. There is no company guidance. Reference points: Q2 2026 revenue $29.0M, adj. net income $2.4M ($0.04), from the company PDF https://www.heidmar.com/wp-content/uploads/2026/09/HMR-PR-Q2-2026-EARNINGS.pdf; Q3 2025 revenue $15.6M, adj. net income $1.8M, https://rss.globenewswire.com/news-release/2025/11/06/3183125/0/en/Heidmar-Maritime-Holdings-Corp-Reports-Third-Quarter-2025-Results.html. print_vs_bar_pct is measured on EPS, roughly $0.05 expected against $0.04. The revenue bar looks stale, about 25% below Q2's actual.",
+   "positioning_check": "Short interest is 16,021 shares: 0.27% of float, 0.03% of shares outstanding, 0.14 days to cover (stockanalysis.com statistics, fetched 2026-11-27, no settlement date shown, https://stockanalysis.com/stocks/hmr/statistics/). The sweep's June/July figure was 2.1-2.9%. There is no crowded short, so no squeeze cushion under a negative. Float is 6.04M of 58.99M shares; insiders hold 89.8%, the CEO about 26.3M via Rhea Marine. There is no options market, so no skew. The tape (stockanalysis history): 0.93 on Nov 23, then +15.05% (Nov 24, vol 233k), +13.08% (Nov 25, vol 130k) and +20.66% (Nov 27 half-day, vol 583k, about 10% of float) to 1.46. Before that the stock fell -23.6% on Oct 30 on no news, from a 1.91 high on Oct 13. Baseline: run_up_5d +44.55%, run_up_20d -17.98%, realised vol 151.8%.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "HMR rose 57% in three sessions into the print, from 0.93 (Nov 23) to 1.46 (Nov 27 half-day close: +15.05%, +13.08%, +20.66%). The Nov 27 half-day traded 583k shares, about 10% of the 6.04M float. There was no company release or SEC filing after Sep 9, and Tickeron found no company catalyst (sector backdrop only, 'news significance 30/100'). So the stock enters a bmo print with a speculative premium on a stock that was 0.93 four sessions ago.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://stockanalysis.com/stocks/hmr/history/",
+    "source_date": "2026-11-27",
+    "reaction_history_on_this_line": "May 2026, the closest analog: 1.16 to 1.50 (+29%) on May 22 into the May 26 Q1 release, 1.57 on May 26, then 1.25 on May 27 (-20.4%) and 1.14 on May 28 (Yahoo chart bars). The run built before the print and unwound within two sessions.",
+    "why_not_priced": "This is the price itself, not a fact the price missed. The question is whether the premium survives the release. If the market had already discounted a sell-the-news unwind, the stock would not have closed at the high of the run on the heaviest volume in a month. Nothing explains the run (no 6-K, no fleet release, no filing on EDGAR since Sep 9), so it has to be validated by the release or unwind.",
+    "independence": "The Tickeron blog (https://tickeron.com/blogs/why-is-heidmar-maritime-holdings-corp-hmr-stock-up-15-70-today-48436/, 2026-11-27) confirms the Nov 27 move had no company catalyst and cites a ~6M float. EDGAR's filing list (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002029471) shows nothing after 2026-09-09. This finding and the reaction-history finding both point to sell-the-news, but they rest on different data (this run vs prior prints).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "The last three prints were all sold on release. Q4 2025 (Mar 24, 2026): 0.902 to 0.856, -5.1%, then -4.6% the next day. Q1 2026 (May 26): +4.7% on the day after a +29% pre-print spike, then -20.4% on May 27. Q2 2026 (Sep 1, bmo): 1.39 to 1.24, -10.8%. The Q2 sell-off came despite revenue of $29.0M against a ~$21.4-24.4M consensus and bullish rate commentary.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/HMR?period1=1774137600&period2=1789257600&interval=1d",
+    "source_date": "2026-11-27",
+    "reaction_history_on_this_line": "This finding is the reaction history: three of three prints in 2026 closed lower within two sessions. The Q2 revenue beat with an EPS miss against a disputed $0.10 bar was sold -10.8%.",
+    "why_not_priced": "The baseline carries no reaction history: the 6-K archive was unread, so n=0. A market that had priced this pattern would not bid the stock 57% into the release. The reaction function exists only in the daily bars, which no aggregator summarises for this name.",
+    "independence": "The Q2 reaction is independently reported as 'Heidmar Maritime Stock Down 10.8%' (dailypolitical aggregator snippet, https://www.dailypolitical.com/?p=10489932, 403 to fetch). Release dates come from https://www.heidmar.com/news/. The pre-print-spike pattern overlaps conceptually with the run-up finding but uses different data.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Q3 EPS should come in at or above the $0.04 bar, and revenue should clear the stale $21.5-22.5M consensus. Q2 revenue was $29.0M: trade revenues $5.80M plus voyage/time-charter $23.20M. Q3 adds Q-Shipping management fees (nine managed vessels from Jul 1, three more taken over in Q3) on a ~60-vessel commercially managed fleet. Q2 G&A of $5.57M included $1.8M of cash bonuses, against Q1 G&A of about $3.56M. If Q3 G&A normalises, operating income gains about $1.5M on a Q2 base of $1.82M.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.heidmar.com/wp-content/uploads/2026/09/HMR-PR-Q2-2026-EARNINGS.pdf",
+    "source_date": "2026-09-01",
+    "reaction_history_on_this_line": "The Q2 revenue beat (29.0 vs ~21.4-24.4M) came with an EPS miss against a disputed bar and was sold -10.8%. This name has not paid for revenue beats.",
+    "why_not_priced": "The revenue consensus ($21.5-22.5M) sits 25% below the last actual, which suggests the 2-3 estimates have not been rebuilt for the relet business and Q-Shipping. The EPS bar rests on snippets only, and the prior-quarter bar was disputed (EW $0.10 vs Quiver $0.05), so the size is capped small.",
+    "independence": "Q-Shipping completion and the nine-vessel addition are confirmed separately by https://www.nasdaq.com/press-release/heidmar-maritime-holdings-corp-expands-ship-management-platform-2026-07-07 (2026-07-07). The G&A bonus timing is from the same Q2 PDF, not independent.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Peers that reported after Heidmar last spoke show Q4 2026 mid-size tanker bookings at extremes: Teekay Tankers has 58% of Q4 Suezmax spot days at $272,000/day and Aframax/LR2 at $208,300, against Q3 averages of $106,437 and $67,552; DHT has 50% of Q4 VLCC spot days at $509,100. Heidmar runs Suezmax/Aframax pools and earns commissions on pool gross, and in September it guided that 'rates to remain elevated and potentially strengthen further' in Q4/Q1. The Nov 30 call is the first time it can quantify Q4 pool earnings.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.bairdmaritime.com/shipping/tankers/teekay-tankers-net-income-falls",
+    "source_date": "2026-11-12",
+    "reaction_history_on_this_line": "Q2 (Sep 1) carried similar bullish rate commentary ('Suezmaxes in the Mediterranean / Black Sea are at historical highs') and the stock fell -10.8%. Forward commentary has not been paid for at this name.",
+    "why_not_priced": "Peer rates have been public since Oct 12 (DHT) and Nov 12 (Teekay), yet HMR fell from 1.91 to 0.93 over the same period, so the market has not mapped tanker rates onto HMR's commission line. A Heidmar-specific Q4 pool figure on the call would be new. This is macro-to-company transmission that the company has confirmed only qualitatively, so it is sized small.",
+    "independence": "DHT Q4 bookings: https://finviz.com/news/401131/dht-holdings-reports-q3-fleet-earnings-of-141300-per-day-as-fourth-quarter-tanker-rates-rise (2026-10-12). Company's own Q4 expectation: Q2 PDF p.3 (2026-09-01).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Q3 realised mid-size spot rates fell slightly from Q2 at the closest listed peer: Teekay Suezmax $106,437 vs $109,171 (-2.5%), Aframax/LR2 $67,552 vs $74,149 (-8.9%). Heidmar's Q3 pool commissions and relet margins (Q2: voyage/TC revenue $23.2M against charter-in and other $21.4M) therefore have no rate tailwind quarter on quarter.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.bairdmaritime.com/shipping/tankers/teekay-tankers-net-income-falls",
+    "source_date": "2026-11-12",
+    "reaction_history_on_this_line": "No HMR-specific history of reacting to rate-driven misses. Prior prints were sold regardless of the rate backdrop.",
+    "why_not_priced": "A peer proxy for the Q3 line. Its scale is offset by fleet growth (finding 3), so it is small. The Clarksons index reportedly showed record Q3 Suezmax averages, which points the other way and could not be verified (see rejected).",
+    "independence": "Shares the Teekay article with the Q4 finding. This finding reads the Q3 line, the other the Q4 bookings; they are separate lines from one document, sized apart.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Heidmar has a $20M committed equity purchase facility with B. Riley Principal Capital II, under which up to 11,080,332 shares are registered for resale. The POS AM went effective June 10, 2026, and the facility runs 36 months. The company can sell shares at its discretion into a spike, and BRPC II resells them. Against a 6.04M float this is a supply overhang on a +57% run. The company has no visible need for the money: $28.7M cash, positive operating cash flow of $7.7M in H1, an asset-light model, and no acquisition named.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.sec.gov/Archives/edgar/data/2029471/000091957426003772/p12151143_pos-am.htm",
+    "source_date": "2026-05-29",
+    "reaction_history_on_this_line": "There is no disclosed draw. Weighted basic shares rose only from 58.24M (Q2'25) to 59.59M (Q2'26), so usage looks minimal so far.",
+    "why_not_priced": "The facility is public, but the share count moving on the Q3 balance sheet or in the subsequent-events note would be new. Asked what the money buys: nothing corroborated, but the company is not in distress either, so the negative is small and rests on supply, not solvency.",
+    "independence": "EDGAR EFFECT notice dated 2026-06-10 (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002029471). Same underlying facility.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "The CEO (Pankaj Khanna, also a 10% owner via Rhea Marine at 26.24M shares) filed Form 4s, late, for small purchases: 20,000 shares at $1.22 (Jun 24) and 15,000 at $1.30 (Sep 1, the Q2 print day), about $44k in total. Form 144 proposed sales were filed by other holders on Jun 11, Jun 26 and Jul 6.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.sec.gov/Archives/edgar/data/2029471/000091957426006175/ownership.xml",
+    "source_date": "2026-09-03",
+    "reaction_history_on_this_line": "The stock fell -10.8% on the day the CEO bought.",
+    "why_not_priced": "Public since September and tiny relative to the holding. It is a token signal and is sized near zero.",
+    "independence": "Second Form 4: https://www.sec.gov/Archives/edgar/data/2029471/000091957426006174/ownership.xml (2026-09-03).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Director Andreas Konialidis stepped down on Oct 13, 2026, with 'no disagreement'. The company said it would search for a replacement 'in due course'. This is the only company release between the Q2 print and the Q3 date notice.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://finviz.com/news/402024/heidmar-maritime-holdings-corp-announces-board-update",
+    "source_date": "2026-10-13",
+    "reaction_history_on_this_line": "None.",
+    "why_not_priced": "Public for six weeks. It matters only if the call names a replacement or ties the departure to a holder exit.",
+    "independence": "https://www.heidmar.com/news/ lists it on Oct 14.",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Clarksons: Q3 2026 ClarkSea Index at a record $46,384/day, Suezmax at a record $228,262/day, Aframax $119,189/day, MR rising to ~$60k by quarter-end. This would point to a strong Q3 pool-commission line.",
+    "source": "https://www.seatrade-maritime.com/tankers/clarksea-index-breaks-2008-record-to-reach-all-time-high",
+    "first_hunter_reason": "no_source",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Mirror-site pages (bvwd.ca.gov and others) claiming 'Q4 2025 EPS miss, shares fall 23.1%' and 'surges 29%' around prints",
+    "source": "https://bvwd.ca.gov/first-dry/HMR-Heidmar-reports-sharp-Q4-2025-EPS-miss-shares-fall-231-on-negative-investor-sentiment-11-5179",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Kalkine: 'HMR surges as small-cap tanker names ride firmer crude' and 'jumped with no confirmed catalyst'",
+    "source": "https://kalkine.com/news/energy/why-heidmar-maritime-holdings-nasdaqhmr-jumped-on-the-nasdaq-composite-with-no-confirmed-catalyst",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HMR.json",
+    "text": "Analyst price targets of $3.00 (2 analysts, Buy) and $5.00 (Benzinga)",
+    "source": "https://stockanalysis.com/stocks/hmr/statistics/",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HMR.json",
+    "text": "EDGAR filing list for CIK 0002029471: no 6-K, F-3, 424B or 13D after 2026-09-09, so no financing, fleet or holder filing explains the Nov 24-27 run",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HMR.json",
+    "text": "Company news page heidmar.com/news: nothing between Oct 14 (board) and Nov 11 (date notice), and nothing after",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HMR.json",
+    "text": "Explanation for the Oct 30 -23.6% drop: Tickeron and Benzinga found no catalyst",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HMR.json",
+    "text": "Reliable Q1 2026 consensus and Q4 2025 consensus: only spam mirror pages",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HMR.json",
+    "text": "Kalkine articles on the November jumps: 403 on fetch",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HMR.json",
+    "text": "Earnings Whispers Q3 article: no consensus figure on the page",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HMR.json",
+    "text": "Clarksons Q3 2026 index article (seatrade-maritime): 403 on fetch",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-27/NAT",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "NAT",
+   "event_date": "2026-11-30",
+   "session": "bmo",
+   "as_of_utc": "2026-11-27T18:16:45+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-27",
+    "spot": 6.45,
+    "run_up_5d_pct": 4.37,
+    "run_up_20d_pct": -20.47,
+    "pct_from_52w_high": -26.62,
+    "pct_from_52w_low": 91.39,
+    "realised_vol_20d_annualised_pct": 48.3,
+    "avg_volume_20d": 4282808
+   },
+   "cik": "0001000177",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "foreign private issuer: its 6-K exhibits are on www.sec.gov and SEC_USER_AGENT is not set to a User-Agent with a contact address, and www.sec.gov refuses requests without one (403), so its earnings dates were not looked for",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-12-18",
+    "days_to_expiry": 21,
+    "atm_strike": 6.0,
+    "atm_iv_pct": 62.9,
+    "straddle_implied_move_pct": 10.85,
+    "event_implied_move_pct": 5.41,
+    "event_implied_move_basis": "10.85% straddle over 21 calendar days less 11.78% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.03,
+    "total_open_interest": 10648,
+    "atm_spread_frac_of_mid": 0.6,
+    "warnings": [
+     "ATM bid-ask spread 60% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 3.04,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 5.41,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 EPS: $0.18 / revenue $74.98m (Chartmill, https://www.chartmill.com/stock/quote/NAT/estimates) and $0.1768 (Bullstory, https://bullstory.io/en/stocks/nat/earnings/2026-q3), which agree; Benzinga has $0.10 / $69.3m (https://www.benzinga.com/quote/NAT/earnings-forecasts), which does not. Barchart pre-Q2 had $0.04 from one analyst. Thin, disputed coverage. NAT gives no formal guide, but its Aug 27 report disclosed Q3 bookings of about 75% of days at about $54k/day, the nearest thing to a company bar. Sized against $0.18, with every finding capped small. My own estimate: about $0.18-0.20 ex-gains, $0.21-0.24 including the vessel-sale gain, so print_vs_bar about +5% on EPS. Revenue probably about $72m, around -4% against Chartmill.",
+   "positioning_check": "Short interest is about 16.2m shares and 3.7 days to cover (shortsqueeze.com, page dated 2026-11-11, https://shortsqueeze.com/?symbol=NAT). Equibles models about 17.7m for the 2026-11-13 settlement (https://equibles.com/stocks/nat/short-interest). FINRA 2026-09-30 had 15.5m and 3.0 days (https://curvedtrading.com/stocks/nat/short-interest/). That is about 7.7-8.1% of float (Benzinga) and rising modestly: moderate, not crowded. The baseline skew_25d is null. Put/call OI ratio is 0.03, so calls dominate open interest. ATM spread is 60% of mid, so the 5.41% event-implied move is indicative only. On the tape: run-up_20d -20.5% (the November tanker-rate plunge), run-up_5d +4.4%, 26.6% below the 52w high. The vice-chairman bought 300k shares at $8.44 on 2026-10-06 (https://finviz.com/news/399402/nordic-american-tankers-ltd-nyse-nat-the-hansson-family-now-collectively-own-12-million-nat-shares).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "Q3 2026 TCE will come in below Q2. In the Aug 27 report NAT said about 75% of Q3 fleet days were booked at about $54,000/day, with the rest at spot of $60-90k/day. That blends to roughly $57-62k/day against Q2's $63,000/day, so the per-share dividend most likely steps down from Q2's $0.27 (Q1 paid $0.22 on $46.3m net). NAT headlines the dividend every quarter.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://pulse2.com/nordic-american-tankers-q2-tce-reaches-63000-per-day-as-net-result-rises-48-sequentially-and-cash-hits-175-million/",
+    "source_date": "2026-08-27",
+    "reaction_history_on_this_line": "No reliable dated reaction found. The baseline history is untrustworthy (6-K letters counted as prints). Scraped pages put the Q4 2025 reaction at roughly -2.4% to +3.2%, in conflict with one another and not reliable. In 2024 a 67% dividend cut came with a weak quarter (Seeking Alpha), but no price move was sourced for it.",
+    "why_not_priced": "The booking is public, and the $0.18 consensus (Chartmill) probably embeds a lower Q3. What has not been quantified anywhere is the dividend itself. If the market had priced a cut, previews would carry a Q3 dividend estimate below $0.27. None was found, and the Nov 3 and Nov 9 letters talk only of 'healthy dividends'. This sits inside what the company itself disclosed, so it is sized small.",
+    "independence": "The company's own Q2 letter (https://finviz.com/news/386015/nordic-american-tankers-ltd-nyse-nat-report-as-per-june-30-2026-the-direction-of-nat-is-unquestionably-upwards-rates-values-are-up) carries the same $54k / 75% figure, so it is the same document family, not independent.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "Q2's $68.3m net result included about $14.6m of loss-of-hire insurance for three vessels held up by the Hormuz restrictions, plus a vessel-sale gain. A Q3 without comparable insurance shows a large headline drop in net result (roughly $68m to about $40-50m) on top of the lower TCE.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://pulse2.com/nordic-american-tankers-q2-tce-reaches-63000-per-day-as-net-result-rises-48-sequentially-and-cash-hits-175-million/",
+    "source_date": "2026-08-27",
+    "reaction_history_on_this_line": "None sourced for NAT on insurance or other one-off comparisons.",
+    "why_not_priced": "Consensus EPS of $0.18 against Q2's actual $0.32 suggests analysts already model the drop. The residual risk is a 'net result down ~35%' headline on a stock that already lost 20% in a month. It is possible that Q3 carries further insurance if a vessel stayed trapped, which would cut the other way, so it is sized small.",
+    "independence": "The sweep's figure of about $21.3m of Q2 sale and insurance gains comes from the same pulse2 article, so it is not independent.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "The second of two 2003-built Suezmaxes sold in Q1 (a US$25m net sale, vessel debt-free) was delivered early in Q3 after being trapped in Hormuz. Q3 should therefore book a vessel-sale gain, which could lift headline EPS above the $0.18 consensus and well above Benzinga's $0.10.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://pulse2.com/nordic-american-tankers-q2-tce-reaches-63000-per-day-as-net-result-rises-48-sequentially-and-cash-hits-175-million/",
+    "source_date": "2026-08-27",
+    "reaction_history_on_this_line": "Q2 2026 carried a vessel-sale gain as well; no price reaction to it was sourced.",
+    "why_not_priced": "Sell-side models for a thinly covered name often leave out sale gains. The $0.10 vs $0.18 dispersion suggests at least one source does. It is below operating income and does not change the forward path, except that the cash can support the dividend. Sized as a fraction.",
+    "independence": "Riviera Maritime, 2026-02-11, on the US$25m net sale of a debt-free 2003 Suezmax (https://www.rivieramm.com/news-content-hub/nat-sells-2003-built-suezmax-tanker-in-us25m-deal-in-firm-sampp-market-87733). The book value is not disclosed, so the size of the gain is unknown.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "The Q4 2026 forward read in the report will be strong. NAT's Nov 9 letter said its last 10 spot fixtures (about 60 days each, mostly Q4) average about $144,000/day TCE (range $59k-$347k), with about 50% of the fleet spot and opex under $10k/day. That points to a Q4 fleet TCE far above Q3's ~$58k and a much larger Q4 dividend. Peers that printed Q3 with record Q4 bookings were bought: DHT rose 4.9% on Q3 with 68% of Q4 spot days at $579.9k.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://finviz.com/news/419139/nordic-american-tankers-ltd-nyse-nat-the-tanker-bonanza-continues",
+    "source_date": "2026-11-09",
+    "reaction_history_on_this_line": "No sourced NAT reaction to a Q4 booking disclosure. At the peer DHT (Nov 2026), Q3 plus strong Q4 bookings gave +4.9% (https://www.bairdmaritime.com/shipping/tankers/dht-holdings-third-quarter-profit).",
+    "why_not_priced": "The $144k is already public, and the stock fell about 20% after it was published, as Suezmax spot halved in November, so the market is discounting how long the rates last rather than the Q4 number. What is new in the report is a formal percent-booked and rate for Q4, plus any comment on the Q4 dividend. If it were fully priced, the stock would not trade 27% below its 52w high with Q4 earnings implying a roughly $0.40+ quarter. NAT's fixtures also sit well below peers (Teekay Q4 Suezmax $272k on 63%, Okeanis $410.9k on 60%), which the market can already see. Sized small because it lands inside what the company already said.",
+    "independence": "Teekay Q4-to-date Suezmax at $272k/day on 63% of days (https://www.panabee.com/news/teekay-tankers-earnings-q3-2026, 2026-11-12) and the DHT reaction above, which are different issuers pointing the same way on Q4.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "Suezmax spot collapsed in November. TD20 WAF-UKC went from $18.27/bbl to $11.01/bbl in the week to Nov 6 and to $7.86/bbl by Nov 13, and several Suezmax and Aframax routes lost 50%+ of their earnings, on Hormuz diplomacy and the Russia-Ukraine talks. NAT's remaining open Q4 days (about 50% of the fleet is spot) and its outlook wording therefore face a weaker market than the $144k fixtures. Kpler expected a partial recovery.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.kpler.com/blog/vlcc-rates-retreat-from-record-highs-amid-geopolitical-shifts-and-fundamental-pressures",
+    "source_date": "2026-11-13",
+    "reaction_history_on_this_line": "The stock is -20.5% over 20 sessions into the print (baseline), which is the market's response to this series already.",
+    "why_not_priced": "Largely priced: the -20% 20-day run-up is that pricing. The residual is only whether the report's Q4 booked rate or outlook concedes a lower run-rate for the late-Q4 fixtures. This is an industry proxy, not a company number, so it is sized small.",
+    "independence": "Kpler, 2026-11-06 (https://www.kpler.com/blog/plunging-atlantic-rates-reprice-midsizes-into-west-east-trades), and Hydrocarbon Processing on VLCC rates down 60%+ (https://hydrocarbonprocessing.com/news/2026/11/supertanker-rates-plunge-more-than-60-from-record-highs/).",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "Suezmax orderbook approaching 30% of the existing fleet (Okeanis management) and NAT's two 2028 newbuildings at $86m each: medium-term supply and capex, irrelevant to the one-session window.",
+    "resolves_by": "2028-12-31",
+    "source": "https://www.quiverquant.com/news/Nordic+American+Tankers+Ltd+Signs+Letter+of+Intent+for+Two+Suezmax+Tankers+Construction+in+South+Korea",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "The 20% drawdown in 20 sessions, while Q4 fixtures run at $144k, as an over-reaction long",
+    "source": "/home/user/claude_research/research/2026/11/2026-11-27/edge-panel/baselines/NAT.json",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "Vice-chairman Alexander Hansson bought 300k shares at $8.44 on 2026-10-06 (family holds 12m)",
+    "source": "https://finviz.com/news/399402/nordic-american-tankers-ltd-nyse-nat-the-hansson-family-now-collectively-own-12-million-nat-shares",
+    "first_hunter_reason": "duplicate",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "NAT.json",
+    "text": "Short interest rising from 15.5m to about 16-17.7m shares (~8% float, 3.7 days)",
+    "source": "https://equibles.com/stocks/nat/short-interest",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NAT.json",
+    "text": "Any NAT 6-K or press release dated 2026-11-10 to 2026-11-27 (AGM results, a new letter, ATM/F-3): none found indexed",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NAT.json",
+    "text": "A reliable dated price reaction to NAT's Q2 2026 (2026-08-27) or Q3 2025 (2025-11-28) reports: none, only conflicting auto-generated pages for Q4 2025",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NAT.json",
+    "text": "ATM usage in 2026: the company said none through Q2; no later filing found",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NAT.json",
+    "text": "Late-November (week 47-48) Suezmax rate prints: none found after Kpler's Nov 13 note",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NAT.json",
+    "text": "A Q3 dividend estimate in any preview: none found",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NAT.json",
+    "text": "A 'softer quarter' Nov 22 headline seen in the finviz sidebar: could not be located",
+    "i": 14
+   }
+  ]
+ }
+]

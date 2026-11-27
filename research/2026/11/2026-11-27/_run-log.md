@@ -98,3 +98,11 @@
 ## Edge hunt (panel v3b) — wave 1
 - Logged at 2026-11-27 18:22 UTC
 - 4 confirmed, 4 searchers launched (unpriced-searcher-v3b, agent form, not fallback): HMR CHA BOSC NAT, all 11-30 bmo. Nothing shed. PWRL baseline sealed but not hunted (sweep: no date).
+
+## Edge hunt (panel) — 3s sell
+- Logged at 2026-11-27 18:27 UTC
+- 18:27 UTC: all 3 searchers finished (hunt_status: 0 unfinished of 3). Live: mode ok (enabled, kill switch off); flatten: 0 positions held, nothing to sell. Paper: flatten: 0 positions held, nothing to sell. FINV (11-25 amc short) was covered at today's open on both accounts; no amc leg still held. Market closed since 13:00 ET (half day).
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-27 18:27 UTC
+- 3 packs, four judges
