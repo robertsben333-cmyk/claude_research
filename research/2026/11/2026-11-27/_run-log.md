@@ -129,3 +129,7 @@
 ## Holistic research — 2026-11-27 — STARTED
 - Logged at 2026-11-27 19:18 UTC
 - Fired 19:16 UTC (14:16 ET). NYSE half day (Black Friday, close 13:00 ET): stage H's entry, the run-day close, had already passed when this run fired, so no research is done today (a forecast written after the entry is not a forecast; the 15:00 ET cutoff exists to finish before the close, which today was 13:00). E-P's sweep had 3 names (HMR, BOSC, NAT, all 11-30 bmo); none researched by stage H. Learning step only (resolve, evaluate, reflector if gate open). No orders.
+
+## Holistic research — learning step
+- Logged at 2026-11-27 19:19 UTC
+- resolve: 6 new name-arms, 8 pending. Gate closed: hp.v4 3/30 names, 1/3 days; drift alarm off (60 pairs, diff 0.004, t 0.69). Reflector not launched. Next run uses hp.v4. No research today (half day, entry passed).
