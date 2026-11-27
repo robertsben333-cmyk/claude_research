@@ -47,3 +47,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-27 14:49 UTC
 - handoff written 14:49 UTC, before the note: 1 name. Offline plan at sealed spot on EUR 10,000: SELL NORSE 2,261,668 sh @ 0.0115 NOK (24.3%). Not taken: CAPT 68.2 (<70). Caveat for the operator: NORSE is in the Oslo Recovery Box at ~0.011 NOK after its operating subsidiary's bankruptcy filing (27 Nov 13:00 UTC); borrow for a short is very unlikely and a suspension is possible. The executor's rules decide; this session did not change the rule.
+
+## Stage EU — done
+- Logged at 2026-11-27 14:50 UTC
+- Note published after the handoff (handoff 14:49 UTC). Pushed to main (EARNINGS_DATA_BRANCH=main). Calendar phantom again: POLR dated on an RNS Reach webinar of 24 Nov interims. NORSE is a solvency event, not a print.
