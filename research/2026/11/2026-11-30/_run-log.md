@@ -39,3 +39,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-27 14:46 UTC
 - 4 packs (SIVE, CAPT, EAH, NORSE), four judges
+
+## Stage EU — panel
+- Logged at 2026-11-27 14:49 UTC
+- 4/4 judges, no fallback. Selected: NORSE short, panel_pct 100, 4/4. Not selected: CAPT 68 long (1/4), EAH 49 long, SIVE 28 long (sd 68, fable51 short).
