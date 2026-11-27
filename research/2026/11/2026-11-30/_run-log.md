@@ -15,3 +15,7 @@
 ## Stage EU — hunts launched
 - Logged at 2026-11-27 14:40 UTC
 - One wave of 5: EAH, POLR (unpriced-hunter-uk); CAPT, NORSE (nordic/no); SIVE (nordic/se).
+
+## Stage EU — hunts banked (1)
+- Logged at 2026-11-27 14:41 UTC
+- POLR back: phantom as a results event (interims RNS 2026-11-24 07:00; 11-30 is an RNS Reach investor webinar at 11:00 London). event_confirmed false, impact_sum 0. Running: EAH CAPT NORSE SIVE.
