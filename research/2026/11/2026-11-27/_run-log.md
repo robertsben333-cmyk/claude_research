@@ -125,3 +125,7 @@
 ## Edge hunt (panel v3b) — done
 - Logged at 2026-11-27 18:38 UTC
 - Note published. Selected HMR short 99, CHA long 84. vs E-P: common HMR/BOSC/NAT, selected overlap HMR only (E-P picked BOSC 83; v3b BOSC 68); CHA unhunted by E-P (its sweep found no company date). rho on 3 common names +1.0 (noise). No orders, no shadow ledger.
+
+## Holistic research — 2026-11-27 — STARTED
+- Logged at 2026-11-27 19:18 UTC
+- Fired 19:16 UTC (14:16 ET). NYSE half day (Black Friday, close 13:00 ET): stage H's entry, the run-day close, had already passed when this run fired, so no research is done today (a forecast written after the entry is not a forecast; the 15:00 ET cutoff exists to finish before the close, which today was 13:00). E-P's sweep had 3 names (HMR, BOSC, NAT, all 11-30 bmo); none researched by stage H. Learning step only (resolve, evaluate, reflector if gate open). No orders.
