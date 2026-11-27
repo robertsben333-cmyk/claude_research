@@ -87,3 +87,6 @@
 ## Edge hunt (panel v3b) — 2026-11-27 amc + 2026-11-30 bmo — STARTED
 - Logged at 2026-11-27 18:14 UTC
 - Fired 18:07 UTC (13:10 ET slot); session already shut (Thanksgiving half-day, close 13:00 ET). Own universe: 4 of 28 rows with a session (CHA HMR BOSC PWRL, all 11-30 bmo), baselines sealed. Thin day: session_resolve.py on 19 time-not-supplied rows killed 4 by EDGAR, carried 15 (0 announced); sweep settles date/session, baselines for its confirmations sealed before any searcher. Plan: 1 sweep, up to 20 unpriced-searcher-v3b (max 6 per turn), 4 v3b judges. No orders, no shadow ledger.
+## Edge hunt (panel) — sweep
+- Logged at 2026-11-27 18:16 UTC
+- Sweep confirmed 3 of 23: HMR, BOSC (company releases, 11-30 bmo), NAT (company letter dates Q3 to Mon 11-30, calendar's 11-27 wrong; bmo on its last two release times; baseline history marked untrustworthy). CHA unconfirmed (no company date; Nasdaq row only), dropped. Phantoms: KT (6-K 11-10), PVL, LEDS, GDEV (11-19), AIV (10-Q 11-09), LOT (suspended), HTT (half-yearly). 12 more dropped unsourced/late filers, PWRL is a monthly-NAV fund. NAT baseline sealed after the sweep, before any searcher. Wave: 3 searchers, none shed.
