@@ -121,3 +121,7 @@
 ## Edge hunt (panel v3b) — panel
 - Logged at 2026-11-27 18:37 UTC
 - 4/4 v3b judges ran as their pinned agents, no fallback, full coverage. Own history: HMR 99 short SELECTED (4/4 top 20%), CHA 84 long SELECTED, BOSC 68 long, NAT 51 long. E-P scale (dry run): HMR 98, CHA 84, BOSC 63, NAT 48 - same selection. No orders.
+
+## Edge hunt (panel v3b) — done
+- Logged at 2026-11-27 18:38 UTC
+- Note published. Selected HMR short 99, CHA long 84. vs E-P: common HMR/BOSC/NAT, selected overlap HMR only (E-P picked BOSC 83; v3b BOSC 68); CHA unhunted by E-P (its sweep found no company date). rho on 3 common names +1.0 (noise). No orders, no shadow ledger.
