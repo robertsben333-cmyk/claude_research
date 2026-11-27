@@ -75,3 +75,7 @@
 ## Stage EU — done
 - Logged at 2026-11-26 14:59 UTC
 - Note published. Handoff went out before the note. Pushed to main (EARNINGS_DATA_BRANCH=main). Calendar defect again: NORAM and RVRC dated on a distribution/ex-dividend day, not a results day. 4 of 9 ranked names (all Polish) release amc on 11-27, outside the sealed bmo window; two are panel selections.
+
+## Stage E-P amc exit — 2026-11-27
+- Logged at 2026-11-27 14:08 UTC
+- Fired 14:07 UTC (09:07 ET). Guards: live and paper both exit 0 (amc -> open as day, matched on placement). verify --fix: live 9 exit legs all ok, paper 11 all ok; nothing UNFILLED, no rescue. close --today-only: one leg due on each account, FINV short (2026-11-25 amc, panel_pct -79.2): live buy 484 and paper buy 3360 NOT SENT, HTTP 403 insufficient qty available (available 0). Cause, read from the broker: a market DAY buy-to-cover for the full position was already open on each account, placed outside this repo with a random client_order_id (live 700936da-6422-4226-979b-6bbe99babd1b at 12:00:04 UTC, 3 rows down. paper d9a1ac75-09d1-41d1-8126-9f10a1fd2c56 at 09:00:30 UTC), status new, so FINV goes at the open either way. No bmo legs due; no other refusals.
