@@ -31,3 +31,11 @@
 ## Stage EU — hunts banked (4)
 - Logged at 2026-11-27 14:45 UTC
 - SIVE back: real Q3, amc (~18:00 CET 30 Nov per issuer's 20 Nov release, moved from 26 Nov). Window close(11-30)->close(12-01). impact_sum +0.8, abs_move 13, p_up 48 (scaled -0.52, sign disagrees). Running: CAPT.
+
+## Stage EU — hunts
+- Logged at 2026-11-27 14:46 UTC
+- 5/5 hunted. CAPT back: real Q3 bmo (07:30 CET pattern; 23 Nov notice sets 30 Nov), impact_sum +0.6, abs_move 5.0, p_up 56. POLR phantom (webinar of 24 Nov interims). SIVE amc.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-27 14:46 UTC
+- 4 packs (SIVE, CAPT, EAH, NORSE), four judges

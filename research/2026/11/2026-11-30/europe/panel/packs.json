@@ -1,0 +1,1422 @@
+[
+ {
+  "id": "eu/2026-11-30/CAPT",
+  "hunter_definition": ".claude/agents/unpriced-hunter-nordic.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "no",
+   "submarket_name": "Norway",
+   "language": "no",
+   "ticker": "CAPT",
+   "yahoo_symbol": "CAPT.OL",
+   "tv_symbol": "OSL:CAPT",
+   "company": "Capital Tankers Corp.",
+   "industry": "Transportation",
+   "event_date": "2026-11-30",
+   "session": "bmo",
+   "session_unresolved": true,
+   "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+   "window": "close of the session before 2026-11-30 -> 2026-11-30 close",
+   "sealed_utc": "2026-11-27T14:39:38+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/CAPT.OL?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Oslo Bors NewsWeb (true day query, ticker-keyed, categorised)"
+   },
+   "tape": {
+    "spot": 175.04,
+    "currency": "NOK",
+    "run_up_20d_pct": -15.38,
+    "run_up_5d_pct": 6.55,
+    "run_up_60d_pct": 1.21,
+    "median_turnover_usd_20d": 3806038,
+    "realised_vol_20d_pct": 42.4,
+    "realised_vol_60d_pct": 40.97,
+    "bars_3y": 157
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/CAPT.OL?modules=earningsHistory%2CfinancialData",
+    "quarters": [
+     {
+      "period_end": "2026-03-31",
+      "eps_actual": 1.94138,
+      "eps_estimate": 1.3165,
+      "surprise_pct": 0.4747
+     },
+     {
+      "period_end": "2026-06-30",
+      "eps_actual": 6.54214,
+      "eps_estimate": 6.539,
+      "surprise_pct": 0.0005
+     }
+    ],
+    "analyst_count": 3,
+    "analyst_band": "3-7",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 2,
+    "basis": "observed_newsweb",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=CAPT&fromDate=<-3y>&toDate=2026-11-30",
+    "median_abs_move_pct": 1.01,
+    "events": [
+     {
+      "move_pct": -0.63,
+      "date_used": "2026-05-26",
+      "headline": "CAPITAL TANKERS CORP. ANNOUNCES FIRST QUARTER 2026 FINANCIAL RESULTS",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -1.39,
+      "date_used": "2026-09-01",
+      "headline": "CAPITAL TANKERS CORP. ANNOUNCES SECOND QUARTER 2026 FINANCIAL RESULTS",
+      "basis": "observed_newsweb"
+     }
+    ],
+    "caveat": "Dates are REAL: each row is a results announcement the market's own archive records on that date, and the move is over this stage's own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) reach this state; the other eight markets are estimated.",
+    "scale_is_lower_bound": false
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Oslo Bors NewsWeb (true day query, ticker-keyed, categorised) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from a register that downloaded successfully, so no disclosed net short position at or above the 0.5% public threshold. A real zero -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0, and the join is on the issuer NAME, so a name spelled differently in the register reads as a zero it should not.",
+    "as_of": "2026-11-26",
+    "source": "https://ssr.finanstilsynet.no/api/v2/instruments"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 2.67,
+    "from_realised_vol_1d_pct": 2.67,
+    "from_history_median_pct": 1.01,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "runup": 0.769
+   },
+   "priced_lean_pct": 0.769,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": false,
+   "anchor_coverage": {
+    "state": "register_read_no_position",
+    "register": "Finanstilsynet SSR register (JSON, dated events per issuer)",
+    "as_of": "2026-11-26",
+    "source": "https://ssr.finanstilsynet.no/api/v2/instruments",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.15,
+    "anchor_state": "register_read_no_position",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "Yahoo earningsTrend: Q3 2026 EPS NOK 7.357 (1 analyst; 7.32 for 60 days, revised up in the last 7 days), revenue $138.9m; Q4 EPS NOK 5.733 (2 analysts, range 3.53-7.94). https://query1.finance.yahoo.com/v10/finance/quoteSummary/CAPT.OL?modules=earningsTrend. One analyst, not two agreeing sources, so the bar is weak and the reported-quarter finding is capped small. The company's own Q3 booking guide (Q2 release, 2026-09-01) is the real bar.",
+   "positioning_check": "Finanstilsynet SSR register read 2026-11-26 (https://ssr.finanstilsynet.no/api/v2/instruments): no disclosed net short at or above 0.5%, so it reads 0.0 with no change. This is the truncation floor, not a measurement (anchor_covered false), so priced_lean_pct (+0.77) is essentially the run-up term. The tape: -15.4% over 20 days, in line with the tanker sector selloff from 30 Oct (FRO.OL, OET.OL and DHT all fell 15-20%), then +6.6% over 5 days after Frontline's 20 Nov release.",
+   "already_public": [
+    {
+     "what": "Q3 2026 booking guide: 79% of 1,304 expected fleet days covered at $113,681/day (VLCC 100% at $97,450, Suezmax 71% at $130,239, Aframax/LR2 82% at $105,765)",
+     "date": "2026-09-01",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=681341"
+    },
+    {
+     "what": "Main-list prospectus: unaudited 30 Sep 2026 cash $356.3m and debt $698.8m; Q3 dividend of $43.3m paid in September; 'More recently, the spot market has softened versus recent highs'",
+     "date": "2026-11-24",
+     "source": "https://www.capitaltankers.com/files/pdf/CAPITAL_TANKERS_CORP_Prospectus.pdf"
+    },
+    {
+     "what": "M/T Amor on a 15-month time charter, revenue $73.1-82.2m (about $160-180k/day), commenced November 2026",
+     "date": "2026-11-06",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685839"
+    },
+    {
+     "what": "Fleet now 17 sailing vessels (1 VLCC, 8 Suezmax, 4 Aframax, 4 LR2) after the M/T Amor delivery; new financing for three VLCC newbuilds",
+     "date": "2026-10-20",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684362"
+    },
+    {
+     "what": "Release date 30 Nov 2026, conference call at 14:30 CET",
+     "date": "2026-11-23",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687233"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "reported_quarter",
+     "expect": "Q3 TCE at or slightly above the $113.7k/day booked rate. EPS around NOK 8-8.5 against the single-analyst NOK 7.36: a modest beat, mostly derivable from the company's own guide"
+    },
+    {
+     "line": "guidance",
+     "expect": "Q4-to-date booking update at a record, likely 2x Q3 or more on Suezmax and Aframax/LR2 (Frontline: Suezmax spot $324,300 at 69%, LR2/Aframax $190,800 at 68%). Up against the stale Yahoo Q4 EPS of NOK 5.73, but largely inferable from peers. CAPT reports discharge-to-discharge, so its figure will read lower than Frontline's load-to-discharge headline"
+    },
+    {
+     "line": "dividend",
+     "expect": "unknown. Payout rose from about 26% (Q1, NOK 0.50) to about 46% (Q2, NOK 3.00); a Q3 dividend around NOK 3.5-4.5 if the payout holds. Peers pay 90-100%, and CAPT has $1.46bn of newbuild capex ahead"
+    },
+    {
+     "line": "other",
+     "expect": "market outlook: likely constructive, but acknowledging the November correction from October peaks"
+    }
+   ],
+   "session_check": "bmo. Q1 and Q2 2026 results both hit Oslo NewsWeb at 05:30 UTC (07:30 CET), before the open (messageIds 674375 and 681341), and the 23 Nov schedule notice sets the results for 30 Nov with the call at 14:30 CET. https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=CAPT&fromDate=2025-01-01&toDate=2026-11-30 ; https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687233"
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CAPT.json",
+    "text": "The company's own Q3 booking guide (79% of 1,304 fleet days at $113,681/day, Suezmax at $130,239) implies Q3 EPS of about $0.87 (NOK 8.1 at the September USD/NOK of 9.3), even if the open 21% earned only the booked rate. That is about 10% above the single Yahoo estimate of NOK 7.36.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=681341",
+    "source_date": "2026-09-01",
+    "reaction_history_on_this_line": "Q1 2026 beat Yahoo's estimate by 47% and the stock moved -0.63%; Q2 matched and it moved -1.39% (baseline history, observed NewsWeb dates). Beats have not been bought, on n=2.",
+    "why_not_priced": "Largely priced: the guide is public and anyone modelling the name can derive this. What remains unpriced is only the gap to a single stale Yahoo estimate. If the market had held a higher bar, that estimate would have been revised up more than 0.5% since the guide; it moved 7.32 to 7.36. Sized near zero because it lands inside what the company guided.",
+    "independence": "Q3 operating cash generation looks strong: per the main-list prospectus, cash at 30 Sep 2026 ($356.3m) was flat on 30 Jun ($356.7m) despite a $43.3m dividend and three deliveries (https://www.capitaltankers.com/files/pdf/CAPITAL_TANKERS_CORP_Prospectus.pdf). Debt also rose $175m, so this is weak.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CAPT.json",
+    "text": "The Q4-to-date booking update should be a record and far above the stale Yahoo Q4 EPS of NOK 5.73 (range 3.53-7.94), which sits BELOW the Q3 estimate. Frontline's 20 Nov release shows Q4 contracted Suezmax spot at $324,300/day (69%) and LR2/Aframax at $190,800 (68%), against Q3 achieved of $102,500 and $67,800. CAPT's fleet is 8 Suezmax and 8 Aframax/LR2.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687036",
+    "source_date": "2026-11-20",
+    "reaction_history_on_this_line": "CAPT's Q2 booking update (Q3 79% at $113.7k, about flat on Q2's $116.3k) was met with -1.39%. Peers' Q4 booking disclosures this month: Okeanis (11 Nov, after close) -1.9% the next session, Frontline (20 Nov, bmo) +2.1%, Hafnia (18 Nov) -2.7%.",
+    "why_not_priced": "Partly priced: the sector's Q4 rates are public through peers, and CAPT rose 6.6% in the five sessions after Frontline's release. What is not priced is the CAPT-specific number on thin coverage (3 analysts, $3.8m/day of turnover). The Yahoo Q4 estimate implies earnings falling quarter on quarter, and the stock trades at NOK 175 against targets of NOK 226-290. If the market held a Q4 near 2x Q3, the estimates would show it. Cut for proxy transmission (peer to company), for discharge-to-discharge accounting that will print below Frontline's headline, and for the November correction weighing on the open ~30% of days.",
+    "independence": "Okeanis Q3 release (11 Nov): Q4 Suezmax 60% booked at $410,900/day, VLCC spot 48% at $688,800 (https://finviz.com/news/421240/okeanis-eco-tankers-corp-unaudited-condensed-financial-results-for-the-third-quarter-and-nine-month-period-of-2026). CAPT's own M/T Amor 15-month charter at about $160-180k/day (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685839).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CAPT.json",
+    "text": "Rates corrected sharply in early November. Kpler (6 Nov) measured Suezmax WAF-UKC down 40% in a week ($18.27 to $11.01/bbl) and Aframax USG-UKC from $20.75 to $11.71/bbl. CAPT's own prospectus (24 Nov) says 'More recently, the spot market has softened versus recent highs', so the open Q4 days and the outlook commentary carry downside.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.kpler.com/blog/plunging-atlantic-rates-reprice-midsizes-into-west-east-trades",
+    "source_date": "2026-11-06",
+    "reaction_history_on_this_line": "No CAPT print has carried a softening outlook. The sector fell 15-20% from 30 Oct to mid-November on the correction.",
+    "why_not_priced": "Mostly priced: the 20-day -15.4% matches the peers' drop from the 30 Oct peak. What remains is only the chance that management's outlook makes the November softening explicit on the call. Kpler expected rates to level off and rebound, which limits it.",
+    "independence": "Prospectus section 10.2, 24 Nov 2026: 'More recently, the spot market has softened versus recent highs' (https://www.capitaltankers.com/files/pdf/CAPITAL_TANKERS_CORP_Prospectus.pdf). Okeanis management said rates 'had corrected from October peaks' (https://quartr.com/events/okeanis-eco-tankers-oet-q3-2026_3sH2c95u, an AI summary, snippet-grade).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CAPT.json",
+    "text": "The dividend payout is set against $1.46bn of remaining newbuild capex ($948m of it in 2027), which the prospectus says will be funded partly from operating cash flow. A Q3 payout near the Q2 ~46% (vs 90-100% at Frontline and Okeanis) is the likely outcome, which leaves the dividend line no better than neutral.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.capitaltankers.com/files/pdf/CAPITAL_TANKERS_CORP_Prospectus.pdf",
+    "source_date": "2026-11-24",
+    "reaction_history_on_this_line": "Q2's step-up from NOK 0.50 to 3.00 was announced alongside a -1.39% day.",
+    "why_not_priced": "The payout policy is only 'a portion of Ordinary Net Income' (prospectus section 5.1), so the level is genuinely new on the day. The size is small because a payout around half is what the Q1-Q2 trend already shows.",
+    "independence": "Frontline paid out 100% of adjusted EPS ($2.38/share) and Okeanis $7.00 on $7.67 for Q3 (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687036 ; https://finviz.com/news/421240/okeanis-eco-tankers-corp-unaudited-condensed-financial-results-for-the-third-quarter-and-nine-month-period-of-2026).",
+    "i": 3
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CAPT.json",
+    "text": "Main-list transfer to Euronext Oslo Børs (25 Nov) widens the investor base",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687346",
+    "first_hunter_reason": "outside_window",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CAPT.json",
+    "text": "M/T Amor 15-month time charter at about $160-180k/day as a standalone positive",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685839",
+    "first_hunter_reason": "duplicate",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CAPT.json",
+    "text": "Profit warning or ad hoc release (resultatvarsel / innsideinformasjon) on Oslo NewsWeb since the Q2 release: none. The only inside-information filing is the 15 Jun VLCC acquisition",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CAPT.json",
+    "text": "Insider trades (meldepliktig handel) since June 2026: none",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CAPT.json",
+    "text": "Norwegian press: e24 search for 'capital tankers' returned no articles; finansavisen.no search looped on redirects (curl 47); a Norwegian-language web search for Q3 expectations, Pareto/Arctic previews and dividend returned only aggregators",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CAPT.json",
+    "text": "Frontline Q3 2026 via web search: not indexed; found instead through NewsWeb messageId 687036",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CAPT.json",
+    "text": "Index inclusion after the main-list transfer: no dated OSEBX review or inclusion notice found",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CAPT.json",
+    "text": "Yahoo quoteSummary: works only with the crumb passed as a query parameter",
+    "i": 11
+   }
+  ]
+ },
+ {
+  "id": "eu/2026-11-30/EAH",
+  "hunter_definition": ".claude/agents/unpriced-hunter-uk.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "uk",
+   "submarket_name": "United Kingdom",
+   "language": "en",
+   "ticker": "EAH",
+   "yahoo_symbol": "EAH.L",
+   "tv_symbol": "LSE:EAH",
+   "company": "Eco Animal Health Group PLC",
+   "industry": "Health Technology",
+   "event_date": "2026-11-30",
+   "session": "bmo",
+   "session_unresolved": false,
+   "session_basis": "vendor flag -1",
+   "window": "close of the session before 2026-11-30 -> 2026-11-30 close",
+   "sealed_utc": "2026-11-27T14:39:42+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/EAH.L?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Investegate (RNS mirror)"
+   },
+   "tape": {
+    "spot": 76.448,
+    "currency": "GBp",
+    "run_up_20d_pct": -19.95,
+    "run_up_5d_pct": -7.89,
+    "run_up_60d_pct": -21.99,
+    "median_turnover_usd_20d": 106641,
+    "realised_vol_20d_pct": 56.6,
+    "realised_vol_60d_pct": 38.04,
+    "bars_3y": 761
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/EAH.L?modules=earningsHistory%2CfinancialData",
+    "quarters": [],
+    "analyst_count": 5,
+    "analyst_band": "3-7",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 11,
+    "basis": "observed_rns",
+    "source": "https://www.investegate.co.uk/company/EAH",
+    "median_abs_move_pct": 6.22,
+    "events": [
+     {
+      "move_pct": 2.92,
+      "date_used": "2024-03-21",
+      "headline": "Replacement: Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 9.04,
+      "date_used": "2024-04-25",
+      "headline": "Trading Update on year ended 31 March 2024",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 0.0,
+      "date_used": "2024-07-12",
+      "headline": "Investor Presentation covering Full Year Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -1.57,
+      "date_used": "2024-07-15",
+      "headline": "Final Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -21.65,
+      "date_used": "2024-10-01",
+      "headline": "Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 9.16,
+      "date_used": "2024-11-28",
+      "headline": "Results for the Six Months Ended 30 September 2024",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 12.15,
+      "date_used": "2025-04-24",
+      "headline": "Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 7.89,
+      "date_used": "2025-07-14",
+      "headline": "Results for the year ended 31 March 2025",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 4.26,
+      "date_used": "2025-12-01",
+      "headline": "Results for the six months ended 30 September 2025",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 6.22,
+      "date_used": "2026-03-19",
+      "headline": "Full Year Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 2.91,
+      "date_used": "2026-07-15",
+      "headline": "Results for the year ended 31 March 2026",
+      "basis": "observed_rns"
+     }
+    ],
+    "caveat": "Dates are REAL: each row is a results announcement the market's own archive records on that date, and the move is over this stage's own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) reach this state; the other eight markets are estimated.",
+    "scale_is_lower_bound": false
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Investegate (RNS mirror) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from a register that downloaded successfully, so no disclosed net short position at or above the 0.5% public threshold. A real zero -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0, and the join is on the issuer NAME, so a name spelled differently in the register reads as a zero it should not.",
+    "as_of": "2026-11-26",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 6.22,
+    "from_realised_vol_1d_pct": 3.57,
+    "from_history_median_pct": 6.22,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "runup": 0.998
+   },
+   "priced_lean_pct": 0.998,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": false,
+   "anchor_coverage": {
+    "state": "register_read_no_position",
+    "register": "FCA aggregated net short positions",
+    "as_of": "2026-11-26",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.15,
+    "anchor_state": "register_read_no_position",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "Company-sourced FY27 consensus as at 5 Nov 2026: revenue £89.6m, adj. EBITDA £8.5m, EPS 3.30p, per footnote 1 of the 6 Nov RNS. The company itself says revenue will fall short of it. Today's H1 bar is the company's own pre-release (revenue £33m, EBITDA c.£3.0m): https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/trading-update-and-notice-of-interim-results/9861465",
+   "positioning_check": "No disclosed net short position at or above 0.5% on the FCA aggregated register as at 2026-11-26. This is the truncation floor and not a measurement; anchor_covered is false, so there is no positioning anchor, and priced_lean_pct (+1.0) is purely the -20% 20-day run-up. A disclosed long seller exists: Soros Fund Management cut from 9.77% to 8.97% on 7 Oct 2026 (TR-1, 8 Oct), with heavy volume on 6-7 Oct (1.9m and 1.1m shares).",
+   "already_public": [
+    {
+     "what": "H1 FY27 pre-released: revenue £33m (H1 25: £39m), ex-China growth 6%, S&SE Asia >50%, gross margin c.52%, adj. EBITDA c.£3.0m, cash £24m. FY27 revenue below the £89.6m consensus; adj. EBITDA (£8.5m consensus) and EPS (3.30p) 'broadly in line'; China and Japan full-year revenue under half of FY26 (£24.1m). Interims date of 30 Nov given in the same RNS",
+     "date": "2026-11-06",
+     "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/trading-update-and-notice-of-interim-results/9861465"
+    },
+    {
+     "what": "Capital Markets Day: risk-adjusted SOTP of c.£100m for ECOVAXXIN MS plus the R&D portfolio, and £0-100m for PRRSvmAb depending on a near-term trial",
+     "date": "2026-11-11",
+     "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/capital-markets-day/9868867"
+    },
+    {
+     "what": "ECOVAXXIN MG EU marketing authorisation application submitted to the EMA",
+     "date": "2026-11-11",
+     "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/ecovaxxin-mg-marketing-authorisation-application/9868943"
+    },
+    {
+     "what": "New Aivlosin authorisations (Paraguay, Honduras) and import permits (Saudi Arabia, Oman), with sales already begun",
+     "date": "2026-11-18",
+     "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/new-aivlosin-marketing-authorisations/9880581"
+    },
+    {
+     "what": "US marketing approval for ECOVAXXIN MS expected by the end of calendar 2026, repeated in the FY26 results and the September RNS",
+     "date": "2026-09-17",
+     "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/usda-cvb-approves-ecovaxxin-ms-field-safety-data/9776307"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "guidance",
+     "expect": "Most likely the 6 Nov wording is reiterated (EBITDA and EPS broadly in line, revenue below). Some risk of a softer China H2, given hog prices at new lows in November. A cut from a guide given 24 days earlier is less likely than a reiteration"
+    },
+    {
+     "line": "h2_trading",
+     "expect": "Oct-Nov trading in China, and whether the seasonal pick-up the Board expects has appeared. Unknown; the independent price series leans negative"
+    },
+    {
+     "line": "other",
+     "expect": "ECOVAXXIN MS: early EU sales numbers and the US approval timing (guided end of calendar 2026). A slip would be negative, a confirmation mildly positive. Direction unknown"
+    },
+    {
+     "line": "cash_flow",
+     "expect": "Cash of £24m was already disclosed. The split of cash held in China, and any repatriation, is unknown"
+    },
+    {
+     "line": "dividend",
+     "expect": "None expected; no dividend for FY26 and a reinvestment policy"
+    }
+   ],
+   "session_check": "bmo. The 6 Nov RNS names 30 November 2026 as the interims date, and every EAH results RNS on record was released at 07:00 London (1 Dec 2025, 15 Jul 2026), so this is a convention and not a timestamp for 30 Nov: https://www.investegate.co.uk/company/EAH"
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "EAH.json",
+    "text": "China's national DLY live hog price fell to a new cycle low of CNY 8.60/kg on 6 Nov 2026, below April's 8.67. Mysteel expects sideways-to-lower prices through December. This cuts against the Board's 6 Nov assumption that China revenue improves in H2, which the reiterated full-year EBITDA guide depends on: H2 must make c.£5.5m EBITDA, flat on H2 FY26, with China down by roughly half.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.mysteel.net/analysis/5148229-hog-prices-to-stay-low-as-strong-supply-weak-demand-persist",
+    "source_date": "2026-11-10",
+    "reaction_history_on_this_line": "China-driven guidance cuts have hit this stock hard: -21.65% on the 1 Oct 2024 trading update and -12.1% on the 6 Nov 2026 update",
+    "why_not_priced": "The 6 Nov RNS used MARA wholesale pork prices only to 1 Nov and framed them as recovering from the June low. The live-hog new low came after the RNS. If the market had fully priced a China H2 miss, the shares would trade near an EBITDA-cut valuation. The 8.4% post-update drift is consistent with partial pricing, which is why this is sized small. It is macro-to-company transmission, and the company has not said it.",
+    "independence": "Trading Economics' November 2026 China food CPI update has pork still -10% y/y (https://tradingeconomics.com/china/food-inflation/news/599316, search snippet only). The company's own week-to-1-Nov wholesale figure, -13.8% y/y and 6% below the September peak, is in the 6 Nov RNS.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "EAH.json",
+    "text": "Since absorbing the 6 Nov warning (83.5p close), the shares have slid to 76.45p (-8.4%) on thin volume. The only RNS since were two positives: the ECOVAXXIN MG EU filing and the Aivlosin Saudi/Oman sales start. A reiteration of the 6 Nov EBITDA/EPS guide on 30 Nov therefore lands on a lower price than the one that priced it.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/EAH.L?range=3mo&interval=1d",
+    "source_date": "2026-11-27",
+    "reaction_history_on_this_line": "Interims that followed a China warning rose: +9.16% on 28 Nov 2024 after the -21.65% warning of 1 Oct 2024; last year's interims +4.26% (1 Dec 2025)",
+    "why_not_priced": "A reiteration is what the company already guided, so this is sized near zero. The only thing not priced is that the price fell after the guide without any new company-level news. Had the market believed the guide, the shares would have held around 83p.",
+    "independence": "The precedent comes from the baseline's observed RNS reaction history (https://www.investegate.co.uk/company/EAH). No different source points the same way.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "EAH.json",
+    "text": "Soros Fund Management, the largest disclosed hedge-fund holder, cut its stake from 9.77% to 8.97% (6.08m shares) on 7 Oct 2026. It may still be selling into any results-day bounce; its next TR-1 threshold is 8%.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/holding-s-in-company/9814407",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "No prior instance on this name",
+    "why_not_priced": "Public for seven weeks and partly in the post-warning drift. Whether the seller is finished is unknown; a further TR-1 below 8% would say so. Small.",
+    "independence": "Volume of 1.9m and 1.1m shares on 6-7 Oct against a typical 50-100k (Yahoo tape).",
+    "i": 2
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "EAH.json",
+    "text": "PRRSvmAb proof-of-concept trial 'completing in the near term', with an indicative £0-100m valuation range against a ~£52m market cap. A readout would move the stock a lot, but nothing dates it inside the 30 Nov window",
+    "resolves_by": "2027-03-31",
+    "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/capital-markets-day/9868867",
+    "i": 3
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "EAH.json",
+    "text": "ECOVAXXIN MS US marketing approval, guided by end of calendar 2026; it may come by separate RNS after 30 Nov",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/usda-cvb-approves-ecovaxxin-ms-field-safety-data/9776307",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "EAH.json",
+    "text": "Equity Development Oct 2024 note cutting FY25 revenue 7% and EBITDA 10%",
+    "source": "https://www.voxmarkets.com/articles/eco-animal-health-equity-development-007c5b8/",
+    "first_hunter_reason": "outside_window",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "EAH.json",
+    "text": "H1 revenue £33m, EBITDA c.£3.0m and gross margin c.52% as a reported-period finding",
+    "source": "https://www.investegate.co.uk/announcement/rns/eco-animal-health-group--eah/trading-update-and-notice-of-interim-results/9861465",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "EAH.json",
+    "text": "Company IR site (ecoanimalhealth.com) for the CMD slides: Cloudflare block, unreadable",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "EAH.json",
+    "text": "Equity Development / Research Tree note after the 6 Nov update: research-tree.com 403; the Vox Markets ED item found is from Oct 2024, not current",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "EAH.json",
+    "text": "Broker forecast changes after the 6 Nov update: none found; the Stockopedia piece of 6 Nov gives only consensus and its own rating cut",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "EAH.json",
+    "text": "Director/PDMR dealings after the 6 Nov update: none on Investegate",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "EAH.json",
+    "text": "Late-November 2026 China hog or MARA wholesale pork price: no figure after 6-10 Nov found",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "EAH.json",
+    "text": "Sharecast, Proactive, Investors' Chronicle: 403 by definition, not retried",
+    "i": 12
+   }
+  ]
+ },
+ {
+  "id": "eu/2026-11-30/NORSE",
+  "hunter_definition": ".claude/agents/unpriced-hunter-nordic.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "no",
+   "submarket_name": "Norway",
+   "language": "no",
+   "ticker": "NORSE",
+   "yahoo_symbol": "NORSE.OL",
+   "tv_symbol": "OSL:NORSE",
+   "company": "Norse Atlantic ASA",
+   "industry": "Transportation",
+   "event_date": "2026-11-30",
+   "session": "bmo",
+   "session_unresolved": false,
+   "session_basis": "vendor flag -1",
+   "window": "close of the session before 2026-11-30 -> 2026-11-30 close",
+   "sealed_utc": "2026-11-27T14:39:40+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/NORSE.OL?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Oslo Bors NewsWeb (true day query, ticker-keyed, categorised)"
+   },
+   "tape": {
+    "spot": 0.0115,
+    "currency": "NOK",
+    "run_up_20d_pct": -94.81,
+    "run_up_5d_pct": -95.09,
+    "run_up_60d_pct": -96.09,
+    "median_turnover_usd_20d": 266204,
+    "realised_vol_20d_pct": 366.77,
+    "realised_vol_60d_pct": 220.05,
+    "bars_3y": 753
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/NORSE.OL?modules=earningsHistory%2CfinancialData",
+    "quarters": [
+     {
+      "period_end": "2025-09-30",
+      "eps_actual": -0.05,
+      "eps_estimate": 0.20668,
+      "surprise_pct": -1.2419
+     },
+     {
+      "period_end": "2025-12-31",
+      "eps_actual": -0.63,
+      "eps_estimate": -0.20605,
+      "surprise_pct": -2.0575
+     },
+     {
+      "period_end": "2026-03-31",
+      "eps_actual": -0.15,
+      "eps_estimate": -0.22347,
+      "surprise_pct": 0.32880002
+     },
+     {
+      "period_end": "2026-06-30",
+      "eps_actual": -0.192,
+      "eps_estimate": -0.00458,
+      "surprise_pct": -40.9214
+     }
+    ],
+    "analyst_count": 1,
+    "analyst_band": "<=2",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 13,
+    "basis": "observed_newsweb",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=NORSE&fromDate=<-3y>&toDate=2026-11-30",
+    "median_abs_move_pct": 3.88,
+    "events": [
+     {
+      "move_pct": -3.88,
+      "date_used": "2024-01-24",
+      "headline": "Norse Atlantic ASA: Preliminary results of the subsequent offering",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": 0.18,
+      "date_used": "2024-01-25",
+      "headline": "Norse Atlantic ASA: Final results of subsequent offering and allocation of share",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -22.27,
+      "date_used": "2024-02-28",
+      "headline": "Norse Atlantic ASA: Q4 2023 Successful completion of first full year of operatio",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -1.21,
+      "date_used": "2024-04-12",
+      "headline": "Norse Atlantic ASA - Annual report for 2023",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -3.33,
+      "date_used": "2024-05-14",
+      "headline": "Norse Atlantic ASA: Q1 2024 demonstrating substantial year-on-year improvements ",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -43.01,
+      "date_used": "2024-07-02",
+      "headline": "Norse Atlantic Airways: Trading update and presentation for investor update 2 Ju",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -21.2,
+      "date_used": "2024-08-28",
+      "headline": "Norse Atlantic ASA: Q2 2024 Strong year-on-year passenger growth and reduced uni",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": 9.23,
+      "date_used": "2024-11-29",
+      "headline": "Norse Atlantic ASA: Q3 2024 Another quarter of strong year-on-year passenger gro",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -0.56,
+      "date_used": "2025-02-26",
+      "headline": "Norse Atlantic ASA: Load factors at record heights and dual ACMI/network strateg",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -3.35,
+      "date_used": "2025-04-30",
+      "headline": "Norse Atlantic ASA - Annual report for 2024",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -6.56,
+      "date_used": "2025-08-19",
+      "headline": "Norse Atlantic ASA: Stronger financial performance driven by record load factor ",
+      "basis": "observed_newsweb"
+     },
+     {
+      "move_pct": -0.35,
+      "date_used": "2026-04-30",
+      "headline": "Norse Atlantic ASA - Annual Report for 2025 (ESEF)",
+      "basis": "observed_newsweb"
+     }
+    ],
+    "caveat": "Dates are REAL: each row is a results announcement the market's own archive records on that date, and the move is over this stage's own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) reach this state; the other eight markets are estimated.",
+    "scale_is_lower_bound": false
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Oslo Bors NewsWeb (true day query, ticker-keyed, categorised) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "change_window_days": 10,
+    "change_reference_date": "2026-11-17",
+    "disclosed_sellers": 0,
+    "isin": "NO0012885252",
+    "position_date": "2026-06-30",
+    "issuer_as_published": "NORSE ATLANTIC ASA",
+    "stale_cache_days": null,
+    "covered": true,
+    "as_of": "2026-11-26",
+    "source": "https://ssr.finanstilsynet.no/api/v2/instruments",
+    "basis": "sum of disclosed net short positions at or above 0.5% of shares outstanding, as published by the national regulator"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 23.1,
+    "from_realised_vol_1d_pct": 23.1,
+    "from_history_median_pct": 3.88,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "runup": 4.74
+   },
+   "priced_lean_pct": 4.74,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": false,
+   "anchor_coverage": {
+    "state": "register_read_no_position",
+    "register": "Finanstilsynet SSR register (JSON, dated events per issuer)",
+    "as_of": "2026-11-26",
+    "source": "https://ssr.finanstilsynet.no/api/v2/instruments",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.15,
+    "anchor_state": "register_read_no_position",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "unsourced: baseline carries one analyst (Yahoo) with no Q3 2026 estimate; print_vs_bar_pct is a direction guess capped in weight, and no finding rests on an EPS bar",
+   "positioning_check": "Finanstilsynet SSR register read 2026-11-26: 0.0% disclosed net short, unchanged over 10 days, last position_date 2026-06-30 (https://ssr.finanstilsynet.no/api/v2/instruments). anchor_covered false: a truncated zero, not evidence nobody is short; in practice borrow on a 0.01 NOK Recovery Box stock is negligible, so there is no squeeze fuel. Flow is retail: 676m, 508m and 825m shares traded on 25-27 Nov.",
+   "already_public": [
+    {
+     "what": "Financial situation 'critical', dependent on short-term financing; takeover talks; Oslo Børs places NORSE in Recovery Box",
+     "date": "2026-11-25",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687359"
+    },
+    {
+     "what": "All flights suspended; board intends to file for bankruptcy if short-term financing not secured; bondholder meeting on the Norse Atlantic Airways AS 15% senior secured USD 52m bond",
+     "date": "2026-11-26",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687463"
+    },
+    {
+     "what": "Lessors served termination notices on all 12 aircraft leases (company contests)",
+     "date": "2026-11-27",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687622"
+    },
+    {
+     "what": "Norwegian operating subsidiary Norse Atlantic Airways AS files bankruptcy petition at Agder District Court; all flights cancelled, ticket sales stopped; ASA and UK subsidiary not part of the filing",
+     "date": "2026-11-27",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687671"
+    },
+    {
+     "what": "Monthly traffic for July-October (unit revenue growth) already published, so Q3 revenue lines are largely pre-released",
+     "date": "2026-10-07",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683667"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "other",
+     "expect": "Status of the listed parent (insolvency filing, restructuring, or a takeover/financing for the UK business) - the line the stock trades on; more likely negative"
+    },
+    {
+     "line": "reported_quarter",
+     "expect": "Q3 2026 accounts, if published at all: likely loss, going-concern language and impairments; noise next to the solvency news"
+    },
+    {
+     "line": "guidance",
+     "expect": "No guide expected (2026 guidance was suspended in April 2026); unknown"
+    },
+    {
+     "line": "cash_flow",
+     "expect": "Q3 closing liquidity will show how little cash was left; already implied by the collapse"
+    }
+   ],
+   "session_check": "bmo: issuer's financial calendar (published 2026-11-20 16:01 UTC) lists 30.11.2026 Quarterly Report Q3, and the Q1 and Q2 2026 reports went out at 05:00 UTC (NewsWeb 674063, 680250), before the Oslo open. https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687104 . Caveat: the calendar entry predates the 25-27 Nov collapse and was not withdrawn as of 13:00 UTC 27 Nov; postponement of the report is a real possibility, but the stock trades the window regardless."
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NORSE.json",
+    "text": "The listed parent's own solvency is unresolved and its 27 Nov release signals that it is next: the operating subsidiary is bankrupt, all 12 leases are terminated, November wages went unpaid, and 'alternatives are currently being considered involving the Company and selected subsidiaries', so a parent insolvency or restructuring step that wipes or dilutes equity is the likeliest decisive news inside the window.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687671",
+    "source_date": "2026-11-27T13:00:11Z",
+    "reaction_history_on_this_line": "Solvency news in this run: -85% on 25 Nov (critical-financing release), -13% on 26 Nov (suspension of flights), about -59% intraday 27 Nov (lease terminations and subsidiary bankruptcy); the July 2024 trading update moved -43%.",
+    "why_not_priced": "The Friday-close price (~0.011 NOK) still values the equity above zero and is set by retail flow in a Recovery Box; if the parent's insolvency were priced the stock would be suspended or trading at the tick floor. English wires had not reported the subsidiary bankruptcy at the time of the search; only Norwegian press (e24) had.",
+    "independence": "e24 reports unpaid wages and the pilots' union confirming it, a different source from the company releases: https://e24.no/i/5309R6/norse-har-ikke-betalt-loenn-til-ansatte ; lease terminations reported separately by e24: https://e24.no/i/0vn29B/norse-leasingselskaper-avslutter-leieavtaler-for-alle-selskapets-fly",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NORSE.json",
+    "text": "Upside tail: the company is in talks with investors about a takeover that 'would include a financing solution', JP Morgan is engaged, and the parent and its UK subsidiary (which e24 says operates the last five aircraft) are 'working to find a solution for the remaining part of the business to continue operations'; any announced deal in the window would pop a lottery-priced stock, but equity ranks behind the USD 52m 15% senior secured bond and the lessors.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687463",
+    "source_date": "2026-11-26T07:50:45Z",
+    "reaction_history_on_this_line": "Strategic-review/takeover headlines earlier in 2026 did not lift the stock durably; the 9 Nov session ran +10% intraday on volume with no release; the June 2026 rights issue and bond conversion closed -5.8%.",
+    "why_not_priced": "A rescue would be new information; the price holds a small option on it, not the outcome. Sized small because the money in any deal goes to the secured bond, the lessors and the bankrupt estate before the ASA shareholders; the 27 Nov release talks about preserving value for 'involved stakeholders', not shareholders.",
+    "independence": "e24 on JP Morgan engagement and takeover talks: https://e24.no/i/5309R6/norse-har-ikke-betalt-loenn-til-ansatte ; e24 on the UK subsidiary continuing: https://e24.no/i/mMRJB4/flyselskapet-norse-slaar-driftsselskap-konkurs",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "NORSE.json",
+    "text": "The Q3 report scheduled for 30 Nov (calendar published 20 Nov, before the collapse) will, if it comes, carry accounts for a business that has since lost its operating company and fleet, likely with going-concern language and impairments; if it is postponed, that is itself a sign that the parent is heading for a filing.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-30",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687104",
+    "source_date": "2026-11-20T16:01:45Z",
+    "reaction_history_on_this_line": "Results days: -22% (Q4 2023), -21% (Q2 2024), +9% (Q3 2024), -6.6% (Q2 2025); median 3.9% across 13 announcement days.",
+    "why_not_priced": "Mostly priced: the collapse makes Q3 numbers secondary [sizing note removed]. What is unpriced is only whether the report formally confirms the parent cannot continue.",
+    "independence": "none",
+    "i": 2
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "NORSE.json",
+    "text": "Outcome of the bankruptcy estate's handling of the Norwegian subsidiary and the lessors' repossession of the 12 aircraft (contested terminations); trustee appointed by Agder District Court",
+    "resolves_by": "2026-12-31",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=687671",
+    "i": 3
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "NORSE.json",
+    "text": "Luftfartstilsynet coercive fine on Norse for unpaid passenger claims",
+    "source": "https://e24.no/i/oMpq0a/luftfartstilsynet-gir-norse-tvangsmulkt-for-manglende-betaling-av-oekonomiske-krav-til-passasjerene",
+    "first_hunter_reason": "duplicate",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "NORSE.json",
+    "text": "Strong commercial updates (record unit revenue July, double-digit unit revenue growth October)",
+    "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685845",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NORSE.json",
+    "text": "English web search for a Norse bankruptcy or UK subsidiary takeover: returned only August 2026 sale-process coverage; English wires had not caught up with 27 Nov",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NORSE.json",
+    "text": "English web search for Norse UK / Gatwick operations status: only older route-cut stories",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NORSE.json",
+    "text": "NewsWeb after 13:00 UTC 27 Nov: no further release (no postponement of the Q3 report, no parent filing, no deal)",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NORSE.json",
+    "text": "Short register: nothing disclosed; no short-building signal",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "NORSE.json",
+    "text": "Bond terms (whether Norse Atlantic ASA guarantees the Norse Atlantic Airways AS USD 52m bond) not found in the Q2 release text searched",
+    "i": 10
+   }
+  ]
+ },
+ {
+  "id": "eu/2026-11-30/SIVE",
+  "hunter_definition": ".claude/agents/unpriced-hunter-nordic.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "se",
+   "submarket_name": "Sweden",
+   "language": "sv",
+   "ticker": "SIVE",
+   "yahoo_symbol": "SIVE.ST",
+   "tv_symbol": "OMXSTO:SIVE",
+   "company": "Sivers Semiconductors AB",
+   "industry": "Electronic Technology",
+   "event_date": "2026-11-30",
+   "session": "amc",
+   "session_unresolved": false,
+   "session_basis": "vendor flag 1",
+   "window": "2026-11-30 close -> next close",
+   "sealed_utc": "2026-11-27T14:39:41+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/SIVE.ST?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)"
+   },
+   "tape": {
+    "spot": 12.23,
+    "currency": "SEK",
+    "run_up_20d_pct": -41.48,
+    "run_up_5d_pct": 7.19,
+    "run_up_60d_pct": -55.14,
+    "median_turnover_usd_20d": 12328684,
+    "realised_vol_20d_pct": 142.56,
+    "realised_vol_60d_pct": 106.54,
+    "bars_3y": 753
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/SIVE.ST?modules=earningsHistory%2CfinancialData",
+    "quarters": [
+     {
+      "period_end": "2025-09-30",
+      "eps_actual": -0.1501,
+      "eps_estimate": -0.12,
+      "surprise_pct": -0.2508
+     },
+     {
+      "period_end": "2025-12-31",
+      "eps_actual": -0.042,
+      "eps_estimate": -0.115,
+      "surprise_pct": 0.6348
+     },
+     {
+      "period_end": "2026-03-31",
+      "eps_actual": -0.122,
+      "eps_estimate": -0.1,
+      "surprise_pct": -0.22
+     },
+     {
+      "period_end": "2026-06-30",
+      "eps_actual": -0.1807,
+      "eps_estimate": -0.1,
+      "surprise_pct": -0.807
+     }
+    ],
+    "analyst_count": 2,
+    "analyst_band": "<=2",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 11,
+    "basis": "estimated_from_cadence",
+    "source": "TradingView last/next release dates, stepped backwards",
+    "median_abs_move_pct": 3.87,
+    "events": [
+     {
+      "move_pct": 1.89,
+      "date_used": "2024-01-18",
+      "date_estimated": "2024-01-20",
+      "days_from_estimate": -2,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 7.3,
+      "date_used": "2024-04-22",
+      "date_estimated": "2024-04-24",
+      "days_from_estimate": -2,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": -1.77,
+      "date_used": "2024-07-30",
+      "date_estimated": "2024-07-28",
+      "days_from_estimate": 2,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": -2.76,
+      "date_used": "2024-11-04",
+      "date_estimated": "2024-10-31",
+      "days_from_estimate": 4,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 5.96,
+      "date_used": "2025-01-30",
+      "date_estimated": "2025-02-03",
+      "days_from_estimate": -4,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 8.11,
+      "date_used": "2025-05-13",
+      "date_estimated": "2025-05-09",
+      "days_from_estimate": 4,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": -3.07,
+      "date_used": "2025-08-11",
+      "date_estimated": "2025-08-12",
+      "days_from_estimate": -1,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": -1.94,
+      "date_used": "2025-11-18",
+      "date_estimated": "2025-11-15",
+      "days_from_estimate": 3,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 3.87,
+      "date_used": "2026-02-19",
+      "date_estimated": "2026-02-18",
+      "days_from_estimate": 1,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 23.45,
+      "date_used": "2026-05-22",
+      "date_estimated": "2026-05-24",
+      "days_from_estimate": -2,
+      "basis": "estimated"
+     },
+     {
+      "move_pct": -24.45,
+      "date_used": "2026-08-28",
+      "date_estimated": "2026-08-27",
+      "days_from_estimate": 1,
+      "basis": "estimated"
+     }
+    ],
+    "caveat": "Dates are ESTIMATED by stepping the measured cadence gap backwards from the vendor's last release date; the move is the largest within +/-2 trading days of that estimate. A cadence prior, not a record that a print happened on that date. Use it as a SCALE for how far this name travels, never as evidence about a particular past date -- TRT was ranked, traded and never reported on exactly this mistake. AND THE SCALE IS BIASED LOW: most estimated dates land on ordinary sessions, so this median is ordinary-session volatility and not event volatility. Treat it as a LOWER BOUND on how far this name m…",
+    "scale_is_lower_bound": true
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 7.41,
+    "short_ratio_prev_pct": 7.29,
+    "short_change_pct_pts": 0.12,
+    "disclosed_sellers": null,
+    "isin": null,
+    "lei": "254900UBKNY2EJ588J53",
+    "position_date": "2026-11-26",
+    "issuer_as_published": "Sivers Semiconductors AB",
+    "stale_cache_days": null,
+    "covered": true,
+    "as_of": "2026-11-27",
+    "source": "https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/",
+    "basis": "sum of disclosed net short positions at or above 0.5% of shares outstanding, as published by the national regulator"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 8.98,
+    "from_realised_vol_1d_pct": 8.98,
+    "from_history_median_pct": 3.87,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 3.0,
+    "short_building": -0.24,
+    "runup": 2.074
+   },
+   "priced_lean_pct": 4.834,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": true,
+   "anchor_coverage": {
+    "state": "disclosed",
+    "register": "Finansinspektionen aggregerade korta nettopositioner (ODS, snapshot; the date is when the level last changed)",
+    "as_of": "2026-11-27",
+    "source": "https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.35,
+    "direction": 0.45,
+    "anchor_state": "disclosed",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "Yahoo consensus EPS -0.10 for the September 2026 quarter, one estimate (https://query1.finance.yahoo.com/v10/finance/quoteSummary/SIVE.ST?modules=earningsHistory%2CfinancialData); Yahoo's Q2 'actual' of -0.18 disagrees with the company's -0.38, so the bar is effectively unsourced and every finding is capped small",
+   "positioning_check": "7.41% disclosed net short (FI aggregate, position_date 2026-11-26, prev 7.29%, +0.12pp, building slightly) per https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/; holders reported as quant funds (Arrowstreet 0.61%, GSA 0.81%, earlier Two Sigma, AQR, D E Shaw, Citadel) per https://www.boerse-global.de/sivers-semiconductors-aktie-vertriebs-coup-verpufft/842625 and placera.se telegrams",
+   "already_public": [
+    {
+     "what": "Q2 2026 report: CEO expects 'Q4 2026 to be the time frame for revenue inflection'; NRE deliberately deprioritised; Board publishes no financial forecasts; cash SEK 62.7m at 30 June plus SEK 700m directed issue after period; debt-free after August",
+     "date": "2026-08-27",
+     "source": "https://attachment.news.eu.nasdaq.com/aa95ee9f88658eb619ebf069c85abbfdc"
+    },
+    {
+     "what": "Social-tax liability remeasured at share price each reporting date (Q2: SEK 42.9m non-cash expense on 10.71 -> 63.15); H1 revenues shifted to H2 on customer timing and US budget delays",
+     "date": "2026-08-13",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b9452a3cf30620fe8ff03c0d406e56315&lang=en&src=listed"
+    },
+    {
+     "what": "Strategic LiDAR customer initiated production orders; shipments begin Q4 2026",
+     "date": "2026-10-20",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b0469d64a5351eea457c34d906bbea2e4&lang=en&src=listed"
+    },
+    {
+     "what": "USD 30m Glasgow InP capacity expansion, operational Q4 2027",
+     "date": "2026-09-03",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b9e1ea7da06425bcc95e41a4678896639&lang=en&src=listed"
+    },
+    {
+     "what": "WT Microelectronics global distribution agreement",
+     "date": "2026-11-11",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b95faedc1d36dab09914b77a9ae1c9a5f&lang=en&src=listed"
+    },
+    {
+     "what": "Report moved from 26 Nov to 30 Nov ~18:00 CET (Thanksgiving); no profit warning / vinstvarning filed in the feed since the Q2 report",
+     "date": "2026-11-20",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b86384d4a166a7ca2b435c23f94a02ceb&lang=en&src=listed"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "reported_quarter",
+     "expect": "Q3 net sales likely below the SEK 72.5m Q3 2025 comparison (Q2 was 53.8m with NRE deprioritised); headline YoY decline, down"
+    },
+    {
+     "line": "guidance",
+     "expect": "whether the qualitative 'Q4 2026 revenue inflection' is reaffirmed with LiDAR/ALL.SPACE/Tachyon shipments; unknown, the line that decides the sign"
+    },
+    {
+     "line": "other",
+     "expect": "non-cash social-tax reversal (share 63.15 -> 31.48 in Q3) flatters reported EBITDA/EBIT by roughly SEK 20-30m; up on the headline, likely looked through"
+    },
+    {
+     "line": "cash_flow",
+     "expect": "Q3 operating burn plus first Glasgow capex against ~SEK 0.6bn post-raise cash; unknown"
+    },
+    {
+     "line": "other",
+     "expect": "US dual-listing timetable (H1 2027) restated or moved; unknown"
+    }
+   ],
+   "session_check": "amc: issuer release of 2026-11-20 says the Q3 report will be published 30 Nov 2026 at approximately 18:00 CET, after the 17:30 Stockholm close, webcast 18:30 CET; https://view.news.eu.nasdaq.com/view?id=b86384d4a166a7ca2b435c23f94a02ceb&lang=en&src=listed"
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "Q3 social-security liability reversal: the share fell from SEK 63.15 (30 Jun) to SEK 31.48 (30 Sep), and by the mechanism the company itself disclosed for Q2 (+42.9m expense on a 10.71->63.15 rise) Q3 should carry a non-cash credit of roughly SEK 20-30m, about +0.06-0.08 of EPS against a -0.10 bar, with no pre-announcement this time.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-12-01",
+    "source": "https://view.news.eu.nasdaq.com/view?id=b9452a3cf30620fe8ff03c0d406e56315&lang=en&src=listed",
+    "source_date": "2026-08-13",
+    "reaction_history_on_this_line": "The Q2 expense was pre-announced 13 Aug (stock -4.8% that day, amid wider moves); no history of a reversal print.",
+    "why_not_priced": "A two-analyst name with a single Yahoo EPS estimate; if the estimate already held the credit the bar would sit near -0.05, not -0.10. But it is non-cash, the company itself calls it non-operational, and a beat made of a one-off is sold, so it is small.",
+    "independence": "Quarter-end prices from the tape: https://query1.finance.yahoo.com/v8/finance/chart/SIVE.ST?range=6mo&interval=1d",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "Q3 revenue faces a SEK 72.5m Q3 2025 comparison after Q2 printed 53.8m with NRE deliberately deprioritised, so a headline YoY decline of roughly 20-30% is likely.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-12-01",
+    "source": "https://view.news.eu.nasdaq.com/view?id=b0c4f8b9f865ddcdbfdac5bb79c6822bc&lang=en&src=listed",
+    "source_date": "2025-10-24",
+    "reaction_history_on_this_line": "Q2 revenue -12% YoY with the NRE trade-off explained: stock -24.4% the next session (2026-08-28); Q1 report: -11.7% (2026-06-01).",
+    "why_not_priced": "Largely priced: the company told the market Q4, not Q3, is the inflection, and the stock has fallen 41% in 20 sessions. What remains is the headline print on a name whose last two reports were sold. If the decline were fully in, the last two NRE-trade-off prints would not have moved -12% and -24%.",
+    "independence": "Q2 2026 report states the NRE deprioritisation: https://attachment.news.eu.nasdaq.com/aa95ee9f88658eb619ebf069c85abbfdc",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "US FY2027 began on a continuing resolution running to 11 Dec 2026 under which over 150 new military programmes cannot start, so the US defence NRE that Sivers already said slipped on budget approvals may slip again and weigh on the Q4-inflection statement.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-12-01",
+    "source": "https://breakingdefense.com/2026/10/cant-start-wont-start-over-150-new-military-programs-face-delay-under-a-cr/",
+    "source_date": "2026-10",
+    "reaction_history_on_this_line": "Q2 cited US defence budget delays as a reason for the revenue drop; stock -24.4% next session.",
+    "why_not_priced": "Macro-to-company transmission. The company has not said the CR hits Q4, and defence is a minority of revenue next to LiDAR, SATCOM and FWA, so it is a hypothesis and sized small.",
+    "independence": "Company's own statement that H1 revenue slipped on US government budget approvals: https://view.news.eu.nasdaq.com/view?id=b9452a3cf30620fe8ff03c0d406e56315&lang=en&src=listed",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "The strategic LiDAR customer placed production orders with shipments starting Q4 2026 (lifetime potential USD 53-138m), alongside the USD 8.2m ALL.SPACE and USD 3m Tachyon production orders. These are the concrete items the report can point to when it reaffirms the Q4 revenue inflection.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-12-01",
+    "source": "https://view.news.eu.nasdaq.com/view?id=b0469d64a5351eea457c34d906bbea2e4&lang=en&src=listed",
+    "source_date": "2026-10-20",
+    "reaction_history_on_this_line": "The Q4-inflection narrative accompanied the Q2 print, which fell 24.4%; the LiDAR order release on 2026-10-20 moved the stock -0.2%.",
+    "why_not_priced": "The orders are public. What is not public is whether the report puts a number on Q4 shipments or order intake, which would turn a narrative the market has stopped paying for into a figure. The -41% 20-day run-up says the market is discounting the inflection, not holding it.",
+    "independence": "Q2 CEO letter: 'We are expecting orders from our strategic LiDAR customer for Q4 2026' https://attachment.news.eu.nasdaq.com/aa95ee9f88658eb619ebf069c85abbfdc",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "Disclosed net short is 7.41% and building (+0.12pp to 2026-11-26), held mostly by quant/momentum funds (GSA 0.81%, Arrowstreet 0.61%, Two Sigma, AQR, D E Shaw, Citadel), into a stock down 41% in 20 sessions and about 80% from its June peak.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-12-01",
+    "source": "https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/",
+    "source_date": "2026-11-26",
+    "reaction_history_on_this_line": "2026-11-23 +18.6% and 2026-11-26 +9.8% squeezes inside a downtrend show how violently it reverses; the shorts were not squeezed by either of the last two prints.",
+    "why_not_priced": "Mostly priced: it is already the largest term in the baseline's priced_lean (+3.0 squeeze). Kept small because momentum quants cover mechanically on a reversal, which a fundamental short would not, so any reaffirmed Q4 number gets amplified.",
+    "independence": "https://www.boerse-global.de/sivers-semiconductors-aktie-vertriebs-coup-verpufft/842625 (GSA 0.81%, Arrowstreet 0.61%)",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "Sivers is debt-free after the July SEK 700m raise and the August USD 5m repayment. That leaves an estimated ~SEK 0.5-0.6bn at end Q3 against a ~SEK 70m quarterly operating burn plus the USD 30m Glasgow build, so no raise is needed inside the window, and the money is buying ramp capacity rather than plugging a hole.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-12-01",
+    "source": "https://attachment.news.eu.nasdaq.com/aa95ee9f88658eb619ebf069c85abbfdc",
+    "source_date": "2026-08-27",
+    "reaction_history_on_this_line": "A financing overhang drove Redeye's earlier 'short-term financing a question mark' note; the April and July raises came at a falling price.",
+    "why_not_priced": "Public since August. A residual risk is that the US dual listing in H1 2027 is read as a future raise, so it is near zero.",
+    "independence": "Glasgow capex release https://view.news.eu.nasdaq.com/view?id=b9e1ea7da06425bcc95e41a4678896639&lang=en&src=listed",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "US CR expires 11 Dec 2026, a shutdown or another CR decides the timing of defence NRE",
+    "resolves_by": "2026-12-11",
+    "source": "https://www.akingump.com/en/insights/blogs/the-approps-drop/washingtons-new-deadline-a-longer-road-for-the-same-can",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "Jabil 1.6T beta builds in Q4 2026, production orders expected H1 2027",
+    "resolves_by": "2027-06-30",
+    "source": "https://attachment.news.eu.nasdaq.com/aa95ee9f88658eb619ebf069c85abbfdc",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "US dual listing preparations to complete in H1 2027",
+    "resolves_by": "2027-06-30",
+    "source": "https://attachment.news.eu.nasdaq.com/aa95ee9f88658eb619ebf069c85abbfdc",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "Auditor change Deloitte -> EY at the 22 Oct EGM as a governance red flag",
+    "source": "https://view.news.eu.nasdaq.com/view?id=b0e5264723fb7af570337b6e52a2b76d6&lang=en&src=listed",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "Report postponed from 26 Nov to 30 Nov as a sign of trouble",
+    "source": "https://view.news.eu.nasdaq.com/view?id=b86384d4a166a7ca2b435c23f94a02ceb&lang=en&src=listed",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SIVE.json",
+    "text": "WT Microelectronics distribution deal as an upside catalyst",
+    "source": "https://view.news.eu.nasdaq.com/view?id=b95faedc1d36dab09914b77a9ae1c9a5f&lang=en&src=listed",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SIVE.json",
+    "text": "Nasdaq Nordic feed, Sivers releases 2026-08-27 -> 2026-11-27: no vinstvarning / profit warning, no trading update, no Q3 pre-release",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SIVE.json",
+    "text": "Redeye Q3 2026 preview: none found (only Q2 review headline, 2026-08-28)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SIVE.json",
+    "text": "Insider trading: none in the last 3 months (closed period); last were Todd Thomson sales in July 2026 (tradedesk.dk/se/aktier/sive.st)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SIVE.json",
+    "text": "CEO interview of 9-11 Nov 2026 (Compound Semiconductor): content found only via German secondary summaries, nothing quantitative on Q3/Q4",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SIVE.json",
+    "text": "Swedish press (efn.se, placera.se, di.se) for Q3-specific news: only June 2026 volatility pieces and short-register telegrams",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SIVE.json",
+    "text": "affarsvarlden.se not fetched (known unreachable)",
+    "i": 17
+   }
+  ]
+ }
+]
