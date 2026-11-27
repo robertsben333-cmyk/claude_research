@@ -106,3 +106,11 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-27 18:27 UTC
 - 3 packs, four judges
+
+## Edge hunt (panel v3b) — scored
+- Logged at 2026-11-27 18:34 UTC
+- 4/4 searchers finished (search_complete true), all 4 carry expectations, next_guide and evidence_type on every finding (v3b fields present). CHA baseline amended suspect -> unknown after the searchers, before scoring (matcher read the 11-12 special-dividend 6-K as a print; company release 11-23 sets 11-30 bmo); HMR/BOSC/NAT stay unknown, symmetric. impact_sum: CHA +3.0, NAT +1.9, BOSC +1.8, HMR -3.8. V2 grounded written (before first print). No step 3s/6b: no orders.
+
+## Edge hunt (panel v3b) — panel STARTED
+- Logged at 2026-11-27 18:34 UTC
+- 4 packs, four v3b judges
