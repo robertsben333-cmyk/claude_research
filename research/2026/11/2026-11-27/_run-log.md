@@ -87,3 +87,7 @@
 ## Edge hunt (panel v3b) — 2026-11-27 amc + 2026-11-30 bmo — STARTED
 - Logged at 2026-11-27 18:14 UTC
 - Fired 18:07 UTC (13:10 ET slot); session already shut (Thanksgiving half-day, close 13:00 ET). Own universe: 4 of 28 rows with a session (CHA HMR BOSC PWRL, all 11-30 bmo), baselines sealed. Thin day: session_resolve.py on 19 time-not-supplied rows killed 4 by EDGAR, carried 15 (0 announced); sweep settles date/session, baselines for its confirmations sealed before any searcher. Plan: 1 sweep, up to 20 unpriced-searcher-v3b (max 6 per turn), 4 v3b judges. No orders, no shadow ledger.
+
+## Edge hunt (panel v3b) — sweep
+- Logged at 2026-11-27 18:20 UTC
+- Sweep: 4 confirmed, all 2026-11-30 bmo (HMR 71, CHA 63, BOSC 54, NAT 42; NAT's 11-27 calendar date wrong, baseline sealed 11-30 bmo after the sweep, before any searcher). 15 phantom incl. PWRL (sealed, no date: N-2 fund, not hunted). Nothing confirmed in today's amc. Baseline histories for HMR/CHA/BOSC flagged untrustworthy (6-K rows). 4 searchers, one wave, nothing shed.
