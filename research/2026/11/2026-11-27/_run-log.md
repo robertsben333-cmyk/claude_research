@@ -83,3 +83,7 @@
 ## Edge hunt (panel) — 2026-11-27 amc + 2026-11-30 bmo — STARTED
 - Logged at 2026-11-27 18:09 UTC
 - Fired 18:07 UTC (13:07 ET), the day after Thanksgiving: the US session closed early at 13:00 ET, so it was already shut when this run fired. Window 11-27 amc + 11-30 bmo: 4 of 28 calendar rows have a session (CHA HMR BOSC PWRL, all 11-30 bmo); baselines sealed. Thin day: 19 time-not-supplied rows checked with session_resolve.py (2 killed by EDGAR: KT filed 2.02 today, PVL 11-18; 17 carried, 0 announced). The 17 carried rows go to the sweep to settle date and session; baselines for any it confirms are sealed before any searcher launches. Plan: 1 sweep, up to 20 searchers, 4 judges. Step 6b buy WILL be refused (market closed, and every name prints Monday bmo); step 3s flatten can only queue for Monday's open.
+
+## Edge hunt (panel v3b) — 2026-11-27 amc + 2026-11-30 bmo — STARTED
+- Logged at 2026-11-27 18:14 UTC
+- Fired 18:07 UTC (13:10 ET slot); session already shut (Thanksgiving half-day, close 13:00 ET). Own universe: 4 of 28 rows with a session (CHA HMR BOSC PWRL, all 11-30 bmo), baselines sealed. Thin day: session_resolve.py on 19 time-not-supplied rows killed 4 by EDGAR, carried 15 (0 announced); sweep settles date/session, baselines for its confirmations sealed before any searcher. Plan: 1 sweep, up to 20 unpriced-searcher-v3b (max 6 per turn), 4 v3b judges. No orders, no shadow ledger.
