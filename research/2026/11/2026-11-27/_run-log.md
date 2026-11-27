@@ -94,3 +94,7 @@
 ## Edge hunt (panel) — sweep
 - Logged at 2026-11-27 18:16 UTC
 - Sweep confirmed 3 of 23: HMR, BOSC (company releases, 11-30 bmo), NAT (company letter dates Q3 to Mon 11-30, calendar's 11-27 wrong; bmo on its last two release times; baseline history marked untrustworthy). CHA unconfirmed (no company date; Nasdaq row only), dropped. Phantoms: KT (6-K 11-10), PVL, LEDS, GDEV (11-19), AIV (10-Q 11-09), LOT (suspended), HTT (half-yearly). 12 more dropped unsourced/late filers, PWRL is a monthly-NAV fund. NAT baseline sealed after the sweep, before any searcher. Wave: 3 searchers, none shed.
+
+## Edge hunt (panel v3b) — wave 1
+- Logged at 2026-11-27 18:22 UTC
+- 4 confirmed, 4 searchers launched (unpriced-searcher-v3b, agent form, not fallback): HMR CHA BOSC NAT, all 11-30 bmo. Nothing shed. PWRL baseline sealed but not hunted (sweep: no date).
