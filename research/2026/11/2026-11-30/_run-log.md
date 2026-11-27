@@ -43,3 +43,7 @@
 ## Stage EU — panel
 - Logged at 2026-11-27 14:49 UTC
 - 4/4 judges, no fallback. Selected: NORSE short, panel_pct 100, 4/4. Not selected: CAPT 68 long (1/4), EAH 49 long, SIVE 28 long (sd 68, fable51 short).
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-27 14:49 UTC
+- handoff written 14:49 UTC, before the note: 1 name. Offline plan at sealed spot on EUR 10,000: SELL NORSE 2,261,668 sh @ 0.0115 NOK (24.3%). Not taken: CAPT 68.2 (<70). Caveat for the operator: NORSE is in the Oslo Recovery Box at ~0.011 NOK after its operating subsidiary's bankruptcy filing (27 Nov 13:00 UTC); borrow for a short is very unlikely and a suspension is possible. The executor's rules decide; this session did not change the rule.
