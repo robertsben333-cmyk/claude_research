@@ -11,3 +11,7 @@
 ## Stage EU — universe and baselines
 - Logged at 2026-11-27 14:39 UTC
 - 28 scheduled, 5 eligible above $100k, all 5 hunted (under cap): uk 2 (EAH, POLR), no 2 (CAPT, NORSE), se 1 (SIVE). Largest market uk 40%. bankier.pl 403 (PL issuer calendar unavailable). Registers read: no, se, uk. anchor_covered: POLR, SIVE. Session: SIVE amc; CAPT and POLR session_unresolved (bmo?).
+
+## Stage EU — hunts launched
+- Logged at 2026-11-27 14:40 UTC
+- One wave of 5: EAH, POLR (unpriced-hunter-uk); CAPT, NORSE (nordic/no); SIVE (nordic/se).
