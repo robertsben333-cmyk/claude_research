@@ -91,3 +91,6 @@
 ## Edge hunt (panel v3b) — sweep
 - Logged at 2026-11-27 18:20 UTC
 - Sweep: 4 confirmed, all 2026-11-30 bmo (HMR 71, CHA 63, BOSC 54, NAT 42; NAT's 11-27 calendar date wrong, baseline sealed 11-30 bmo after the sweep, before any searcher). 15 phantom incl. PWRL (sealed, no date: N-2 fund, not hunted). Nothing confirmed in today's amc. Baseline histories for HMR/CHA/BOSC flagged untrustworthy (6-K rows). 4 searchers, one wave, nothing shed.
+## Edge hunt (panel) — sweep
+- Logged at 2026-11-27 18:16 UTC
+- Sweep confirmed 3 of 23: HMR, BOSC (company releases, 11-30 bmo), NAT (company letter dates Q3 to Mon 11-30, calendar's 11-27 wrong; bmo on its last two release times; baseline history marked untrustworthy). CHA unconfirmed (no company date; Nasdaq row only), dropped. Phantoms: KT (6-K 11-10), PVL, LEDS, GDEV (11-19), AIV (10-Q 11-09), LOT (suspended), HTT (half-yearly). 12 more dropped unsourced/late filers, PWRL is a monthly-NAV fund. NAT baseline sealed after the sweep, before any searcher. Wave: 3 searchers, none shed.
