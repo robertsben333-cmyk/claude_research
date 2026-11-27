@@ -114,3 +114,6 @@
 ## Edge hunt (panel v3b) — panel STARTED
 - Logged at 2026-11-27 18:34 UTC
 - 4 packs, four v3b judges
+## Edge hunt (panel) — 6b buy
+- Logged at 2026-11-27 18:33 UTC
+- 18:33 UTC (13:33 ET): all four judges (opus5, opus55, sonnet55, fable51) on 3/3 packs, no fallback. Selected (panel_pct >= 80, 4 judges): HMR 98.4 short (4/4 own top 20%), BOSC 82.9 long (3/4). NAT 17.6 not selected. Plans: live (equity $3,272) HMR short 961 / BOSC long 319, scaled x0.855 for margin; paper (equity $23,294) HMR short 2113 / BOSC long 591, capacity-capped at 1x ADV (24.3% gross). open REFUSED on both accounts, nothing sent: market closed (US half day, close 13:00 ET, before this run fired at 13:07 ET). Both accounts flat, $0 held. All three prints are Mon 11-30 bmo, so the panel's book for this window is not traded. V2 grounded written before the first print. Stage E wrote no edge/ today (Routine stopped).
